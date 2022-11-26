@@ -1,0 +1,3478 @@
+[
+  {
+    "Code": "100018-1",
+    "Display": "Hospice Care Note"
+  },
+  {
+    "Code": "28568-4",
+    "Display": "Physician Emergency Department Note"
+  },
+  {
+    "Code": "28571-8",
+    "Display": "Speech-Language Pathology Note"
+  },
+  {
+    "Code": "28578-3",
+    "Display": "Occupational Therapy Note"
+  },
+  {
+    "Code": "28579-1",
+    "Display": "Physical Therapy Note"
+  },
+  {
+    "Code": "28618-7",
+    "Display": "Dentistry Note"
+  },
+  {
+    "Code": "28628-6",
+    "Display": "Psychiatry Note"
+  },
+  {
+    "Code": "28653-4",
+    "Display": "Social Worker Note"
+  },
+  {
+    "Code": "34108-1",
+    "Display": "Outpatient Note"
+  },
+  {
+    "Code": "34109-9",
+    "Display": "Note"
+  },
+  {
+    "Code": "34110-7",
+    "Display": "Diabetology Outpatient Note"
+  },
+  {
+    "Code": "34111-5",
+    "Display": "Emergency Department Note"
+  },
+  {
+    "Code": "34112-3",
+    "Display": "Hospital Note"
+  },
+  {
+    "Code": "34113-1",
+    "Display": "Nursing Facility Note"
+  },
+  {
+    "Code": "34139-6",
+    "Display": "Nurse Telephone Encounter Note"
+  },
+  {
+    "Code": "34746-8",
+    "Display": "Nurse Note"
+  },
+  {
+    "Code": "34748-4",
+    "Display": "Telephone Encounter Note"
+  },
+  {
+    "Code": "34750-0",
+    "Display": "Anesthesiology Note"
+  },
+  {
+    "Code": "34752-6",
+    "Display": "Cardiology Note"
+  },
+  {
+    "Code": "34753-4",
+    "Display": "Cardiology Outpatient Note"
+  },
+  {
+    "Code": "34754-2",
+    "Display": "Critical Care Medicine Note"
+  },
+  {
+    "Code": "34759-1",
+    "Display": "Dermatology Note"
+  },
+  {
+    "Code": "34762-5",
+    "Display": "Gastroenterology Note"
+  },
+  {
+    "Code": "34765-8",
+    "Display": "General Medicine Note"
+  },
+  {
+    "Code": "34766-6",
+    "Display": "General Medicine Outpatient Note"
+  },
+  {
+    "Code": "34767-4",
+    "Display": "General Medicine Medical Student Note"
+  },
+  {
+    "Code": "34768-2",
+    "Display": "General Medicine Nurse Note"
+  },
+  {
+    "Code": "34769-0",
+    "Display": "General Medicine Attending Note"
+  },
+  {
+    "Code": "34772-4",
+    "Display": "Deprecated General Surgery Note"
+  },
+  {
+    "Code": "34773-2",
+    "Display": "Surgery Attending Note"
+  },
+  {
+    "Code": "34778-1",
+    "Display": "Obstetrics And Gynecology Note"
+  },
+  {
+    "Code": "34780-7",
+    "Display": "Hematology+Medical Oncology Note"
+  },
+  {
+    "Code": "34782-3",
+    "Display": "Infectious Disease Note"
+  },
+  {
+    "Code": "34784-9",
+    "Display": "Kinesiotherapy Note"
+  },
+  {
+    "Code": "34786-4",
+    "Display": "Mental Health Note"
+  },
+  {
+    "Code": "34789-8",
+    "Display": "Deprecated Psychiatry Note"
+  },
+  {
+    "Code": "34792-2",
+    "Display": "Psychology Note"
+  },
+  {
+    "Code": "34794-8",
+    "Display": "Interdisciplinary Note"
+  },
+  {
+    "Code": "34796-3",
+    "Display": "Nephrology Note"
+  },
+  {
+    "Code": "34799-7",
+    "Display": "Neurological Surgery Note"
+  },
+  {
+    "Code": "34801-1",
+    "Display": "Nutrition And Dietetics Note"
+  },
+  {
+    "Code": "34802-9",
+    "Display": "Occupational Medicine Note"
+  },
+  {
+    "Code": "34804-5",
+    "Display": "Deprecated Occupational Therapy Note"
+  },
+  {
+    "Code": "34806-0",
+    "Display": "Oncology Note"
+  },
+  {
+    "Code": "34808-6",
+    "Display": "Ophthalmology Note"
+  },
+  {
+    "Code": "34811-0",
+    "Display": "Optometry Note"
+  },
+  {
+    "Code": "34813-6",
+    "Display": "Oral And Maxillofacial Surgery Note"
+  },
+  {
+    "Code": "34815-1",
+    "Display": "Orthopedic Surgery Note"
+  },
+  {
+    "Code": "34817-7",
+    "Display": "Otolaryngology Note"
+  },
+  {
+    "Code": "34819-3",
+    "Display": "Pathology Note"
+  },
+  {
+    "Code": "34821-9",
+    "Display": "Pharmacology Note"
+  },
+  {
+    "Code": "34823-5",
+    "Display": "Physical Medicine And Rehab Note"
+  },
+  {
+    "Code": "34827-6",
+    "Display": "Plastic Surgery Note"
+  },
+  {
+    "Code": "34829-2",
+    "Display": "Podiatry Note"
+  },
+  {
+    "Code": "34830-0",
+    "Display": "Pulmonary Note"
+  },
+  {
+    "Code": "34832-6",
+    "Display": "Radiation Oncology Note"
+  },
+  {
+    "Code": "34834-2",
+    "Display": "Recreational Therapy Note"
+  },
+  {
+    "Code": "34836-7",
+    "Display": "Deprecated Rehabilitation Note"
+  },
+  {
+    "Code": "34838-3",
+    "Display": "Respiratory Therapy Note"
+  },
+  {
+    "Code": "34840-9",
+    "Display": "Rheumatology Note"
+  },
+  {
+    "Code": "34844-1",
+    "Display": "Social Worker Telephone Encounter Note"
+  },
+  {
+    "Code": "34846-6",
+    "Display": "Speech-Language Pathology+Audiology Note"
+  },
+  {
+    "Code": "34848-2",
+    "Display": "Surgery Note"
+  },
+  {
+    "Code": "34850-8",
+    "Display": "Cardiothoracic Surgery Outpatient Note"
+  },
+  {
+    "Code": "34852-4",
+    "Display": "Urology Note"
+  },
+  {
+    "Code": "34854-0",
+    "Display": "Vascular Surgery Outpatient Note"
+  },
+  {
+    "Code": "34857-3",
+    "Display": "Addiction Medicine Note"
+  },
+  {
+    "Code": "34858-1",
+    "Display": "Pain Medicine Note"
+  },
+  {
+    "Code": "34861-5",
+    "Display": "Diabetology Note"
+  },
+  {
+    "Code": "34878-9",
+    "Display": "Emergency Medicine Note"
+  },
+  {
+    "Code": "34898-7",
+    "Display": "Endocrinology Note"
+  },
+  {
+    "Code": "34903-5",
+    "Display": "Deprecated Mental Health Note"
+  },
+  {
+    "Code": "34905-0",
+    "Display": "Neurology Note"
+  },
+  {
+    "Code": "34906-8",
+    "Display": "Pastoral Care Note"
+  },
+  {
+    "Code": "46210-1",
+    "Display": "Case Manager Note"
+  },
+  {
+    "Code": "46215-0",
+    "Display": "Wound Care Management Note"
+  },
+  {
+    "Code": "51855-5",
+    "Display": "Patient Note"
+  },
+  {
+    "Code": "57053-1",
+    "Display": "Nurse Emergency Department Note"
+  },
+  {
+    "Code": "64069-8",
+    "Display": "Critical Care Medicine Attending Hospital Note"
+  },
+  {
+    "Code": "64073-0",
+    "Display": "Cardiothoracic Surgery Attending Hospital Note"
+  },
+  {
+    "Code": "64077-1",
+    "Display": "Pulmonary Attending Hospital Note"
+  },
+  {
+    "Code": "67857-3",
+    "Display": "Deprecated Note"
+  },
+  {
+    "Code": "67858-1",
+    "Display": "Deprecated Nursing Note"
+  },
+  {
+    "Code": "67859-9",
+    "Display": "Deprecated Emergency Department Note"
+  },
+  {
+    "Code": "68561-0",
+    "Display": "Deprecated Obstetrics And Gynecology Note"
+  },
+  {
+    "Code": "68601-4",
+    "Display": "Psychiatry Outpatient Note"
+  },
+  {
+    "Code": "68615-4",
+    "Display": "Adolescent Medicine Note"
+  },
+  {
+    "Code": "68621-2",
+    "Display": "Heart Failure+Transplant Cardiology Note"
+  },
+  {
+    "Code": "68629-5",
+    "Display": "Allergy And Immunology Note"
+  },
+  {
+    "Code": "68636-0",
+    "Display": "Audiology Note"
+  },
+  {
+    "Code": "68645-1",
+    "Display": "Child And Adolescent Psychiatry Note"
+  },
+  {
+    "Code": "68650-1",
+    "Display": "Clinical Biochemical Genetics Note"
+  },
+  {
+    "Code": "68656-8",
+    "Display": "Clinical Genetics Note"
+  },
+  {
+    "Code": "68666-7",
+    "Display": "Developmental-Behavioral Pediatrics Note"
+  },
+  {
+    "Code": "68672-5",
+    "Display": "Geriatric Medicine Skilled Nursing Facility Note"
+  },
+  {
+    "Code": "68677-4",
+    "Display": "Multi-Specialty Program Note"
+  },
+  {
+    "Code": "68700-4",
+    "Display": "Neurology With Special Qualifications In Child Neurology Note"
+  },
+  {
+    "Code": "68712-9",
+    "Display": "Deprecated Pain Medicine Note"
+  },
+  {
+    "Code": "68722-8",
+    "Display": "Pediatric Cardiology Note"
+  },
+  {
+    "Code": "68741-8",
+    "Display": "Pediatric Gastroenterology Note"
+  },
+  {
+    "Code": "68752-5",
+    "Display": "Pediatric Hematology-Oncology Note"
+  },
+  {
+    "Code": "68761-6",
+    "Display": "Pediatric Infectious Diseases Note"
+  },
+  {
+    "Code": "68782-2",
+    "Display": "Pediatric Pulmonology Note"
+  },
+  {
+    "Code": "68818-4",
+    "Display": "Pediatrics Note"
+  },
+  {
+    "Code": "68827-5",
+    "Display": "Pediatrics Hospital Note"
+  },
+  {
+    "Code": "68834-1",
+    "Display": "Primary Care Note"
+  },
+  {
+    "Code": "68839-0",
+    "Display": "Research Note"
+  },
+  {
+    "Code": "68842-4",
+    "Display": "Deprecated Speech Pathology Note"
+  },
+  {
+    "Code": "68848-1",
+    "Display": "Transplant Surgery Note"
+  },
+  {
+    "Code": "68854-9",
+    "Display": "Pediatric Rehabilitation Medicine Note"
+  },
+  {
+    "Code": "68859-8",
+    "Display": "Pediatric Transplant Hepatology Note"
+  },
+  {
+    "Code": "68867-1",
+    "Display": "Pediatric Nephrology Note"
+  },
+  {
+    "Code": "68871-3",
+    "Display": "Pediatric Otolaryngology Note"
+  },
+  {
+    "Code": "68876-2",
+    "Display": "Pediatric Rheumatology Note"
+  },
+  {
+    "Code": "68881-2",
+    "Display": "Pediatric Surgery Note"
+  },
+  {
+    "Code": "68882-0",
+    "Display": "Pediatric Urology Note"
+  },
+  {
+    "Code": "68888-7",
+    "Display": "Deprecated Orthopedic Surgery Note"
+  },
+  {
+    "Code": "68889-5",
+    "Display": "Pediatric Dermatology Note"
+  },
+  {
+    "Code": "68894-5",
+    "Display": "Pediatric Endocrinology Note"
+  },
+  {
+    "Code": "75423-4",
+    "Display": "Addiction Psychiatry Note"
+  },
+  {
+    "Code": "75427-5",
+    "Display": "Mental Health Case Manager Note"
+  },
+  {
+    "Code": "75428-3",
+    "Display": "Deprecated Social Work Case Manager Note"
+  },
+  {
+    "Code": "75429-1",
+    "Display": "Custodial Care Facility Note"
+  },
+  {
+    "Code": "75430-9",
+    "Display": "Obesity Medicine Note"
+  },
+  {
+    "Code": "75432-5",
+    "Display": "Intensive Care Unit Note"
+  },
+  {
+    "Code": "75434-1",
+    "Display": "Internal Medicine Hospital Note"
+  },
+  {
+    "Code": "75435-8",
+    "Display": "Internal Medicine Note"
+  },
+  {
+    "Code": "75436-6",
+    "Display": "Internal Medicine Outpatient Note"
+  },
+  {
+    "Code": "75437-4",
+    "Display": "Licensed Practical Nurse Note"
+  },
+  {
+    "Code": "75438-2",
+    "Display": "Long Term Care Facility Note"
+  },
+  {
+    "Code": "75439-0",
+    "Display": "Medical Student Note"
+  },
+  {
+    "Code": "75443-2",
+    "Display": "Mental Health Outpatient Note"
+  },
+  {
+    "Code": "75444-0",
+    "Display": "Mental Health Telephone Encounter Note"
+  },
+  {
+    "Code": "75445-7",
+    "Display": "Multi-Specialty Program Patient's Home Note"
+  },
+  {
+    "Code": "75449-9",
+    "Display": "Nurse Hospital Note"
+  },
+  {
+    "Code": "75450-7",
+    "Display": "Nurse Intensive Care Unit Note"
+  },
+  {
+    "Code": "75451-5",
+    "Display": "Nurse Long Term Care Facility Note"
+  },
+  {
+    "Code": "75453-1",
+    "Display": "Nurse Outpatient Note"
+  },
+  {
+    "Code": "75454-9",
+    "Display": "Nurse Practitioner Note"
+  },
+  {
+    "Code": "75459-8",
+    "Display": "Mental Health Nurse Note"
+  },
+  {
+    "Code": "75460-6",
+    "Display": "Preventive Medicine Nurse Note"
+  },
+  {
+    "Code": "75461-4",
+    "Display": "Primary Care Nurse Note"
+  },
+  {
+    "Code": "75462-2",
+    "Display": "Ophthalmology Outpatient Note"
+  },
+  {
+    "Code": "75464-8",
+    "Display": "Deprecated Ophthalmology+Optometry Note"
+  },
+  {
+    "Code": "75466-3",
+    "Display": "Orthotics Prosthetics Note"
+  },
+  {
+    "Code": "75469-7",
+    "Display": "Pharmacology Outpatient Note"
+  },
+  {
+    "Code": "75470-5",
+    "Display": "Pharmacology Telephone Encounter Note"
+  },
+  {
+    "Code": "75471-3",
+    "Display": "Attending Note"
+  },
+  {
+    "Code": "75472-1",
+    "Display": "Internal Medicine Attending Note"
+  },
+  {
+    "Code": "75473-9",
+    "Display": "Primary Care Attending Note"
+  },
+  {
+    "Code": "75474-7",
+    "Display": "Psychiatry Attending Note"
+  },
+  {
+    "Code": "75476-2",
+    "Display": "Physician Note"
+  },
+  {
+    "Code": "75477-0",
+    "Display": "Resident Note"
+  },
+  {
+    "Code": "75478-8",
+    "Display": "Internal Medicine Resident Note"
+  },
+  {
+    "Code": "75479-6",
+    "Display": "Primary Care Physician Note"
+  },
+  {
+    "Code": "75480-4",
+    "Display": "Podiatry Outpatient Note"
+  },
+  {
+    "Code": "75482-0",
+    "Display": "Preventive Medicine Note"
+  },
+  {
+    "Code": "75483-8",
+    "Display": "Preventive Medicine Outpatient Note"
+  },
+  {
+    "Code": "75489-5",
+    "Display": "Primary Care Telephone Encounter Note"
+  },
+  {
+    "Code": "75490-3",
+    "Display": "Radiology Note"
+  },
+  {
+    "Code": "75491-1",
+    "Display": "Registered Nurse Note"
+  },
+  {
+    "Code": "75493-7",
+    "Display": "Surgery Outpatient Note"
+  },
+  {
+    "Code": "75494-5",
+    "Display": "Team Note"
+  },
+  {
+    "Code": "75495-2",
+    "Display": "Primary Care Team Note"
+  },
+  {
+    "Code": "75496-0",
+    "Display": "Telehealth Note"
+  },
+  {
+    "Code": "75501-7",
+    "Display": "Urology Outpatient Note"
+  },
+  {
+    "Code": "75502-5",
+    "Display": "Vocational Rehabilitation Note"
+  },
+  {
+    "Code": "75503-3",
+    "Display": "Patient's Home Note"
+  },
+  {
+    "Code": "75504-1",
+    "Display": "Urgent Care Center Note"
+  },
+  {
+    "Code": "82610-7",
+    "Display": "Observation Unit Note"
+  },
+  {
+    "Code": "83517-3",
+    "Display": "Cardiology Attending Intensive Care Unit Note"
+  },
+  {
+    "Code": "83518-1",
+    "Display": "Cardiology Attending Note"
+  },
+  {
+    "Code": "83519-9",
+    "Display": "Cardiology Attending Outpatient Note"
+  },
+  {
+    "Code": "83520-7",
+    "Display": "Cardiology Case Manager Note"
+  },
+  {
+    "Code": "83521-5",
+    "Display": "Cardiology Clinical Nurse Specialist Note"
+  },
+  {
+    "Code": "83524-9",
+    "Display": "Cardiology Intensive Care Unit Note"
+  },
+  {
+    "Code": "83527-2",
+    "Display": "Cardiology Fellow Note"
+  },
+  {
+    "Code": "83528-0",
+    "Display": "Cardiology Fellow Outpatient Note"
+  },
+  {
+    "Code": "83529-8",
+    "Display": "Cardiology Patient's Home Note"
+  },
+  {
+    "Code": "83530-6",
+    "Display": "Cardiology Nurse Practitioner Note"
+  },
+  {
+    "Code": "83531-4",
+    "Display": "Cardiology Nurse Note"
+  },
+  {
+    "Code": "83532-2",
+    "Display": "Cardiology Nurse Outpatient Note"
+  },
+  {
+    "Code": "83534-8",
+    "Display": "Cardiology Observation Unit Note"
+  },
+  {
+    "Code": "83536-3",
+    "Display": "Cardiology Physician Assistant Note"
+  },
+  {
+    "Code": "83538-9",
+    "Display": "Cardiology Resident Note"
+  },
+  {
+    "Code": "83540-5",
+    "Display": "Cardiology Telephone Encounter Note"
+  },
+  {
+    "Code": "83542-1",
+    "Display": "Colon And Rectal Surgery Nurse Practitioner Note"
+  },
+  {
+    "Code": "83543-9",
+    "Display": "Dermatology Nurse Practitioner Note"
+  },
+  {
+    "Code": "83544-7",
+    "Display": "Endocrinology Nurse Practitioner Note"
+  },
+  {
+    "Code": "83545-4",
+    "Display": "Geriatric Medicine Nurse Practitioner Note"
+  },
+  {
+    "Code": "83546-2",
+    "Display": "Hematology+Medical Oncology Nurse Practitioner Note"
+  },
+  {
+    "Code": "83547-0",
+    "Display": "Mental Health Nurse Practitioner Note"
+  },
+  {
+    "Code": "83548-8",
+    "Display": "Nephrology Nurse Practitioner Note"
+  },
+  {
+    "Code": "83549-6",
+    "Display": "Neurological Surgery Nurse Practitioner Note"
+  },
+  {
+    "Code": "83553-8",
+    "Display": "Nurse Practitioner Patient's Home Note"
+  },
+  {
+    "Code": "83554-6",
+    "Display": "Nurse Practitioner Hospital Note"
+  },
+  {
+    "Code": "83555-3",
+    "Display": "Nurse Practitioner Long Term Care Facility Note"
+  },
+  {
+    "Code": "83556-1",
+    "Display": "Nurse Practitioner Outpatient Note"
+  },
+  {
+    "Code": "83557-9",
+    "Display": "Nurse Practitioner Telephone Encounter Note"
+  },
+  {
+    "Code": "83558-7",
+    "Display": "Obstetrics And Gynecology Nurse Practitioner Note"
+  },
+  {
+    "Code": "83559-5",
+    "Display": "Orthopedic Surgery Nurse Practitioner Note"
+  },
+  {
+    "Code": "83560-3",
+    "Display": "Primary Care Nurse Practitioner Note"
+  },
+  {
+    "Code": "83561-1",
+    "Display": "Psychiatry Nurse Practitioner Note"
+  },
+  {
+    "Code": "83562-9",
+    "Display": "Surgery Nurse Practitioner Note"
+  },
+  {
+    "Code": "83563-7",
+    "Display": "Urology Nurse Practitioner Note"
+  },
+  {
+    "Code": "83564-5",
+    "Display": "Vascular Surgery Nurse Practitioner Note"
+  },
+  {
+    "Code": "83565-2",
+    "Display": "Allergy And Immunology Nurse Note"
+  },
+  {
+    "Code": "83566-0",
+    "Display": "Allergy And Immunology Nurse Outpatient Note"
+  },
+  {
+    "Code": "83567-8",
+    "Display": "Anesthesiology Nurse Note"
+  },
+  {
+    "Code": "83568-6",
+    "Display": "Dermatology Nurse Note"
+  },
+  {
+    "Code": "83569-4",
+    "Display": "Dermatology Nurse Outpatient Note"
+  },
+  {
+    "Code": "83571-0",
+    "Display": "Diabetology Nurse Note"
+  },
+  {
+    "Code": "83572-8",
+    "Display": "Diabetology Nurse Outpatient Note"
+  },
+  {
+    "Code": "83573-6",
+    "Display": "Endocrinology Nurse Outpatient Note"
+  },
+  {
+    "Code": "83574-4",
+    "Display": "Ophthalmology Nurse Outpatient Note"
+  },
+  {
+    "Code": "83575-1",
+    "Display": "Gastroenterology Nurse Note"
+  },
+  {
+    "Code": "83576-9",
+    "Display": "Gastroenterology Nurse Outpatient Note"
+  },
+  {
+    "Code": "83579-3",
+    "Display": "Hematology+Medical Oncology Nurse Note"
+  },
+  {
+    "Code": "83580-1",
+    "Display": "Hematology+Medical Oncology Nurse Outpatient Note"
+  },
+  {
+    "Code": "83581-9",
+    "Display": "Hepatology Nurse Note"
+  },
+  {
+    "Code": "83582-7",
+    "Display": "Interventional Radiology Nurse Note"
+  },
+  {
+    "Code": "83583-5",
+    "Display": "Nephrology Nurse Note"
+  },
+  {
+    "Code": "83584-3",
+    "Display": "Nephrology Nurse Outpatient Note"
+  },
+  {
+    "Code": "83585-0",
+    "Display": "Neurology Nurse Note"
+  },
+  {
+    "Code": "83586-8",
+    "Display": "Neurology Nurse Outpatient Note"
+  },
+  {
+    "Code": "83587-6",
+    "Display": "Obstetrics And Gynecology Nurse Note"
+  },
+  {
+    "Code": "83588-4",
+    "Display": "Obstetrics And Gynecology Nurse Outpatient Note"
+  },
+  {
+    "Code": "83589-2",
+    "Display": "Ophthalmology Nurse Note"
+  },
+  {
+    "Code": "83590-0",
+    "Display": "Otolaryngology Nurse Note"
+  },
+  {
+    "Code": "83591-8",
+    "Display": "Otolaryngology Nurse Outpatient Note"
+  },
+  {
+    "Code": "83592-6",
+    "Display": "Pathology Nurse Note"
+  },
+  {
+    "Code": "83594-2",
+    "Display": "Radiation Oncology Nurse Note"
+  },
+  {
+    "Code": "83595-9",
+    "Display": "Rheumatology Nurse Note"
+  },
+  {
+    "Code": "83596-7",
+    "Display": "Rheumatology Nurse Outpatient Note"
+  },
+  {
+    "Code": "83597-5",
+    "Display": "Urology Nurse Note"
+  },
+  {
+    "Code": "83598-3",
+    "Display": "Urology Nurse Outpatient Note"
+  },
+  {
+    "Code": "83600-7",
+    "Display": "Colon And Rectal Surgery Nurse Note"
+  },
+  {
+    "Code": "83601-5",
+    "Display": "Dentistry Nurse Long Term Care Facility Note"
+  },
+  {
+    "Code": "83602-3",
+    "Display": "Neurological Surgery Nurse Note"
+  },
+  {
+    "Code": "83603-1",
+    "Display": "Orthopedic Surgery Nurse Note"
+  },
+  {
+    "Code": "83604-9",
+    "Display": "Orthopedic Surgery Nurse Outpatient Note"
+  },
+  {
+    "Code": "83605-6",
+    "Display": "Physical Therapy Nurse Note"
+  },
+  {
+    "Code": "83606-4",
+    "Display": "Plastic Surgery Nurse Outpatient Note"
+  },
+  {
+    "Code": "83607-2",
+    "Display": "Podiatry Nurse Note"
+  },
+  {
+    "Code": "83608-0",
+    "Display": "Podiatry Nurse Outpatient Note"
+  },
+  {
+    "Code": "83610-6",
+    "Display": "Psychiatry Nurse Hospital Note"
+  },
+  {
+    "Code": "83611-4",
+    "Display": "Psychiatry Nurse Note"
+  },
+  {
+    "Code": "83612-2",
+    "Display": "Surgery Nurse Hospital Note"
+  },
+  {
+    "Code": "83613-0",
+    "Display": "Surgery Nurse Note"
+  },
+  {
+    "Code": "83615-5",
+    "Display": "Surgery Nurse Outpatient Note"
+  },
+  {
+    "Code": "83618-9",
+    "Display": "Vascular Surgery Nurse Note"
+  },
+  {
+    "Code": "83619-7",
+    "Display": "Vascular Surgery Nurse Outpatient Note"
+  },
+  {
+    "Code": "83620-5",
+    "Display": "Blood Banking And Transfusion Medicine Nurse Note"
+  },
+  {
+    "Code": "83622-1",
+    "Display": "Geriatric Medicine Nurse Note"
+  },
+  {
+    "Code": "83623-9",
+    "Display": "Geriatric Medicine Nurse Outpatient Note"
+  },
+  {
+    "Code": "83625-4",
+    "Display": "Primary Care Nurse Patient's Home Note"
+  },
+  {
+    "Code": "83626-2",
+    "Display": "Infectious Disease Nurse Note"
+  },
+  {
+    "Code": "83627-0",
+    "Display": "Infectious Disease Nurse Outpatient Note"
+  },
+  {
+    "Code": "83629-6",
+    "Display": "Mental Health Nurse Custodial Care Facility Note"
+  },
+  {
+    "Code": "83631-2",
+    "Display": "Mental Health Nurse Hospital Note"
+  },
+  {
+    "Code": "83632-0",
+    "Display": "Mental Health Nurse Long Term Care Facility Note"
+  },
+  {
+    "Code": "83634-6",
+    "Display": "Mental Health Nurse Outpatient Note"
+  },
+  {
+    "Code": "83637-9",
+    "Display": "Nutrition And Dietetics Nurse Note"
+  },
+  {
+    "Code": "83638-7",
+    "Display": "Pulmonary Nurse Note"
+  },
+  {
+    "Code": "83639-5",
+    "Display": "Pulmonary Nurse Outpatient Note"
+  },
+  {
+    "Code": "83641-1",
+    "Display": "Palliative Care Nurse Note"
+  },
+  {
+    "Code": "83643-7",
+    "Display": "Pain Medicine Emergency Department Note"
+  },
+  {
+    "Code": "83644-5",
+    "Display": "Pain Medicine Hospital Note"
+  },
+  {
+    "Code": "83645-2",
+    "Display": "Pain Medicine Long Term Care Facility Note"
+  },
+  {
+    "Code": "83647-8",
+    "Display": "Pain Medicine Nurse Note"
+  },
+  {
+    "Code": "83648-6",
+    "Display": "Pain Medicine Nurse Outpatient Note"
+  },
+  {
+    "Code": "83650-2",
+    "Display": "Pain Medicine Outpatient Note"
+  },
+  {
+    "Code": "83654-4",
+    "Display": "Pain Medicine Team Note"
+  },
+  {
+    "Code": "83655-1",
+    "Display": "Pain Medicine Telephone Encounter Note"
+  },
+  {
+    "Code": "83657-7",
+    "Display": "Cardiothoracic Surgery Attending Note"
+  },
+  {
+    "Code": "83658-5",
+    "Display": "Colon And Rectal Surgery Attending Note"
+  },
+  {
+    "Code": "83660-1",
+    "Display": "Neurological Surgery Attending Note"
+  },
+  {
+    "Code": "83662-7",
+    "Display": "Oral And Maxillofacial Surgery Attending Note"
+  },
+  {
+    "Code": "83663-5",
+    "Display": "Orthopedic Surgery Attending Note"
+  },
+  {
+    "Code": "83666-8",
+    "Display": "Plastic Surgery Attending Note"
+  },
+  {
+    "Code": "83669-2",
+    "Display": "Psychiatry Attending Hospital Note"
+  },
+  {
+    "Code": "83672-6",
+    "Display": "Surgery Attending Intensive Care Unit Note"
+  },
+  {
+    "Code": "83674-2",
+    "Display": "Surgery Attending Outpatient Note"
+  },
+  {
+    "Code": "83676-7",
+    "Display": "Transplant Surgery Attending Note"
+  },
+  {
+    "Code": "83678-3",
+    "Display": "Vascular Surgery Attending Note"
+  },
+  {
+    "Code": "83680-9",
+    "Display": "Anesthesiology Attending Note"
+  },
+  {
+    "Code": "83682-5",
+    "Display": "Dermatology Attending Note"
+  },
+  {
+    "Code": "83683-3",
+    "Display": "Endocrinology Attending Note"
+  },
+  {
+    "Code": "83684-1",
+    "Display": "Gastroenterology Attending Note"
+  },
+  {
+    "Code": "83686-6",
+    "Display": "Hematology+Medical Oncology Attending Note"
+  },
+  {
+    "Code": "83687-4",
+    "Display": "Nephrology Attending Note"
+  },
+  {
+    "Code": "83689-0",
+    "Display": "Neurology Attending Note"
+  },
+  {
+    "Code": "83690-8",
+    "Display": "Obstetrics And Gynecology Attending Note"
+  },
+  {
+    "Code": "83691-6",
+    "Display": "Ophthalmology Attending Note"
+  },
+  {
+    "Code": "83695-7",
+    "Display": "Otolaryngology Attending Note"
+  },
+  {
+    "Code": "83697-3",
+    "Display": "Radiation Oncology Attending Note"
+  },
+  {
+    "Code": "83698-1",
+    "Display": "Rheumatology Attending Note"
+  },
+  {
+    "Code": "83700-5",
+    "Display": "Urology Attending Note"
+  },
+  {
+    "Code": "83702-1",
+    "Display": "Geriatric Medicine Attending Note"
+  },
+  {
+    "Code": "83703-9",
+    "Display": "Primary Care Attending Patient's Home Note"
+  },
+  {
+    "Code": "83704-7",
+    "Display": "Mental Health Attending Note"
+  },
+  {
+    "Code": "83705-4",
+    "Display": "Palliative Care Attending Note"
+  },
+  {
+    "Code": "83709-6",
+    "Display": "Physical Medicine And Rehabilitation Attending Note"
+  },
+  {
+    "Code": "83710-4",
+    "Display": "Physical Medicine And Rehabilitation Case Manager Note"
+  },
+  {
+    "Code": "83713-8",
+    "Display": "Physical Medicine And Rehabilitation Interdisciplinary Note"
+  },
+  {
+    "Code": "83716-1",
+    "Display": "Physical Medicine And Rehab Patient's Home Note"
+  },
+  {
+    "Code": "83719-5",
+    "Display": "Physical Medicine And Rehab Hospital Note"
+  },
+  {
+    "Code": "83721-1",
+    "Display": "Physical Medicine And Rehab Long Term Care Facility Note"
+  },
+  {
+    "Code": "83723-7",
+    "Display": "Physical Medicine And Rehabilitation Nurse Note"
+  },
+  {
+    "Code": "83725-2",
+    "Display": "Physical Medicine And Rehab Outpatient Note"
+  },
+  {
+    "Code": "83727-8",
+    "Display": "Physical Medicine And Rehabilitation Physician Note"
+  },
+  {
+    "Code": "83729-4",
+    "Display": "Physical Medicine And Rehabilitation Resident Note"
+  },
+  {
+    "Code": "83732-8",
+    "Display": "Physical Medicine And Rehabilitation Team Note"
+  },
+  {
+    "Code": "83733-6",
+    "Display": "Physical Medicine And Rehab Telephone Encounter Note"
+  },
+  {
+    "Code": "83735-1",
+    "Display": "Colon And Rectal Surgery Fellow Note"
+  },
+  {
+    "Code": "83736-9",
+    "Display": "Endocrinology Fellow Note"
+  },
+  {
+    "Code": "83737-7",
+    "Display": "Gastroenterology Fellow Note"
+  },
+  {
+    "Code": "83738-5",
+    "Display": "Geriatric Medicine Fellow Note"
+  },
+  {
+    "Code": "83739-3",
+    "Display": "Hematology+Medical Oncology Fellow Note"
+  },
+  {
+    "Code": "83740-1",
+    "Display": "Infectious Disease Fellow Note"
+  },
+  {
+    "Code": "83741-9",
+    "Display": "Nephrology Fellow Note"
+  },
+  {
+    "Code": "83742-7",
+    "Display": "Ophthalmology Fellow Note"
+  },
+  {
+    "Code": "83743-5",
+    "Display": "Plastic Surgery Fellow Note"
+  },
+  {
+    "Code": "83744-3",
+    "Display": "Pulmonary Fellow Note"
+  },
+  {
+    "Code": "83745-0",
+    "Display": "Rheumatology Fellow Note"
+  },
+  {
+    "Code": "83746-8",
+    "Display": "Spinal Cord Injury Medicine Fellow Hospital Note"
+  },
+  {
+    "Code": "83747-6",
+    "Display": "Mental Health Physician Assistant Note"
+  },
+  {
+    "Code": "83748-4",
+    "Display": "Orthopedic Surgery Physician Assistant Note"
+  },
+  {
+    "Code": "83749-2",
+    "Display": "Primary Care Physician Assistant Note"
+  },
+  {
+    "Code": "83750-0",
+    "Display": "Spinal Cord Injury Medicine Physician Assistant Note"
+  },
+  {
+    "Code": "83751-8",
+    "Display": "Urology Physician Assistant Note"
+  },
+  {
+    "Code": "83752-6",
+    "Display": "Vascular Surgery Physician Assistant Note"
+  },
+  {
+    "Code": "83753-4",
+    "Display": "Colon And Rectal Surgery Resident Note"
+  },
+  {
+    "Code": "83754-2",
+    "Display": "Dermatology Resident Note"
+  },
+  {
+    "Code": "83755-9",
+    "Display": "Endocrinology Resident Note"
+  },
+  {
+    "Code": "83756-7",
+    "Display": "Gastroenterology Resident Note"
+  },
+  {
+    "Code": "83757-5",
+    "Display": "Geriatric Medicine Resident Note"
+  },
+  {
+    "Code": "83758-3",
+    "Display": "Hematology+Medical Oncology Resident Note"
+  },
+  {
+    "Code": "83759-1",
+    "Display": "Infectious Disease Resident Note"
+  },
+  {
+    "Code": "83760-9",
+    "Display": "Interventional Radiology Resident Note"
+  },
+  {
+    "Code": "83761-7",
+    "Display": "Mental Health Resident Note"
+  },
+  {
+    "Code": "83762-5",
+    "Display": "Nephrology Resident Note"
+  },
+  {
+    "Code": "83763-3",
+    "Display": "Neurology Resident Note"
+  },
+  {
+    "Code": "83764-1",
+    "Display": "Neurological Surgery Resident Note"
+  },
+  {
+    "Code": "83765-8",
+    "Display": "Obstetrics And Gynecology Resident Note"
+  },
+  {
+    "Code": "83766-6",
+    "Display": "Ophthalmology Resident Note"
+  },
+  {
+    "Code": "83767-4",
+    "Display": "Oral And Maxillofacial Surgery Resident Note"
+  },
+  {
+    "Code": "83768-2",
+    "Display": "Orthopedic Surgery Resident Note"
+  },
+  {
+    "Code": "83769-0",
+    "Display": "Otolaryngology Resident Note"
+  },
+  {
+    "Code": "83770-8",
+    "Display": "Palliative Care Resident Note"
+  },
+  {
+    "Code": "83771-6",
+    "Display": "Plastic Surgery Resident Note"
+  },
+  {
+    "Code": "83772-4",
+    "Display": "Primary Care Resident Note"
+  },
+  {
+    "Code": "83773-2",
+    "Display": "Psychiatry Resident Note"
+  },
+  {
+    "Code": "83774-0",
+    "Display": "Pulmonary Resident Note"
+  },
+  {
+    "Code": "83775-7",
+    "Display": "Radiation Oncology Resident Note"
+  },
+  {
+    "Code": "83776-5",
+    "Display": "Rheumatology Resident Note"
+  },
+  {
+    "Code": "83777-3",
+    "Display": "Spinal Cord Injury Medicine Resident Hospital Note"
+  },
+  {
+    "Code": "83779-9",
+    "Display": "Surgery Resident Note"
+  },
+  {
+    "Code": "83780-7",
+    "Display": "Transplant Surgery Resident Note"
+  },
+  {
+    "Code": "83781-5",
+    "Display": "Urology Resident Note"
+  },
+  {
+    "Code": "83782-3",
+    "Display": "Vascular Surgery Resident Note"
+  },
+  {
+    "Code": "83783-1",
+    "Display": "Infectious Disease Attending Note"
+  },
+  {
+    "Code": "83784-9",
+    "Display": "Mental Health Physician Note"
+  },
+  {
+    "Code": "83785-6",
+    "Display": "Palliative Care Physician Note"
+  },
+  {
+    "Code": "83787-2",
+    "Display": "Pulmonary Attending Note"
+  },
+  {
+    "Code": "83788-0",
+    "Display": "Pulmonary Attending Outpatient Note"
+  },
+  {
+    "Code": "83790-6",
+    "Display": "Spinal Cord Injury Medicine Attending Note"
+  },
+  {
+    "Code": "83791-4",
+    "Display": "Spinal Cord Injury Medicine Physician Note"
+  },
+  {
+    "Code": "83793-0",
+    "Display": "Physician Long Term Care Facility Note"
+  },
+  {
+    "Code": "83794-8",
+    "Display": "Physician Urgent Care Center Note"
+  },
+  {
+    "Code": "83795-5",
+    "Display": "Physician Telephone Encounter Note"
+  },
+  {
+    "Code": "83798-9",
+    "Display": "Physician Outpatient Note"
+  },
+  {
+    "Code": "83800-3",
+    "Display": "Physician Hospital Note"
+  },
+  {
+    "Code": "83801-1",
+    "Display": "Physician Patient's Home Note"
+  },
+  {
+    "Code": "83803-7",
+    "Display": "Physician Custodial Care Facility Note"
+  },
+  {
+    "Code": "83806-0",
+    "Display": "Physician Assistant Note"
+  },
+  {
+    "Code": "83807-8",
+    "Display": "Physician Assistant Custodial Care Facility Note"
+  },
+  {
+    "Code": "83808-6",
+    "Display": "Physician Assistant Outpatient Note"
+  },
+  {
+    "Code": "83811-0",
+    "Display": "Physician Assistant Long Term Care Facility Note"
+  },
+  {
+    "Code": "83813-6",
+    "Display": "Physician Assistant Patient's Home Note"
+  },
+  {
+    "Code": "83814-4",
+    "Display": "Physician Assistant Hospital Note"
+  },
+  {
+    "Code": "83817-7",
+    "Display": "Attending Intensive Care Unit Note"
+  },
+  {
+    "Code": "83818-5",
+    "Display": "Attending Emergency Department Note"
+  },
+  {
+    "Code": "83821-9",
+    "Display": "Attending Outpatient Note"
+  },
+  {
+    "Code": "83822-7",
+    "Display": "Attending Hospital Note"
+  },
+  {
+    "Code": "83823-5",
+    "Display": "Attending Long Term Care Facility Note"
+  },
+  {
+    "Code": "83825-0",
+    "Display": "Fellow Note"
+  },
+  {
+    "Code": "83827-6",
+    "Display": "Fellow Intensive Care Unit Note"
+  },
+  {
+    "Code": "83831-8",
+    "Display": "Dentistry Hospital Note"
+  },
+  {
+    "Code": "83832-6",
+    "Display": "Dentistry Long Term Care Facility Note"
+  },
+  {
+    "Code": "83834-2",
+    "Display": "Dentistry Emergency Department Note"
+  },
+  {
+    "Code": "83837-5",
+    "Display": "Dentistry Technician Note"
+  },
+  {
+    "Code": "83838-3",
+    "Display": "Dentistry Telephone Encounter Note"
+  },
+  {
+    "Code": "83840-9",
+    "Display": "Vascular Surgery Technician Note"
+  },
+  {
+    "Code": "83841-7",
+    "Display": "Transplant Surgery Case Manager Note"
+  },
+  {
+    "Code": "83842-5",
+    "Display": "Surgery Interdisciplinary Note"
+  },
+  {
+    "Code": "83843-3",
+    "Display": "Surgery Case Manager Note"
+  },
+  {
+    "Code": "83851-6",
+    "Display": "Plastic Surgery Hospital Note"
+  },
+  {
+    "Code": "83852-4",
+    "Display": "Plastic Surgery Outpatient Note"
+  },
+  {
+    "Code": "83855-7",
+    "Display": "Plastic Surgery Telephone Encounter Note"
+  },
+  {
+    "Code": "83859-9",
+    "Display": "Podiatry Hospital Note"
+  },
+  {
+    "Code": "83864-9",
+    "Display": "Podiatry Telephone Encounter Note"
+  },
+  {
+    "Code": "83872-2",
+    "Display": "Primary Care Case Manager Note"
+  },
+  {
+    "Code": "83874-8",
+    "Display": "Primary Care Custodial Care Facility Note"
+  },
+  {
+    "Code": "83878-9",
+    "Display": "Primary Care Urgent Care Center Note"
+  },
+  {
+    "Code": "83881-3",
+    "Display": "Psychiatry Case Manager Note"
+  },
+  {
+    "Code": "83882-1",
+    "Display": "Psychiatry Interdisciplinary Note"
+  },
+  {
+    "Code": "83884-7",
+    "Display": "Psychiatry Emergency Department Note"
+  },
+  {
+    "Code": "83887-0",
+    "Display": "Psychiatry Hospital Note"
+  },
+  {
+    "Code": "83893-8",
+    "Display": "Psychiatry Team Note"
+  },
+  {
+    "Code": "83894-6",
+    "Display": "Psychiatry Telephone Encounter Note"
+  },
+  {
+    "Code": "83899-5",
+    "Display": "Psychology Custodial Care Facility Note"
+  },
+  {
+    "Code": "83902-7",
+    "Display": "Psychology Patient's Home Note"
+  },
+  {
+    "Code": "83903-5",
+    "Display": "Psychology Hospital Note"
+  },
+  {
+    "Code": "83904-3",
+    "Display": "Psychology Long Term Care Facility Note"
+  },
+  {
+    "Code": "83905-0",
+    "Display": "Psychology Outpatient Note"
+  },
+  {
+    "Code": "83907-6",
+    "Display": "Psychology Team Note"
+  },
+  {
+    "Code": "83908-4",
+    "Display": "Psychology Telephone Encounter Note"
+  },
+  {
+    "Code": "83910-0",
+    "Display": "Public Health Note"
+  },
+  {
+    "Code": "83913-4",
+    "Display": "Pulmonary Patient's Home Note"
+  },
+  {
+    "Code": "83915-9",
+    "Display": "Pulmonary Outpatient Note"
+  },
+  {
+    "Code": "83916-7",
+    "Display": "Pulmonary Telephone Encounter Note"
+  },
+  {
+    "Code": "83917-5",
+    "Display": "Radiation Oncology Hospital Note"
+  },
+  {
+    "Code": "83918-3",
+    "Display": "Radiation Oncology Outpatient Note"
+  },
+  {
+    "Code": "83919-1",
+    "Display": "Radiation Oncology Telephone Encounter Note"
+  },
+  {
+    "Code": "83920-9",
+    "Display": "Radiation Oncology Therapist Note"
+  },
+  {
+    "Code": "83922-5",
+    "Display": "Recreational Therapy Custodial Care Facility Note"
+  },
+  {
+    "Code": "83924-1",
+    "Display": "Recreational Therapy Hospital Note"
+  },
+  {
+    "Code": "83925-8",
+    "Display": "Recreational Therapy Interdisciplinary Note"
+  },
+  {
+    "Code": "83927-4",
+    "Display": "Recreational Therapy Long Term Care Facility Note"
+  },
+  {
+    "Code": "83928-2",
+    "Display": "Recreational Therapy Outpatient Note"
+  },
+  {
+    "Code": "83936-5",
+    "Display": "Research Nurse Note"
+  },
+  {
+    "Code": "83937-3",
+    "Display": "Research Outpatient Note"
+  },
+  {
+    "Code": "83939-9",
+    "Display": "Research Telephone Encounter Note"
+  },
+  {
+    "Code": "83940-7",
+    "Display": "Respiratory Therapy Intensive Care Unit Note"
+  },
+  {
+    "Code": "83942-3",
+    "Display": "Respiratory Therapy Patient's Home Note"
+  },
+  {
+    "Code": "83943-1",
+    "Display": "Respiratory Therapy Hospital Note"
+  },
+  {
+    "Code": "83944-9",
+    "Display": "Respiratory Therapy Long Term Care Facility Note"
+  },
+  {
+    "Code": "83945-6",
+    "Display": "Respiratory Therapy Outpatient Note"
+  },
+  {
+    "Code": "83946-4",
+    "Display": "Respiratory Therapy Telephone Encounter Note"
+  },
+  {
+    "Code": "83947-2",
+    "Display": "Rheumatology Hospital Note"
+  },
+  {
+    "Code": "83948-0",
+    "Display": "Rheumatology Outpatient Note"
+  },
+  {
+    "Code": "83949-8",
+    "Display": "Rheumatology Telephone Encounter Note"
+  },
+  {
+    "Code": "83952-2",
+    "Display": "Registered Nurse Hospital Note"
+  },
+  {
+    "Code": "83957-1",
+    "Display": "Social Worker Custodial Care Facility Note"
+  },
+  {
+    "Code": "83958-9",
+    "Display": "Social Worker Emergency Department Note"
+  },
+  {
+    "Code": "83963-9",
+    "Display": "Social Worker Patient's Home Note"
+  },
+  {
+    "Code": "83965-4",
+    "Display": "Social Worker Hospital Note"
+  },
+  {
+    "Code": "83966-2",
+    "Display": "Deprecated Social Work Interdisciplinary Note"
+  },
+  {
+    "Code": "83970-4",
+    "Display": "Social Worker Long Term Care Facility Note"
+  },
+  {
+    "Code": "83974-6",
+    "Display": "Deprecated Social Work Nurse Long Term Care Facility Note"
+  },
+  {
+    "Code": "83976-1",
+    "Display": "Social Worker Outpatient Note"
+  },
+  {
+    "Code": "83980-3",
+    "Display": "Deprecated Social Work Team Note"
+  },
+  {
+    "Code": "83985-2",
+    "Display": "Speech-Language Pathology Long Term Care Facility Note"
+  },
+  {
+    "Code": "83987-8",
+    "Display": "Speech-Language Pathology Team Note"
+  },
+  {
+    "Code": "83988-6",
+    "Display": "Speech-Language Pathology Telephone Encounter Note"
+  },
+  {
+    "Code": "83997-7",
+    "Display": "Spinal Cord Injury Medicine Patient's Home Note"
+  },
+  {
+    "Code": "83999-3",
+    "Display": "Spinal Cord Injury Medicine Hospital Note"
+  },
+  {
+    "Code": "84000-9",
+    "Display": "Spinal Cord Injury Medicine Interdisciplinary Note"
+  },
+  {
+    "Code": "84001-7",
+    "Display": "Spinal Cord Injury Medicine Note"
+  },
+  {
+    "Code": "84002-5",
+    "Display": "Spinal Cord Injury Medicine Nurse Note"
+  },
+  {
+    "Code": "84003-3",
+    "Display": "Spinal Cord Injury Medicine Nurse Outpatient Note"
+  },
+  {
+    "Code": "84005-8",
+    "Display": "Spinal Cord Injury Medicine Outpatient Note"
+  },
+  {
+    "Code": "84008-2",
+    "Display": "Spinal Cord Injury Medicine Team Note"
+  },
+  {
+    "Code": "84009-0",
+    "Display": "Spinal Cord Injury Medicine Telehealth Note"
+  },
+  {
+    "Code": "84010-8",
+    "Display": "Spinal Cord Injury Medicine Telephone Encounter Note"
+  },
+  {
+    "Code": "84014-0",
+    "Display": "Surgery Intensive Care Unit Note"
+  },
+  {
+    "Code": "84022-3",
+    "Display": "Surgery Telephone Encounter Note"
+  },
+  {
+    "Code": "84025-6",
+    "Display": "Team Custodial Care Facility Note"
+  },
+  {
+    "Code": "84027-2",
+    "Display": "Team Patient's Home Note"
+  },
+  {
+    "Code": "84030-6",
+    "Display": "Team Long Term Care Facility Note"
+  },
+  {
+    "Code": "84032-2",
+    "Display": "Team Outpatient Note"
+  },
+  {
+    "Code": "84033-0",
+    "Display": "Team Telephone Encounter Note"
+  },
+  {
+    "Code": "84036-3",
+    "Display": "Transplant Surgery Outpatient Note"
+  },
+  {
+    "Code": "84037-1",
+    "Display": "Transplant Surgery Telephone Encounter Note"
+  },
+  {
+    "Code": "84042-1",
+    "Display": "Urology Hospital Note"
+  },
+  {
+    "Code": "84043-9",
+    "Display": "Urology Interdisciplinary Note"
+  },
+  {
+    "Code": "84046-2",
+    "Display": "Urology Telephone Encounter Note"
+  },
+  {
+    "Code": "84049-6",
+    "Display": "Vascular Surgery Hospital Note"
+  },
+  {
+    "Code": "84050-4",
+    "Display": "Vascular Surgery Note"
+  },
+  {
+    "Code": "84054-6",
+    "Display": "Vascular Surgery Telephone Encounter Note"
+  },
+  {
+    "Code": "84056-1",
+    "Display": "Ophthalmology Patient's Home Note"
+  },
+  {
+    "Code": "84057-9",
+    "Display": "Allergy And Immunology Outpatient Note"
+  },
+  {
+    "Code": "84059-5",
+    "Display": "Anesthesiology Hospital Note"
+  },
+  {
+    "Code": "84060-3",
+    "Display": "Anesthesiology Outpatient Note"
+  },
+  {
+    "Code": "84063-7",
+    "Display": "Anesthesiology Telephone Encounter Note"
+  },
+  {
+    "Code": "84066-0",
+    "Display": "Audiology Telephone Encounter Note"
+  },
+  {
+    "Code": "84067-8",
+    "Display": "Blood Banking And Transfusion Medicine Note"
+  },
+  {
+    "Code": "84072-8",
+    "Display": "Chiropractic Medicine Telephone Encounter Note"
+  },
+  {
+    "Code": "84073-6",
+    "Display": "Colon And Rectal Surgery Note"
+  },
+  {
+    "Code": "84078-5",
+    "Display": "Dermatology Hospital Note"
+  },
+  {
+    "Code": "84080-1",
+    "Display": "Dermatology Outpatient Note"
+  },
+  {
+    "Code": "84082-7",
+    "Display": "Dermatology Telephone Encounter Note"
+  },
+  {
+    "Code": "84084-3",
+    "Display": "Diabetology Case Manager Note"
+  },
+  {
+    "Code": "84087-6",
+    "Display": "Diabetology Hospital Note"
+  },
+  {
+    "Code": "84093-4",
+    "Display": "Diabetology Telephone Encounter Note"
+  },
+  {
+    "Code": "84096-7",
+    "Display": "Emergency Medicine Telephone Encounter Note"
+  },
+  {
+    "Code": "84098-3",
+    "Display": "Endocrinology Hospital Note"
+  },
+  {
+    "Code": "84099-1",
+    "Display": "Endocrinology Outpatient Note"
+  },
+  {
+    "Code": "84100-7",
+    "Display": "Endocrinology Telephone Encounter Note"
+  },
+  {
+    "Code": "84103-1",
+    "Display": "Gastroenterology Clinical Nurse Specialist Note"
+  },
+  {
+    "Code": "84105-6",
+    "Display": "Gastroenterology Hospital Note"
+  },
+  {
+    "Code": "84107-2",
+    "Display": "Gastroenterology Outpatient Note"
+  },
+  {
+    "Code": "84108-0",
+    "Display": "Gastroenterology Telephone Encounter Note"
+  },
+  {
+    "Code": "84111-4",
+    "Display": "Geriatric Medicine Case Manager Note"
+  },
+  {
+    "Code": "84113-0",
+    "Display": "Geriatric Medicine Patient's Home Note"
+  },
+  {
+    "Code": "84114-8",
+    "Display": "Geriatric Medicine Hospital Note"
+  },
+  {
+    "Code": "84116-3",
+    "Display": "Geriatric Medicine Long Term Care Facility Note"
+  },
+  {
+    "Code": "84119-7",
+    "Display": "Geriatric Medicine Outpatient Note"
+  },
+  {
+    "Code": "84120-5",
+    "Display": "Geriatric Medicine Pharmacist Note"
+  },
+  {
+    "Code": "84122-1",
+    "Display": "Geriatric Medicine Team Note"
+  },
+  {
+    "Code": "84123-9",
+    "Display": "Geriatric Medicine Telephone Encounter Note"
+  },
+  {
+    "Code": "84127-0",
+    "Display": "Surgery Of The Hand Hospital Note"
+  },
+  {
+    "Code": "84128-8",
+    "Display": "Surgery Of The Hand Note"
+  },
+  {
+    "Code": "84129-6",
+    "Display": "Surgery Of The Hand Outpatient Note"
+  },
+  {
+    "Code": "84134-6",
+    "Display": "Primary Care Patient's Home Note"
+  },
+  {
+    "Code": "84137-9",
+    "Display": "Hematology+Medical Oncology Pharmacist Note"
+  },
+  {
+    "Code": "84143-7",
+    "Display": "Hematology+Medical Oncology Hospital Note"
+  },
+  {
+    "Code": "84146-0",
+    "Display": "Hematology+Medical Oncology Outpatient Note"
+  },
+  {
+    "Code": "84149-4",
+    "Display": "Hematology+Medical Oncology Team Note"
+  },
+  {
+    "Code": "84150-2",
+    "Display": "Hematology+Medical Oncology Telephone Encounter Note"
+  },
+  {
+    "Code": "84156-9",
+    "Display": "Hepatology Note"
+  },
+  {
+    "Code": "84157-7",
+    "Display": "Hepatology Outpatient Note"
+  },
+  {
+    "Code": "84159-3",
+    "Display": "Hepatology Telephone Encounter Note"
+  },
+  {
+    "Code": "84163-5",
+    "Display": "Interdisciplinary Patient's Home Note"
+  },
+  {
+    "Code": "84168-4",
+    "Display": "Infectious Disease Hospital Note"
+  },
+  {
+    "Code": "84169-2",
+    "Display": "Infectious Disease Outpatient Note"
+  },
+  {
+    "Code": "84171-8",
+    "Display": "Infectious Disease Telephone Encounter Note"
+  },
+  {
+    "Code": "84174-2",
+    "Display": "Interventional Cardiology Note"
+  },
+  {
+    "Code": "84178-3",
+    "Display": "Interventional Radiology Note"
+  },
+  {
+    "Code": "84181-7",
+    "Display": "Kinesiotherapy Patient's Home Note"
+  },
+  {
+    "Code": "84184-1",
+    "Display": "Kinesiotherapy Outpatient Note"
+  },
+  {
+    "Code": "84186-6",
+    "Display": "Interdisciplinary Long Term Care Facility Note"
+  },
+  {
+    "Code": "84188-2",
+    "Display": "Licensed Practical Nurse Long Term Care Facility Note"
+  },
+  {
+    "Code": "84189-0",
+    "Display": "Licensed Practical Nurse Outpatient Note"
+  },
+  {
+    "Code": "84191-6",
+    "Display": "Medical Toxicology Note"
+  },
+  {
+    "Code": "84195-7",
+    "Display": "Mental Health Intensive Care Unit Note"
+  },
+  {
+    "Code": "84196-5",
+    "Display": "Mental Health Custodial Care Facility Note"
+  },
+  {
+    "Code": "84198-1",
+    "Display": "Mental Health Emergency Department Note"
+  },
+  {
+    "Code": "84199-9",
+    "Display": "Mental Health Patient's Home Note"
+  },
+  {
+    "Code": "84202-1",
+    "Display": "Mental Health Hospital Note"
+  },
+  {
+    "Code": "84204-7",
+    "Display": "Mental Health Interdisciplinary Note"
+  },
+  {
+    "Code": "84205-4",
+    "Display": "Mental Health Long Term Care Facility Note"
+  },
+  {
+    "Code": "84206-2",
+    "Display": "Mental Health Observation Unit Note"
+  },
+  {
+    "Code": "84214-6",
+    "Display": "Mental Health Team Note"
+  },
+  {
+    "Code": "84215-3",
+    "Display": "Mental Health Telehealth Note"
+  },
+  {
+    "Code": "84219-5",
+    "Display": "Nephrology Patient's Home Note"
+  },
+  {
+    "Code": "84220-3",
+    "Display": "Nephrology Hospital Note"
+  },
+  {
+    "Code": "84222-9",
+    "Display": "Nephrology Outpatient Note"
+  },
+  {
+    "Code": "84223-7",
+    "Display": "Nephrology Team Note"
+  },
+  {
+    "Code": "84224-5",
+    "Display": "Nephrology Telephone Encounter Note"
+  },
+  {
+    "Code": "84227-8",
+    "Display": "Neurology Hospital Note"
+  },
+  {
+    "Code": "84229-4",
+    "Display": "Neurology Outpatient Note"
+  },
+  {
+    "Code": "84230-2",
+    "Display": "Neurology Team Note"
+  },
+  {
+    "Code": "84232-8",
+    "Display": "Neurology Telehealth Note"
+  },
+  {
+    "Code": "84234-4",
+    "Display": "Neurology Telephone Encounter Note"
+  },
+  {
+    "Code": "84236-9",
+    "Display": "Neurological Surgery Hospital Note"
+  },
+  {
+    "Code": "84237-7",
+    "Display": "Neurological Surgery Outpatient Note"
+  },
+  {
+    "Code": "84239-3",
+    "Display": "Neurological Surgery Telephone Encounter Note"
+  },
+  {
+    "Code": "84246-8",
+    "Display": "Nurse Custodial Care Facility Note"
+  },
+  {
+    "Code": "84251-8",
+    "Display": "Nurse Patient's Home Note"
+  },
+  {
+    "Code": "84263-3",
+    "Display": "Nurse Observation Unit Note"
+  },
+  {
+    "Code": "84274-0",
+    "Display": "Nurse Telehealth Note"
+  },
+  {
+    "Code": "84275-7",
+    "Display": "Nurse Urgent Care Center Note"
+  },
+  {
+    "Code": "84282-3",
+    "Display": "Nutrition And Dietetics Patient's Home Note"
+  },
+  {
+    "Code": "84284-9",
+    "Display": "Nutrition And Dietetics Hospital Note"
+  },
+  {
+    "Code": "84286-4",
+    "Display": "Nutrition And Dietetics Long Term Care Facility Note"
+  },
+  {
+    "Code": "84289-8",
+    "Display": "Nutrition And Dietetics Outpatient Note"
+  },
+  {
+    "Code": "84293-0",
+    "Display": "Nutrition And Dietetics Team Note"
+  },
+  {
+    "Code": "84294-8",
+    "Display": "Nutrition And Dietetics Telephone Encounter Note"
+  },
+  {
+    "Code": "84302-9",
+    "Display": "Wound Care Management Nurse Note"
+  },
+  {
+    "Code": "84304-5",
+    "Display": "Obstetrics And Gynecology Hospital Note"
+  },
+  {
+    "Code": "84309-4",
+    "Display": "Vocational Rehabilitation Custodial Care Facility Note"
+  },
+  {
+    "Code": "84315-1",
+    "Display": "Physical Therapy Telephone Encounter Note"
+  },
+  {
+    "Code": "84316-9",
+    "Display": "Physical Therapy Team Note"
+  },
+  {
+    "Code": "84318-5",
+    "Display": "Physical Therapy Outpatient Note"
+  },
+  {
+    "Code": "84323-5",
+    "Display": "Physical Therapy Long Term Care Facility Note"
+  },
+  {
+    "Code": "84325-0",
+    "Display": "Physical Therapy Interdisciplinary Note"
+  },
+  {
+    "Code": "84326-8",
+    "Display": "Physical Therapy Hospital Note"
+  },
+  {
+    "Code": "84329-2",
+    "Display": "Physical Therapy Patient's Home Note"
+  },
+  {
+    "Code": "84333-4",
+    "Display": "Multi-Specialty Program Nurse Note"
+  },
+  {
+    "Code": "84334-2",
+    "Display": "Pathology Telephone Encounter Note"
+  },
+  {
+    "Code": "84335-9",
+    "Display": "Pathology Outpatient Note"
+  },
+  {
+    "Code": "84338-3",
+    "Display": "Pastoral Care Telephone Encounter Note"
+  },
+  {
+    "Code": "84339-1",
+    "Display": "Pastoral Care Team Note"
+  },
+  {
+    "Code": "84341-7",
+    "Display": "Pastoral Care Outpatient Note"
+  },
+  {
+    "Code": "84342-5",
+    "Display": "Pastoral Care Long Term Care Facility Note"
+  },
+  {
+    "Code": "84343-3",
+    "Display": "Pastoral Care Hospital Note"
+  },
+  {
+    "Code": "84345-8",
+    "Display": "Pastoral Care Patient's Home Note"
+  },
+  {
+    "Code": "84350-8",
+    "Display": "Palliative Care Telephone Encounter Note"
+  },
+  {
+    "Code": "84351-6",
+    "Display": "Palliative Care Team Note"
+  },
+  {
+    "Code": "84354-0",
+    "Display": "Palliative Care Pharmacist Note"
+  },
+  {
+    "Code": "84355-7",
+    "Display": "Palliative Care Outpatient Note"
+  },
+  {
+    "Code": "84356-5",
+    "Display": "Palliative Care Long Term Care Facility Note"
+  },
+  {
+    "Code": "84357-3",
+    "Display": "Palliative Care Patient's Home Note"
+  },
+  {
+    "Code": "84361-5",
+    "Display": "Interdisciplinary Outpatient Note"
+  },
+  {
+    "Code": "84362-3",
+    "Display": "Otolaryngology Telephone Encounter Note"
+  },
+  {
+    "Code": "84364-9",
+    "Display": "Otolaryngology Outpatient Note"
+  },
+  {
+    "Code": "84365-6",
+    "Display": "Otolaryngology Hospital Note"
+  },
+  {
+    "Code": "84369-8",
+    "Display": "Orthotics Prosthetics Telephone Encounter Note"
+  },
+  {
+    "Code": "84370-6",
+    "Display": "Orthotics Prosthetics Outpatient Note"
+  },
+  {
+    "Code": "84371-4",
+    "Display": "Orthotics Prosthetics Patient's Home Note"
+  },
+  {
+    "Code": "84373-0",
+    "Display": "Orthopedic Surgery Telephone Encounter Note"
+  },
+  {
+    "Code": "84376-3",
+    "Display": "Orthopedic Surgery Outpatient Note"
+  },
+  {
+    "Code": "84377-1",
+    "Display": "Orthopedic Surgery Hospital Note"
+  },
+  {
+    "Code": "84381-3",
+    "Display": "Oral And Maxillofacial Surgery Outpatient Note"
+  },
+  {
+    "Code": "84383-9",
+    "Display": "Optometry Telephone Encounter Note"
+  },
+  {
+    "Code": "84384-7",
+    "Display": "Obstetrics And Gynecology Outpatient Note"
+  },
+  {
+    "Code": "84386-2",
+    "Display": "Obstetrics And Gynecology Telephone Encounter Note"
+  },
+  {
+    "Code": "84389-6",
+    "Display": "Occupational Medicine Nurse Note"
+  },
+  {
+    "Code": "84390-4",
+    "Display": "Occupational Medicine Outpatient Note"
+  },
+  {
+    "Code": "84392-0",
+    "Display": "Occupational Medicine Telephone Encounter Note"
+  },
+  {
+    "Code": "84396-1",
+    "Display": "Occupational Therapy Patient's Home Note"
+  },
+  {
+    "Code": "84397-9",
+    "Display": "Occupational Therapy Hospital Note"
+  },
+  {
+    "Code": "84399-5",
+    "Display": "Occupational Therapy Long Term Care Facility Note"
+  },
+  {
+    "Code": "84400-1",
+    "Display": "Occupational Therapy Outpatient Note"
+  },
+  {
+    "Code": "84402-7",
+    "Display": "Occupational Therapy Telephone Encounter Note"
+  },
+  {
+    "Code": "84403-5",
+    "Display": "Multi-Specialty Program Case Manager Note"
+  },
+  {
+    "Code": "84404-3",
+    "Display": "Multi-Specialty Program Telephone Encounter Note"
+  },
+  {
+    "Code": "84407-6",
+    "Display": "Ophthalmology Hospital Note"
+  },
+  {
+    "Code": "84409-2",
+    "Display": "Ophthalmology Technician Note"
+  },
+  {
+    "Code": "84410-0",
+    "Display": "Ophthalmology Telephone Encounter Note"
+  },
+  {
+    "Code": "84411-8",
+    "Display": "Optometry Outpatient Note"
+  },
+  {
+    "Code": "84430-8",
+    "Display": "Occupational Therapy Interdisciplinary Note"
+  },
+  {
+    "Code": "84431-6",
+    "Display": "Optometry Technician Note"
+  },
+  {
+    "Code": "85157-6",
+    "Display": "Pharmacology Hospital Note"
+  },
+  {
+    "Code": "85161-8",
+    "Display": "Pharmacology Long Term Care Facility Note"
+  },
+  {
+    "Code": "85168-3",
+    "Display": "Pharmacology Patient's Home Note"
+  },
+  {
+    "Code": "85169-1",
+    "Display": "Pharmacology Team Note"
+  },
+  {
+    "Code": "85170-9",
+    "Display": "Pharmacology Technician Note"
+  },
+  {
+    "Code": "85172-5",
+    "Display": "Case Manager Custodial Care Facility Note"
+  },
+  {
+    "Code": "85183-2",
+    "Display": "Internal Medicine Custodial Care Facility Note"
+  },
+  {
+    "Code": "85218-6",
+    "Display": "Internal Medicine Attending Hospital Note"
+  },
+  {
+    "Code": "85220-2",
+    "Display": "Acupuncture Note"
+  },
+  {
+    "Code": "85221-0",
+    "Display": "Acupuncture Nurse Note"
+  },
+  {
+    "Code": "85224-4",
+    "Display": "Case Manager Long Term Care Facility Note"
+  },
+  {
+    "Code": "85225-1",
+    "Display": "Case Manager Outpatient Note"
+  },
+  {
+    "Code": "85227-7",
+    "Display": "Case Manager Telephone Encounter Note"
+  },
+  {
+    "Code": "85229-3",
+    "Display": "Clinical Nurse Specialist Note"
+  },
+  {
+    "Code": "85231-9",
+    "Display": "Tumor Board Note"
+  },
+  {
+    "Code": "85235-0",
+    "Display": "Internal Medicine Attending Intensive Care Unit Note"
+  },
+  {
+    "Code": "85241-8",
+    "Display": "Internal Medicine Intensive Care Unit Note"
+  },
+  {
+    "Code": "85247-5",
+    "Display": "Internal Medicine Long Term Care Facility Note"
+  },
+  {
+    "Code": "85248-3",
+    "Display": "Internal Medicine Nurse Practitioner Note"
+  },
+  {
+    "Code": "85249-1",
+    "Display": "Internal Medicine Nurse Note"
+  },
+  {
+    "Code": "85252-5",
+    "Display": "Internal Medicine Telephone Encounter Note"
+  },
+  {
+    "Code": "85256-6",
+    "Display": "Radiology Attending Note"
+  },
+  {
+    "Code": "85259-0",
+    "Display": "Radiology Nurse Note"
+  },
+  {
+    "Code": "85262-4",
+    "Display": "Radiology Technician Note"
+  },
+  {
+    "Code": "85263-2",
+    "Display": "Radiology Telephone Encounter Note"
+  },
+  {
+    "Code": "85266-5",
+    "Display": "Internal Medicine Interdisciplinary Note"
+  },
+  {
+    "Code": "85435-6",
+    "Display": "Palliative Care Note"
+  },
+  {
+    "Code": "85436-4",
+    "Display": "Cardiothoracic Surgery Note"
+  },
+  {
+    "Code": "85437-2",
+    "Display": "Family Medicine Note"
+  },
+  {
+    "Code": "85438-0",
+    "Display": "Neonatal Perinatal Medicine Note"
+  },
+  {
+    "Code": "85439-8",
+    "Display": "Maternal And Fetal Medicine Note"
+  },
+  {
+    "Code": "85443-0",
+    "Display": "Hematology Note"
+  },
+  {
+    "Code": "85444-8",
+    "Display": "Gynecologic Oncology Note"
+  },
+  {
+    "Code": "85445-5",
+    "Display": "Geriatric Medicine Note"
+  },
+  {
+    "Code": "85472-9",
+    "Display": "Obesity Medicine Telephone Encounter Note"
+  },
+  {
+    "Code": "85516-3",
+    "Display": "Bariatric Surgery Note"
+  },
+  {
+    "Code": "85521-3",
+    "Display": "Undersea And Hyperbaric Medicine Note"
+  },
+  {
+    "Code": "85587-4",
+    "Display": "Aerospace Medicine Note"
+  },
+  {
+    "Code": "85851-4",
+    "Display": "Cardiothoracic Surgery Interdisciplinary Note"
+  },
+  {
+    "Code": "85852-2",
+    "Display": "Cardiothoracic Surgery Nurse Note"
+  },
+  {
+    "Code": "85855-5",
+    "Display": "Womens Health Telephone Encounter Note"
+  },
+  {
+    "Code": "85858-9",
+    "Display": "Womens Health Outpatient Note"
+  },
+  {
+    "Code": "85861-3",
+    "Display": "Womens Health Nurse Outpatient Note"
+  },
+  {
+    "Code": "85862-1",
+    "Display": "Womens Health Nurse Note"
+  },
+  {
+    "Code": "85863-9",
+    "Display": "Teleimaging Note"
+  },
+  {
+    "Code": "85864-7",
+    "Display": "Sleep Medicine Note"
+  },
+  {
+    "Code": "85870-4",
+    "Display": "Womens Health Note"
+  },
+  {
+    "Code": "85874-6",
+    "Display": "Nurse Recovery Room Note"
+  },
+  {
+    "Code": "85876-1",
+    "Display": "Neuropsychology Note"
+  },
+  {
+    "Code": "85881-1",
+    "Display": "Ophthalmology Teleimaging Note"
+  },
+  {
+    "Code": "85883-7",
+    "Display": "Epilepsy Note"
+  },
+  {
+    "Code": "85888-6",
+    "Display": "Multi-Specialty Program Telehealth Note"
+  },
+  {
+    "Code": "85889-4",
+    "Display": "Cardiothoracic Surgery Telephone Encounter Note"
+  },
+  {
+    "Code": "85891-0",
+    "Display": "Cardiothoracic Surgery Fellow Note"
+  },
+  {
+    "Code": "85892-8",
+    "Display": "Womens Health Nurse Practitioner Note"
+  },
+  {
+    "Code": "85900-9",
+    "Display": "Cardiothoracic Surgery Resident Note"
+  },
+  {
+    "Code": "85901-7",
+    "Display": "Community Health Care Note"
+  },
+  {
+    "Code": "85902-5",
+    "Display": "Community Health Care Nurse Note"
+  },
+  {
+    "Code": "85903-3",
+    "Display": "Community Health Care Telephone Encounter Note"
+  },
+  {
+    "Code": "85937-1",
+    "Display": "Gynecology Note"
+  },
+  {
+    "Code": "86208-6",
+    "Display": "Cardiology Telehealth Note"
+  },
+  {
+    "Code": "86209-4",
+    "Display": "Community Health Care Case Manager Note"
+  },
+  {
+    "Code": "86211-0",
+    "Display": "Addiction Medicine Physician Note"
+  },
+  {
+    "Code": "86212-8",
+    "Display": "Addiction Medicine Attending Note"
+  },
+  {
+    "Code": "86452-0",
+    "Display": "Ethics Note"
+  },
+  {
+    "Code": "87238-2",
+    "Display": "Dialysis Note"
+  },
+  {
+    "Code": "87244-0",
+    "Display": "Addiction Medicine Telephone Encounter Note"
+  },
+  {
+    "Code": "87245-7",
+    "Display": "Addiction Medicine Custodial Care Facility Note"
+  },
+  {
+    "Code": "87246-5",
+    "Display": "Addiction Medicine Hospital Note"
+  },
+  {
+    "Code": "87249-9",
+    "Display": "Addiction Medicine Outpatient Note"
+  },
+  {
+    "Code": "87261-4",
+    "Display": "Addiction Medicine Case Manager Note"
+  },
+  {
+    "Code": "87262-2",
+    "Display": "Addiction Medicine Nurse Note"
+  },
+  {
+    "Code": "87263-0",
+    "Display": "Addiction Medicine Team Note"
+  },
+  {
+    "Code": "87264-8",
+    "Display": "Addiction Medicine Therapist Note"
+  },
+  {
+    "Code": "87266-3",
+    "Display": "Dialysis Nurse Note"
+  },
+  {
+    "Code": "87267-1",
+    "Display": "Dialysis Physician Note"
+  },
+  {
+    "Code": "87628-4",
+    "Display": "Brain Injury Note"
+  },
+  {
+    "Code": "88350-4",
+    "Display": "Polytrauma Case Manager Note"
+  },
+  {
+    "Code": "88354-6",
+    "Display": "Polytrauma Note"
+  },
+  {
+    "Code": "88355-3",
+    "Display": "Polytrauma Nurse Note"
+  },
+  {
+    "Code": "88356-1",
+    "Display": "Polytrauma Telephone Encounter Note"
+  },
+  {
+    "Code": "88642-4",
+    "Display": "Community Health Care Adult Day Care Center Note"
+  },
+  {
+    "Code": "88643-2",
+    "Display": "Community Health Care Nurse Adult Day Care Center Note"
+  },
+  {
+    "Code": "88646-5",
+    "Display": "Outpatient Hospital Note"
+  },
+  {
+    "Code": "89035-0",
+    "Display": "Sleep Medicine Physician Note"
+  },
+  {
+    "Code": "89036-8",
+    "Display": "Trauma Note"
+  },
+  {
+    "Code": "89241-4",
+    "Display": "Obstetrics Note"
+  },
+  {
+    "Code": "89441-0",
+    "Display": "Gynecology Resident Note"
+  },
+  {
+    "Code": "89450-1",
+    "Display": "Obstetrics Nurse Note"
+  },
+  {
+    "Code": "89451-9",
+    "Display": "Gynecology Nurse Note"
+  },
+  {
+    "Code": "89452-7",
+    "Display": "Obstetrics Nurse Practitioner Note"
+  },
+  {
+    "Code": "89453-5",
+    "Display": "Gynecology Nurse Practitioner Note"
+  },
+  {
+    "Code": "89454-3",
+    "Display": "Obstetrics Attending Note"
+  },
+  {
+    "Code": "89455-0",
+    "Display": "Gynecology Attending Note"
+  },
+  {
+    "Code": "89456-8",
+    "Display": "Obstetrics Resident Note"
+  },
+  {
+    "Code": "89458-4",
+    "Display": "Obstetrics Hospital Note"
+  },
+  {
+    "Code": "89459-2",
+    "Display": "Gynecology Hospital Note"
+  },
+  {
+    "Code": "89460-0",
+    "Display": "Obstetrics Outpatient Note"
+  },
+  {
+    "Code": "89461-8",
+    "Display": "Gynecology Outpatient Note"
+  },
+  {
+    "Code": "89462-6",
+    "Display": "Obstetrics Nurse Outpatient Note"
+  },
+  {
+    "Code": "89463-4",
+    "Display": "Gynecology Nurse Outpatient Note"
+  },
+  {
+    "Code": "89464-2",
+    "Display": "Obstetrics Telephone Encounter Note"
+  },
+  {
+    "Code": "89465-9",
+    "Display": "Gynecology Telephone Encounter Note"
+  },
+  {
+    "Code": "89552-4",
+    "Display": "Environmental Health Note"
+  },
+  {
+    "Code": "89797-5",
+    "Display": "Blood Banking And Transfusion Medicine Telephone Encounter Note"
+  },
+  {
+    "Code": "89800-7",
+    "Display": "Ethics Telephone Encounter Note"
+  },
+  {
+    "Code": "89804-9",
+    "Display": "Hematology Telephone Encounter Note"
+  },
+  {
+    "Code": "89806-4",
+    "Display": "Interventional Radiology Telephone Encounter Note"
+  },
+  {
+    "Code": "89808-0",
+    "Display": "Maternal And Fetal Medicine Telephone Encounter Note"
+  },
+  {
+    "Code": "89809-8",
+    "Display": "Clinical Neurophysiology Telephone Encounter Note"
+  },
+  {
+    "Code": "89818-9",
+    "Display": "Wound Care Management Telephone Encounter Note"
+  },
+  {
+    "Code": "89824-7",
+    "Display": "Cardiac Surgery Telephone Encounter Note"
+  },
+  {
+    "Code": "89877-5",
+    "Display": "Clinical Genetics Outpatient Note"
+  },
+  {
+    "Code": "89878-3",
+    "Display": "Adolescent Medicine Outpatient Note"
+  },
+  {
+    "Code": "89879-1",
+    "Display": "Pediatrics Outpatient Note"
+  },
+  {
+    "Code": "89880-9",
+    "Display": "Neonatal Perinatal Medicine Outpatient Note"
+  },
+  {
+    "Code": "89881-7",
+    "Display": "Developmental-Behavioral Pediatrics Outpatient Note"
+  },
+  {
+    "Code": "89882-5",
+    "Display": "Sports Medicine Outpatient Note"
+  },
+  {
+    "Code": "89883-3",
+    "Display": "Emergency Medicine Telehealth Note"
+  },
+  {
+    "Code": "89884-1",
+    "Display": "Hematology+Medical Oncology Telehealth Note"
+  },
+  {
+    "Code": "89885-8",
+    "Display": "Pain Medicine Telehealth Note"
+  },
+  {
+    "Code": "89886-6",
+    "Display": "Palliative Care Telehealth Note"
+  },
+  {
+    "Code": "89887-4",
+    "Display": "Adolescent Medicine Telehealth Note"
+  },
+  {
+    "Code": "89888-2",
+    "Display": "Pediatrics Telehealth Note"
+  },
+  {
+    "Code": "89889-0",
+    "Display": "Physical Medicine And Rehab Telehealth Note"
+  },
+  {
+    "Code": "89890-8",
+    "Display": "Diabetology Telehealth Note"
+  },
+  {
+    "Code": "89891-6",
+    "Display": "Endocrinology Telehealth Note"
+  },
+  {
+    "Code": "89892-4",
+    "Display": "Infectious Disease Telehealth Note"
+  },
+  {
+    "Code": "89893-2",
+    "Display": "Clinical Genetics Telehealth Note"
+  },
+  {
+    "Code": "89894-0",
+    "Display": "Neonatal Perinatal Medicine Telehealth Note"
+  },
+  {
+    "Code": "89895-7",
+    "Display": "Allergy And Immunology Telehealth Note"
+  },
+  {
+    "Code": "89896-5",
+    "Display": "Developmental-Behavioral Pediatrics Telehealth Note"
+  },
+  {
+    "Code": "89897-3",
+    "Display": "Gynecology Telehealth Note"
+  },
+  {
+    "Code": "89898-1",
+    "Display": "Nephrology Telehealth Note"
+  },
+  {
+    "Code": "89899-9",
+    "Display": "Orthopedic Surgery Telehealth Note"
+  },
+  {
+    "Code": "89900-5",
+    "Display": "Rheumatology Telehealth Note"
+  },
+  {
+    "Code": "89901-3",
+    "Display": "Sports Medicine Telehealth Note"
+  },
+  {
+    "Code": "89902-1",
+    "Display": "Otolaryngology Telehealth Note"
+  },
+  {
+    "Code": "89903-9",
+    "Display": "Urology Telehealth Note"
+  },
+  {
+    "Code": "89926-0",
+    "Display": "Physical Medicine And Rehab Adult Day Care Center Note"
+  },
+  {
+    "Code": "90005-0",
+    "Display": "Pharmacogenomics Outpatient Note"
+  },
+  {
+    "Code": "90008-4",
+    "Display": "Pharmacogenomics Telehealth Note"
+  },
+  {
+    "Code": "90015-9",
+    "Display": "Clinical Pathology Telephone Encounter Note"
+  },
+  {
+    "Code": "90342-7",
+    "Display": "Nuclear Medicine Attending Note"
+  },
+  {
+    "Code": "90344-3",
+    "Display": "Nuclear Medicine Note"
+  },
+  {
+    "Code": "90345-0",
+    "Display": "Nuclear Medicine Nurse Note"
+  },
+  {
+    "Code": "90348-4",
+    "Display": "Nuclear Medicine Resident Note"
+  },
+  {
+    "Code": "90349-2",
+    "Display": "Nuclear Medicine Telephone Encounter Note"
+  },
+  {
+    "Code": "90371-6",
+    "Display": "Clinical Pathology Note"
+  },
+  {
+    "Code": "90708-9",
+    "Display": "Trauma Outpatient Note"
+  },
+  {
+    "Code": "90711-3",
+    "Display": "Sleep Medicine Outpatient Note"
+  },
+  {
+    "Code": "90713-9",
+    "Display": "Sleep Medicine Telehealth Note"
+  },
+  {
+    "Code": "90716-2",
+    "Display": "Psychiatry Telehealth Note"
+  },
+  {
+    "Code": "90751-9",
+    "Display": "Social Worker Adult Day Care Center Note"
+  },
+  {
+    "Code": "90752-7",
+    "Display": "Community Health Care Social Worker Note"
+  },
+  {
+    "Code": "90753-5",
+    "Display": "Multi-Specialty Program Social Worker Note"
+  },
+  {
+    "Code": "90754-3",
+    "Display": "Mental Health Social Worker Note"
+  },
+  {
+    "Code": "90755-0",
+    "Display": "Palliative Care Social Worker Long Term Care Facility Note"
+  },
+  {
+    "Code": "90756-8",
+    "Display": "Palliative Care Social Worker Note"
+  },
+  {
+    "Code": "90757-6",
+    "Display": "Physical Medicine And Rehabilitation Social Worker Hospital Note"
+  },
+  {
+    "Code": "90758-4",
+    "Display": "Physical Medicine And Rehabilitation Social Worker Outpatient Hospital Note"
+  },
+  {
+    "Code": "90759-2",
+    "Display": "Primary Care Social Worker Note"
+  },
+  {
+    "Code": "90760-0",
+    "Display": "Addiction Medicine Social Worker Note"
+  },
+  {
+    "Code": "90773-3",
+    "Display": "Heart Failure Telephone Encounter Note"
+  },
+  {
+    "Code": "90786-5",
+    "Display": "Dentistry Attending Note"
+  },
+  {
+    "Code": "90787-3",
+    "Display": "Dentistry Resident Note"
+  },
+  {
+    "Code": "90788-1",
+    "Display": "Optometry Resident Note"
+  },
+  {
+    "Code": "90789-9",
+    "Display": "Psychology Intern Note"
+  },
+  {
+    "Code": "90790-7",
+    "Display": "Podiatry Resident Note"
+  },
+  {
+    "Code": "90791-5",
+    "Display": "Physical Therapy Resident Note"
+  },
+  {
+    "Code": "90793-1",
+    "Display": "Podiatry Attending Note"
+  },
+  {
+    "Code": "90878-0",
+    "Display": "Thromboembolism Telephone Encounter Note"
+  },
+  {
+    "Code": "91531-4",
+    "Display": "Social Worker Telehealth Note"
+  },
+  {
+    "Code": "91985-2",
+    "Display": "Integrative Medicine Outpatient Note"
+  },
+  {
+    "Code": "92909-1",
+    "Display": "Aerodigestive Medicine Outpatient Note"
+  },
+  {
+    "Code": "92911-7",
+    "Display": "Eating Disorders Outpatient Note"
+  },
+  {
+    "Code": "92913-3",
+    "Display": "Immunology Telehealth Note"
+  },
+  {
+    "Code": "92914-1",
+    "Display": "Immunology Outpatient Note"
+  },
+  {
+    "Code": "93036-2",
+    "Display": "Cleft And Craniofacial Outpatient Note"
+  },
+  {
+    "Code": "93896-9",
+    "Display": "Gynecologic Oncology Telephone Encounter Note"
+  },
+  {
+    "Code": "93898-5",
+    "Display": "Family Medicine Telephone Encounter Note"
+  },
+  {
+    "Code": "93901-7",
+    "Display": "Healthcare Navigator Telephone Encounter Note"
+  },
+  {
+    "Code": "93954-6",
+    "Display": "Wound"
+  },
+  {
+    "Code": "94243-3",
+    "Display": "Healthcare Navigator Note"
+  },
+  {
+    "Code": "94246-6",
+    "Display": "Wound"
+  },
+  {
+    "Code": "94321-7",
+    "Display": "Medical Aid In Dying Team Note"
+  },
+  {
+    "Code": "94322-5",
+    "Display": "Medical Aid In Dying Telephone Encounter Note"
+  },
+  {
+    "Code": "94594-9",
+    "Display": "Neurological Surgery Telehealth Note"
+  },
+  {
+    "Code": "94724-2",
+    "Display": "Pulmonary Telehealth Note"
+  },
+  {
+    "Code": "94725-9",
+    "Display": "Aerodigestive Medicine Telehealth Note"
+  },
+  {
+    "Code": "94726-7",
+    "Display": "Cleft And Craniofacial Telehealth Note"
+  },
+  {
+    "Code": "94770-5",
+    "Display": "Wound"
+  },
+  {
+    "Code": "94771-3",
+    "Display": "Anesthesiology Telehealth Note"
+  },
+  {
+    "Code": "94772-1",
+    "Display": "Blood Banking And Transfusion Medicine Telehealth Note"
+  },
+  {
+    "Code": "94773-9",
+    "Display": "Burn Management Telehealth Note"
+  },
+  {
+    "Code": "94774-7",
+    "Display": "Cardiac Surgery Telehealth Note"
+  },
+  {
+    "Code": "94775-4",
+    "Display": "Critical Care Medicine Telehealth Note"
+  },
+  {
+    "Code": "94776-2",
+    "Display": "Dentistry Telehealth Note"
+  },
+  {
+    "Code": "94777-0",
+    "Display": "Dermatology Telehealth Note"
+  },
+  {
+    "Code": "94778-8",
+    "Display": "Ethics Telehealth Note"
+  },
+  {
+    "Code": "94779-6",
+    "Display": "Family Medicine Telehealth Note"
+  },
+  {
+    "Code": "94780-4",
+    "Display": "Gastroenterology Telehealth Note"
+  },
+  {
+    "Code": "94781-2",
+    "Display": "General Medicine Telehealth Note"
+  },
+  {
+    "Code": "94782-0",
+    "Display": "Surgery Telehealth Note"
+  },
+  {
+    "Code": "94783-8",
+    "Display": "Geriatric Medicine Telehealth Note"
+  },
+  {
+    "Code": "94784-6",
+    "Display": "Gynecologic Oncology Telehealth Note"
+  },
+  {
+    "Code": "94785-3",
+    "Display": "Healthcare Navigator Telehealth Note"
+  },
+  {
+    "Code": "94786-1",
+    "Display": "Hematology Telehealth Note"
+  },
+  {
+    "Code": "94787-9",
+    "Display": "Interventional Radiology Telehealth Note"
+  },
+  {
+    "Code": "94788-7",
+    "Display": "Clinical Pathology Telehealth Note"
+  },
+  {
+    "Code": "94789-5",
+    "Display": "Maternal And Fetal Medicine Telehealth Note"
+  },
+  {
+    "Code": "94790-3",
+    "Display": "Nutrition And Dietetics Telehealth Note"
+  },
+  {
+    "Code": "94791-1",
+    "Display": "Occupational Therapy Telehealth Note"
+  },
+  {
+    "Code": "94792-9",
+    "Display": "Oncology Telehealth Note"
+  },
+  {
+    "Code": "94793-7",
+    "Display": "Wound Care Management Telehealth Note"
+  },
+  {
+    "Code": "94794-5",
+    "Display": "Ophthalmology Telehealth Note"
+  },
+  {
+    "Code": "94795-2",
+    "Display": "Pastoral Care Telehealth Note"
+  },
+  {
+    "Code": "94796-0",
+    "Display": "Pharmacology Telehealth Note"
+  },
+  {
+    "Code": "94797-8",
+    "Display": "Plastic Surgery Telehealth Note"
+  },
+  {
+    "Code": "94798-6",
+    "Display": "Psychology Telehealth Note"
+  },
+  {
+    "Code": "94799-4",
+    "Display": "Radiation Oncology Telehealth Note"
+  },
+  {
+    "Code": "94800-0",
+    "Display": "Rapid Response Team Telehealth Note"
+  },
+  {
+    "Code": "94801-8",
+    "Display": "Recreational Therapy Telehealth Note"
+  },
+  {
+    "Code": "94802-6",
+    "Display": "Respiratory Therapy Telehealth Note"
+  },
+  {
+    "Code": "94803-4",
+    "Display": "Speech-Language Pathology Telehealth Note"
+  },
+  {
+    "Code": "94804-2",
+    "Display": "Trauma Telehealth Note"
+  },
+  {
+    "Code": "94805-9",
+    "Display": "Vascular Surgery Telehealth Note"
+  },
+  {
+    "Code": "95407-3",
+    "Display": "Cardiopulmonary Telehealth Note"
+  },
+  {
+    "Code": "95408-1",
+    "Display": "Cardiopulmonary Outpatient Note"
+  },
+  {
+    "Code": "95520-3",
+    "Display": "Integrative Medicine Telehealth Note"
+  },
+  {
+    "Code": "95592-2",
+    "Display": "Cardiac Surgery Outpatient Note"
+  },
+  {
+    "Code": "95803-3",
+    "Display": "Breastfeeding Note"
+  },
+  {
+    "Code": "95804-1",
+    "Display": "Breastfeeding Telehealth Note"
+  },
+  {
+    "Code": "96332-2",
+    "Display": "Case Manager Telehealth Note"
+  },
+  {
+    "Code": "96336-3",
+    "Display": "Environmental Health Outpatient Note"
+  },
+  {
+    "Code": "96337-1",
+    "Display": "Hematology Outpatient Note"
+  },
+  {
+    "Code": "96340-5",
+    "Display": "Integrative Medicine Note"
+  },
+  {
+    "Code": "96341-3",
+    "Display": "Obesity Medicine Outpatient Note"
+  },
+  {
+    "Code": "96343-9",
+    "Display": "Oncology Outpatient Note"
+  },
+  {
+    "Code": "96348-8",
+    "Display": "Radiology Outpatient Note"
+  },
+  {
+    "Code": "96352-0",
+    "Display": "Wound Care Management Outpatient Note"
+  },
+  {
+    "Code": "97569-8",
+    "Display": "Eating Disorders Telehealth Note"
+  },
+  {
+    "Code": "97711-6",
+    "Display": "Heart Failure Outpatient Note"
+  },
+  {
+    "Code": "99479-8",
+    "Display": "Physical Therapy Telehealth Note"
+  }
+]

@@ -1,0 +1,186 @@
+[
+  {
+    "Code": "11369-6",
+    "Display": "History Of Immunization"
+  },
+  {
+    "Code": "11485-0",
+    "Display": "Anesthesia Records"
+  },
+  {
+    "Code": "11486-8",
+    "Display": "Chemotherapy Records"
+  },
+  {
+    "Code": "11488-4",
+    "Display": "Consult Note"
+  },
+  {
+    "Code": "11506-3",
+    "Display": "Provider-Unspecified Progress Note"
+  },
+  {
+    "Code": "11543-6",
+    "Display": "Nursery Records"
+  },
+  {
+    "Code": "15508-5",
+    "Display": "Labor And Delivery Records"
+  },
+  {
+    "Code": "18726-0",
+    "Display": "Radiology Studies (Set)"
+  },
+  {
+    "Code": "18761-7",
+    "Display": "Provider-Unspecified Transfer Summary"
+  },
+  {
+    "Code": "18842-5",
+    "Display": "Discharge Summary"
+  },
+  {
+    "Code": "26436-6",
+    "Display": "Laboratory Studies (Set)"
+  },
+  {
+    "Code": "26441-6",
+    "Display": "Cardiology Studies (Set)"
+  },
+  {
+    "Code": "26442-4",
+    "Display": "Obstetrical Studies (Set)"
+  },
+  {
+    "Code": "27895-2",
+    "Display": "Gastroenterology Endoscopy Studies (Set)"
+  },
+  {
+    "Code": "27896-0",
+    "Display": "Pulmonary Studies (Set)"
+  },
+  {
+    "Code": "27897-8",
+    "Display": "Neuromuscular Electrophysiology Studies (Set)"
+  },
+  {
+    "Code": "27898-6",
+    "Display": "Pathology Studies (Set)"
+  },
+  {
+    "Code": "28570-0",
+    "Display": "Provider-Unspecified Procedure Note"
+  },
+  {
+    "Code": "28619-5",
+    "Display": "Ophthalmology/Optometry Studies (Set)"
+  },
+  {
+    "Code": "28634-4",
+    "Display": "Miscellaneous Studies (Set)"
+  },
+  {
+    "Code": "29749-9",
+    "Display": "Dialysis Records"
+  },
+  {
+    "Code": "29750-7",
+    "Display": "Neonatal Intensive Care Records"
+  },
+  {
+    "Code": "29751-5",
+    "Display": "Critical Care Records"
+  },
+  {
+    "Code": "29752-3",
+    "Display": "Perioperative Records"
+  },
+  {
+    "Code": "34109-9",
+    "Display": "Evaluation And Management Note"
+  },
+  {
+    "Code": "34117-2",
+    "Display": "Provider-Unspecified"
+  },
+  {
+    "Code": "34121-4",
+    "Display": "Interventional Procedure Note"
+  },
+  {
+    "Code": "34122-2",
+    "Display": "Pathology Procedure Note"
+  },
+  {
+    "Code": "34133-9",
+    "Display": "Summarization Of Episode Note"
+  },
+  {
+    "Code": "34140-4",
+    "Display": "Transfer Of Care Referral Note"
+  },
+  {
+    "Code": "34748-4",
+    "Display": "Telephone Encounter Note"
+  },
+  {
+    "Code": "34775-7",
+    "Display": "General Surgery Pre-Operative Evaluation And Management Note"
+  },
+  {
+    "Code": "47039-3",
+    "Display": "Inpatient Admission History And Physical Note"
+  },
+  {
+    "Code": "47042-7",
+    "Display": "Counseling Note"
+  },
+  {
+    "Code": "47045-0",
+    "Display": "Study Report Document"
+  },
+  {
+    "Code": "47046-8",
+    "Display": "Summary Of Death"
+  },
+  {
+    "Code": "47049-2",
+    "Display": "Non-Patient Communication"
+  },
+  {
+    "Code": "57017-6",
+    "Display": "Privacy Policy Organization Document"
+  },
+  {
+    "Code": "57016-8",
+    "Display": "Privacy Policy Acknowledgment Document"
+  },
+  {
+    "Code": "56445-0",
+    "Display": "Medication Summary Document"
+  },
+  {
+    "Code": "53576-5",
+    "Display": "Personal Health Monitoring Report Document"
+  },
+  {
+    "Code": "56447-6",
+    "Display": "Plan Of Care Note"
+  },
+  {
+    "Code": "18748-4",
+    "Display": "Diagnostic Imaging Study"
+  },
+  {
+    "Code": "11504-8",
+    "Display": "Surgical Operation Note "
+  },
+  {
+    "Code": "57133-1",
+    "Display": "Referral Note"
+  },
+  {
+    "Code": "57833-6",
+    "Display": "Prescription For Medication"
+  }
+]

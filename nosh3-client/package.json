@@ -1,0 +1,100 @@
+{
+  "name": "nosh3-client",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@quasar/extras": "^1.0.0",
+    "@quasar/quasar-ui-qcalendar": "^4.0.0-beta.15",
+    "@vee-validate/rules": "^4.6.2",
+    "all-object-keys": "^2.2.0",
+    "ascvdcalc": "^1.0.5",
+    "axios": "^0.27.2",
+    "case": "^1.6.3",
+    "changedpi": "^1.0.4",
+    "comdb": "^6.0.0-beta",
+    "convert": "^4.6.0",
+    "core-js": "^3.8.3",
+    "filter-object": "^3.0.0",
+    "fuse.js": "^6.6.2",
+    "highcharts": "^10.2.0",
+    "highcharts-vue": "^1.4.0",
+    "jose": "^4.9.0",
+    "jspdf": "^2.5.1",
+    "jsqry": "^1.2.4",
+    "magic-sdk": "^10.0.0",
+    "moment": "^2.29.4",
+    "node-polyfill-webpack-plugin": "^2.0.1",
+    "object-path": "^0.11.8",
+    "papaparse": "^5.3.2",
+    "pdfjs-dist": "^2.14.305",
+    "pinia": "^2.0.17",
+    "pluralize": "^8.0.0",
+    "pouchdb-browser": "^7.3.0",
+    "pouchdb-find": "^7.3.0",
+    "quasar": "^2.0.0",
+    "raw-loader": "^4.0.2",
+    "register-service-worker": "^1.7.2",
+    "thenby": "^1.3.4",
+    "tui-image-editor": "^3.15.3",
+    "umlsjs": "^1.2.1",
+    "uuid": "^8.3.2",
+    "v-offline": "^3.1.0",
+    "vee-validate": "^4.6.2",
+    "vue": "^3.2.13",
+    "vue-breakpoints": "^1.1.0",
+    "vue-qrious": "^3.1.0",
+    "vue-router": "^4.0.3",
+    "vue3-print-nb": "^0.1.4",
+    "worker-loader": "^3.0.8"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@babel/plugin-proposal-private-methods": "^7.18.6",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-pwa": "~5.0.0",
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-vue": "^8.0.3",
+    "eslint-plugin-vuejs-accessibility": "^1.1.0",
+    "lint-staged": "^11.1.2",
+    "sass": "1.32.12",
+    "sass-loader": "^12.0.0",
+    "vue-cli-plugin-quasar": "~5.0.1"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential"
+    ],
+    "parserOptions": {
+      "parser": "@babel/eslint-parser"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,vue}": "vue-cli-service lint"
+  },
+  "author": "Michael Shihjay Chen",
+  "license": "AGPL-3.0-or-later"
+}

@@ -1,0 +1,4582 @@
+[
+  {
+    "a": {
+      "@href": "/snomed/705034009--assessment-of-lower-limb-using-lymphedema-quality-life-tool.html",
+      "@title": "SNOMED code for Assessment of lower limb using lymphedema quality of life tool",
+      "small": "705034009"
+    },
+    "#text": "Assessment of lower limb using lymphedema quality of life tool"
+  },
+  {
+    "a": {
+      "@href": "/snomed/705033003--assessment-of-upper-limb-using-lymphedema-quality-life-tool.html",
+      "@title": "SNOMED code for Assessment of upper limb using lymphedema quality of life tool",
+      "small": "705033003"
+    },
+    "#text": "Assessment of upper limb using lymphedema quality of life tool"
+  },
+  {
+    "a": {
+      "@href": "/snomed/717274000--assessment-using-12-item-general-health-questionnaire.html",
+      "@title": "SNOMED code for Assessment using 12 item General Health Questionnaire",
+      "small": "717274000"
+    },
+    "#text": "Assessment using 12 item General Health Questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718378001--assessment-using-20-item-general-health-questionnaire.html",
+      "@title": "SNOMED code for Assessment using 20 item General Health Questionnaire",
+      "small": "718378001"
+    },
+    "#text": "Assessment using 20 item General Health Questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715679003--assessment-using-26-item-eating-attitudes-test.html",
+      "@title": "SNOMED code for Assessment using 26 item Eating Attitudes Test",
+      "small": "715679003"
+    },
+    "#text": "Assessment using 26 item Eating Attitudes Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718320005--assessment-using-28-item-general-health-questionnaire.html",
+      "@title": "SNOMED code for Assessment using 28-item General Health Questionnaire",
+      "small": "718320005"
+    },
+    "#text": "Assessment using 28-item General Health Questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/717273006--assessment-using-30-item-general-health-questionnaire.html",
+      "@title": "SNOMED code for Assessment using 30 item General Health Questionnaire",
+      "small": "717273006"
+    },
+    "#text": "Assessment using 30 item General Health Questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/714471004--assessment-using-aachen-aphasia-test.html",
+      "@title": "SNOMED code for Assessment using Aachen Aphasia Test",
+      "small": "714471004"
+    },
+    "#text": "Assessment using Aachen Aphasia Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/770637008--assessment-using-abbey-pain-scale.html",
+      "@title": "SNOMED code for Assessment using Abbey Pain Scale",
+      "small": "770637008"
+    },
+    "#text": "Assessment using Abbey Pain Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/457991000124100--assessment-using-abcd2-score-for-transient-ischemic-attack.html",
+      "@title": "SNOMED code for Assessment using ABCD2 Score for transient ischemic attack",
+      "small": "457991000124100"
+    },
+    "#text": "Assessment using ABCD2 Score for transient ischemic attack"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718332009--assessment-using-acceptance-of-illness-scale.html",
+      "@title": "SNOMED code for Assessment using Acceptance of Illness Scale",
+      "small": "718332009"
+    },
+    "#text": "Assessment using Acceptance of Illness Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/725812000--assessment-using-acs-activity-card-sort.html",
+      "@title": "SNOMED code for Assessment using ACS (Activity Card Sort)",
+      "small": "725812000"
+    },
+    "#text": "Assessment using ACS (Activity Card Sort)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/450745001--assessment-using-action-for-dysphasic-adults-comprehension-battery.html",
+      "@title": "SNOMED code for Assessment using action for dysphasic adults comprehension battery",
+      "small": "450745001"
+    },
+    "#text": "Assessment using action for dysphasic adults comprehension battery"
+  },
+  {
+    "a": {
+      "@href": "/snomed/457881000124105--assessment-using-action-research-arm-test.html",
+      "@title": "SNOMED code for Assessment using action research arm test",
+      "small": "457881000124105"
+    },
+    "#text": "Assessment using action research arm test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/443227006--assessment-using-activities-specific-balance-confidence-scale.html",
+      "@title": "SNOMED code for Assessment using activities-specific balance confidence scale",
+      "small": "443227006"
+    },
+    "#text": "Assessment using activities-specific balance confidence scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/774199000--assessment-using-adam-androgen-deficiency-in-the-aging-male-questionnaire.html",
+      "@title": "SNOMED code for Assessment using ADAM (Androgen Deficiency in the Aging Male) questionnaire",
+      "small": "774199000"
+    },
+    "#text": "Assessment using ADAM (Androgen Deficiency in the Aging Male) questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/473303003--assessment-using-addenbrookes-cognitive-examination-revised.html",
+      "@title": "SNOMED code for Assessment using Addenbrooke's cognitive examination revised",
+      "small": "473303003"
+    },
+    "#text": "Assessment using Addenbrooke's cognitive examination revised"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445662007--assessment-using-addiction-research-foundation-clinical-institute-withdrawal-for-alcohol.html",
+      "@title": "SNOMED code for Assessment using Addiction Research Foundation Clinical Institute Withdrawal Assessment for Alcohol",
+      "small": "445662007"
+    },
+    "#text": "Assessment using Addiction Research Foundation Clinical Institute Withdrawal Assessment for Alcohol"
+  },
+  {
+    "a": {
+      "@href": "/snomed/774200002--assessment-using-additional-treatment-serous-discharge-erythema-purulent-exudate-separation-of-deep-tissue-isolation-bacteria-duration-inpatient-stay-scoring-method.html",
+      "@title": "SNOMED code for Assessment using Additional treatment, Serous discharge, Erythema, Purulent exudate, Separation of deep tissue, Isolation of bacteria, duration of inpatient Stay scoring method",
+      "small": "774200002"
+    },
+    "#text": "Assessment using Additional treatment, Serous discharge, Erythema, Purulent exudate, Separation of deep tissue, Isolation of bacteria, duration of inpatient Stay scoring method"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446967005--assessment-using-adolescentadult-sensory-profile.html",
+      "@title": "SNOMED code for Assessment using adolescent/adult sensory profile",
+      "small": "446967005"
+    },
+    "#text": "Assessment using adolescent/adult sensory profile"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446961006--assessment-using-adult-comorbidity-evaluation-27.html",
+      "@title": "SNOMED code for Assessment using adult comorbidity evaluation-27",
+      "small": "446961006"
+    },
+    "#text": "Assessment using adult comorbidity evaluation-27"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445627002--assessment-using-adult-early-warning-scoring-system.html",
+      "@title": "SNOMED code for Assessment using adult early warning scoring system",
+      "small": "445627002"
+    },
+    "#text": "Assessment using adult early warning scoring system"
+  },
+  {
+    "a": {
+      "@href": "/snomed/774197003--assessment-using-affect-balance-scale.html",
+      "@title": "SNOMED code for Assessment using Affect Balance Scale",
+      "small": "774197003"
+    },
+    "#text": "Assessment using Affect Balance Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/774087005--assessment-using-age-blood-pressure-clinical-features-duration-diabetes-2-score.html",
+      "@title": "SNOMED code for Assessment using Age, Blood pressure, Clinical features, Duration, Diabetes 2 score",
+      "small": "774087005"
+    },
+    "#text": "Assessment using Age, Blood pressure, Clinical features, Duration, Diabetes 2 score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446789002--assessment-using-ages-and-stages-questionnaire-second-edition.html",
+      "@title": "SNOMED code for Assessment using ages and stages questionnaire second edition",
+      "small": "446789002"
+    },
+    "#text": "Assessment using ages and stages questionnaire second edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/448616000--assessment-using-ages-and-stages-questionnaires-third-edition.html",
+      "@title": "SNOMED code for Assessment using ages and stages questionnaires third edition",
+      "small": "448616000"
+    },
+    "#text": "Assessment using ages and stages questionnaires third edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/781146004--assessment-using-aids-acquired-immunodeficiency-syndrome-risk-behavior-knowledge-test.html",
+      "@title": "SNOMED code for Assessment using AIDS (Acquired Immunodeficiency Syndrome) Risk Behavior Knowledge Test",
+      "small": "781146004"
+    },
+    "#text": "Assessment using AIDS (Acquired Immunodeficiency Syndrome) Risk Behavior Knowledge Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/781139008--assessment-using-aims2-arthritis-impact-measurement-scales-2.html",
+      "@title": "SNOMED code for Assessment using AIMS2 (Arthritis Impact Measurement Scales 2)",
+      "small": "781139008"
+    },
+    "#text": "Assessment using AIMS2 (Arthritis Impact Measurement Scales 2)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/774091000--assessment-using-alcohol-dependence-scale.html",
+      "@title": "SNOMED code for Assessment using Alcohol Dependence Scale",
+      "small": "774091000"
+    },
+    "#text": "Assessment using Alcohol Dependence Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/450760003--assessment-using-alcohol-use-disorders-identification-test.html",
+      "@title": "SNOMED code for Assessment using alcohol use disorders identification test",
+      "small": "450760003"
+    },
+    "#text": "Assessment using alcohol use disorders identification test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/774090004--assessment-using-alcohol-use-disorders-identification-test-for-primary-care.html",
+      "@title": "SNOMED code for Assessment using Alcohol Use Disorders Identification Test for Primary Care",
+      "small": "774090004"
+    },
+    "#text": "Assessment using Alcohol Use Disorders Identification Test for Primary Care"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445628007--assessment-using-alcohol-withdrawal-scale.html",
+      "@title": "SNOMED code for Assessment using alcohol withdrawal scale",
+      "small": "445628007"
+    },
+    "#text": "Assessment using alcohol withdrawal scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/714359006--assessment-using-alzheimers-disease-scale.html",
+      "@title": "SNOMED code for Assessment using Alzheimer's Disease Assessment Scale",
+      "small": "714359006"
+    },
+    "#text": "Assessment using Alzheimer's Disease Assessment Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715326003--assessment-using-american-association-on-mental-retardation-adaptive-behavior-scale.html",
+      "@title": "SNOMED code for Assessment using American Association on Mental Retardation Adaptive Behavior Scale",
+      "small": "715326003"
+    },
+    "#text": "Assessment using American Association on Mental Retardation Adaptive Behavior Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/774088000--assessment-using-american-society-of-anesthesiologists-physical-status-classification-system.html",
+      "@title": "SNOMED code for Assessment using American Society of Anesthesiologists Physical Status Classification System",
+      "small": "774088000"
+    },
+    "#text": "Assessment using American Society of Anesthesiologists Physical Status Classification System"
+  },
+  {
+    "a": {
+      "@href": "/snomed/457971000124101--assessment-using-american-spinal-injury-association-impairment-scale.html",
+      "@title": "SNOMED code for Assessment using American Spinal Injury Association impairment scale",
+      "small": "457971000124101"
+    },
+    "#text": "Assessment using American Spinal Injury Association impairment scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718645000--assessment-using-amyotrophic-lateral-sclerosis-functional-rating-scale-revised.html",
+      "@title": "SNOMED code for Assessment using Amyotrophic Lateral Sclerosis Functional Rating Scale Revised",
+      "small": "718645000"
+    },
+    "#text": "Assessment using Amyotrophic Lateral Sclerosis Functional Rating Scale Revised"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716849001--assessment-using-anelt-amsterdam-nijmegen-everyday-language-test.html",
+      "@title": "SNOMED code for Assessment using ANELT (Amsterdam-Nijmegen Everyday Language Test)",
+      "small": "716849001"
+    },
+    "#text": "Assessment using ANELT (Amsterdam-Nijmegen Everyday Language Test)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715321008--assessment-using-anomalous-sentences-repetition-test.html",
+      "@title": "SNOMED code for Assessment using Anomalous Sentences Repetition Test",
+      "small": "715321008"
+    },
+    "#text": "Assessment using Anomalous Sentences Repetition Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445814003--assessment-using-anorexia-nervosa-stages-of-change-questionnaire.html",
+      "@title": "SNOMED code for Assessment using anorexia nervosa stages of change questionnaire",
+      "small": "445814003"
+    },
+    "#text": "Assessment using anorexia nervosa stages of change questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763242009--assessment-using-anticholinergic-cognitive-burden-scale.html",
+      "@title": "SNOMED code for Assessment using Anticholinergic Cognitive Burden Scale",
+      "small": "763242009"
+    },
+    "#text": "Assessment using Anticholinergic Cognitive Burden Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/781141009--assessment-using-apache-ii-acute-physiology-and-chronic-health-evaluation.html",
+      "@title": "SNOMED code for Assessment using APACHE II (Acute Physiology and Chronic Health Evaluation II)",
+      "small": "781141009"
+    },
+    "#text": "Assessment using APACHE II (Acute Physiology and Chronic Health Evaluation II)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/781143007--assessment-using-apache-iii-acute-physiology-and-chronic-health-evaluation.html",
+      "@title": "SNOMED code for Assessment using APACHE III (Acute Physiology and Chronic Health Evaluation III)",
+      "small": "781143007"
+    },
+    "#text": "Assessment using APACHE III (Acute Physiology and Chronic Health Evaluation III)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715396009--assessment-using-aphasia-screening-test.html",
+      "@title": "SNOMED code for Assessment using Aphasia Screening Test",
+      "small": "715396009"
+    },
+    "#text": "Assessment using Aphasia Screening Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/774097001--assessment-using-apnea-hypopnea-index.html",
+      "@title": "SNOMED code for Assessment using Apnea Hypopnea Index",
+      "small": "774097001"
+    },
+    "#text": "Assessment using Apnea Hypopnea Index"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716211005--assessment-using-apraxia-battery-for-adults.html",
+      "@title": "SNOMED code for Assessment using Apraxia Battery for Adults",
+      "small": "716211005"
+    },
+    "#text": "Assessment using Apraxia Battery for Adults"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716875002--assessment-using-apt-attention-process-training-test.html",
+      "@title": "SNOMED code for Assessment using APT (Attention Process Training) Test",
+      "small": "716875002"
+    },
+    "#text": "Assessment using APT (Attention Process Training) Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716727004--assessment-using-arizona-battery-for-communication-disorders-of-dementia.html",
+      "@title": "SNOMED code for Assessment using Arizona Battery for Communication Disorders of Dementia",
+      "small": "716727004"
+    },
+    "#text": "Assessment using Arizona Battery for Communication Disorders of Dementia"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445809002--assessment-using-arthritis-hand-function-test.html",
+      "@title": "SNOMED code for Assessment using arthritis hand function test",
+      "small": "445809002"
+    },
+    "#text": "Assessment using arthritis hand function test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446766005--assessment-using-arthritis-impact-measurement-scale.html",
+      "@title": "SNOMED code for Assessment using arthritis impact measurement scale",
+      "small": "446766005"
+    },
+    "#text": "Assessment using arthritis impact measurement scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445815002--assessment-using-of-communication-and-interaction-skill-version-40.html",
+      "@title": "SNOMED code for Assessment using assessment of communication and interaction skill version 4.0",
+      "small": "445815002"
+    },
+    "#text": "Assessment using assessment of communication and interaction skill version 4.0"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718725002--assessment-using-of-comprehension-and-expression-6-11.html",
+      "@title": "SNOMED code for Assessment using Assessment of Comprehension and Expression 6-11",
+      "small": "718725002"
+    },
+    "#text": "Assessment using Assessment of Comprehension and Expression 6-11"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716776005--assessment-using-of-intelligibility-dysarthric-speech.html",
+      "@title": "SNOMED code for Assessment using Assessment of Intelligibility of Dysarthric Speech",
+      "small": "716776005"
+    },
+    "#text": "Assessment using Assessment of Intelligibility of Dysarthric Speech"
+  },
+  {
+    "a": {
+      "@href": "/snomed/725817006--assessment-using-of-occupational-functioning-modified-interest-checklist.html",
+      "@title": "SNOMED code for Assessment using Assessment of Occupational Functioning Modified Interest Checklist",
+      "small": "725817006"
+    },
+    "#text": "Assessment using Assessment of Occupational Functioning Modified Interest Checklist"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718323007--assessment-using-protocol-of-pragmatic-linguistic-skills.html",
+      "@title": "SNOMED code for Assessment using Assessment Protocol of Pragmatic Linguistic Skills",
+      "small": "718323007"
+    },
+    "#text": "Assessment using Assessment Protocol of Pragmatic Linguistic Skills"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763078008--assessment-using-asthma-control-questionnaire.html",
+      "@title": "SNOMED code for Assessment using Asthma Control Questionnaire",
+      "small": "763078008"
+    },
+    "#text": "Assessment using Asthma Control Questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/717065006--assessment-using-aston-index.html",
+      "@title": "SNOMED code for Assessment using Aston Index",
+      "small": "717065006"
+    },
+    "#text": "Assessment using Aston Index"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715814000--assessment-using-attentional-capacity-test.html",
+      "@title": "SNOMED code for Assessment using Attentional Capacity Test",
+      "small": "715814000"
+    },
+    "#text": "Assessment using Attentional Capacity Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/717324004--assessment-using-attributional-style-questionnaire.html",
+      "@title": "SNOMED code for Assessment using Attributional Style Questionnaire",
+      "small": "717324004"
+    },
+    "#text": "Assessment using Attributional Style Questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763302001--assessment-using-audit-c-alcohol-use-disorders-identification-test-consumption.html",
+      "@title": "SNOMED code for Assessment using AUDIT-C (Alcohol Use Disorders Identification Test - Consumption)",
+      "small": "763302001"
+    },
+    "#text": "Assessment using AUDIT-C (Alcohol Use Disorders Identification Test - Consumption)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/717275004--assessment-using-auditory-comprehension-test-for-sentences.html",
+      "@title": "SNOMED code for Assessment using Auditory Comprehension Test for Sentences",
+      "small": "717275004"
+    },
+    "#text": "Assessment using Auditory Comprehension Test for Sentences"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716370001--assessment-using-augmentative-communication-profile.html",
+      "@title": "SNOMED code for Assessment using Augmentative Communication Profile",
+      "small": "716370001"
+    },
+    "#text": "Assessment using Augmentative Communication Profile"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715910005--assessment-using-bafpe-bay-area-functional-performance-evaluation.html",
+      "@title": "SNOMED code for Assessment using BaFPE (Bay Area Functional Performance Evaluation)",
+      "small": "715910005"
+    },
+    "#text": "Assessment using BaFPE (Bay Area Functional Performance Evaluation)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715890005--assessment-using-bangor-dyslexia-test.html",
+      "@title": "SNOMED code for Assessment using Bangor Dyslexia Test",
+      "small": "715890005"
+    },
+    "#text": "Assessment using Bangor Dyslexia Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716844006--assessment-using-bankson-language-test.html",
+      "@title": "SNOMED code for Assessment using Bankson Language Test",
+      "small": "716844006"
+    },
+    "#text": "Assessment using Bankson Language Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718992004--assessment-using-bas-3-british-ability-scales-third-edition.html",
+      "@title": "SNOMED code for Assessment using BAS-3 (British Ability Scales Third Edition)",
+      "small": "718992004"
+    },
+    "#text": "Assessment using BAS-3 (British Ability Scales Third Edition)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763232007--assessment-using-basmi-bath-ankylosing-spondylitis-metrology-index.html",
+      "@title": "SNOMED code for Assessment using BASMI (Bath Ankylosing Spondylitis Metrology Index)",
+      "small": "763232007"
+    },
+    "#text": "Assessment using BASMI (Bath Ankylosing Spondylitis Metrology Index)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715911009--assessment-using-bayley-scales-of-infant-development.html",
+      "@title": "SNOMED code for Assessment using Bayley Scales of Infant Development",
+      "small": "715911009"
+    },
+    "#text": "Assessment using Bayley Scales of Infant Development"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715809004--assessment-using-bbcs-bracken-basic-concept-scale.html",
+      "@title": "SNOMED code for Assessment using BBCS (Bracken Basic Concept Scale)",
+      "small": "715809004"
+    },
+    "#text": "Assessment using BBCS (Bracken Basic Concept Scale)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716598004--assessment-using-beck-anxiety-inventory.html",
+      "@title": "SNOMED code for Assessment using Beck Anxiety Inventory",
+      "small": "716598004"
+    },
+    "#text": "Assessment using Beck Anxiety Inventory"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446765009--assessment-using-beck-depression-inventory.html",
+      "@title": "SNOMED code for Assessment using Beck depression inventory",
+      "small": "446765009"
+    },
+    "#text": "Assessment using Beck depression inventory"
+  },
+  {
+    "a": {
+      "@href": "/snomed/717317000--assessment-using-beck-hopelessness-scale.html",
+      "@title": "SNOMED code for Assessment using Beck Hopelessness Scale",
+      "small": "717317000"
+    },
+    "#text": "Assessment using Beck Hopelessness Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/454331000124109--assessment-using-beck-scale-for-suicide-ideation.html",
+      "@title": "SNOMED code for Assessment using Beck Scale for Suicide Ideation",
+      "small": "454331000124109"
+    },
+    "#text": "Assessment using Beck Scale for Suicide Ideation"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719145006--assessment-using-bedside-evaluation-screening-test-second-edition.html",
+      "@title": "SNOMED code for Assessment using Bedside Evaluation Screening Test Second Edition",
+      "small": "719145006"
+    },
+    "#text": "Assessment using Bedside Evaluation Screening Test Second Edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715304004--assessment-using-behavior-battery.html",
+      "@title": "SNOMED code for Assessment using Behavior Assessment Battery",
+      "small": "715304004"
+    },
+    "#text": "Assessment using Behavior Assessment Battery"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715320009--assessment-using-behavior-problem-checklist.html",
+      "@title": "SNOMED code for Assessment using Behavior Problem Checklist",
+      "small": "715320009"
+    },
+    "#text": "Assessment using Behavior Problem Checklist"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445813009--assessment-using-behavioral-of-the-dysexecutive-syndrome.html",
+      "@title": "SNOMED code for Assessment using behavioral assessment of the dysexecutive syndrome",
+      "small": "445813009"
+    },
+    "#text": "Assessment using behavioral assessment of the dysexecutive syndrome"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716852009--assessment-using-behavioral-inattention-test.html",
+      "@title": "SNOMED code for Assessment using Behavioral Inattention Test",
+      "small": "716852009"
+    },
+    "#text": "Assessment using Behavioral Inattention Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718294006--assessment-using-behavioral-screening-questionnaire.html",
+      "@title": "SNOMED code for Assessment using Behavioral Screening Questionnaire",
+      "small": "718294006"
+    },
+    "#text": "Assessment using Behavioral Screening Questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/450358002--assessment-using-benign-prostatic-hyperplasia-impact-index.html",
+      "@title": "SNOMED code for Assessment using benign prostatic hyperplasia impact index",
+      "small": "450358002"
+    },
+    "#text": "Assessment using benign prostatic hyperplasia impact index"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445782003--assessment-using-binary-individualized-outcome-measure.html",
+      "@title": "SNOMED code for Assessment using binary individualized outcome measure",
+      "small": "445782003"
+    },
+    "#text": "Assessment using binary individualized outcome measure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716216000--assessment-using-birmingham-object-recognition-battery.html",
+      "@title": "SNOMED code for Assessment using Birmingham Object Recognition Battery",
+      "small": "716216000"
+    },
+    "#text": "Assessment using Birmingham Object Recognition Battery"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718516005--assessment-using-blades-bristol-language-scale.html",
+      "@title": "SNOMED code for Assessment using BLADES (Bristol Language Assessment Scale)",
+      "small": "718516005"
+    },
+    "#text": "Assessment using BLADES (Bristol Language Assessment Scale)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716167006--assessment-using-boehm-3-preschool.html",
+      "@title": "SNOMED code for Assessment using Boehm 3 Preschool",
+      "small": "716167006"
+    },
+    "#text": "Assessment using Boehm 3 Preschool"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716137000--assessment-using-boone-voice-program-for-children.html",
+      "@title": "SNOMED code for Assessment using Boone Voice Program for Children",
+      "small": "716137000"
+    },
+    "#text": "Assessment using Boone Voice Program for Children"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715330000--assessment-using-boston-diagnostic-aphasia-examination.html",
+      "@title": "SNOMED code for Assessment using Boston Diagnostic Aphasia Examination",
+      "small": "715330000"
+    },
+    "#text": "Assessment using Boston Diagnostic Aphasia Examination"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716141001--assessment-using-boston-naming-test.html",
+      "@title": "SNOMED code for Assessment using Boston Naming Test",
+      "small": "716141001"
+    },
+    "#text": "Assessment using Boston Naming Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716603007--assessment-using-bracken-basic-concept-scale-third-edition-receptive.html",
+      "@title": "SNOMED code for Assessment using Bracken Basic Concept Scale - Third Edition: Receptive",
+      "small": "716603007"
+    },
+    "#text": "Assessment using Bracken Basic Concept Scale - Third Edition: Receptive"
+  },
+  {
+    "a": {
+      "@href": "/snomed/717006009--assessment-using-bracken-basic-concept-scale-expressive.html",
+      "@title": "SNOMED code for Assessment using Bracken Basic Concept Scale Expressive",
+      "small": "717006009"
+    },
+    "#text": "Assessment using Bracken Basic Concept Scale Expressive"
+  },
+  {
+    "a": {
+      "@href": "/snomed/443512007--assessment-using-braden-pressure-ulcer-risk-scale.html",
+      "@title": "SNOMED code for Assessment using Braden pressure ulcer risk scale",
+      "small": "443512007"
+    },
+    "#text": "Assessment using Braden pressure ulcer risk scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/717310003--assessment-using-brief-schedule-depression-cards.html",
+      "@title": "SNOMED code for Assessment using Brief Assessment Schedule Depression Cards",
+      "small": "717310003"
+    },
+    "#text": "Assessment using Brief Assessment Schedule Depression Cards"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445806009--assessment-using-brief-pain-coping-inventory.html",
+      "@title": "SNOMED code for Assessment using brief pain coping inventory",
+      "small": "445806009"
+    },
+    "#text": "Assessment using brief pain coping inventory"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446790006--assessment-using-brief-pain-inventory.html",
+      "@title": "SNOMED code for Assessment using brief pain inventory",
+      "small": "446790006"
+    },
+    "#text": "Assessment using brief pain inventory"
+  },
+  {
+    "a": {
+      "@href": "/snomed/714343006--assessment-using-brief-parental-self-efficacy-scale.html",
+      "@title": "SNOMED code for Assessment using Brief Parental Self-efficacy Scale",
+      "small": "714343006"
+    },
+    "#text": "Assessment using Brief Parental Self-efficacy Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445649008--assessment-using-brighton-pediatric-early-warning-score.html",
+      "@title": "SNOMED code for Assessment using Brighton pediatric early warning score",
+      "small": "445649008"
+    },
+    "#text": "Assessment using Brighton pediatric early warning score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445807000--assessment-using-bristol-activities-of-daily-living-scale.html",
+      "@title": "SNOMED code for Assessment using Bristol activities of daily living scale",
+      "small": "445807000"
+    },
+    "#text": "Assessment using Bristol activities of daily living scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763082005--assessment-using-bristol-foot-score.html",
+      "@title": "SNOMED code for Assessment using Bristol Foot Score",
+      "small": "763082005"
+    },
+    "#text": "Assessment using Bristol Foot Score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/443510004--assessment-using-bristol-stool-form-scale.html",
+      "@title": "SNOMED code for Assessment using Bristol stool form scale",
+      "small": "443510004"
+    },
+    "#text": "Assessment using Bristol stool form scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715913007--assessment-using-bryant-and-bradley-rhyming-task.html",
+      "@title": "SNOMED code for Assessment using Bryant and Bradley Rhyming Task",
+      "small": "715913007"
+    },
+    "#text": "Assessment using Bryant and Bradley Rhyming Task"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715893007--assessment-using-buffalo-iii-voice-profile.html",
+      "@title": "SNOMED code for Assessment using Buffalo III Voice Profile",
+      "small": "715893007"
+    },
+    "#text": "Assessment using Buffalo III Voice Profile"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446969008--assessment-using-bulimic-investigatory-test-edinburgh.html",
+      "@title": "SNOMED code for Assessment using bulimic investigatory test, Edinburgh",
+      "small": "446969008"
+    },
+    "#text": "Assessment using bulimic investigatory test, Edinburgh"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718916000--assessment-using-caarms-comprehensive-of-at-risk-mental-states.html",
+      "@title": "SNOMED code for Assessment using CAARMS (Comprehensive Assessment of At-Risk Mental States)",
+      "small": "718916000"
+    },
+    "#text": "Assessment using CAARMS (Comprehensive Assessment of At-Risk Mental States)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763303006--assessment-using-cage-cutting-down-annoyance-by-criticism-guilty-feeling-and-eye-openers-questionnaire.html",
+      "@title": "SNOMED code for Assessment using CAGE (Cutting down, Annoyance by criticism, Guilty feeling and Eye-openers) Questionnaire",
+      "small": "763303006"
+    },
+    "#text": "Assessment using CAGE (Cutting down, Annoyance by criticism, Guilty feeling and Eye-openers) Questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719147003--assessment-using-california-verbal-learning-test-childrens-version.html",
+      "@title": "SNOMED code for Assessment using California Verbal Learning Test Children's Version",
+      "small": "719147003"
+    },
+    "#text": "Assessment using California Verbal Learning Test Children's Version"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719148008--assessment-using-california-verbal-learning-test-second-edition.html",
+      "@title": "SNOMED code for Assessment using California Verbal Learning Test Second Edition",
+      "small": "719148008"
+    },
+    "#text": "Assessment using California Verbal Learning Test Second Edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716547005--assessment-using-callier-azusa-scale.html",
+      "@title": "SNOMED code for Assessment using Callier-Azusa Scale",
+      "small": "716547005"
+    },
+    "#text": "Assessment using Callier-Azusa Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715195002--assessment-using-cambridge-apraxia-battery.html",
+      "@title": "SNOMED code for Assessment using Cambridge Apraxia Battery",
+      "small": "715195002"
+    },
+    "#text": "Assessment using Cambridge Apraxia Battery"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763229009--assessment-using-canadian-cardiovascular-society-grading-of-angina-pectoris.html",
+      "@title": "SNOMED code for Assessment using Canadian Cardiovascular Society grading of angina pectoris",
+      "small": "763229009"
+    },
+    "#text": "Assessment using Canadian Cardiovascular Society grading of angina pectoris"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445781005--assessment-using-canadian-occupational-performance-measure.html",
+      "@title": "SNOMED code for Assessment using Canadian occupational performance measure",
+      "small": "445781005"
+    },
+    "#text": "Assessment using Canadian occupational performance measure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715766001--assessment-using-cape-v-consensus-auditory-perceptual-evaluation-of-voice.html",
+      "@title": "SNOMED code for Assessment using CAPE-V (Consensus Auditory-Perceptual Evaluation of Voice)",
+      "small": "715766001"
+    },
+    "#text": "Assessment using CAPE-V (Consensus Auditory-Perceptual Evaluation of Voice)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763072009--assessment-using-cardiovascular-limitations-and-symptoms-profile.html",
+      "@title": "SNOMED code for Assessment using Cardiovascular Limitations and Symptoms Profile",
+      "small": "763072009"
+    },
+    "#text": "Assessment using Cardiovascular Limitations and Symptoms Profile"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446792003--assessment-using-career-interest-test.html",
+      "@title": "SNOMED code for Assessment using career interest test",
+      "small": "446792003"
+    },
+    "#text": "Assessment using career interest test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445640007--assessment-using-carers-of-older-people-in-europe-index.html",
+      "@title": "SNOMED code for Assessment using carers of older people in Europe index",
+      "small": "445640007"
+    },
+    "#text": "Assessment using carers of older people in Europe index"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716850001--assessment-using-carrow-elicited-language-inventory.html",
+      "@title": "SNOMED code for Assessment using Carrow Elicited Language Inventory",
+      "small": "716850001"
+    },
+    "#text": "Assessment using Carrow Elicited Language Inventory"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718372000--assessment-using-cdr-clinical-dementia-rating.html",
+      "@title": "SNOMED code for Assessment using CDR (Clinical Dementia Rating)",
+      "small": "718372000"
+    },
+    "#text": "Assessment using CDR (Clinical Dementia Rating)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719083005--assessment-using-celf-5-clinical-evaluation-of-language-fundamentals-fifth-edition.html",
+      "@title": "SNOMED code for Assessment using CELF-5 (Clinical Evaluation of Language Fundamentals Fifth Edition)",
+      "small": "719083005"
+    },
+    "#text": "Assessment using CELF-5 (Clinical Evaluation of Language Fundamentals Fifth Edition)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719295003--assessment-using-centor-criteria.html",
+      "@title": "SNOMED code for Assessment using Centor criteria",
+      "small": "719295003"
+    },
+    "#text": "Assessment using Centor criteria"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763007002--assessment-using-chads2-congestive-heart-failure-hypertension-age-75-years-or-older-diabetes-mellitus-and-previous-stroke-transient-ischemic-attack-score.html",
+      "@title": "SNOMED code for Assessment using CHADS2 (congestive heart failure, hypertension, age 75 years or older, diabetes mellitus and previous stroke or transient ischemic attack) score",
+      "small": "763007002"
+    },
+    "#text": "Assessment using CHADS2 (congestive heart failure, hypertension, age 75 years or older, diabetes mellitus and previous stroke or transient ischemic attack) score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445783008--assessment-using-checklist-for-autism-in-toddlers.html",
+      "@title": "SNOMED code for Assessment using checklist for autism in toddlers",
+      "small": "445783008"
+    },
+    "#text": "Assessment using checklist for autism in toddlers"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716140000--assessment-using-checklist-of-communication-competencies.html",
+      "@title": "SNOMED code for Assessment using Checklist of Communication Competencies",
+      "small": "716140000"
+    },
+    "#text": "Assessment using Checklist of Communication Competencies"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445816001--assessment-using-chessington-occupational-therapy-neurological-battery.html",
+      "@title": "SNOMED code for Assessment using Chessington occupational therapy neurological assessment battery",
+      "small": "445816001"
+    },
+    "#text": "Assessment using Chessington occupational therapy neurological assessment battery"
+  },
+  {
+    "a": {
+      "@href": "/snomed/725830007--assessment-using-child-and-adolescent-scale-of-participation.html",
+      "@title": "SNOMED code for Assessment using Child and Adolescent Scale of Participation",
+      "small": "725830007"
+    },
+    "#text": "Assessment using Child and Adolescent Scale of Participation"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445817005--assessment-using-child-occupational-self-version-21.html",
+      "@title": "SNOMED code for Assessment using child occupational self assessment version 2.1",
+      "small": "445817005"
+    },
+    "#text": "Assessment using child occupational self assessment version 2.1"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445818000--assessment-using-childhood-health-questionnaire.html",
+      "@title": "SNOMED code for Assessment using childhood health assessment questionnaire",
+      "small": "445818000"
+    },
+    "#text": "Assessment using childhood health assessment questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/725821004--assessment-using-childrens-of-participation-and-enjoyment.html",
+      "@title": "SNOMED code for Assessment using Children's Assessment of Participation and Enjoyment",
+      "small": "725821004"
+    },
+    "#text": "Assessment using Children's Assessment of Participation and Enjoyment"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718724003--assessment-using-childrens-communication-checklist-second-edition.html",
+      "@title": "SNOMED code for Assessment using Children's Communication Checklist Second Edition",
+      "small": "718724003"
+    },
+    "#text": "Assessment using Children's Communication Checklist Second Edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718370008--assessment-using-childrens-health-locus-of-control-scale.html",
+      "@title": "SNOMED code for Assessment using Children's Health Locus of Control Scale",
+      "small": "718370008"
+    },
+    "#text": "Assessment using Children's Health Locus of Control Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719336003--assessment-using-childrens-test-of-nonword-repetition.html",
+      "@title": "SNOMED code for Assessment using Children's Test of Nonword Repetition",
+      "small": "719336003"
+    },
+    "#text": "Assessment using Children's Test of Nonword Repetition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763104007--assessment-using-christo-inventory-for-substance-misuse-services.html",
+      "@title": "SNOMED code for Assessment using Christo Inventory for Substance-misuse Services",
+      "small": "763104007"
+    },
+    "#text": "Assessment using Christo Inventory for Substance-misuse Services"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445811006--assessment-using-chronic-obstructive-pulmonary-disease-test.html",
+      "@title": "SNOMED code for Assessment using chronic obstructive pulmonary disease assessment test",
+      "small": "445811006"
+    },
+    "#text": "Assessment using chronic obstructive pulmonary disease assessment test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/448459000--assessment-using-chronic-respiratory-disease-questionnaire.html",
+      "@title": "SNOMED code for Assessment using chronic respiratory disease questionnaire",
+      "small": "448459000"
+    },
+    "#text": "Assessment using chronic respiratory disease questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445810007--assessment-using-clifton-procedures-for-the-elderly.html",
+      "@title": "SNOMED code for Assessment using Clifton assessment procedures for the elderly",
+      "small": "445810007"
+    },
+    "#text": "Assessment using Clifton assessment procedures for the elderly"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445602009--assessment-using-clinical-chronic-obstructive-pulmonary-disease-questionnaire.html",
+      "@title": "SNOMED code for Assessment using clinical chronic obstructive pulmonary disease questionnaire",
+      "small": "445602009"
+    },
+    "#text": "Assessment using clinical chronic obstructive pulmonary disease questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718582003--assessment-using-clinical-institute-withdrawal-for-benzodiazepines-scale.html",
+      "@title": "SNOMED code for Assessment using Clinical Institute Withdrawal Assessment for Benzodiazepines scale",
+      "small": "718582003"
+    },
+    "#text": "Assessment using Clinical Institute Withdrawal Assessment for Benzodiazepines scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763700006--assessment-using-clinical-opiate-withdrawal-scale.html",
+      "@title": "SNOMED code for Assessment using Clinical Opiate Withdrawal Scale",
+      "small": "763700006"
+    },
+    "#text": "Assessment using Clinical Opiate Withdrawal Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/714350005--assessment-using-clinical-outcomes-in-routine-evaluation-outcome-measure.html",
+      "@title": "SNOMED code for Assessment using Clinical Outcomes in Routine Evaluation Outcome Measure",
+      "small": "714350005"
+    },
+    "#text": "Assessment using Clinical Outcomes in Routine Evaluation Outcome Measure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446072003--assessment-using-clinical-test-of-opposition-and-counter-thumb.html",
+      "@title": "SNOMED code for Assessment using clinical test of opposition and counter-opposition of thumb",
+      "small": "446072003"
+    },
+    "#text": "Assessment using clinical test of opposition and counter-opposition of thumb"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445808005--assessment-using-cognitive-of-minnesota.html",
+      "@title": "SNOMED code for Assessment using cognitive assessment of Minnesota",
+      "small": "445808005"
+    },
+    "#text": "Assessment using cognitive assessment of Minnesota"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716176004--assessment-using-communication-abilities-of-daily-living-second-edition.html",
+      "@title": "SNOMED code for Assessment using Communication Abilities of Daily Living Second Edition",
+      "small": "716176004"
+    },
+    "span": {
+      "@style": "color:red;",
+      "#text": "removed: 2017-01-31"
+    },
+    "#text": "Assessment using Communication Abilities of Daily Living Second Edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719978000--assessment-using-communication-activities-of-daily-living-second-edition.html",
+      "@title": "SNOMED code for Assessment using Communication Activities of Daily Living Second Edition",
+      "small": "719978000"
+    },
+    "#text": "Assessment using Communication Activities of Daily Living Second Edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718322002--assessment-using-communication-profile.html",
+      "@title": "SNOMED code for Assessment using Communication Assessment Profile",
+      "small": "718322002"
+    },
+    "#text": "Assessment using Communication Assessment Profile"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445819008--assessment-using-communication-skills-questionnaire.html",
+      "@title": "SNOMED code for Assessment using communication skills questionnaire",
+      "small": "445819008"
+    },
+    "#text": "Assessment using communication skills questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445821003--assessment-using-comprehensive-occupational-therapy-evaluation-scale.html",
+      "@title": "SNOMED code for Assessment using comprehensive occupational therapy evaluation scale",
+      "small": "445821003"
+    },
+    "#text": "Assessment using comprehensive occupational therapy evaluation scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715811008--assessment-using-computerized-of-response-bias.html",
+      "@title": "SNOMED code for Assessment using Computerized Assessment of Response Bias",
+      "small": "715811008"
+    },
+    "#text": "Assessment using Computerized Assessment of Response Bias"
+  },
+  {
+    "a": {
+      "@href": "/snomed/708018005--assessment-using-congestive-heart-failure-hypertension-age-2-diabetes-mellitus-stroke-vascular-disease-sex-category-score.html",
+      "@title": "SNOMED code for Assessment using congestive heart failure, hypertension, age 2, diabetes mellitus, stroke 2 - vascular disease, age, sex category score",
+      "small": "708018005"
+    },
+    "#text": "Assessment using congestive heart failure, hypertension, age 2, diabetes mellitus, stroke 2 - vascular disease, age, sex category score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/450751006--assessment-using-conversation-analysis-profile-for-people-with-cognitive-impairment.html",
+      "@title": "SNOMED code for Assessment using conversation analysis profile for people with cognitive impairment",
+      "small": "450751006"
+    },
+    "#text": "Assessment using conversation analysis profile for people with cognitive impairment"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718319004--assessment-using-cormack-and-lehane-system.html",
+      "@title": "SNOMED code for Assessment using Cormack and Lehane System",
+      "small": "718319004"
+    },
+    "#text": "Assessment using Cormack and Lehane System"
+  },
+  {
+    "a": {
+      "@href": "/snomed/736710001--assessment-using-cpax-chelsea-critical-care-physical-tool.html",
+      "@title": "SNOMED code for Assessment using CPAx (Chelsea Critical Care Physical Assessment tool)",
+      "small": "736710001"
+    },
+    "#text": "Assessment using CPAx (Chelsea Critical Care Physical Assessment tool)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/781133009--assessment-using-cpt-cognitive-performance-test.html",
+      "@title": "SNOMED code for Assessment using CPT (Cognitive Performance Test)",
+      "small": "781133009"
+    },
+    "#text": "Assessment using CPT (Cognitive Performance Test)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718709007--assessment-using-crichton-vocabulary-scale.html",
+      "@title": "SNOMED code for Assessment using Crichton Vocabulary Scale",
+      "small": "718709007"
+    },
+    "#text": "Assessment using Crichton Vocabulary Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763228001--assessment-using-csha-canadian-study-of-health-and-aging-clinical-frailty-scale.html",
+      "@title": "SNOMED code for Assessment using CSHA (Canadian Study of Health and Aging) Clinical Frailty Scale",
+      "small": "763228001"
+    },
+    "#text": "Assessment using CSHA (Canadian Study of Health and Aging) Clinical Frailty Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718327008--assessment-using-ctt-consonant-trigrams-test.html",
+      "@title": "SNOMED code for Assessment using CTT (Consonant Trigrams Test)",
+      "small": "718327008"
+    },
+    "#text": "Assessment using CTT (Consonant Trigrams Test)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445812004--assessment-using-dallas-pain-questionnaire.html",
+      "@title": "SNOMED code for Assessment using Dallas pain questionnaire",
+      "small": "445812004"
+    },
+    "#text": "Assessment using Dallas pain questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/459451000124105--assessment-using-dementia-severity-rating-scale.html",
+      "@title": "SNOMED code for Assessment using dementia severity rating scale",
+      "small": "459451000124105"
+    },
+    "#text": "Assessment using dementia severity rating scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/714282005--assessment-using-demtect-scale.html",
+      "@title": "SNOMED code for Assessment using DemTect scale",
+      "small": "714282005"
+    },
+    "#text": "Assessment using DemTect scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716285009--assessment-using-denver-development-screening-test.html",
+      "@title": "SNOMED code for Assessment using Denver Development Screening Test",
+      "small": "716285009"
+    },
+    "#text": "Assessment using Denver Development Screening Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719307003--assessment-using-denver-developmental-screening-test-second-edition.html",
+      "@title": "SNOMED code for Assessment using Denver Developmental Screening Test Second Edition",
+      "small": "719307003"
+    },
+    "#text": "Assessment using Denver Developmental Screening Test Second Edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763239003--assessment-using-depa-depth-extent-phase-and-associated-etiology-score.html",
+      "@title": "SNOMED code for Assessment using DEPA (Depth, Extent, Phase and Associated etiology) Score",
+      "small": "763239003"
+    },
+    "#text": "Assessment using DEPA (Depth, Extent, Phase and Associated etiology) Score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/725833009--assessment-using-detailed-of-speed-handwriting.html",
+      "@title": "SNOMED code for Assessment using Detailed Assessment of Speed of Handwriting",
+      "small": "725833009"
+    },
+    "#text": "Assessment using Detailed Assessment of Speed of Handwriting"
+  },
+  {
+    "a": {
+      "@href": "/snomed/717271008--assessment-using-developmental-dimensional-and-diagnostic-interview.html",
+      "@title": "SNOMED code for Assessment using Developmental, Dimensional and Diagnostic Interview",
+      "small": "717271008"
+    },
+    "#text": "Assessment using Developmental, Dimensional and Diagnostic Interview"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718726001--assessment-using-diagnostic-interview-for-children-and-adolescents.html",
+      "@title": "SNOMED code for Assessment using Diagnostic Interview for Children and Adolescents",
+      "small": "718726001"
+    },
+    "#text": "Assessment using Diagnostic Interview for Children and Adolescents"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718651005--assessment-using-dialog-patient-rated-outcome-measure.html",
+      "@title": "SNOMED code for Assessment using DIALOG patient rated outcome measure",
+      "small": "718651005"
+    },
+    "#text": "Assessment using DIALOG patient rated outcome measure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445641006--assessment-using-disabilities-of-the-arm-shoulder-and-hand-outcome-measure.html",
+      "@title": "SNOMED code for Assessment using disabilities of the arm shoulder and hand outcome measure",
+      "small": "445641006"
+    },
+    "#text": "Assessment using disabilities of the arm shoulder and hand outcome measure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716801007--assessment-using-discourse-abilities-profile.html",
+      "@title": "SNOMED code for Assessment using Discourse Abilities Profile",
+      "small": "716801007"
+    },
+    "#text": "Assessment using Discourse Abilities Profile"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719338002--assessment-using-dizziness-handicap-inventory.html",
+      "@title": "SNOMED code for Assessment using Dizziness Handicap Inventory",
+      "small": "719338002"
+    },
+    "#text": "Assessment using Dizziness Handicap Inventory"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763120002--assessment-using-dlqi-dermatology-life-quality-index.html",
+      "@title": "SNOMED code for Assessment using DLQI (Dermatology Life Quality Index)",
+      "small": "763120002"
+    },
+    "#text": "Assessment using DLQI (Dermatology Life Quality Index)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/700465009--assessment-using-dolotest.html",
+      "@title": "SNOMED code for Assessment using DoloTest",
+      "small": "700465009"
+    },
+    "#text": "Assessment using DoloTest"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716831001--assessment-using-drs-disability-rating-scale.html",
+      "@title": "SNOMED code for Assessment using DRS (Disability Rating Scale)",
+      "small": "716831001"
+    },
+    "#text": "Assessment using DRS (Disability Rating Scale)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/765148004--assessment-using-dtsqs-diabetes-treatment-satisfaction-questionnaire-status-version.html",
+      "@title": "SNOMED code for Assessment using DTSQs (Diabetes Treatment Satisfaction Questionnaire status version)",
+      "small": "765148004"
+    },
+    "#text": "Assessment using DTSQs (Diabetes Treatment Satisfaction Questionnaire status version)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/458311000124105--assessment-using-duke-activity-status-index.html",
+      "@title": "SNOMED code for Assessment using Duke activity status index",
+      "small": "458311000124105"
+    },
+    "#text": "Assessment using Duke activity status index"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718560005--assessment-using-dyadic-of-naturalistic-caregiver-child-experiences.html",
+      "@title": "SNOMED code for Assessment using Dyadic Assessment of Naturalistic Caregiver child Experiences",
+      "small": "718560005"
+    },
+    "#text": "Assessment using Dyadic Assessment of Naturalistic Caregiver child Experiences"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445642004--assessment-using-dynamic-gait-index.html",
+      "@title": "SNOMED code for Assessment using dynamic gait index",
+      "small": "445642004"
+    },
+    "#text": "Assessment using dynamic gait index"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445823000--assessment-using-eating-attitudes-test.html",
+      "@title": "SNOMED code for Assessment using eating attitudes test",
+      "small": "445823000"
+    },
+    "#text": "Assessment using eating attitudes test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445820002--assessment-using-eating-disorder-examination.html",
+      "@title": "SNOMED code for Assessment using eating disorder examination",
+      "small": "445820002"
+    },
+    "#text": "Assessment using eating disorder examination"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445824006--assessment-using-eating-disorder-examination-questionnaire.html",
+      "@title": "SNOMED code for Assessment using eating disorder examination questionnaire",
+      "small": "445824006"
+    },
+    "#text": "Assessment using eating disorder examination questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445825007--assessment-using-eating-disorder-inventory.html",
+      "@title": "SNOMED code for Assessment using eating disorder inventory",
+      "small": "445825007"
+    },
+    "#text": "Assessment using eating disorder inventory"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716726008--assessment-using-edinburgh-articulation-test.html",
+      "@title": "SNOMED code for Assessment using Edinburgh Articulation Test",
+      "small": "716726008"
+    },
+    "#text": "Assessment using Edinburgh Articulation Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/717318005--assessment-using-edinburgh-functional-communication-profile.html",
+      "@title": "SNOMED code for Assessment using Edinburgh Functional Communication Profile",
+      "small": "717318005"
+    },
+    "#text": "Assessment using Edinburgh Functional Communication Profile"
+  },
+  {
+    "a": {
+      "@href": "/snomed/450319007--assessment-using-edinburgh-postnatal-depression-scale.html",
+      "@title": "SNOMED code for Assessment using Edinburgh postnatal depression scale",
+      "small": "450319007"
+    },
+    "#text": "Assessment using Edinburgh postnatal depression scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719342004--assessment-using-elderly-system.html",
+      "@title": "SNOMED code for Assessment using Elderly Assessment System",
+      "small": "719342004"
+    },
+    "#text": "Assessment using Elderly Assessment System"
+  },
+  {
+    "a": {
+      "@href": "/snomed/713012003--assessment-using-emergency-severity-index.html",
+      "@title": "SNOMED code for Assessment using Emergency Severity Index",
+      "small": "713012003"
+    },
+    "#text": "Assessment using Emergency Severity Index"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763693006--assessment-using-ems-elderly-mobility-scale.html",
+      "@title": "SNOMED code for Assessment using EMS (Elderly Mobility Scale)",
+      "small": "763693006"
+    },
+    "#text": "Assessment using EMS (Elderly Mobility Scale)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/770632002--assessment-using-eq-5d-y-euroqol-five-dimension-youth-instrument.html",
+      "@title": "SNOMED code for Assessment using EQ-5D-Y (EuroQol Five Dimension (Youth)) instrument",
+      "small": "770632002"
+    },
+    "#text": "Assessment using EQ-5D-Y (EuroQol Five Dimension (Youth)) instrument"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445785001--assessment-using-erection-hardness-score.html",
+      "@title": "SNOMED code for Assessment using erection hardness score",
+      "small": "445785001"
+    },
+    "#text": "Assessment using erection hardness score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763227006--assessment-using-ess-epworth-sleepiness-scale.html",
+      "@title": "SNOMED code for Assessment using ESS (Epworth Sleepiness Scale)",
+      "small": "763227006"
+    },
+    "#text": "Assessment using ESS (Epworth Sleepiness Scale)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446970009--assessment-using-european-league-against-rheumatism-response-criteria.html",
+      "@title": "SNOMED code for Assessment using European league against rheumatism response criteria",
+      "small": "446970009"
+    },
+    "#text": "Assessment using European league against rheumatism response criteria"
+  },
+  {
+    "a": {
+      "@href": "/snomed/761884004--assessment-using-european-system-for-cardiac-operative-risk-evaluation.html",
+      "@title": "SNOMED code for Assessment using European System for Cardiac Operative Risk Evaluation",
+      "small": "761884004"
+    },
+    "#text": "Assessment using European System for Cardiac Operative Risk Evaluation"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716760001--assessment-using-european-union-scale-for-peak-expiratory-flow-rate-adults.html",
+      "@title": "SNOMED code for Assessment using European Union Scale for Peak Expiratory Flow Rate for adults",
+      "small": "716760001"
+    },
+    "#text": "Assessment using European Union Scale for Peak Expiratory Flow Rate for adults"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716761002--assessment-using-european-union-scale-for-peak-expiratory-flow-rate-children.html",
+      "@title": "SNOMED code for Assessment using European Union Scale for Peak Expiratory Flow Rate for children",
+      "small": "716761002"
+    },
+    "#text": "Assessment using European Union Scale for Peak Expiratory Flow Rate for children"
+  },
+  {
+    "a": {
+      "@href": "/snomed/725827000--assessment-using-evaluation-of-social-interaction.html",
+      "@title": "SNOMED code for Assessment using Evaluation of Social Interaction",
+      "small": "725827000"
+    },
+    "#text": "Assessment using Evaluation of Social Interaction"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446216003--assessment-using-evaluation-tool-of-childrens-handwriting.html",
+      "@title": "SNOMED code for Assessment using evaluation tool of children's handwriting",
+      "small": "446216003"
+    },
+    "#text": "Assessment using evaluation tool of children's handwriting"
+  },
+  {
+    "a": {
+      "@href": "/snomed/714328009--assessment-using-everyday-cognition-questionnaire.html",
+      "@title": "SNOMED code for Assessment using Everyday Cognition questionnaire",
+      "small": "714328009"
+    },
+    "#text": "Assessment using Everyday Cognition questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716171009--assessment-using-everyday-memory-questionnaire.html",
+      "@title": "SNOMED code for Assessment using Everyday Memory Questionnaire",
+      "small": "716171009"
+    },
+    "#text": "Assessment using Everyday Memory Questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716759006--assessment-using-eysenck-personality-inventory.html",
+      "@title": "SNOMED code for Assessment using Eysenck Personality Inventory",
+      "small": "716759006"
+    },
+    "#text": "Assessment using Eysenck Personality Inventory"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718344007--assessment-using-eysenck-personality-questionnaire.html",
+      "@title": "SNOMED code for Assessment using Eysenck Personality Questionnaire",
+      "small": "718344007"
+    },
+    "#text": "Assessment using Eysenck Personality Questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/762992005--assessment-using-fagerstrom-test-for-nicotine-dependence.html",
+      "@title": "SNOMED code for Assessment using Fagerstrom Test for Nicotine Dependence",
+      "small": "762992005"
+    },
+    "#text": "Assessment using Fagerstrom Test for Nicotine Dependence"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445826008--assessment-using-falls-behavioral-scale-for-older-people.html",
+      "@title": "SNOMED code for Assessment using falls behavioral scale for older people",
+      "small": "445826008"
+    },
+    "#text": "Assessment using falls behavioral scale for older people"
+  },
+  {
+    "a": {
+      "@href": "/snomed/443731004--assessment-using-falls-risk-score-for-the-elderly.html",
+      "@title": "SNOMED code for Assessment using falls risk assessment score for the elderly",
+      "small": "443731004"
+    },
+    "#text": "Assessment using falls risk assessment score for the elderly"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716799009--assessment-using-fast-face-arm-speech-test.html",
+      "@title": "SNOMED code for Assessment using FAST (Face Arm Speech Test)",
+      "small": "716799009"
+    },
+    "#text": "Assessment using FAST (Face Arm Speech Test)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445784002--assessment-using-fatigue-impact-scale.html",
+      "@title": "SNOMED code for Assessment using fatigue impact scale",
+      "small": "445784002"
+    },
+    "#text": "Assessment using fatigue impact scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719871007--assessment-using-fibrosis-4-index.html",
+      "@title": "SNOMED code for Assessment using Fibrosis-4 index",
+      "small": "719871007"
+    },
+    "#text": "Assessment using Fibrosis-4 index"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718647008--assessment-using-figure-drawing-test.html",
+      "@title": "SNOMED code for Assessment using figure drawing test",
+      "small": "718647008"
+    },
+    "#text": "Assessment using figure drawing test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763118000--assessment-using-findrisc-finnish-diabetes-risk-score.html",
+      "@title": "SNOMED code for Assessment using FINDRISC (Finnish Diabetes Risk Score)",
+      "small": "763118000"
+    },
+    "#text": "Assessment using FINDRISC (Finnish Diabetes Risk Score)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/761874000--assessment-using-five-shot-questionnaire.html",
+      "@title": "SNOMED code for Assessment using Five-Shot questionnaire",
+      "small": "761874000"
+    },
+    "#text": "Assessment using Five-Shot questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716836006--assessment-using-flta-fullerton-language-test-for-adolescents.html",
+      "@title": "SNOMED code for Assessment using FLTA (Fullerton Language Test for Adolescents)",
+      "small": "716836006"
+    },
+    "#text": "Assessment using FLTA (Fullerton Language Test for Adolescents)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763115002--assessment-using-foot-function-index.html",
+      "@title": "SNOMED code for Assessment using Foot Function Index",
+      "small": "763115002"
+    },
+    "#text": "Assessment using Foot Function Index"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763112004--assessment-using-footwear-suitability-scale.html",
+      "@title": "SNOMED code for Assessment using Footwear Suitability Scale",
+      "small": "763112004"
+    },
+    "#text": "Assessment using Footwear Suitability Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/714644006--assessment-using-frailty-index.html",
+      "@title": "SNOMED code for Assessment using Frailty Index",
+      "small": "714644006"
+    },
+    "#text": "Assessment using Frailty Index"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763000000--assessment-using-framingham-coronary-heart-disease-10-year-risk-score.html",
+      "@title": "SNOMED code for Assessment using Framingham coronary heart disease 10 year risk score",
+      "small": "763000000"
+    },
+    "#text": "Assessment using Framingham coronary heart disease 10 year risk score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719150000--assessment-using-frenchay-activities-index.html",
+      "@title": "SNOMED code for Assessment using Frenchay Activities Index",
+      "small": "719150000"
+    },
+    "#text": "Assessment using Frenchay Activities Index"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716212003--assessment-using-frenchay-aphasia-screening-test.html",
+      "@title": "SNOMED code for Assessment using Frenchay Aphasia Screening Test",
+      "small": "716212003"
+    },
+    "#text": "Assessment using Frenchay Aphasia Screening Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/717325003--assessment-using-frenchay-dysarthria.html",
+      "@title": "SNOMED code for Assessment using Frenchay Dysarthria Assessment",
+      "small": "717325003"
+    },
+    "#text": "Assessment using Frenchay Dysarthria Assessment"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446762007--assessment-using-functional-analysis-of-care-environments-tool.html",
+      "@title": "SNOMED code for Assessment using functional analysis of care environments assessment tool",
+      "small": "446762007"
+    },
+    "#text": "Assessment using functional analysis of care environments assessment tool"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445827004--assessment-using-functional-measure.html",
+      "@title": "SNOMED code for Assessment using functional assessment measure",
+      "small": "445827004"
+    },
+    "#text": "Assessment using functional assessment measure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445828009--assessment-using-functional-capacity-evaluation.html",
+      "@title": "SNOMED code for Assessment using functional capacity evaluation",
+      "small": "445828009"
+    },
+    "#text": "Assessment using functional capacity evaluation"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716206008--assessment-using-functional-communication-profile-revised.html",
+      "@title": "SNOMED code for Assessment using Functional Communication Profile Revised",
+      "small": "716206008"
+    },
+    "#text": "Assessment using Functional Communication Profile Revised"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716793005--assessment-using-functional-independence-measure.html",
+      "@title": "SNOMED code for Assessment using Functional Independence Measure",
+      "small": "716793005"
+    },
+    "#text": "Assessment using Functional Independence Measure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445829001--assessment-using-functional-test-for-the-hemiparetic-upper-extremity.html",
+      "@title": "SNOMED code for Assessment using functional test for the hemiparetic upper extremity",
+      "small": "445829001"
+    },
+    "#text": "Assessment using functional test for the hemiparetic upper extremity"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718336007--assessment-using-fundamental-speech-skills-test.html",
+      "@title": "SNOMED code for Assessment using Fundamental Speech Skills Test",
+      "small": "718336007"
+    },
+    "#text": "Assessment using Fundamental Speech Skills Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/770553002--assessment-using-gas-light-goal-attainment-scaling.html",
+      "@title": "SNOMED code for Assessment using GAS-Light (Goal Attainment Scaling-Light)",
+      "small": "770553002"
+    },
+    "#text": "Assessment using GAS-Light (Goal Attainment Scaling-Light)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445598007--assessment-using-generalized-anxiety-disorder-7-item-score.html",
+      "@title": "SNOMED code for Assessment using generalized anxiety disorder 7 item score",
+      "small": "445598007"
+    },
+    "#text": "Assessment using generalized anxiety disorder 7 item score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445587006--assessment-using-geriatric-depression-scale.html",
+      "@title": "SNOMED code for Assessment using geriatric depression scale",
+      "small": "445587006"
+    },
+    "#text": "Assessment using geriatric depression scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716273001--assessment-using-gesell-developmental-observation-revised.html",
+      "@title": "SNOMED code for Assessment using Gesell Developmental Observation Revised",
+      "small": "716273001"
+    },
+    "#text": "Assessment using Gesell Developmental Observation Revised"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719925004--assessment-using-gfta-2-goldman-fristoe-test-for-articulation.html",
+      "@title": "SNOMED code for Assessment using GFTA-2 (Goldman-Fristoe Test for Articulation 2)",
+      "small": "719925004"
+    },
+    "#text": "Assessment using GFTA-2 (Goldman-Fristoe Test for Articulation 2)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719926003--assessment-using-gfta-3-goldman-fristoe-test-for-articulation.html",
+      "@title": "SNOMED code for Assessment using GFTA-3 (Goldman-Fristoe Test for Articulation 3)",
+      "small": "719926003"
+    },
+    "#text": "Assessment using GFTA-3 (Goldman-Fristoe Test for Articulation 3)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/774095009--assessment-using-global-deterioration-scale.html",
+      "@title": "SNOMED code for Assessment using Global Deterioration Scale",
+      "small": "774095009"
+    },
+    "#text": "Assessment using Global Deterioration Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715810009--assessment-using-goat-galveston-orientation-and-amnesia-test.html",
+      "@title": "SNOMED code for Assessment using GOAT (Galveston Orientation and Amnesia Test)",
+      "small": "715810009"
+    },
+    "#text": "Assessment using GOAT (Galveston Orientation and Amnesia Test)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763296008--assessment-using-gpcog-general-practitioner-of-cognition.html",
+      "@title": "SNOMED code for Assessment using GPCOG (General Practitioner assessment of Cognition)",
+      "small": "763296008"
+    },
+    "#text": "Assessment using GPCOG (General Practitioner assessment of Cognition)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716703001--assessment-using-graded-naming-test.html",
+      "@title": "SNOMED code for Assessment using Graded Naming Test",
+      "small": "716703001"
+    },
+    "#text": "Assessment using Graded Naming Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716136009--assessment-using-graded-word-spelling-test.html",
+      "@title": "SNOMED code for Assessment using Graded Word Spelling Test",
+      "small": "716136009"
+    },
+    "#text": "Assessment using Graded Word Spelling Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719151001--assessment-using-gray-silent-reading-test.html",
+      "@title": "SNOMED code for Assessment using Gray Silent Reading Test",
+      "small": "719151001"
+    },
+    "#text": "Assessment using Gray Silent Reading Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/788587000--assessment-using-griffith-mental-development-scale.html",
+      "@title": "SNOMED code for Assessment using Griffith Mental Development Scale",
+      "small": "788587000"
+    },
+    "#text": "Assessment using Griffith Mental Development Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445786000--assessment-using-grip-ability-test.html",
+      "@title": "SNOMED code for Assessment using grip ability test",
+      "small": "445786000"
+    },
+    "#text": "Assessment using grip ability test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/713633006--assessment-using-groningen-frailty-indicator.html",
+      "@title": "SNOMED code for Assessment using Groningen Frailty Indicator",
+      "small": "713633006"
+    },
+    "#text": "Assessment using Groningen Frailty Indicator"
+  },
+  {
+    "a": {
+      "@href": "/snomed/707622003--assessment-using-gross-motor-function-classification-system-for-cerebral-palsy.html",
+      "@title": "SNOMED code for Assessment using gross motor function classification system for cerebral palsy",
+      "small": "707622003"
+    },
+    "#text": "Assessment using gross motor function classification system for cerebral palsy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/714354001--assessment-using-group-session-rating-scale.html",
+      "@title": "SNOMED code for Assessment using Group Session Rating Scale",
+      "small": "714354001"
+    },
+    "#text": "Assessment using Group Session Rating Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445588001--assessment-using-guys-neurological-disability-scale.html",
+      "@title": "SNOMED code for Assessment using Guy's neurological disability scale",
+      "small": "445588001"
+    },
+    "#text": "Assessment using Guy's neurological disability scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763071002--assessment-using-hamilton-rating-scale-for-depression.html",
+      "@title": "SNOMED code for Assessment using Hamilton Rating Scale for Depression",
+      "small": "763071002"
+    },
+    "#text": "Assessment using Hamilton Rating Scale for Depression"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445787009--assessment-using-hampshire-for-living-with-others.html",
+      "@title": "SNOMED code for Assessment using Hampshire assessment for living with others",
+      "small": "445787009"
+    },
+    "#text": "Assessment using Hampshire assessment for living with others"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445615000--assessment-using-harris-hip-score.html",
+      "@title": "SNOMED code for Assessment using Harris hip score",
+      "small": "445615000"
+    },
+    "#text": "Assessment using Harris hip score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/723641005--assessment-using-hcr-20-v3-historical-clinical-risk-management-version-3.html",
+      "@title": "SNOMED code for Assessment using HCR-20 V3 (Historical Clinical Risk management-20 version 3)",
+      "small": "723641005"
+    },
+    "#text": "Assessment using HCR-20 V3 (Historical Clinical Risk management-20 version 3)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445988008--assessment-using-health-questionnaire.html",
+      "@title": "SNOMED code for Assessment using health assessment questionnaire",
+      "small": "445988008"
+    },
+    "#text": "Assessment using health assessment questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/819959001--assessment-using-healthy-eating-index-2015.html",
+      "@title": "SNOMED code for Assessment using Healthy Eating Index 2015",
+      "small": "819959001"
+    },
+    "#text": "Assessment using Healthy Eating Index 2015"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719932008--assessment-using-hearing-handicap-inventory-for-the-elderly.html",
+      "@title": "SNOMED code for Assessment using Hearing Handicap Inventory for the Elderly",
+      "small": "719932008"
+    },
+    "#text": "Assessment using Hearing Handicap Inventory for the Elderly"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445989000--assessment-using-hip-disability-and-osteoarthritis-outcome-score.html",
+      "@title": "SNOMED code for Assessment using hip disability and osteoarthritis outcome score",
+      "small": "445989000"
+    },
+    "#text": "Assessment using hip disability and osteoarthritis outcome score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445040008--assessment-using-historical-clinical-risk-management-20-assessing-for-violence-scheme-version-2.html",
+      "@title": "SNOMED code for Assessment using historical, clinical, risk management 20 assessing risk for violence scheme version 2",
+      "small": "445040008"
+    },
+    "#text": "Assessment using historical, clinical, risk management 20 assessing risk for violence scheme version 2"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718707009--assessment-using-hoehn-and-yahr-scale.html",
+      "@title": "SNOMED code for Assessment using Hoehn and Yahr Scale",
+      "small": "718707009"
+    },
+    "#text": "Assessment using Hoehn and Yahr Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719152008--assessment-using-holborn-reading-scale.html",
+      "@title": "SNOMED code for Assessment using Holborn Reading Scale",
+      "small": "719152008"
+    },
+    "#text": "Assessment using Holborn Reading Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445990009--assessment-using-home-falls-and-accidents-screening-tool.html",
+      "@title": "SNOMED code for Assessment using home falls and accidents screening tool",
+      "small": "445990009"
+    },
+    "#text": "Assessment using home falls and accidents screening tool"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445991008--assessment-using-hospital-anxiety-and-depression-scale.html",
+      "@title": "SNOMED code for Assessment using hospital anxiety and depression scale",
+      "small": "445991008"
+    },
+    "#text": "Assessment using hospital anxiety and depression scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716809009--assessment-using-hpnt-hundred-pictures-naming-test.html",
+      "@title": "SNOMED code for Assessment using HPNT (Hundred Pictures Naming Test)",
+      "small": "716809009"
+    },
+    "#text": "Assessment using HPNT (Hundred Pictures Naming Test)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/704182008--assessment-using-hypertension-abnormal-renalliver-function-stroke-bleeding-history-or-predisposition-labile-international-normalized-ratio-elderly-over-65-and-drugsalcohol-concomitantly-score.html",
+      "@title": "SNOMED code for Assessment using hypertension, abnormal renal/liver function, stroke, bleeding history or predisposition, labile international normalized ratio, elderly over 65, and drugs/alcohol concomitantly score",
+      "small": "704182008"
+    },
+    "#text": "Assessment using hypertension, abnormal renal/liver function, stroke, bleeding history or predisposition, labile international normalized ratio, elderly over 65, and drugs/alcohol concomitantly score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/705038007--assessment-using-hypomania-checklist-32-item-revised.html",
+      "@title": "SNOMED code for Assessment using hypomania checklist 32 item revised",
+      "small": "705038007"
+    },
+    "#text": "Assessment using hypomania checklist 32 item revised"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763125007--assessment-using-i-pss-international-prostate-symptom-score.html",
+      "@title": "SNOMED code for Assessment using I-PSS (International Prostate Symptom Score)",
+      "small": "763125007"
+    },
+    "#text": "Assessment using I-PSS (International Prostate Symptom Score)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763111006--assessment-using-iciq-ui-sf-international-consultation-on-incontinence-questionnaire-urinary-short-form.html",
+      "@title": "SNOMED code for Assessment using ICIQ-UI-SF (International Consultation on Incontinence Questionnaire-Urinary Incontinence-Short Form)",
+      "small": "763111006"
+    },
+    "#text": "Assessment using ICIQ-UI-SF (International Consultation on Incontinence Questionnaire-Urinary Incontinence-Short Form)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715808007--assessment-using-ics-intelligibility-in-context-scale.html",
+      "@title": "SNOMED code for Assessment using ICS (Intelligibility in Context Scale)",
+      "small": "715808007"
+    },
+    "#text": "Assessment using ICS (Intelligibility in Context Scale)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719311009--assessment-using-illinois-test-of-psycholinguistic-abilities-third-edition.html",
+      "@title": "SNOMED code for Assessment using Illinois Test of Psycholinguistic Abilities Third Edition",
+      "small": "719311009"
+    },
+    "#text": "Assessment using Illinois Test of Psycholinguistic Abilities Third Edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/450727001--assessment-using-impact-of-event-scale-revised.html",
+      "@title": "SNOMED code for Assessment using impact of event scale revised",
+      "small": "450727001"
+    },
+    "#text": "Assessment using impact of event scale revised"
+  },
+  {
+    "a": {
+      "@href": "/snomed/761885003--assessment-using-insomnia-severity-index.html",
+      "@title": "SNOMED code for Assessment using Insomnia Severity Index",
+      "small": "761885003"
+    },
+    "#text": "Assessment using Insomnia Severity Index"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718893008--assessment-using-integrated-palliative-care-outcome-scale-5-patient-version-1-week-recall-period.html",
+      "@title": "SNOMED code for Assessment using Integrated Palliative care Outcome Scale 5 Patient Version (1 week recall period)",
+      "small": "718893008"
+    },
+    "#text": "Assessment using Integrated Palliative care Outcome Scale 5 Patient Version (1 week recall period)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718898004--assessment-using-integrated-palliative-care-outcome-scale-5-patient-version-3-day-recall-period.html",
+      "@title": "SNOMED code for Assessment using Integrated Palliative care Outcome Scale 5 Patient Version (3 day recall period)",
+      "small": "718898004"
+    },
+    "#text": "Assessment using Integrated Palliative care Outcome Scale 5 Patient Version (3 day recall period)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718901003--assessment-using-integrated-palliative-care-outcome-scale-5-staff-version-1-week-recall-period.html",
+      "@title": "SNOMED code for Assessment using Integrated Palliative care Outcome Scale 5 Staff Version (1 week recall period)",
+      "small": "718901003"
+    },
+    "#text": "Assessment using Integrated Palliative care Outcome Scale 5 Staff Version (1 week recall period)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718903000--assessment-using-integrated-palliative-care-outcome-scale-5-staff-version-3-day-recall-period.html",
+      "@title": "SNOMED code for Assessment using Integrated Palliative care Outcome Scale 5 Staff Version (3 day recall period)",
+      "small": "718903000"
+    },
+    "#text": "Assessment using Integrated Palliative care Outcome Scale 5 Staff Version (3 day recall period)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718904006--assessment-using-integrated-palliative-care-outcome-scale-patient-version-1-week-recall-period.html",
+      "@title": "SNOMED code for Assessment using Integrated Palliative care Outcome Scale Patient Version (1 week recall period)",
+      "small": "718904006"
+    },
+    "#text": "Assessment using Integrated Palliative care Outcome Scale Patient Version (1 week recall period)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718899007--assessment-using-integrated-palliative-care-outcome-scale-patient-version-3-day-recall-period.html",
+      "@title": "SNOMED code for Assessment using Integrated Palliative care Outcome Scale Patient Version (3 day recall period)",
+      "small": "718899007"
+    },
+    "#text": "Assessment using Integrated Palliative care Outcome Scale Patient Version (3 day recall period)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718895001--assessment-using-integrated-palliative-care-outcome-scale-staff-version-1-week-recall-period.html",
+      "@title": "SNOMED code for Assessment using Integrated Palliative care Outcome Scale Staff Version (1 week recall period)",
+      "small": "718895001"
+    },
+    "#text": "Assessment using Integrated Palliative care Outcome Scale Staff Version (1 week recall period)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718890006--assessment-using-integrated-palliative-care-outcome-scale-staff-version-3-day-recall-period.html",
+      "@title": "SNOMED code for Assessment using Integrated Palliative care Outcome Scale Staff Version (3 day recall period)",
+      "small": "718890006"
+    },
+    "#text": "Assessment using Integrated Palliative care Outcome Scale Staff Version (3 day recall period)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445992001--assessment-using-international-index-of-erectile-function.html",
+      "@title": "SNOMED code for Assessment using international index of erectile function",
+      "small": "445992001"
+    },
+    "#text": "Assessment using international index of erectile function"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716797006--assessment-using-itpa-illinois-test-of-psycholinguistic-abilities.html",
+      "@title": "SNOMED code for Assessment using ITPA (Illinois Test of Psycholinguistic Abilities)",
+      "small": "716797006"
+    },
+    "#text": "Assessment using ITPA (Illinois Test of Psycholinguistic Abilities)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446968000--assessment-using-jebsen-taylor-hand-function-test.html",
+      "@title": "SNOMED code for Assessment using Jebsen-Taylor hand function test",
+      "small": "446968000"
+    },
+    "#text": "Assessment using Jebsen-Taylor hand function test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445994000--assessment-using-joint-protection-behavior.html",
+      "@title": "SNOMED code for Assessment using joint protection behavior assessment",
+      "small": "445994000"
+    },
+    "#text": "Assessment using joint protection behavior assessment"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445995004--assessment-using-joint-protection-knowledge.html",
+      "@title": "SNOMED code for Assessment using joint protection knowledge assessment",
+      "small": "445995004"
+    },
+    "#text": "Assessment using joint protection knowledge assessment"
+  },
+  {
+    "a": {
+      "@href": "/snomed/714356004--assessment-using-kessler-psychological-distress-scale-k10.html",
+      "@title": "SNOMED code for Assessment using Kessler Psychological Distress Scale K10",
+      "small": "714356004"
+    },
+    "#text": "Assessment using Kessler Psychological Distress Scale K10"
+  },
+  {
+    "a": {
+      "@href": "/snomed/782844001--assessment-using-knee-injury-and-osteoarthritis-outcome-score.html",
+      "@title": "SNOMED code for Assessment using Knee Injury and Osteoarthritis Outcome Score",
+      "small": "782844001"
+    },
+    "#text": "Assessment using Knee Injury and Osteoarthritis Outcome Score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/761870009--assessment-using-kps-karnofsky-performance-status.html",
+      "@title": "SNOMED code for Assessment using KPS (Karnofsky Performance Status)",
+      "small": "761870009"
+    },
+    "#text": "Assessment using KPS (Karnofsky Performance Status)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716241007--assessment-using-language-remediation-and-screening-procedure.html",
+      "@title": "SNOMED code for Assessment using Language Assessment Remediation and Screening Procedure",
+      "small": "716241007"
+    },
+    "#text": "Assessment using Language Assessment Remediation and Screening Procedure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446005002--assessment-using-large-allen-cognitive-level-screen.html",
+      "@title": "SNOMED code for Assessment using large Allen cognitive level screen",
+      "small": "446005002"
+    },
+    "#text": "Assessment using large Allen cognitive level screen"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763183003--assessment-using-leeds-foot-impact-scale.html",
+      "@title": "SNOMED code for Assessment using Leeds Foot Impact Scale",
+      "small": "763183003"
+    },
+    "#text": "Assessment using Leeds Foot Impact Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/705028002--assessment-using-leeds-revised-acne-grading-system.html",
+      "@title": "SNOMED code for Assessment using Leeds revised acne grading system",
+      "small": "705028002"
+    },
+    "#text": "Assessment using Leeds revised acne grading system"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718295007--assessment-using-letter-cancellation-test.html",
+      "@title": "SNOMED code for Assessment using Letter Cancellation Test",
+      "small": "718295007"
+    },
+    "#text": "Assessment using Letter Cancellation Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718043008--assessment-using-listening-skills-checklist.html",
+      "@title": "SNOMED code for Assessment using Listening Skills Checklist",
+      "small": "718043008"
+    },
+    "#text": "Assessment using Listening Skills Checklist"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446006001--assessment-using-loewenstein-occupational-therapy-cognitive.html",
+      "@title": "SNOMED code for Assessment using Loewenstein Occupational Therapy Cognitive Assessment",
+      "small": "446006001"
+    },
+    "#text": "Assessment using Loewenstein Occupational Therapy Cognitive Assessment"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718864008--assessment-using-lower-extremity-functional-scale.html",
+      "@title": "SNOMED code for Assessment using Lower Extremity Functional Scale",
+      "small": "718864008"
+    },
+    "#text": "Assessment using Lower Extremity Functional Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716159003--assessment-using-luria-nebraska-neuropsychological-battery.html",
+      "@title": "SNOMED code for Assessment using Luria-Nebraska Neuropsychological Battery",
+      "small": "716159003"
+    },
+    "#text": "Assessment using Luria-Nebraska Neuropsychological Battery"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718698002--assessment-using-lysholm-knee-scoring-scale.html",
+      "@title": "SNOMED code for Assessment using Lysholm Knee Scoring Scale",
+      "small": "718698002"
+    },
+    "#text": "Assessment using Lysholm Knee Scoring Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716878000--assessment-using-macmillan-readers-level-test.html",
+      "@title": "SNOMED code for Assessment using Macmillan Readers Level Test",
+      "small": "716878000"
+    },
+    "#text": "Assessment using Macmillan Readers Level Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/761873006--assessment-using-madrs-montgomery-asberg-depression-rating-scale.html",
+      "@title": "SNOMED code for Assessment using MADRS (Montgomery-Ã…sberg Depression Rating Scale)",
+      "small": "761873006"
+    },
+    "#text": "Assessment using MADRS (Montgomery-Ã…sberg Depression Rating Scale)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763696003--assessment-using-maelor-score-pressure-ulcer-risk.html",
+      "@title": "SNOMED code for Assessment using Maelor Score Pressure Ulcer Risk Assessment",
+      "small": "763696003"
+    },
+    "#text": "Assessment using Maelor Score Pressure Ulcer Risk Assessment"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716168001--assessment-using-make-a-picture-story-test.html",
+      "@title": "SNOMED code for Assessment using Make a Picture Story Test",
+      "small": "716168001"
+    },
+    "#text": "Assessment using Make a Picture Story Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/443216009--assessment-using-malnutrition-universal-screening-tool.html",
+      "@title": "SNOMED code for Assessment using malnutrition universal screening tool",
+      "small": "443216009"
+    },
+    "#text": "Assessment using malnutrition universal screening tool"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445996003--assessment-using-manchester-foot-pain-and-disability-index.html",
+      "@title": "SNOMED code for Assessment using Manchester foot pain and disability index",
+      "small": "445996003"
+    },
+    "#text": "Assessment using Manchester foot pain and disability index"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763231000--assessment-using-manchester-scale-for-grading-hallux-valgus.html",
+      "@title": "SNOMED code for Assessment using Manchester Scale for grading hallux valgus",
+      "small": "763231000"
+    },
+    "#text": "Assessment using Manchester Scale for grading hallux valgus"
+  },
+  {
+    "a": {
+      "@href": "/snomed/713011005--assessment-using-manchester-triage-system.html",
+      "@title": "SNOMED code for Assessment using Manchester Triage System",
+      "small": "713011005"
+    },
+    "#text": "Assessment using Manchester Triage System"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763294006--assessment-using-manchester-oxford-foot-questionnaire-and-ankle.html",
+      "@title": "SNOMED code for Assessment using Manchester-Oxford Foot Questionnaire (foot and ankle)",
+      "small": "763294006"
+    },
+    "#text": "Assessment using Manchester-Oxford Foot Questionnaire (foot and ankle)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445608008--assessment-using-marks-and-mathews-fear-questionnaire.html",
+      "@title": "SNOMED code for Assessment using Marks and Mathews fear questionnaire",
+      "small": "445608008"
+    },
+    "#text": "Assessment using Marks and Mathews fear questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715812001--assessment-using-mars-moss-attention-rating-scale.html",
+      "@title": "SNOMED code for Assessment using MARS (Moss Attention Rating Scale)",
+      "small": "715812001"
+    },
+    "#text": "Assessment using MARS (Moss Attention Rating Scale)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446009008--assessment-using-mcgill-pain-questionnaire.html",
+      "@title": "SNOMED code for Assessment using McGill pain questionnaire",
+      "small": "446009008"
+    },
+    "#text": "Assessment using McGill pain questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718381006--assessment-using-mcla-measurement-of-cognitive-linguistic-ability.html",
+      "@title": "SNOMED code for Assessment using MCLA (Measurement of Cognitive Linguistic Ability)",
+      "small": "718381006"
+    },
+    "#text": "Assessment using MCLA (Measurement of Cognitive Linguistic Ability)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/714347007--assessment-using-me-and-my-school-questionnaire.html",
+      "@title": "SNOMED code for Assessment using Me and My School Questionnaire",
+      "small": "714347007"
+    },
+    "#text": "Assessment using Me and My School Questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/713043005--assessment-using-measure-yourself-medical-outcome-profile.html",
+      "@title": "SNOMED code for Assessment using Measure Yourself Medical Outcome Profile",
+      "small": "713043005"
+    },
+    "#text": "Assessment using Measure Yourself Medical Outcome Profile"
+  },
+  {
+    "a": {
+      "@href": "/snomed/781680002--assessment-using-medical-outcomes-study-20-item-short-form-health-survey.html",
+      "@title": "SNOMED code for Assessment using Medical Outcomes Study 20-item Short Form Health Survey",
+      "small": "781680002"
+    },
+    "#text": "Assessment using Medical Outcomes Study 20-item Short Form Health Survey"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716163005--assessment-using-merrill-palmer-revised-scales-of-development.html",
+      "@title": "SNOMED code for Assessment using Merrill-Palmer-Revised Scales of Development",
+      "small": "716163005"
+    },
+    "#text": "Assessment using Merrill-Palmer-Revised Scales of Development"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715334009--assessment-using-metaphon-screening.html",
+      "@title": "SNOMED code for Assessment using Metaphon Screening Assessment",
+      "small": "715334009"
+    },
+    "#text": "Assessment using Metaphon Screening Assessment"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445999005--assessment-using-methods-time-measurement.html",
+      "@title": "SNOMED code for Assessment using methods time measurement",
+      "small": "445999005"
+    },
+    "#text": "Assessment using methods time measurement"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445998002--assessment-using-michigan-hand-outcomes-questionnaire.html",
+      "@title": "SNOMED code for Assessment using Michigan hand outcomes questionnaire",
+      "small": "445998002"
+    },
+    "#text": "Assessment using Michigan hand outcomes questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445997007--assessment-using-middlesex-elderly-of-mental-state.html",
+      "@title": "SNOMED code for Assessment using Middlesex elderly assessment of mental state",
+      "small": "445997007"
+    },
+    "#text": "Assessment using Middlesex elderly assessment of mental state"
+  },
+  {
+    "a": {
+      "@href": "/snomed/458081000124101--assessment-using-migraine-disability-test.html",
+      "@title": "SNOMED code for Assessment using migraine disability assessment test",
+      "small": "458081000124101"
+    },
+    "#text": "Assessment using migraine disability assessment test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718380007--assessment-using-mili-multilevel-informal-language-inventory.html",
+      "@title": "SNOMED code for Assessment using MILI (Multilevel Informal Language Inventory)",
+      "small": "718380007"
+    },
+    "#text": "Assessment using MILI (Multilevel Informal Language Inventory)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716729001--assessment-using-mill-hill-vocabulary-scale.html",
+      "@title": "SNOMED code for Assessment using Mill Hill Vocabulary Scale",
+      "small": "716729001"
+    },
+    "#text": "Assessment using Mill Hill Vocabulary Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716177008--assessment-using-miller-for-preschoolers.html",
+      "@title": "SNOMED code for Assessment using Miller Assessment for Preschoolers",
+      "small": "716177008"
+    },
+    "#text": "Assessment using Miller Assessment for Preschoolers"
+  },
+  {
+    "a": {
+      "@href": "/snomed/725810008--assessment-using-miller-function-and-participation-scales.html",
+      "@title": "SNOMED code for Assessment using Miller Function and Participation Scales",
+      "small": "725810008"
+    },
+    "#text": "Assessment using Miller Function and Participation Scales"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763694000--assessment-using-mini-aqlq-asthma-quality-of-life-questionnaire.html",
+      "@title": "SNOMED code for Assessment using Mini AQLQ (Asthma Quality of Life Questionnaire)",
+      "small": "763694000"
+    },
+    "#text": "Assessment using Mini AQLQ (Asthma Quality of Life Questionnaire)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/713773009--assessment-using-mini-cog.html",
+      "@title": "SNOMED code for Assessment using Mini-cog",
+      "small": "713773009"
+    },
+    "#text": "Assessment using Mini-cog"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446971008--assessment-using-mini-mental-state-examination.html",
+      "@title": "SNOMED code for Assessment using mini-mental state examination",
+      "small": "446971008"
+    },
+    "#text": "Assessment using mini-mental state examination"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715878008--assessment-using-minnesota-test-for-differential-diagnosis-of-aphasia.html",
+      "@title": "SNOMED code for Assessment using Minnesota Test for Differential Diagnosis of Aphasia",
+      "small": "715878008"
+    },
+    "#text": "Assessment using Minnesota Test for Differential Diagnosis of Aphasia"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445803001--assessment-using-moberg-pickup-test.html",
+      "@title": "SNOMED code for Assessment using Moberg pickup test",
+      "small": "445803001"
+    },
+    "#text": "Assessment using Moberg pickup test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/450754003--assessment-using-mobility-inventory-for-agoraphobia.html",
+      "@title": "SNOMED code for Assessment using mobility inventory for agoraphobia",
+      "small": "450754003"
+    },
+    "#text": "Assessment using mobility inventory for agoraphobia"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445804007--assessment-using-model-of-creative-ability.html",
+      "@title": "SNOMED code for Assessment using model of creative ability",
+      "small": "445804007"
+    },
+    "#text": "Assessment using model of creative ability"
+  },
+  {
+    "a": {
+      "@href": "/snomed/771163006--assessment-using-modified-balance-error-scoring-system.html",
+      "@title": "SNOMED code for Assessment using Modified Balance Error Scoring System",
+      "small": "771163006"
+    },
+    "#text": "Assessment using Modified Balance Error Scoring System"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446000007--assessment-using-modified-checklist-for-autism-in-toddlers.html",
+      "@title": "SNOMED code for Assessment using modified checklist for autism in toddlers",
+      "small": "446000007"
+    },
+    "#text": "Assessment using modified checklist for autism in toddlers"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445800003--assessment-using-modified-harris-hip-score.html",
+      "@title": "SNOMED code for Assessment using modified Harris hip score",
+      "small": "445800003"
+    },
+    "#text": "Assessment using modified Harris hip score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446001006--assessment-using-modified-health-questionnaire.html",
+      "@title": "SNOMED code for Assessment using modified health assessment questionnaire",
+      "small": "446001006"
+    },
+    "#text": "Assessment using modified health assessment questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716536003--assessment-using-modified-mini-mental-state-examination.html",
+      "@title": "SNOMED code for Assessment using Modified Mini-Mental State Examination",
+      "small": "716536003"
+    },
+    "#text": "Assessment using Modified Mini-Mental State Examination"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719313007--assessment-using-modified-word-learning-test.html",
+      "@title": "SNOMED code for Assessment using Modified Word Learning Test",
+      "small": "719313007"
+    },
+    "#text": "Assessment using Modified Word Learning Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446761000--assessment-using-modular-arrangement-of-predetermined-time-standards-tool.html",
+      "@title": "SNOMED code for Assessment using modular arrangement of predetermined time standards assessment tool",
+      "small": "446761000"
+    },
+    "#text": "Assessment using modular arrangement of predetermined time standards assessment tool"
+  },
+  {
+    "a": {
+      "@href": "/snomed/459661000124109--assessment-using-montreal-cognitive.html",
+      "@title": "SNOMED code for Assessment using Montreal cognitive assessment",
+      "small": "459661000124109"
+    },
+    "#text": "Assessment using Montreal cognitive assessment"
+  },
+  {
+    "a": {
+      "@href": "/snomed/717710000--assessment-using-morgan-barry-auditory-discrimination-and-attention-test.html",
+      "@title": "SNOMED code for Assessment using Morgan-Barry Auditory Discrimination and Attention Test",
+      "small": "717710000"
+    },
+    "#text": "Assessment using Morgan-Barry Auditory Discrimination and Attention Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/762993000--assessment-using-morse-fall-scale.html",
+      "@title": "SNOMED code for Assessment using Morse Fall Scale",
+      "small": "762993000"
+    },
+    "#text": "Assessment using Morse Fall Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/770636004--assessment-using-mos-sf-36-medical-outcomes-study-item-short-form-health-survey.html",
+      "@title": "SNOMED code for Assessment using MOS SF-36 (Medical Outcomes Study 36-Item Short Form Health Survey)",
+      "small": "770636004"
+    },
+    "#text": "Assessment using MOS SF-36 (Medical Outcomes Study 36-Item Short Form Health Survey)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718638000--assessment-using-mothers-object-relations-scale-short-form.html",
+      "@title": "SNOMED code for Assessment using Mothers' Object Relations Scale Short Form",
+      "small": "718638000"
+    },
+    "#text": "Assessment using Mothers' Object Relations Scale Short Form"
+  },
+  {
+    "a": {
+      "@href": "/snomed/458251000124100--assessment-using-motion-sensitivity.html",
+      "@title": "SNOMED code for Assessment using motion sensitivity assessment",
+      "small": "458251000124100"
+    },
+    "#text": "Assessment using motion sensitivity assessment"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718369007--assessment-using-mount-wilga-high-level-language-test.html",
+      "@title": "SNOMED code for Assessment using Mount Wilga High Level Language Test",
+      "small": "718369007"
+    },
+    "#text": "Assessment using Mount Wilga High Level Language Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/725882009--assessment-using-movement-battery-for-children-checklist-second-edition.html",
+      "@title": "SNOMED code for Assessment using Movement Assessment Battery for Children Checklist Second Edition",
+      "small": "725882009"
+    },
+    "#text": "Assessment using Movement Assessment Battery for Children Checklist Second Edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/725883004--assessment-using-movement-battery-for-children-second-edition.html",
+      "@title": "SNOMED code for Assessment using Movement Assessment Battery for Children Second Edition",
+      "small": "725883004"
+    },
+    "#text": "Assessment using Movement Assessment Battery for Children Second Edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763301008--assessment-using-moxfq-manchester-oxford-foot-questionnaire.html",
+      "@title": "SNOMED code for Assessment using MOxFQ (Manchester-Oxford Foot Questionnaire) (foot)",
+      "small": "763301008"
+    },
+    "#text": "Assessment using MOxFQ (Manchester-Oxford Foot Questionnaire) (foot)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/782149008--assessment-using-msat-minnesota-sedation-tool.html",
+      "@title": "SNOMED code for Assessment using MSAT (Minnesota Sedation Assessment Tool)",
+      "small": "782149008"
+    },
+    "#text": "Assessment using MSAT (Minnesota Sedation Assessment Tool)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715332008--assessment-using-multilingual-aphasia-examination.html",
+      "@title": "SNOMED code for Assessment using Multilingual Aphasia Examination",
+      "small": "715332008"
+    },
+    "#text": "Assessment using Multilingual Aphasia Examination"
+  },
+  {
+    "a": {
+      "@href": "/snomed/458061000124106--assessment-using-myositis-disease-activity-tool.html",
+      "@title": "SNOMED code for Assessment using myositis disease activity assessment tool",
+      "small": "458061000124106"
+    },
+    "#text": "Assessment using myositis disease activity assessment tool"
+  },
+  {
+    "a": {
+      "@href": "/snomed/772813001--assessment-using-nafld-non-alcoholic-fatty-liver-disease-fibrosis-score.html",
+      "@title": "SNOMED code for Assessment using NAFLD (Non-Alcoholic Fatty Liver Disease) fibrosis score",
+      "small": "772813001"
+    },
+    "#text": "Assessment using NAFLD (Non-Alcoholic Fatty Liver Disease) fibrosis score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719314001--assessment-using-national-adult-reading-test.html",
+      "@title": "SNOMED code for Assessment using National Adult Reading Test",
+      "small": "719314001"
+    },
+    "#text": "Assessment using National Adult Reading Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/450742003--assessment-using-national-institutes-of-health-stroke-scale.html",
+      "@title": "SNOMED code for Assessment using National Institutes of Health stroke scale",
+      "small": "450742003"
+    },
+    "#text": "Assessment using National Institutes of Health stroke scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718862007--assessment-using-neurological-disorders-depression-inventory-in-epilepsy.html",
+      "@title": "SNOMED code for Assessment using Neurological Disorders Depression Inventory in Epilepsy",
+      "small": "718862007"
+    },
+    "#text": "Assessment using Neurological Disorders Depression Inventory in Epilepsy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719121007--assessment-using-new-salford-sentence-reading-test.html",
+      "@title": "SNOMED code for Assessment using New Salford Sentence Reading Test",
+      "small": "719121007"
+    },
+    "#text": "Assessment using New Salford Sentence Reading Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/762998009--assessment-using-new-york-heart-association-classification.html",
+      "@title": "SNOMED code for Assessment using New York Heart Association Classification",
+      "small": "762998009"
+    },
+    "#text": "Assessment using New York Heart Association Classification"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763119008--assessment-using-new-zealand-priority-criteria-for-major-joint-replacement.html",
+      "@title": "SNOMED code for Assessment using New Zealand priority criteria for major joint replacement",
+      "small": "763119008"
+    },
+    "#text": "Assessment using New Zealand priority criteria for major joint replacement"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445789007--assessment-using-nine-hole-peg-test.html",
+      "@title": "SNOMED code for Assessment using nine hole peg test",
+      "small": "445789007"
+    },
+    "#text": "Assessment using nine hole peg test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716207004--assessment-using-northwestern-syntax-screening-test.html",
+      "@title": "SNOMED code for Assessment using Northwestern Syntax Screening Test",
+      "small": "716207004"
+    },
+    "#text": "Assessment using Northwestern Syntax Screening Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/443717004--assessment-using-norton-pressure-ulcer-risk-scale.html",
+      "@title": "SNOMED code for Assessment using Norton pressure ulcer risk scale",
+      "small": "443717004"
+    },
+    "#text": "Assessment using Norton pressure ulcer risk scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716147002--assessment-using-nottingham-extended-activities-of-daily-living-scale.html",
+      "@title": "SNOMED code for Assessment using Nottingham Extended Activities of Daily Living Scale",
+      "small": "716147002"
+    },
+    "#text": "Assessment using Nottingham Extended Activities of Daily Living Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/717002006--assessment-using-nottingham-health-profile.html",
+      "@title": "SNOMED code for Assessment using Nottingham Health Profile",
+      "small": "717002006"
+    },
+    "#text": "Assessment using Nottingham Health Profile"
+  },
+  {
+    "a": {
+      "@href": "/snomed/770635000--assessment-using-nottingham-prognostic-index.html",
+      "@title": "SNOMED code for Assessment using Nottingham Prognostic Index",
+      "small": "770635000"
+    },
+    "#text": "Assessment using Nottingham Prognostic Index"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445793001--assessment-using-obligatory-exercise-questionnaire.html",
+      "@title": "SNOMED code for Assessment using obligatory exercise questionnaire",
+      "small": "445793001"
+    },
+    "#text": "Assessment using obligatory exercise questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/450325006--assessment-using-obsessive-compulsive-inventory.html",
+      "@title": "SNOMED code for Assessment using obsessive compulsive inventory",
+      "small": "450325006"
+    },
+    "#text": "Assessment using obsessive compulsive inventory"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446003009--assessment-using-occupational-case-analysis-interview-and-rating-scale.html",
+      "@title": "SNOMED code for Assessment using occupational case analysis interview and rating scale",
+      "small": "446003009"
+    },
+    "#text": "Assessment using occupational case analysis interview and rating scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446008000--assessment-using-occupational-circumstances-interview-and-rating-scale-version-40-for-forensic-mental-health.html",
+      "@title": "SNOMED code for Assessment using occupational circumstances assessment interview and rating scale version 4.0 for forensic mental health",
+      "small": "446008000"
+    },
+    "#text": "Assessment using occupational circumstances assessment interview and rating scale version 4.0 for forensic mental health"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445796009--assessment-using-occupational-performance-history-interview.html",
+      "@title": "SNOMED code for Assessment using occupational performance history interview",
+      "small": "445796009"
+    },
+    "#text": "Assessment using occupational performance history interview"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446007005--assessment-using-occupational-self-version-22.html",
+      "@title": "SNOMED code for Assessment using occupational self assessment version 2.2",
+      "small": "446007005"
+    },
+    "#text": "Assessment using occupational self assessment version 2.2"
+  },
+  {
+    "a": {
+      "@href": "/snomed/725815003--assessment-using-occupational-therapy-driver-off-road-battery.html",
+      "@title": "SNOMED code for Assessment using Occupational Therapy Driver Off Road Assessment Battery",
+      "small": "725815003"
+    },
+    "#text": "Assessment using Occupational Therapy Driver Off Road Assessment Battery"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446004003--assessment-using-occupational-therapy-functional-compilation-tool.html",
+      "@title": "SNOMED code for Assessment using occupational therapy functional assessment compilation tool",
+      "small": "446004003"
+    },
+    "#text": "Assessment using occupational therapy functional assessment compilation tool"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445792006--assessment-using-occupational-therapy-task-observation-scale.html",
+      "@title": "SNOMED code for Assessment using occupational therapy task observation scale",
+      "small": "445792006"
+    },
+    "#text": "Assessment using occupational therapy task observation scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715398005--assessment-using-office-of-population-census-and-surveys-disability-scale.html",
+      "@title": "SNOMED code for Assessment using Office of Population Census and Surveys disability scale",
+      "small": "715398005"
+    },
+    "#text": "Assessment using Office of Population Census and Surveys disability scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715423007--assessment-using-office-of-population-census-and-surveys-hearing-disability-scale.html",
+      "@title": "SNOMED code for Assessment using Office of Population Census and Surveys hearing disability scale",
+      "small": "715423007"
+    },
+    "#text": "Assessment using Office of Population Census and Surveys hearing disability scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/714352002--assessment-using-outcome-rating-scale.html",
+      "@title": "SNOMED code for Assessment using Outcome Rating Scale",
+      "small": "714352002"
+    },
+    "#text": "Assessment using Outcome Rating Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/713199006--assessment-using-oxford-cognitive-screen.html",
+      "@title": "SNOMED code for Assessment using Oxford Cognitive Screen",
+      "small": "713199006"
+    },
+    "#text": "Assessment using Oxford Cognitive Screen"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445788004--assessment-using-oxford-hip-score.html",
+      "@title": "SNOMED code for Assessment using Oxford hip score",
+      "small": "445788004"
+    },
+    "#text": "Assessment using Oxford hip score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/773704001--assessment-using-oxford-shoulder-score.html",
+      "@title": "SNOMED code for Assessment using Oxford Shoulder Score",
+      "small": "773704001"
+    },
+    "#text": "Assessment using Oxford Shoulder Score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/773671000--assessment-using-padua-inventory.html",
+      "@title": "SNOMED code for Assessment using Padua Inventory",
+      "small": "773671000"
+    },
+    "#text": "Assessment using Padua Inventory"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715322001--assessment-using-pain-catastrophizing-scale.html",
+      "@title": "SNOMED code for Assessment using Pain Catastrophizing Scale",
+      "small": "715322001"
+    },
+    "#text": "Assessment using Pain Catastrophizing Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445790003--assessment-using-pain-self-efficacy-questionnaire.html",
+      "@title": "SNOMED code for Assessment using pain self efficacy questionnaire",
+      "small": "445790003"
+    },
+    "#text": "Assessment using pain self efficacy questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719875003--assessment-using-parenting-daily-hassles-scale.html",
+      "@title": "SNOMED code for Assessment using Parenting Daily Hassles Scale",
+      "small": "719875003"
+    },
+    "#text": "Assessment using Parenting Daily Hassles Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/725877002--assessment-using-participation-and-environment-measure-for-children-youth.html",
+      "@title": "SNOMED code for Assessment using Participation and Environment Measure for Children and Youth",
+      "small": "725877002"
+    },
+    "#text": "Assessment using Participation and Environment Measure for Children and Youth"
+  },
+  {
+    "a": {
+      "@href": "/snomed/736708003--assessment-using-pass-postural-scale-for-stroke-patients.html",
+      "@title": "SNOMED code for Assessment using PASS (Postural Assessment Scale for Stroke Patients)",
+      "small": "736708003"
+    },
+    "#text": "Assessment using PASS (Postural Assessment Scale for Stroke Patients)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/713579005--assessment-using-patient-activation-measure.html",
+      "@title": "SNOMED code for Assessment using Patient Activation Measure",
+      "small": "713579005"
+    },
+    "#text": "Assessment using Patient Activation Measure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763230004--assessment-using-patient-global-impression-of-improvement.html",
+      "@title": "SNOMED code for Assessment using Patient Global Impression of Improvement",
+      "small": "763230004"
+    },
+    "#text": "Assessment using Patient Global Impression of Improvement"
+  },
+  {
+    "a": {
+      "@href": "/snomed/457931000124104--assessment-using-patient-global-impression-of-severity.html",
+      "@title": "SNOMED code for Assessment using patient global impression of severity",
+      "small": "457931000124104"
+    },
+    "#text": "Assessment using patient global impression of severity"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445791004--assessment-using-patient-rated-wrist-evaluation-scale.html",
+      "@title": "SNOMED code for Assessment using patient rated wrist evaluation scale",
+      "small": "445791004"
+    },
+    "#text": "Assessment using patient rated wrist evaluation scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763372000--assessment-using-patient-satisfaction-score.html",
+      "@title": "SNOMED code for Assessment using patient satisfaction score",
+      "small": "763372000"
+    },
+    "#text": "Assessment using patient satisfaction score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719126002--assessment-using-patient-specific-functional-scale.html",
+      "@title": "SNOMED code for Assessment using Patient-Specific Functional Scale",
+      "small": "719126002"
+    },
+    "#text": "Assessment using Patient-Specific Functional Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763226002--assessment-using-pedis-perfusion-extent-depth-infection-and-sensation-scoring-system.html",
+      "@title": "SNOMED code for Assessment using PEDIS (Perfusion, Extent, Depth, Infection and Sensation) scoring system",
+      "small": "763226002"
+    },
+    "#text": "Assessment using PEDIS (Perfusion, Extent, Depth, Infection and Sensation) scoring system"
+  },
+  {
+    "a": {
+      "@href": "/snomed/725844001--assessment-using-penn-parkinsons-daily-activities-questionnaire-15.html",
+      "@title": "SNOMED code for Assessment using Penn Parkinson's Daily Activities Questionnaire-15",
+      "small": "725844001"
+    },
+    "#text": "Assessment using Penn Parkinson's Daily Activities Questionnaire-15"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445795008--assessment-using-penn-state-worry-questionnaire.html",
+      "@title": "SNOMED code for Assessment using Penn State worry questionnaire",
+      "small": "445795008"
+    },
+    "#text": "Assessment using Penn State worry questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715199008--assessment-using-perceived-stress-scale.html",
+      "@title": "SNOMED code for Assessment using Perceived Stress Scale",
+      "small": "715199008"
+    },
+    "#text": "Assessment using Perceived Stress Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715424001--assessment-using-perceptions-of-stuttering-inventory.html",
+      "@title": "SNOMED code for Assessment using Perceptions of Stuttering Inventory",
+      "small": "715424001"
+    },
+    "#text": "Assessment using Perceptions of Stuttering Inventory"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715368003--assessment-using-peter-and-the-cat-narrative.html",
+      "@title": "SNOMED code for Assessment using Peter and the Cat Narrative Assessment",
+      "small": "715368003"
+    },
+    "#text": "Assessment using Peter and the Cat Narrative Assessment"
+  },
+  {
+    "a": {
+      "@href": "/snomed/717908007--assessment-using-phonological-of-child-speech.html",
+      "@title": "SNOMED code for Assessment using Phonological Assessment of Child Speech",
+      "small": "717908007"
+    },
+    "#text": "Assessment using Phonological Assessment of Child Speech"
+  },
+  {
+    "a": {
+      "@href": "/snomed/717018000--assessment-using-phonological-awareness-profile.html",
+      "@title": "SNOMED code for Assessment using Phonological Awareness Profile",
+      "small": "717018000"
+    },
+    "#text": "Assessment using Phonological Awareness Profile"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719317008--assessment-using-phonological-awareness-test-second-edition.html",
+      "@title": "SNOMED code for Assessment using Phonological Awareness Test Second Edition",
+      "small": "719317008"
+    },
+    "#text": "Assessment using Phonological Awareness Test Second Edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716880006--assessment-using-phonological-evaluation-and-transcription-of-audio-visual-language.html",
+      "@title": "SNOMED code for Assessment using Phonological Evaluation and Transcription of Audio-Visual Language",
+      "small": "716880006"
+    },
+    "#text": "Assessment using Phonological Evaluation and Transcription of Audio-Visual Language"
+  },
+  {
+    "a": {
+      "@href": "/snomed/458181000124100--assessment-using-physical-function-intensive-care-unit-test.html",
+      "@title": "SNOMED code for Assessment using physical function intensive care unit test",
+      "small": "458181000124100"
+    },
+    "#text": "Assessment using physical function intensive care unit test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716770004--assessment-using-pica-porch-index-of-communicative-ability.html",
+      "@title": "SNOMED code for Assessment using PICA (Porch Index of Communicative Ability)",
+      "small": "716770004"
+    },
+    "#text": "Assessment using PICA (Porch Index of Communicative Ability)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763105008--assessment-using-pittsburgh-sleep-quality-index.html",
+      "@title": "SNOMED code for Assessment using Pittsburgh Sleep Quality Index",
+      "small": "763105008"
+    },
+    "#text": "Assessment using Pittsburgh Sleep Quality Index"
+  },
+  {
+    "a": {
+      "@href": "/snomed/765149007--assessment-using-pocock-death-from-cardiovascular-disease-risk-score.html",
+      "@title": "SNOMED code for Assessment using Pocock death from cardiovascular disease risk score",
+      "small": "765149007"
+    },
+    "#text": "Assessment using Pocock death from cardiovascular disease risk score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719129009--assessment-using-poem-patient-oriented-eczema-measure.html",
+      "@title": "SNOMED code for Assessment using POEM (Patient-Oriented Eczema Measure)",
+      "small": "719129009"
+    },
+    "#text": "Assessment using POEM (Patient-Oriented Eczema Measure)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445799002--assessment-using-pool-activity-level.html",
+      "@title": "SNOMED code for Assessment using Pool activity level",
+      "small": "445799002"
+    },
+    "#text": "Assessment using Pool activity level"
+  },
+  {
+    "a": {
+      "@href": "/snomed/761867005--assessment-using-pos-s-renal-palliative-care-outcome-scale-symptom-list-for-end-stage-disease.html",
+      "@title": "SNOMED code for Assessment using POS-S Renal (Palliative care Outcome Scale symptom list for end-stage renal disease)",
+      "small": "761867005"
+    },
+    "#text": "Assessment using POS-S Renal (Palliative care Outcome Scale symptom list for end-stage renal disease)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716829005--assessment-using-ppvt-peabody-picture-vocabulary-test.html",
+      "@title": "SNOMED code for Assessment using PPVT (Peabody Picture Vocabulary Test)",
+      "small": "716829005"
+    },
+    "#text": "Assessment using PPVT (Peabody Picture Vocabulary Test)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718318007--assessment-using-pragmatics-profile.html",
+      "@title": "SNOMED code for Assessment using Pragmatics Profile",
+      "small": "718318007"
+    },
+    "#text": "Assessment using Pragmatics Profile"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716803005--assessment-using-pre-speech-scale.html",
+      "@title": "SNOMED code for Assessment using Pre-speech Assessment Scale",
+      "small": "716803005"
+    },
+    "#text": "Assessment using Pre-speech Assessment Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/725879004--assessment-using-preferences-for-activities-of-children.html",
+      "@title": "SNOMED code for Assessment using Preferences for Activities of Children",
+      "small": "725879004"
+    },
+    "#text": "Assessment using Preferences for Activities of Children"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716129008--assessment-using-preschool-behavior-checklist.html",
+      "@title": "SNOMED code for Assessment using Preschool Behavior Checklist",
+      "small": "716129008"
+    },
+    "#text": "Assessment using Preschool Behavior Checklist"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716769000--assessment-using-preschool-language-scale.html",
+      "@title": "SNOMED code for Assessment using Preschool Language Scale",
+      "small": "716769000"
+    },
+    "#text": "Assessment using Preschool Language Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718711003--assessment-using-process-of-recovery-questionnaire.html",
+      "@title": "SNOMED code for Assessment using Process of Recovery Questionnaire",
+      "small": "718711003"
+    },
+    "#text": "Assessment using Process of Recovery Questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719086002--assessment-using-psycholinguistic-assessments-of-language-processing-in-aphasia.html",
+      "@title": "SNOMED code for Assessment using Psycholinguistic Assessments of Language Processing in Aphasia",
+      "small": "719086002"
+    },
+    "#text": "Assessment using Psycholinguistic Assessments of Language Processing in Aphasia"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445802006--assessment-using-psychotic-symptom-rating-scale.html",
+      "@title": "SNOMED code for Assessment using psychotic symptom rating scale",
+      "small": "445802006"
+    },
+    "#text": "Assessment using psychotic symptom rating scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715305003--assessment-using-pyramids-and-palm-trees-test.html",
+      "@title": "SNOMED code for Assessment using Pyramids and Palm Trees Test",
+      "small": "715305003"
+    },
+    "#text": "Assessment using Pyramids and Palm Trees Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763243004--assessment-using-qrisk-cardiovascular-disease-10-year-risk-calculator.html",
+      "@title": "SNOMED code for Assessment using QRISK cardiovascular disease 10 year risk calculator",
+      "small": "763243004"
+    },
+    "#text": "Assessment using QRISK cardiovascular disease 10 year risk calculator"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715323006--assessment-using-qrisk2-cardiovascular-disease-10-year-risk-scale.html",
+      "@title": "SNOMED code for Assessment using QRISK2 cardiovascular disease 10 year risk scale",
+      "small": "715323006"
+    },
+    "#text": "Assessment using QRISK2 cardiovascular disease 10 year risk scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445801004--assessment-using-quality-of-upper-extremity-skills-test.html",
+      "@title": "SNOMED code for Assessment using quality of upper extremity skills test",
+      "small": "445801004"
+    },
+    "#text": "Assessment using quality of upper extremity skills test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/458361000124108--assessment-using-quick-inventory-of-depressive-symptomatology.html",
+      "@title": "SNOMED code for Assessment using quick inventory of depressive symptomatology",
+      "small": "458361000124108"
+    },
+    "#text": "Assessment using quick inventory of depressive symptomatology"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716792000--assessment-using-rancho-los-amigos-levels-of-cognitive-functioning-scale.html",
+      "@title": "SNOMED code for Assessment using Rancho Los Amigos Levels of Cognitive Functioning Scale",
+      "small": "716792000"
+    },
+    "#text": "Assessment using Rancho Los Amigos Levels of Cognitive Functioning Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/458411000124100--assessment-using-rate-your-plate.html",
+      "@title": "SNOMED code for Assessment using rate your plate assessment",
+      "small": "458411000124100"
+    },
+    "#text": "Assessment using rate your plate assessment"
+  },
+  {
+    "a": {
+      "@href": "/snomed/717032003--assessment-using-ravens-apm-advanced-progressive-matrices.html",
+      "@title": "SNOMED code for Assessment using Raven's APM (Advanced Progressive Matrices)",
+      "small": "717032003"
+    },
+    "#text": "Assessment using Raven's APM (Advanced Progressive Matrices)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716062003--assessment-using-ravens-colored-progressive-matrices.html",
+      "@title": "SNOMED code for Assessment using Raven's Colored Progressive Matrices",
+      "small": "716062003"
+    },
+    "#text": "Assessment using Raven's Colored Progressive Matrices"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716114006--assessment-using-ravens-progressive-matrices-and-vocabulary-scales.html",
+      "@title": "SNOMED code for Assessment using Raven's Progressive Matrices and Vocabulary Scales",
+      "small": "716114006"
+    },
+    "#text": "Assessment using Raven's Progressive Matrices and Vocabulary Scales"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716204006--assessment-using-ravens-standard-progressive-matrices.html",
+      "@title": "SNOMED code for Assessment using Raven's Standard Progressive Matrices",
+      "small": "716204006"
+    },
+    "#text": "Assessment using Raven's Standard Progressive Matrices"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716763004--assessment-using-rcads-revised-childrens-anxiety-and-depression-scale.html",
+      "@title": "SNOMED code for Assessment using RCADS (Revised Children's Anxiety and Depression Scale)",
+      "small": "716763004"
+    },
+    "#text": "Assessment using RCADS (Revised Children's Anxiety and Depression Scale)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718673003--assessment-using-rcads-p-revised-childrens-anxiety-and-depression-scale-parent-version.html",
+      "@title": "SNOMED code for Assessment using RCADS-P (Revised Children's Anxiety and Depression Scale Parent Version)",
+      "small": "718673003"
+    },
+    "#text": "Assessment using RCADS-P (Revised Children's Anxiety and Depression Scale Parent Version)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719119002--assessment-using-rcba-2-reading-comprehension-battery-for-aphasia-second-edition.html",
+      "@title": "SNOMED code for Assessment using RCBA-2 (Reading Comprehension Battery for Aphasia Second Edition)",
+      "small": "719119002"
+    },
+    "#text": "Assessment using RCBA-2 (Reading Comprehension Battery for Aphasia Second Edition)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719993001--assessment-using-reel-2-receptive-expressive-emergent-language-scale-second-edition.html",
+      "@title": "SNOMED code for Assessment using REEL-2 (Receptive Expressive Emergent Language Scale - second edition)",
+      "small": "719993001"
+    },
+    "#text": "Assessment using REEL-2 (Receptive Expressive Emergent Language Scale - second edition)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719995008--assessment-using-reel-3-receptive-expressive-emergent-language-scale-third-edition.html",
+      "@title": "SNOMED code for Assessment using REEL-3 (Receptive Expressive Emergent Language Scale - third edition)",
+      "small": "719995008"
+    },
+    "#text": "Assessment using REEL-3 (Receptive Expressive Emergent Language Scale - third edition)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/714357008--assessment-using-relative-stress-scale.html",
+      "@title": "SNOMED code for Assessment using Relative Stress Scale",
+      "small": "714357008"
+    },
+    "#text": "Assessment using Relative Stress Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715299000--assessment-using-renfrew-action-picture-test.html",
+      "@title": "SNOMED code for Assessment using Renfrew Action Picture Test",
+      "small": "715299000"
+    },
+    "#text": "Assessment using Renfrew Action Picture Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715449002--assessment-using-renfrew-bus-story.html",
+      "@title": "SNOMED code for Assessment using Renfrew Bus Story",
+      "small": "715449002"
+    },
+    "#text": "Assessment using Renfrew Bus Story"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716821008--assessment-using-renfrew-word-finding-vocabulary-test.html",
+      "@title": "SNOMED code for Assessment using Renfrew Word Finding Vocabulary Test",
+      "small": "716821008"
+    },
+    "#text": "Assessment using Renfrew Word Finding Vocabulary Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445794007--assessment-using-repeatable-battery-for-the-of-neuropsychological-status.html",
+      "@title": "SNOMED code for Assessment using repeatable battery for the assessment of neuropsychological status",
+      "small": "445794007"
+    },
+    "#text": "Assessment using repeatable battery for the assessment of neuropsychological status"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715164009--assessment-using-repertory-grid.html",
+      "@title": "SNOMED code for Assessment using Repertory Grid",
+      "small": "715164009"
+    },
+    "#text": "Assessment using Repertory Grid"
+  },
+  {
+    "a": {
+      "@href": "/snomed/725819009--assessment-using-residential-environment-impact-scale-version-40.html",
+      "@title": "SNOMED code for Assessment using Residential Environment Impact Scale Version 4.0",
+      "small": "725819009"
+    },
+    "#text": "Assessment using Residential Environment Impact Scale Version 4.0"
+  },
+  {
+    "a": {
+      "@href": "/snomed/457911000124105--assessment-using-restless-legs-syndrome-rating-scale.html",
+      "@title": "SNOMED code for Assessment using restless legs syndrome rating scale",
+      "small": "457911000124105"
+    },
+    "#text": "Assessment using restless legs syndrome rating scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718237001--assessment-using-revised-child-impact-of-events-scale-8.html",
+      "@title": "SNOMED code for Assessment using Revised Child Impact of Events Scale 8",
+      "small": "718237001"
+    },
+    "#text": "Assessment using Revised Child Impact of Events Scale 8"
+  },
+  {
+    "a": {
+      "@href": "/snomed/458391000124100--assessment-using-revised-face-legs-activity-cry-consolability-scale.html",
+      "@title": "SNOMED code for Assessment using revised face legs activity cry consolability scale",
+      "small": "458391000124100"
+    },
+    "#text": "Assessment using revised face legs activity cry consolability scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715454006--assessment-using-revised-kendrick-battery-for-detection-of-dementia-in-the-elderly.html",
+      "@title": "SNOMED code for Assessment using Revised Kendrick Battery for detection of dementia in the elderly",
+      "small": "715454006"
+    },
+    "#text": "Assessment using Revised Kendrick Battery for detection of dementia in the elderly"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715372004--assessment-using-revised-token-test.html",
+      "@title": "SNOMED code for Assessment using Revised Token Test",
+      "small": "715372004"
+    },
+    "#text": "Assessment using Revised Token Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/458101000124109--assessment-using-revised-trinity-amputation-and-prosthesis-experience-scale.html",
+      "@title": "SNOMED code for Assessment using revised Trinity amputation and prosthesis experience scale",
+      "small": "458101000124109"
+    },
+    "#text": "Assessment using revised Trinity amputation and prosthesis experience scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716725007--assessment-using-reynell-developmental-language-scales-fourth-edition.html",
+      "@title": "SNOMED code for Assessment using Reynell Developmental Language Scales fourth edition",
+      "small": "716725007"
+    },
+    "#text": "Assessment using Reynell Developmental Language Scales fourth edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718414005--assessment-using-reynell-zinkin-scales-developmental-for-young-visually-handicapped-children.html",
+      "@title": "SNOMED code for Assessment using Reynell-Zinkin Scales: Developmental Scales for Young Visually Handicapped Children",
+      "small": "718414005"
+    },
+    "#text": "Assessment using Reynell-Zinkin Scales: Developmental Scales for Young Visually Handicapped Children"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445985006--assessment-using-rheumatoid-arthritis-work-instability-scale.html",
+      "@title": "SNOMED code for Assessment using rheumatoid arthritis work instability scale",
+      "small": "445985006"
+    },
+    "#text": "Assessment using rheumatoid arthritis work instability scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/458271000124105--assessment-using-rhythmic-weight-shift.html",
+      "@title": "SNOMED code for Assessment using rhythmic weight shift",
+      "small": "458271000124105"
+    },
+    "#text": "Assessment using rhythmic weight shift"
+  },
+  {
+    "a": {
+      "@href": "/snomed/459671000124102--assessment-using-right-item-informant-interview-to-differentiate-aging-and-dementia.html",
+      "@title": "SNOMED code for Assessment using right-item Informant Interview to differentiate aging and dementia",
+      "small": "459671000124102"
+    },
+    "#text": "Assessment using right-item Informant Interview to differentiate aging and dementia"
+  },
+  {
+    "a": {
+      "@href": "/snomed/459741000124104--assessment-using-risk-index-for-overdose-or-serious-opioid-induced-respiratory-depression-scale.html",
+      "@title": "SNOMED code for Assessment using risk index for overdose or serious opioid-induced respiratory depression scale",
+      "small": "459741000124104"
+    },
+    "#text": "Assessment using risk index for overdose or serious opioid-induced respiratory depression scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715443001--assessment-using-rivermead-activities-of-daily-living-scale.html",
+      "@title": "SNOMED code for Assessment using Rivermead Activities of Daily Living scale",
+      "small": "715443001"
+    },
+    "#text": "Assessment using Rivermead Activities of Daily Living scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445797000--assessment-using-rivermead-behavioral-memory-test.html",
+      "@title": "SNOMED code for Assessment using Rivermead behavioral memory test",
+      "small": "445797000"
+    },
+    "#text": "Assessment using Rivermead behavioral memory test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718695004--assessment-using-rivermead-behavioral-memory-test-for-children.html",
+      "@title": "SNOMED code for Assessment using Rivermead Behavioral Memory Test for Children",
+      "small": "718695004"
+    },
+    "#text": "Assessment using Rivermead Behavioral Memory Test for Children"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718696003--assessment-using-rivermead-behavioral-memory-test-third-edition.html",
+      "@title": "SNOMED code for Assessment using Rivermead Behavioral Memory Test Third Edition",
+      "small": "718696003"
+    },
+    "#text": "Assessment using Rivermead Behavioral Memory Test Third Edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445798005--assessment-using-rivermead-perceptual-battery.html",
+      "@title": "SNOMED code for Assessment using Rivermead perceptual assessment battery",
+      "small": "445798005"
+    },
+    "#text": "Assessment using Rivermead perceptual assessment battery"
+  },
+  {
+    "a": {
+      "@href": "/snomed/450732000--assessment-using-rockall-score.html",
+      "@title": "SNOMED code for Assessment using Rockall score",
+      "small": "450732000"
+    },
+    "#text": "Assessment using Rockall score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446356004--assessment-using-role-checklist.html",
+      "@title": "SNOMED code for Assessment using role checklist",
+      "small": "446356004"
+    },
+    "#text": "Assessment using role checklist"
+  },
+  {
+    "a": {
+      "@href": "/snomed/725824007--assessment-using-rookwood-driving-battery.html",
+      "@title": "SNOMED code for Assessment using Rookwood Driving Battery",
+      "small": "725824007"
+    },
+    "#text": "Assessment using Rookwood Driving Battery"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716591005--assessment-using-rutter-behaviour-questionnaire.html",
+      "@title": "SNOMED code for Assessment using Rutter Behaviour Questionnaire",
+      "small": "716591005"
+    },
+    "#text": "Assessment using Rutter Behaviour Questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763305004--assessment-using-sad-size-area-depth-sepsis-arteriopathy-denervation-system.html",
+      "@title": "SNOMED code for Assessment using S(AD) SAD (Size (area, depth) Sepsis, Arteriopathy, Denervation) system",
+      "small": "763305004"
+    },
+    "#text": "Assessment using S(AD) SAD (Size (area, depth) Sepsis, Arteriopathy, Denervation) system"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763233002--assessment-using-sadq-severity-of-alcohol-dependence-questionnaire.html",
+      "@title": "SNOMED code for Assessment using SADQ (Severity of Alcohol Dependence Questionnaire)",
+      "small": "763233002"
+    },
+    "#text": "Assessment using SADQ (Severity of Alcohol Dependence Questionnaire)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/450748004--assessment-using-saint-georges-respiratory-questionnaire.html",
+      "@title": "SNOMED code for Assessment using Saint George's respiratory questionnaire",
+      "small": "450748004"
+    },
+    "#text": "Assessment using Saint George's respiratory questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/764528008--assessment-using-salford-rheumatoid-arthritis-foot-evaluation-instrument.html",
+      "@title": "SNOMED code for Assessment using Salford Rheumatoid Arthritis Foot Evaluation Instrument",
+      "small": "764528008"
+    },
+    "#text": "Assessment using Salford Rheumatoid Arthritis Foot Evaluation Instrument"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719036008--assessment-using-scan-a-test-for-auditory-processing-disorders-in-adolescents-and-adults.html",
+      "@title": "SNOMED code for Assessment using SCAN-A Test for Auditory Processing Disorders in Adolescents and Adults",
+      "small": "719036008"
+    },
+    "#text": "Assessment using SCAN-A Test for Auditory Processing Disorders in Adolescents and Adults"
+  },
+  {
+    "a": {
+      "@href": "/snomed/720405000--assessment-using-scan-c-test-for-auditory-processing-disorders-in-children.html",
+      "@title": "SNOMED code for Assessment using SCAN-C Test for Auditory Processing Disorders in Children",
+      "small": "720405000"
+    },
+    "#text": "Assessment using SCAN-C Test for Auditory Processing Disorders in Children"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716036007--assessment-using-schonell-graded-spelling-test.html",
+      "@title": "SNOMED code for Assessment using Schonell Graded Spelling Test",
+      "small": "716036007"
+    },
+    "#text": "Assessment using Schonell Graded Spelling Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719153003--assessment-using-schonell-reading-test.html",
+      "@title": "SNOMED code for Assessment using Schonell Reading Test",
+      "small": "719153003"
+    },
+    "#text": "Assessment using Schonell Reading Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/725804008--assessment-using-school-amps-of-motor-and-process-skills.html",
+      "@title": "SNOMED code for Assessment using School AMPS (Assessment of Motor and Process Skills)",
+      "small": "725804008"
+    },
+    "#text": "Assessment using School AMPS (Assessment of Motor and Process Skills)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445805008--assessment-using-scleroderma-questionnaire.html",
+      "@title": "SNOMED code for Assessment using scleroderma assessment questionnaire",
+      "small": "445805008"
+    },
+    "#text": "Assessment using scleroderma assessment questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718430002--assessment-using-score-index-of-family-function-and-change-15.html",
+      "@title": "SNOMED code for Assessment using SCORE Index of Family Function and Change 15",
+      "small": "718430002"
+    },
+    "#text": "Assessment using SCORE Index of Family Function and Change 15"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716213008--assessment-using-screening-test-for-developmental-apraxia-of-speech-second-edition.html",
+      "@title": "SNOMED code for Assessment using Screening Test for Developmental Apraxia of Speech Second Edition",
+      "small": "716213008"
+    },
+    "#text": "Assessment using Screening Test for Developmental Apraxia of Speech Second Edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718578000--assessment-using-screening-tool-to-alert-doctors-right-treatment.html",
+      "@title": "SNOMED code for Assessment using Screening Tool to Alert doctors to Right Treatment",
+      "small": "718578000"
+    },
+    "#text": "Assessment using Screening Tool to Alert doctors to Right Treatment"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446982000--assessment-using-semmes-weinstein-monofilament-test.html",
+      "@title": "SNOMED code for Assessment using Semmes-Weinstein monofilament test",
+      "small": "446982000"
+    },
+    "#text": "Assessment using Semmes-Weinstein monofilament test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445977002--assessment-using-sensory-integration-and-praxis-test.html",
+      "@title": "SNOMED code for Assessment using sensory integration and praxis test",
+      "small": "445977002"
+    },
+    "#text": "Assessment using sensory integration and praxis test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446002004--assessment-using-sensory-integration-inventory-revised-for-individuals-with-developmental-disabilities.html",
+      "@title": "SNOMED code for Assessment using sensory integration inventory revised for individuals with developmental disabilities",
+      "small": "446002004"
+    },
+    "#text": "Assessment using sensory integration inventory revised for individuals with developmental disabilities"
+  },
+  {
+    "a": {
+      "@href": "/snomed/450975003--assessment-using-sensory-modality-and-rehabilitation-technique.html",
+      "@title": "SNOMED code for Assessment using sensory modality assessment and rehabilitation technique",
+      "small": "450975003"
+    },
+    "#text": "Assessment using sensory modality assessment and rehabilitation technique"
+  },
+  {
+    "a": {
+      "@href": "/snomed/457861000124100--assessment-using-sensory-organization-test.html",
+      "@title": "SNOMED code for Assessment using sensory organization test",
+      "small": "457861000124100"
+    },
+    "#text": "Assessment using sensory organization test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446758001--assessment-using-sensory-profile.html",
+      "@title": "SNOMED code for Assessment using sensory profile",
+      "small": "446758001"
+    },
+    "#text": "Assessment using sensory profile"
+  },
+  {
+    "a": {
+      "@href": "/snomed/725807001--assessment-using-sensory-profile-2.html",
+      "@title": "SNOMED code for Assessment using Sensory Profile 2",
+      "small": "725807001"
+    },
+    "#text": "Assessment using Sensory Profile 2"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446764008--assessment-using-sequential-occupational-dexterity.html",
+      "@title": "SNOMED code for Assessment using sequential occupational dexterity assessment",
+      "small": "446764008"
+    },
+    "#text": "Assessment using sequential occupational dexterity assessment"
+  },
+  {
+    "a": {
+      "@href": "/snomed/714346003--assessment-using-session-rating-scale.html",
+      "@title": "SNOMED code for Assessment using Session Rating Scale",
+      "small": "714346003"
+    },
+    "#text": "Assessment using Session Rating Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/459681000124104--assessment-using-short-form-of-the-informant-questionnaire-on-cognitive-decline-in-elderly.html",
+      "@title": "SNOMED code for Assessment using Short Form of the Informant Questionnaire on Cognitive Decline in the Elderly",
+      "small": "459681000124104"
+    },
+    "#text": "Assessment using Short Form of the Informant Questionnaire on Cognitive Decline in the Elderly"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446757006--assessment-using-short-health-anxiety-inventory.html",
+      "@title": "SNOMED code for Assessment using short health anxiety inventory",
+      "small": "446757006"
+    },
+    "#text": "Assessment using short health anxiety inventory"
+  },
+  {
+    "a": {
+      "@href": "/snomed/714341008--assessment-using-short-physical-performance-battery.html",
+      "@title": "SNOMED code for Assessment using Short Physical Performance Battery",
+      "small": "714341008"
+    },
+    "#text": "Assessment using Short Physical Performance Battery"
+  },
+  {
+    "a": {
+      "@href": "/snomed/714355000--assessment-using-short-warwick-edinburgh-mental-well-being-scale.html",
+      "@title": "SNOMED code for Assessment using Short Warwick-Edinburgh Mental Well-being Scale",
+      "small": "714355000"
+    },
+    "#text": "Assessment using Short Warwick-Edinburgh Mental Well-being Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716061005--assessment-using-shortened-minnesota-test-for-differential-diagnosis-of-aphasia.html",
+      "@title": "SNOMED code for Assessment using Shortened Minnesota Test for Differential Diagnosis of Aphasia",
+      "small": "716061005"
+    },
+    "#text": "Assessment using Shortened Minnesota Test for Differential Diagnosis of Aphasia"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763304000--assessment-using-sinbad-site-ischemia-neuropathy-bacterial-infection-area-and-depth-classification.html",
+      "@title": "SNOMED code for Assessment using SINBAD (Site, Ischemia, Neuropathy, Bacterial Infection, Area and Depth) classification",
+      "small": "763304000"
+    },
+    "#text": "Assessment using SINBAD (Site, Ischemia, Neuropathy, Bacterial Infection, Area and Depth) classification"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716215001--assessment-using-snijders-oomen-nonverbal-intelligence-scale-revised-6-40.html",
+      "@title": "SNOMED code for Assessment using Snijders-Oomen Nonverbal Intelligence Scale - Revised 6-40",
+      "small": "716215001"
+    },
+    "#text": "Assessment using Snijders-Oomen Nonverbal Intelligence Scale - Revised 6-40"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716185004--assessment-using-snijders-oomen-nonverbal-intelligence-scale-revised-25-7.html",
+      "@title": "SNOMED code for Assessment using Snijders-Oomen Nonverbal Intelligence Scale Revised 2.5-7",
+      "small": "716185004"
+    },
+    "#text": "Assessment using Snijders-Oomen Nonverbal Intelligence Scale Revised 2.5-7"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445720009--assessment-using-social-functioning-scale.html",
+      "@title": "SNOMED code for Assessment using social functioning scale",
+      "small": "445720009"
+    },
+    "#text": "Assessment using social functioning scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445415008--assessment-using-social-phobia-inventory.html",
+      "@title": "SNOMED code for Assessment using social phobia inventory",
+      "small": "445415008"
+    },
+    "#text": "Assessment using social phobia inventory"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719877006--assessment-using-social-satisfaction-questionnaire.html",
+      "@title": "SNOMED code for Assessment using Social Satisfaction Questionnaire",
+      "small": "719877006"
+    },
+    "#text": "Assessment using Social Satisfaction Questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446759009--assessment-using-sollerman-hand-function-test.html",
+      "@title": "SNOMED code for Assessment using Sollerman hand function test",
+      "small": "446759009"
+    },
+    "#text": "Assessment using Sollerman hand function test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716218004--assessment-using-south-tyneside-of-phonology.html",
+      "@title": "SNOMED code for Assessment using South Tyneside Assessment of Phonology",
+      "small": "716218004"
+    },
+    "#text": "Assessment using South Tyneside Assessment of Phonology"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715448005--assessment-using-south-tyneside-of-syntactic-structures.html",
+      "@title": "SNOMED code for Assessment using South Tyneside Assessment of Syntactic Structures",
+      "small": "715448005"
+    },
+    "#text": "Assessment using South Tyneside Assessment of Syntactic Structures"
+  },
+  {
+    "a": {
+      "@href": "/snomed/458211000124101--assessment-using-spence-anxiety-scale.html",
+      "@title": "SNOMED code for Assessment using Spence anxiety scale",
+      "small": "458211000124101"
+    },
+    "#text": "Assessment using Spence anxiety scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715781007--assessment-using-st-marks-incontinence-score.html",
+      "@title": "SNOMED code for Assessment using St. Mark's incontinence score",
+      "small": "715781007"
+    },
+    "#text": "Assessment using St. Mark's incontinence score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718388000--assessment-using-standard-reading-tests.html",
+      "@title": "SNOMED code for Assessment using Standard Reading Tests",
+      "small": "718388000"
+    },
+    "#text": "Assessment using Standard Reading Tests"
+  },
+  {
+    "a": {
+      "@href": "/snomed/770658002--assessment-using-standardized-of-concussion.html",
+      "@title": "SNOMED code for Assessment using Standardized Assessment of Concussion",
+      "small": "770658002"
+    },
+    "#text": "Assessment using Standardized Assessment of Concussion"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719090000--assessment-using-stanford-binet-intelligence-scale-fifth-edition.html",
+      "@title": "SNOMED code for Assessment using Stanford Binet Intelligence Scale fifth edition",
+      "small": "719090000"
+    },
+    "#text": "Assessment using Stanford Binet Intelligence Scale fifth edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719214003--assessment-using-stanford-binet-intelligence-scale-fourth-edition.html",
+      "@title": "SNOMED code for Assessment using Stanford Binet Intelligence Scale fourth edition",
+      "small": "719214003"
+    },
+    "#text": "Assessment using Stanford Binet Intelligence Scale fourth edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/458221000124109--assessment-using-stanford-integrated-psychosocial-for-transplantation.html",
+      "@title": "SNOMED code for Assessment using Stanford integrated psychosocial assessment for transplantation",
+      "small": "458221000124109"
+    },
+    "#text": "Assessment using Stanford integrated psychosocial assessment for transplantation"
+  },
+  {
+    "a": {
+      "@href": "/snomed/447244006--assessment-using-stereognostic-test.html",
+      "@title": "SNOMED code for Assessment using stereognostic test",
+      "small": "447244006"
+    },
+    "#text": "Assessment using stereognostic test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715367008--assessment-using-stocker-probe-technique.html",
+      "@title": "SNOMED code for Assessment using Stocker Probe Technique",
+      "small": "715367008"
+    },
+    "#text": "Assessment using Stocker Probe Technique"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718643007--assessment-using-stopp-screening-tool-of-older-persons-prescriptions.html",
+      "@title": "SNOMED code for Assessment using STOPP (Screening Tool of Older Person's Prescriptions)",
+      "small": "718643007"
+    },
+    "#text": "Assessment using STOPP (Screening Tool of Older Person's Prescriptions)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715897008--assessment-using-story-completion-test.html",
+      "@title": "SNOMED code for Assessment using Story Completion Test",
+      "small": "715897008"
+    },
+    "#text": "Assessment using Story Completion Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/450318004--assessment-using-strengths-and-difficulties-questionnaire.html",
+      "@title": "SNOMED code for Assessment using strengths and difficulties questionnaire",
+      "small": "450318004"
+    },
+    "#text": "Assessment using strengths and difficulties questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/705027007--assessment-using-stroke-impact-scale-version-30.html",
+      "@title": "SNOMED code for Assessment using stroke impact scale version 3.0",
+      "small": "705027007"
+    },
+    "#text": "Assessment using stroke impact scale version 3.0"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716160008--assessment-using-stuttering-prediction-instrument-for-young-children.html",
+      "@title": "SNOMED code for Assessment using Stuttering Prediction Instrument for Young Children",
+      "small": "716160008"
+    },
+    "#text": "Assessment using Stuttering Prediction Instrument for Young Children"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715518005--assessment-using-stuttering-severity-instrument-for-children-and-adults.html",
+      "@title": "SNOMED code for Assessment using Stuttering Severity Instrument for children and adults",
+      "small": "715518005"
+    },
+    "#text": "Assessment using Stuttering Severity Instrument for children and adults"
+  },
+  {
+    "a": {
+      "@href": "/snomed/447177002--assessment-using-subgroups-for-targeted-treatment-back-screening-tool.html",
+      "@title": "SNOMED code for Assessment using subgroups for targeted treatment back screening tool",
+      "small": "447177002"
+    },
+    "#text": "Assessment using subgroups for targeted treatment back screening tool"
+  },
+  {
+    "a": {
+      "@href": "/snomed/713063003--assessment-using-sure-of-myself-understand-information-risk-benefit-ratio-encouragement-test.html",
+      "@title": "SNOMED code for Assessment using Sure of myself, Understand information, Risk-benefit ratio, Encouragement test",
+      "small": "713063003"
+    },
+    "#text": "Assessment using Sure of myself, Understand information, Risk-benefit ratio, Encouragement test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716214002--assessment-using-symbol-digit-modalities-test.html",
+      "@title": "SNOMED code for Assessment using Symbol Digit Modalities Test",
+      "small": "716214002"
+    },
+    "#text": "Assessment using Symbol Digit Modalities Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/720538007--assessment-using-symbolic-play-test-second-edition.html",
+      "@title": "SNOMED code for Assessment using Symbolic Play Test Second Edition",
+      "small": "720538007"
+    },
+    "#text": "Assessment using Symbolic Play Test Second Edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716217009--assessment-using-test-of-auditory-perceptual-skills-revised.html",
+      "@title": "SNOMED code for Assessment using Test of Auditory Perceptual Skills Revised",
+      "small": "716217009"
+    },
+    "#text": "Assessment using Test of Auditory Perceptual Skills Revised"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716219007--assessment-using-test-of-auditory-processing-skills-third-edition.html",
+      "@title": "SNOMED code for Assessment using Test of Auditory Processing Skills Third Edition",
+      "small": "716219007"
+    },
+    "#text": "Assessment using Test of Auditory Processing Skills Third Edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716881005--assessment-using-test-of-auditory-reasoning-and-processing-skills.html",
+      "@title": "SNOMED code for Assessment using Test of Auditory Reasoning and Processing Skills",
+      "small": "716881005"
+    },
+    "#text": "Assessment using Test of Auditory Reasoning and Processing Skills"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716885001--assessment-using-test-of-language-competence.html",
+      "@title": "SNOMED code for Assessment using Test of Language Competence",
+      "small": "716885001"
+    },
+    "#text": "Assessment using Test of Language Competence"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719321001--assessment-using-test-of-language-development-fourth-edition.html",
+      "@title": "SNOMED code for Assessment using Test of Language Development Fourth Edition",
+      "small": "719321001"
+    },
+    "#text": "Assessment using Test of Language Development Fourth Edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718625008--assessment-using-test-of-minimal-articulation-competence.html",
+      "@title": "SNOMED code for Assessment using Test of Minimal Articulation Competence",
+      "small": "718625008"
+    },
+    "#text": "Assessment using Test of Minimal Articulation Competence"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719331008--assessment-using-test-of-pragmatic-language-skills-second-edition.html",
+      "@title": "SNOMED code for Assessment using Test of Pragmatic Language Skills Second Edition",
+      "small": "719331008"
+    },
+    "#text": "Assessment using Test of Pragmatic Language Skills Second Edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716060006--assessment-using-test-of-pretend-play.html",
+      "@title": "SNOMED code for Assessment using Test of Pretend Play",
+      "small": "716060006"
+    },
+    "#text": "Assessment using Test of Pretend Play"
+  },
+  {
+    "a": {
+      "@href": "/snomed/458551000124103--assessment-using-test-of-problem-solving.html",
+      "@title": "SNOMED code for Assessment using test of problem solving",
+      "small": "458551000124103"
+    },
+    "#text": "Assessment using test of problem solving"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716815009--assessment-using-test-of-syntactic-abilities.html",
+      "@title": "SNOMED code for Assessment using Test of Syntactic Abilities",
+      "small": "716815009"
+    },
+    "#text": "Assessment using Test of Syntactic Abilities"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716826003--assessment-using-test-of-word-finding-in-discourse.html",
+      "@title": "SNOMED code for Assessment using Test of Word Finding in Discourse",
+      "small": "716826003"
+    },
+    "#text": "Assessment using Test of Word Finding in Discourse"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716210006--assessment-using-test-of-word-knowledge.html",
+      "@title": "SNOMED code for Assessment using Test of Word Knowledge",
+      "small": "716210006"
+    },
+    "#text": "Assessment using Test of Word Knowledge"
+  },
+  {
+    "a": {
+      "@href": "/snomed/458161000124105--assessment-using-texas-functional-living-scale.html",
+      "@title": "SNOMED code for Assessment using Texas functional living scale",
+      "small": "458161000124105"
+    },
+    "#text": "Assessment using Texas functional living scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/461611000124100--assessment-using-the-forgotten-joint-score.html",
+      "@title": "SNOMED code for Assessment using the Forgotten Joint Score",
+      "small": "461611000124100"
+    },
+    "#text": "Assessment using the Forgotten Joint Score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/461591000124106--assessment-using-the-king-devick-test.html",
+      "@title": "SNOMED code for Assessment using the King-Devick test",
+      "small": "461591000124106"
+    },
+    "#text": "Assessment using the King-Devick test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715915000--assessment-using-therapy-outcome-measure.html",
+      "@title": "SNOMED code for Assessment using Therapy Outcome Measure",
+      "small": "715915000"
+    },
+    "#text": "Assessment using Therapy Outcome Measure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/450737006--assessment-using-thirty-second-chair-stand-test.html",
+      "@title": "SNOMED code for Assessment using thirty second chair stand test",
+      "small": "450737006"
+    },
+    "#text": "Assessment using thirty second chair stand test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/443704002--assessment-using-tinetti-balance-and-gait-scale.html",
+      "@title": "SNOMED code for Assessment using Tinetti balance and gait scale",
+      "small": "443704002"
+    },
+    "#text": "Assessment using Tinetti balance and gait scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/443573009--assessment-using-tinetti-falls-efficacy-scale.html",
+      "@title": "SNOMED code for Assessment using Tinetti falls efficacy scale",
+      "small": "443573009"
+    },
+    "#text": "Assessment using Tinetti falls efficacy scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718626009--assessment-using-token-test.html",
+      "@title": "SNOMED code for Assessment using Token Test",
+      "small": "718626009"
+    },
+    "#text": "Assessment using Token Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/458431000124106--assessment-using-transition-readiness.html",
+      "@title": "SNOMED code for Assessment using transition readiness assessment",
+      "small": "458431000124106"
+    },
+    "#text": "Assessment using transition readiness assessment"
+  },
+  {
+    "a": {
+      "@href": "/snomed/461641000124101--assessment-using-transport-risk-index-of-physiologic-stability.html",
+      "@title": "SNOMED code for Assessment using Transport Risk Index of Physiologic Stability",
+      "small": "461641000124101"
+    },
+    "#text": "Assessment using Transport Risk Index of Physiologic Stability"
+  },
+  {
+    "a": {
+      "@href": "/snomed/770541001--assessment-using-trauma-screening-questionnaire.html",
+      "@title": "SNOMED code for Assessment using Trauma Screening Questionnaire",
+      "small": "770541001"
+    },
+    "#text": "Assessment using Trauma Screening Questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/458451000124104--assessment-using-trial-of-labor-after-cesarean-calculator.html",
+      "@title": "SNOMED code for Assessment using trial of labor after cesarean calculator",
+      "small": "458451000124104"
+    },
+    "#text": "Assessment using trial of labor after cesarean calculator"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719113001--assessment-using-twf-3-test-of-word-finding-third-edition.html",
+      "@title": "SNOMED code for Assessment using TWF-3 (Test of Word Finding Third Edition)",
+      "small": "719113001"
+    },
+    "#text": "Assessment using TWF-3 (Test of Word Finding Third Edition)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763124006--assessment-using-tym-test-your-memory.html",
+      "@title": "SNOMED code for Assessment using TYM (Test Your Memory) test",
+      "small": "763124006"
+    },
+    "#text": "Assessment using TYM (Test Your Memory) test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/763006006--assessment-using-university-of-texas-wound-classification-system.html",
+      "@title": "SNOMED code for Assessment using University of Texas Wound Classification System",
+      "small": "763006006"
+    },
+    "#text": "Assessment using University of Texas Wound Classification System"
+  },
+  {
+    "a": {
+      "@href": "/snomed/457891000124108--assessment-using-vail-sport-test.html",
+      "@title": "SNOMED code for Assessment using Vail sport test",
+      "small": "457891000124108"
+    },
+    "#text": "Assessment using Vail sport test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/709864005--assessment-using-vanderbilt-scale.html",
+      "@title": "SNOMED code for Assessment using Vanderbilt Assessment Scale",
+      "small": "709864005"
+    },
+    "#text": "Assessment using Vanderbilt Assessment Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715447000--assessment-using-verbal-rating-scale.html",
+      "@title": "SNOMED code for Assessment using Verbal Rating Scale",
+      "small": "715447000"
+    },
+    "#text": "Assessment using Verbal Rating Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/443703008--assessment-using-vestibular-disorders-activities-of-daily-living-scale.html",
+      "@title": "SNOMED code for Assessment using vestibular disorders activities of daily living scale",
+      "small": "443703008"
+    },
+    "#text": "Assessment using vestibular disorders activities of daily living scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/458031000124102--assessment-using-vestibular-ocular-motor-screening.html",
+      "@title": "SNOMED code for Assessment using vestibular ocular motor screening",
+      "small": "458031000124102"
+    },
+    "#text": "Assessment using vestibular ocular motor screening"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446217007--assessment-using-victorian-institute-of-sport-achilles-questionnaire.html",
+      "@title": "SNOMED code for Assessment using Victorian Institute of Sport Assessment-Achilles questionnaire",
+      "small": "446217007"
+    },
+    "#text": "Assessment using Victorian Institute of Sport Assessment-Achilles questionnaire"
+  },
+  {
+    "a": {
+      "@href": "/snomed/458141000124106--assessment-using-villalta-scale.html",
+      "@title": "SNOMED code for Assessment using Villalta scale",
+      "small": "458141000124106"
+    },
+    "#text": "Assessment using Villalta scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716095009--assessment-using-vineland-adaptive-behavior-scales-second-edition.html",
+      "@title": "SNOMED code for Assessment using Vineland Adaptive Behavior Scales, Second Edition",
+      "small": "716095009"
+    },
+    "#text": "Assessment using Vineland Adaptive Behavior Scales, Second Edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445719003--assessment-using-visual-analog-pain-scale.html",
+      "@title": "SNOMED code for Assessment using visual analog pain scale",
+      "small": "445719003"
+    },
+    "#text": "Assessment using visual analog pain scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446184003--assessment-using-visual-analog-scale.html",
+      "@title": "SNOMED code for Assessment using visual analog scale",
+      "small": "446184003"
+    },
+    "#text": "Assessment using visual analog scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445577007--assessment-using-visual-infusion-phlebitis-scale.html",
+      "@title": "SNOMED code for Assessment using visual infusion phlebitis scale",
+      "small": "445577007"
+    },
+    "#text": "Assessment using visual infusion phlebitis scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/717019008--assessment-using-vocal-profile-analysis-scheme.html",
+      "@title": "SNOMED code for Assessment using Vocal Profile Analysis Scheme",
+      "small": "717019008"
+    },
+    "#text": "Assessment using Vocal Profile Analysis Scheme"
+  },
+  {
+    "a": {
+      "@href": "/snomed/450757005--assessment-using-voice-handicap-index.html",
+      "@title": "SNOMED code for Assessment using voice handicap index",
+      "small": "450757005"
+    },
+    "#text": "Assessment using voice handicap index"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718391000--assessment-using-voice-impact-profile.html",
+      "@title": "SNOMED code for Assessment using Voice Impact Profile",
+      "small": "718391000"
+    },
+    "#text": "Assessment using Voice Impact Profile"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445978007--assessment-using-volitional-questionnaire-version-41.html",
+      "@title": "SNOMED code for Assessment using volitional questionnaire version 4.1",
+      "small": "445978007"
+    },
+    "#text": "Assessment using volitional questionnaire version 4.1"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719215002--assessment-using-wab-western-aphasia-battery.html",
+      "@title": "SNOMED code for Assessment using WAB (Western Aphasia Battery)",
+      "small": "719215002"
+    },
+    "#text": "Assessment using WAB (Western Aphasia Battery)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718425001--assessment-using-warwick-edinburgh-mental-well-being-scale.html",
+      "@title": "SNOMED code for Assessment using Warwick-Edinburgh Mental Well-being Scale",
+      "small": "718425001"
+    },
+    "#text": "Assessment using Warwick-Edinburgh Mental Well-being Scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/719076003--assessment-using-wepman-auditory-discrimination-test-second-edition.html",
+      "@title": "SNOMED code for Assessment using Wepman Auditory Discrimination Test Second Edition",
+      "small": "719076003"
+    },
+    "#text": "Assessment using Wepman Auditory Discrimination Test Second Edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716208009--assessment-using-western-aphasia-battery-revised.html",
+      "@title": "SNOMED code for Assessment using Western Aphasia Battery Revised",
+      "small": "716208009"
+    },
+    "#text": "Assessment using Western Aphasia Battery Revised"
+  },
+  {
+    "a": {
+      "@href": "/snomed/458121000124104--assessment-using-westley-croup-score.html",
+      "@title": "SNOMED code for Assessment using Westley croup score",
+      "small": "458121000124104"
+    },
+    "#text": "Assessment using Westley croup score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446760004--assessment-using-westmead-home-safety.html",
+      "@title": "SNOMED code for Assessment using Westmead home safety assessment",
+      "small": "446760004"
+    },
+    "#text": "Assessment using Westmead home safety assessment"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716093002--assessment-using-westmead-post-traumatic-amnesia-scale.html",
+      "@title": "SNOMED code for Assessment using Westmead Post-Traumatic Amnesia scale",
+      "small": "716093002"
+    },
+    "#text": "Assessment using Westmead Post-Traumatic Amnesia scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716876001--assessment-using-wiig-cril-criterion-referenced-inventory-of-language.html",
+      "@title": "SNOMED code for Assessment using Wiig CRIL (Criterion Referenced Inventory of Language)",
+      "small": "716876001"
+    },
+    "#text": "Assessment using Wiig CRIL (Criterion Referenced Inventory of Language)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716205007--assessment-using-wisconsin-card-sorting-test.html",
+      "@title": "SNOMED code for Assessment using Wisconsin Card Sorting Test",
+      "small": "716205007"
+    },
+    "#text": "Assessment using Wisconsin Card Sorting Test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716767003--assessment-using-wold-wechsler-objective-language-dimensions-test.html",
+      "@title": "SNOMED code for Assessment using WOLD (Wechsler Objective Language Dimensions) test",
+      "small": "716767003"
+    },
+    "#text": "Assessment using WOLD (Wechsler Objective Language Dimensions) test"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446174004--assessment-using-work-ability-index.html",
+      "@title": "SNOMED code for Assessment using work ability index",
+      "small": "446174004"
+    },
+    "#text": "Assessment using work ability index"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445981002--assessment-using-work-environment-impact-scale-version-20.html",
+      "@title": "SNOMED code for Assessment using work environment impact scale version 2.0",
+      "small": "445981002"
+    },
+    "#text": "Assessment using work environment impact scale version 2.0"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445980001--assessment-using-worker-role-interview-version-100.html",
+      "@title": "SNOMED code for Assessment using worker role interview version 10.0",
+      "small": "445980001"
+    },
+    "#text": "Assessment using worker role interview version 10.0"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445984005--assessment-using-world-health-organisation-fracture-risk-tool-for-osteoporotic-probability.html",
+      "@title": "SNOMED code for Assessment using World Health Organisation fracture risk assessment tool for osteoporotic fracture probability",
+      "small": "445984005"
+    },
+    "span": {
+      "@style": "color:red;",
+      "#text": "removed: 2018-01-31"
+    },
+    "#text": "Assessment using World Health Organisation fracture risk assessment tool for osteoporotic fracture probability"
+  },
+  {
+    "a": {
+      "@href": "/snomed/716240008--assessment-using-world-health-organization-disability-schedule-20.html",
+      "@title": "SNOMED code for Assessment using World Health Organization Disability Assessment Schedule 2.0",
+      "small": "716240008"
+    },
+    "#text": "Assessment using World Health Organization Disability Assessment Schedule 2.0"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445979004--assessment-using-world-health-organization-fracture-risk-tool-for-hip-probability.html",
+      "@title": "SNOMED code for Assessment using World Health Organization fracture risk assessment tool for hip fracture probability",
+      "small": "445979004"
+    },
+    "span": {
+      "@style": "color:red;",
+      "#text": "removed: 2018-01-31"
+    },
+    "#text": "Assessment using World Health Organization fracture risk assessment tool for hip fracture probability"
+  },
+  {
+    "a": {
+      "@href": "/snomed/450730008--assessment-using-world-health-organization-surgical-safety-checklist-first-edition.html",
+      "@title": "SNOMED code for Assessment using World Health Organization surgical safety checklist first edition",
+      "small": "450730008"
+    },
+    "#text": "Assessment using World Health Organization surgical safety checklist first edition"
+  },
+  {
+    "a": {
+      "@href": "/snomed/458011000124108--assessment-using-yale-global-tic-severity-scale.html",
+      "@title": "SNOMED code for Assessment using Yale global tic severity scale",
+      "small": "458011000124108"
+    },
+    "#text": "Assessment using Yale global tic severity scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715444007--assessment-using-yale-swallow-protocol.html",
+      "@title": "SNOMED code for Assessment using Yale Swallow Protocol",
+      "small": "715444007"
+    },
+    "#text": "Assessment using Yale Swallow Protocol"
+  },
+  {
+    "a": {
+      "@href": "/snomed/458511000124104--assessment-using-young-mania-rating-scale.html",
+      "@title": "SNOMED code for Assessment using Young mania rating scale",
+      "small": "458511000124104"
+    },
+    "#text": "Assessment using Young mania rating scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718737000--assessment-using-zung-self-rating-depression-scale.html",
+      "@title": "SNOMED code for Assessment using Zung self rating depression scale",
+      "small": "718737000"
+    },
+    "#text": "Assessment using Zung self rating depression scale"
+  },
+  {
+    "a": {
+      "@href": "/snomed/458341000124109--assessment-using-zwolle-risk-score.html",
+      "@title": "SNOMED code for Assessment using Zwolle risk score",
+      "small": "458341000124109"
+    },
+    "#text": "Assessment using Zwolle risk score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/446219005--assessment-using-arnadattir-occupational-therapy-activities-of-daily-living-neurobehavioral-evaluation.html",
+      "@title": "SNOMED code for Assessment using Ã\u0081rnadÃ³ttir occupational therapy-activities of daily living neurobehavioral evaluation",
+      "small": "446219005"
+    },
+    "#text": "Assessment using Ã\u0081rnadÃ³ttir occupational therapy-activities of daily living neurobehavioral evaluation"
+  },
+  {
+    "a": {
+      "@href": "/snomed/715252007--depression-screening-using-phq-9-patient-health-questionnaire-score.html",
+      "@title": "SNOMED code for Depression screening using PHQ-9 (Patient Health Questionnaire 9) score",
+      "small": "715252007"
+    },
+    "#text": "Depression screening using PHQ-9 (Patient Health Questionnaire 9) score"
+  },
+  {
+    "a": {
+      "@href": "/snomed/736954004--hip-fracture-probability-assessment-using-frax-risk-tool.html",
+      "@title": "SNOMED code for Hip fracture probability assessment using FRAX (fracture risk assessment tool)",
+      "small": "736954004"
+    },
+    "#text": "Hip fracture probability assessment using FRAX (fracture risk assessment tool)"
+  },
+  {
+    "a": {
+      "@href": "/snomed/736955003--osteoporotic-fracture-probability-assessment-using-frax-risk-tool.html",
+      "@title": "SNOMED code for Osteoporotic fracture probability assessment using FRAX (fracture risk assessment tool)",
+      "small": "736955003"
+    },
+    "#text": "Osteoporotic fracture probability assessment using FRAX (fracture risk assessment tool)"
+  }
+]

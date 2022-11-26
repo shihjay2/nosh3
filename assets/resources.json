@@ -1,0 +1,109 @@
+{
+  "rows": [
+    {
+      "resource": "allergy_intolerances",
+      "icon": "warning",
+      "label": "Allergies"
+    },
+    {
+      "resource": "appointments",
+      "icon": "event",
+      "label": "Appointments"
+    },
+    {
+      "resource": "bundles",
+      "icon": "source",
+      "label": "Bundles"
+    },
+    {
+      "resource": "care_plans",
+      "icon": "next_plan",
+      "label": "Care Plans"
+    },
+    {
+      "resource": "claims",
+      "icon": "request_quote",
+      "label": "Claims"
+    },
+    {
+      "resource": "communications",
+      "icon": "chat",
+      "label": "Communications"
+    },
+    {
+      "resource": "compositions",
+      "icon": "edit_note",
+      "label": "Compositions"
+    },
+    {
+      "resource": "conditions",
+      "icon": "list",
+      "label": "Conditions"
+    },
+    {
+      "resource": "document_references",
+      "icon": "description",
+      "label": "Documents"
+    },
+    {
+      "resource": "encounters",
+      "icon": "event",
+      "label": "Encounters"
+    },
+    {
+      "resource": "immunizations",
+      "icon": "vaccines",
+      "label": "Immunizations"
+    },
+    {
+      "resource": "invoices",
+      "icon": "receipt_long",
+      "label": "Invoices"
+    },
+    {
+      "resource": "medication_requests",
+      "icon": "medication",
+      "label": "Medication Requests"
+    },
+    {
+      "resource": "medication_statements",
+      "icon": "medication",
+      "label": "Medications"
+    },
+    {
+      "resource": "observations",
+      "icon": "biotech",
+      "label": "Observations"
+    },
+    {
+      "resource": "patients",
+      "icon": "person",
+      "label": "Patients"
+    },
+    {
+      "resource": "practitioners",
+      "icon": "masks",
+      "label": "Patients"
+    },
+    {
+      "resource": "related_persons",
+      "icon": "groups",
+      "label": "Related Persons"
+    },
+    {
+      "resource": "service_requests",
+      "icon": "subscriptions",
+      "label": "Service Requests"
+    },
+    {
+      "resource": "tasks",
+      "icon": "task",
+      "label": "Tasks"
+    },
+    {
+      "resource": "users",
+      "icon": "group",
+      "label": "Users"
+    }
+  ]
+}

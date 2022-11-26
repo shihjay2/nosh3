@@ -1,0 +1,746 @@
+[
+  {
+    "Code": "BP ",
+    "System": "http://terminology.hl7.org/CodeSystem/v2-0131",
+    "Display": "Billing contact person",
+    "Definition": "Billing contact person"
+  },
+  {
+    "Code": "CP ",
+    "System": "http://terminology.hl7.org/CodeSystem/v2-0131",
+    "Display": "Contact person",
+    "Definition": "Contact person"
+  },
+  {
+    "Code": "EP ",
+    "System": "http://terminology.hl7.org/CodeSystem/v2-0131",
+    "Display": "Emergency contact person",
+    "Definition": "Emergency contact person"
+  },
+  {
+    "Code": "PR ",
+    "System": "http://terminology.hl7.org/CodeSystem/v2-0131",
+    "Display": "Person preparing referral",
+    "Definition": "Person preparing referral"
+  },
+  {
+    "Code": "E ",
+    "System": "http://terminology.hl7.org/CodeSystem/v2-0131",
+    "Display": "Employer",
+    "Definition": "Employer"
+  },
+  {
+    "Code": "C ",
+    "System": "http://terminology.hl7.org/CodeSystem/v2-0131",
+    "Display": "Emergency Contact",
+    "Definition": "Emergency Contact"
+  },
+  {
+    "Code": "F ",
+    "System": "http://terminology.hl7.org/CodeSystem/v2-0131",
+    "Display": "Federal Agency",
+    "Definition": "Federal Agency"
+  },
+  {
+    "Code": "I ",
+    "System": "http://terminology.hl7.org/CodeSystem/v2-0131",
+    "Display": "Insurance Company",
+    "Definition": "Insurance Company"
+  },
+  {
+    "Code": "N ",
+    "System": "http://terminology.hl7.org/CodeSystem/v2-0131",
+    "Display": "Next-of-Kin",
+    "Definition": "Next-of-Kin"
+  },
+  {
+    "Code": "S ",
+    "System": "http://terminology.hl7.org/CodeSystem/v2-0131",
+    "Display": "State Agency",
+    "Definition": "State Agency"
+  },
+  {
+    "Code": "O ",
+    "System": "http://terminology.hl7.org/CodeSystem/v2-0131",
+    "Display": "Other",
+    "Definition": "Other"
+  },
+  {
+    "Code": "U ",
+    "System": "http://terminology.hl7.org/CodeSystem/v2-0131",
+    "Display": "Unknown",
+    "Definition": "Unknown"
+  },
+  {
+    "Code": "_PersonalRelationshipRoleType ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "PersonalRelationshipRoleType",
+    "Definition": ""
+  },
+  {
+    "Code": "FAMMEMB ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "family member",
+    "Definition": "A relationship between two people characterizing their "
+  },
+  {
+    "Code": "CHILD ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "child",
+    "Definition": "The player of the role is a child of the scoping entity."
+  },
+  {
+    "Code": "CHLDADOPT ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "adopted child",
+    "Definition": "The player of the role is a child taken into a family through legal means and raised by the scoping person (parent) as his or her own child."
+  },
+  {
+    "Code": "DAUADOPT ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "adopted daughter",
+    "Definition": "The player of the role is a female child taken into a family through legal means and raised by the scoping person (parent) as his or her own child."
+  },
+  {
+    "Code": "SONADOPT ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "adopted son",
+    "Definition": "The player of the role is a male child taken into a family through legal means and raised by the scoping person (parent) as his or her own child."
+  },
+  {
+    "Code": "CHLDFOST ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "foster child",
+    "Definition": "The player of the role is a child receiving parental care and nurture from the scoping person (parent) but not related to him or her through legal or blood ties."
+  },
+  {
+    "Code": "DAUFOST ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "foster daughter",
+    "Definition": "The player of the role is a female child receiving parental care and nurture from the scoping person (parent) but not related to him or her through legal or blood ties."
+  },
+  {
+    "Code": "SONFOST ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "foster son",
+    "Definition": "The player of the role is a male child receiving parental care and nurture from the scoping person (parent) but not related to him or her through legal or blood ties."
+  },
+  {
+    "Code": "DAUC ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "daughter",
+    "Definition": "**Description:** The player of the role is a female child (of any type) of scoping entity (parent)"
+  },
+  {
+    "Code": "DAU ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "natural daughter",
+    "Definition": "The player of the role is a female offspring of the scoping entity (parent)."
+  },
+  {
+    "Code": "STPDAU ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "stepdaughter",
+    "Definition": "The player of the role is a daughter of the scoping person's spouse by a previous union."
+  },
+  {
+    "Code": "NCHILD ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "natural child",
+    "Definition": "The player of the role is an offspring of the scoping entity as determined by birth."
+  },
+  {
+    "Code": "SON ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "natural son",
+    "Definition": "The player of the role is a male offspring of the scoping entity (parent)."
+  },
+  {
+    "Code": "SONC ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "son",
+    "Definition": "**Description:** The player of the role is a male child (of any type) of scoping entity (parent)"
+  },
+  {
+    "Code": "STPSON ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "stepson",
+    "Definition": "The player of the role is a son of the scoping person's spouse by a previous union."
+  },
+  {
+    "Code": "STPCHLD ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "step child",
+    "Definition": "The player of the role is a child of the scoping person's spouse by a previous union."
+  },
+  {
+    "Code": "EXT ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "extended family member",
+    "Definition": "**Description:** A family member not having an immediate genetic or legal relationship e.g. Aunt"
+  },
+  {
+    "Code": "AUNT ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "aunt",
+    "Definition": "The player of the role is a sister of the scoping person's mother or father."
+  },
+  {
+    "Code": "MAUNT ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "maternal aunt",
+    "Definition": "**Description:**The player of the role is a biological sister of the scoping person's biological mother."
+  },
+  {
+    "Code": "PAUNT ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "paternal aunt",
+    "Definition": "**Description:**The player of the role is a biological sister of the scoping person's biological father."
+  },
+  {
+    "Code": "COUSN ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "cousin",
+    "Definition": "The player of the role is a relative of the scoping person descended from a common ancestor"
+  },
+  {
+    "Code": "MCOUSN ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "maternal cousin",
+    "Definition": "**Description:**The player of the role is a biological relative of the scoping person descended from a common ancestor on the player's mother's side"
+  },
+  {
+    "Code": "PCOUSN ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "paternal cousin",
+    "Definition": "**Description:**The player of the role is a biological relative of the scoping person descended from a common ancestor on the player's father's side"
+  },
+  {
+    "Code": "GGRPRN ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "great grandparent",
+    "Definition": "The player of the role is a parent of the scoping person's grandparent."
+  },
+  {
+    "Code": "GGRFTH ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "great grandfather",
+    "Definition": "The player of the role is the father of the scoping person's grandparent."
+  },
+  {
+    "Code": "MGGRFTH ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "maternal great-grandfather",
+    "Definition": "**Description:**The player of the role is the biological father of the scoping person's biological mother's parent."
+  },
+  {
+    "Code": "PGGRFTH ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "paternal great-grandfather",
+    "Definition": "**Description:**The player of the role is the biological father of the scoping person's biological father's parent."
+  },
+  {
+    "Code": "GGRMTH ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "great grandmother",
+    "Definition": "The player of the role is the mother of the scoping person's grandparent."
+  },
+  {
+    "Code": "MGGRMTH ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "maternal great-grandmother",
+    "Definition": "**Description:**The player of the role is the biological mother of the scoping person's biological mother's parent."
+  },
+  {
+    "Code": "PGGRMTH ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "paternal great-grandmother",
+    "Definition": "**Description:**The player of the role is the biological mother of the scoping person's biological father's parent."
+  },
+  {
+    "Code": "MGGRPRN ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "maternal great-grandparent",
+    "Definition": "**Description:**The player of the role is a biological parent of the scoping person's biological mother's parent."
+  },
+  {
+    "Code": "PGGRPRN ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "paternal great-grandparent",
+    "Definition": "**Description:**The player of the role is a biological parent of the scoping person's biological father's parent."
+  },
+  {
+    "Code": "GRNDCHILD ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "grandchild",
+    "Definition": "The player of the role is a child of the scoping person's son or daughter."
+  },
+  {
+    "Code": "GRNDDAU ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "granddaughter",
+    "Definition": "The player of the role is a daughter of the scoping person's son or daughter."
+  },
+  {
+    "Code": "GRNDSON ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "grandson",
+    "Definition": "The player of the role is a son of the scoping person's son or daughter."
+  },
+  {
+    "Code": "GRPRN ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "grandparent",
+    "Definition": "The player of the role is a parent of the scoping person's mother or father."
+  },
+  {
+    "Code": "GRFTH ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "grandfather",
+    "Definition": "The player of the role is the father of the scoping person's mother or father."
+  },
+  {
+    "Code": "MGRFTH ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "maternal grandfather",
+    "Definition": "**Description:**The player of the role is the biological father of the scoping person's biological mother."
+  },
+  {
+    "Code": "PGRFTH ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "paternal grandfather",
+    "Definition": "**Description:**The player of the role is the biological father of the scoping person's biological father."
+  },
+  {
+    "Code": "GRMTH ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "grandmother",
+    "Definition": "The player of the role is the mother of the scoping person's mother or father."
+  },
+  {
+    "Code": "MGRMTH ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "maternal grandmother",
+    "Definition": "**Description:**The player of the role is the biological mother of the scoping person's biological mother."
+  },
+  {
+    "Code": "PGRMTH ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "paternal grandmother",
+    "Definition": "**Description:**The player of the role is the biological mother of the scoping person's biological father."
+  },
+  {
+    "Code": "MGRPRN ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "maternal grandparent",
+    "Definition": "**Description:**The player of the role is the biological parent of the scoping person's biological mother."
+  },
+  {
+    "Code": "PGRPRN ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "paternal grandparent",
+    "Definition": "**Description:**The player of the role is the biological parent of the scoping person's biological father."
+  },
+  {
+    "Code": "INLAW ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "inlaw",
+    "Definition": "A relationship between an individual and a member of their spousal partner's immediate family."
+  },
+  {
+    "Code": "CHLDINLAW ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "child-in-law",
+    "Definition": "The player of the role is the spouse of scoping person's child."
+  },
+  {
+    "Code": "DAUINLAW ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "daughter in-law",
+    "Definition": "The player of the role is the wife of scoping person's son."
+  },
+  {
+    "Code": "SONINLAW ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "son in-law",
+    "Definition": "The player of the role is the husband of scoping person's daughter."
+  },
+  {
+    "Code": "PRNINLAW ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "parent in-law",
+    "Definition": "The player of the role is the parent of scoping person's husband or wife."
+  },
+  {
+    "Code": "FTHINLAW ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "father-in-law",
+    "Definition": "The player of the role is the father of the scoping person's husband or wife."
+  },
+  {
+    "Code": "MTHINLAW ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "mother-in-law",
+    "Definition": "The player of the role is the mother of the scoping person's husband or wife."
+  },
+  {
+    "Code": "MTHINLOAW ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "mother-in-law",
+    "Definition": "The player of the role is the mother of the scoping person's husband or wife."
+  },
+  {
+    "Code": "SIBINLAW ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "sibling in-law",
+    "Definition": "The player of the role is: (1) a sibling of the scoping person's spouse"
+  },
+  {
+    "Code": "BROINLAW ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "brother-in-law",
+    "Definition": "The player of the role is: (1) a brother of the scoping person's spouse"
+  },
+  {
+    "Code": "SISINLAW ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "sister-in-law",
+    "Definition": "The player of the role is: (1) a sister of the scoping person's spouse"
+  },
+  {
+    "Code": "SISLINLAW ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "sister-in-law",
+    "Definition": "The player of the role is: (1) a sister of the scoping person's spouse"
+  },
+  {
+    "Code": "NIENEPH ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "niece/nephew",
+    "Definition": "The player of the role is a child of scoping person's brother or sister or of the brother or sister of the scoping person's spouse."
+  },
+  {
+    "Code": "NEPHEW ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "nephew",
+    "Definition": "The player of the role is a son of the scoping person's brother or sister or of the brother or sister of the scoping person's spouse."
+  },
+  {
+    "Code": "NIECE ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "niece",
+    "Definition": "The player of the role is a daughter of the scoping person's brother or sister or of the brother or sister of the scoping person's spouse."
+  },
+  {
+    "Code": "UNCLE ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "uncle",
+    "Definition": "The player of the role is a brother of the scoping person's mother or father."
+  },
+  {
+    "Code": "MUNCLE ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "maternal uncle",
+    "Definition": "**Description:**The player of the role is a biological brother of the scoping person's biological mother."
+  },
+  {
+    "Code": "PUNCLE ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "paternal uncle",
+    "Definition": "**Description:**The player of the role is a biological brother of the scoping person's biological father."
+  },
+  {
+    "Code": "PRN ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "parent",
+    "Definition": "The player of the role is one who begets"
+  },
+  {
+    "Code": "ADOPTP ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "adoptive parent",
+    "Definition": "The player of the role (parent) has taken the scoper (child) into their family through legal means and raises them as his or her own child."
+  },
+  {
+    "Code": "ADOPTF ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "adoptive father",
+    "Definition": "The player of the role (father) is a male who has taken the scoper (child) into their family through legal means and raises them as his own child."
+  },
+  {
+    "Code": "ADOPTM ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "adoptive mother",
+    "Definition": "The player of the role (father) is a female who has taken the scoper (child) into their family through legal means and raises them as her own child."
+  },
+  {
+    "Code": "FTH ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "father",
+    "Definition": "The player of the role is a male who begets or raises or nurtures the scoping entity (child)."
+  },
+  {
+    "Code": "FTHFOST ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "foster father",
+    "Definition": "The player of the role (parent) who is a male state-certified caregiver responsible for the scoper (child) who has been placed in the parent's care. The placement of the child is usually arranged through the government or a social-service agency"
+  },
+  {
+    "Code": "NFTH ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "natural father",
+    "Definition": "The player of the role is a male who begets the scoping entity (child)."
+  },
+  {
+    "Code": "NFTHF ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "natural father of fetus",
+    "Definition": "Indicates the biologic male parent of a fetus."
+  },
+  {
+    "Code": "STPFTH ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "stepfather",
+    "Definition": "The player of the role is the husband of scoping person's mother and not the scoping person's natural father."
+  },
+  {
+    "Code": "MTH ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "mother",
+    "Definition": "The player of the role is a female who conceives"
+  },
+  {
+    "Code": "GESTM ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "gestational mother",
+    "Definition": "The player is a female whose womb carries the fetus of the scoper. Generally used when the gestational mother and natural mother are not the same."
+  },
+  {
+    "Code": "MTHFOST ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "foster mother",
+    "Definition": "The player of the role (parent) who is a female state-certified caregiver responsible for the scoper (child) who has been placed in the parent's care. The placement of the child is usually arranged through the government or a social-service agency"
+  },
+  {
+    "Code": "NMTH ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "natural mother",
+    "Definition": "The player of the role is a female who conceives or gives birth to the scoping entity (child)."
+  },
+  {
+    "Code": "NMTHF ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "natural mother of fetus",
+    "Definition": "The player is the biologic female parent of the scoping fetus."
+  },
+  {
+    "Code": "STPMTH ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "stepmother",
+    "Definition": "The player of the role is the wife of scoping person's father and not the scoping person's natural mother."
+  },
+  {
+    "Code": "NPRN ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "natural parent",
+    "Definition": ""
+  },
+  {
+    "Code": "PRNFOST ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "foster parent",
+    "Definition": "The player of the role (parent) who is a state-certified caregiver responsible for the scoper (child) who has been placed in the parent's care. The placement of the child is usually arranged through the government or a social-service agency"
+  },
+  {
+    "Code": "STPPRN ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "step parent",
+    "Definition": "The player of the role is the spouse of the scoping person's parent and not the scoping person's natural parent."
+  },
+  {
+    "Code": "SIB ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "sibling",
+    "Definition": "The player of the role shares one or both parents in common with the scoping entity."
+  },
+  {
+    "Code": "BRO ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "brother",
+    "Definition": "The player of the role is a male sharing one or both parents in common with the scoping entity."
+  },
+  {
+    "Code": "HBRO ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "half-brother",
+    "Definition": "The player of the role is a male related to the scoping entity by sharing only one biological parent."
+  },
+  {
+    "Code": "NBRO ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "natural brother",
+    "Definition": "The player of the role is a male having the same biological parents as the scoping entity."
+  },
+  {
+    "Code": "TWINBRO ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "twin brother",
+    "Definition": "The scoper was carried in the same womb as the male player and shares common biological parents."
+  },
+  {
+    "Code": "FTWINBRO ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "fraternal twin brother",
+    "Definition": "The scoper was carried in the same womb as the male player and shares common biological parents but is the product of a distinct egg/sperm pair."
+  },
+  {
+    "Code": "ITWINBRO ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "identical twin brother",
+    "Definition": "The male scoper is an offspring of the same egg-sperm pair as the male player."
+  },
+  {
+    "Code": "STPBRO ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "stepbrother",
+    "Definition": "The player of the role is a son of the scoping person's stepparent."
+  },
+  {
+    "Code": "HSIB ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "half-sibling",
+    "Definition": "The player of the role is related to the scoping entity by sharing only one biological parent."
+  },
+  {
+    "Code": "HSIS ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "half-sister",
+    "Definition": "The player of the role is a female related to the scoping entity by sharing only one biological parent."
+  },
+  {
+    "Code": "NSIB ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "natural sibling",
+    "Definition": "The player of the role has both biological parents in common with the scoping entity."
+  },
+  {
+    "Code": "NSIS ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "natural sister",
+    "Definition": "The player of the role is a female having the same biological parents as the scoping entity."
+  },
+  {
+    "Code": "TWINSIS ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "twin sister",
+    "Definition": "The scoper was carried in the same womb as the female player and shares common biological parents."
+  },
+  {
+    "Code": "FTWINSIS ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "fraternal twin sister",
+    "Definition": "The scoper was carried in the same womb as the female player and shares common biological parents but is the product of a distinct egg/sperm pair."
+  },
+  {
+    "Code": "ITWINSIS ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "identical twin sister",
+    "Definition": "The female scoper is an offspring of the same egg-sperm pair as the female player."
+  },
+  {
+    "Code": "TWIN ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "twin",
+    "Definition": "The scoper and player were carried in the same womb and shared common biological parents."
+  },
+  {
+    "Code": "FTWIN ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "fraternal twin",
+    "Definition": "The scoper and player were carried in the same womb and share common biological parents but are the product of distinct egg/sperm pairs."
+  },
+  {
+    "Code": "ITWIN ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "identical twin",
+    "Definition": "The scoper and player are offspring of the same egg-sperm pair."
+  },
+  {
+    "Code": "SIS ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "sister",
+    "Definition": "The player of the role is a female sharing one or both parents in common with the scoping entity."
+  },
+  {
+    "Code": "STPSIS ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "stepsister",
+    "Definition": "The player of the role is a daughter of the scoping person's stepparent."
+  },
+  {
+    "Code": "STPSIB ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "step sibling",
+    "Definition": "The player of the role is a child of the scoping person's stepparent."
+  },
+  {
+    "Code": "SIGOTHR ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "significant other",
+    "Definition": "A person who is important to one's well being; especially a spouse or one in a similar relationship. (The player is the one who is important)"
+  },
+  {
+    "Code": "DOMPART ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "domestic partner",
+    "Definition": "The player of the role cohabits with the scoping person but is not the scoping person's spouse."
+  },
+  {
+    "Code": "FMRSPS ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "former spouse",
+    "Definition": "Player of the role was previously joined to the scoping person in marriage and this marriage is now dissolved and inactive."
+  },
+  {
+    "Code": "SPS ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "spouse",
+    "Definition": "The player of the role is a marriage partner of the scoping person."
+  },
+  {
+    "Code": "HUSB ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "husband",
+    "Definition": "The player of the role is a man joined to a woman (scoping person) in marriage."
+  },
+  {
+    "Code": "WIFE ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "wife",
+    "Definition": "The player of the role is a woman joined to a man (scoping person) in marriage."
+  },
+  {
+    "Code": "FRND ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "unrelated friend",
+    "Definition": "The player of the role is a person who is known"
+  },
+  {
+    "Code": "NBOR ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "neighbor",
+    "Definition": "The player of the role lives near or next to the scoping person."
+  },
+  {
+    "Code": "ONESELF ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "self",
+    "Definition": "The relationship that a person has with his or her self."
+  },
+  {
+    "Code": "ROOM ",
+    "System": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    "Display": "Roommate",
+    "Definition": "One who shares living quarters with the subject."
+  }
+]

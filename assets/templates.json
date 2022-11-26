@@ -1,0 +1,65 @@
+[
+  {
+    "id": "ros",
+    "text": "Review of Systems: See HPI - otherwise negative"
+  },
+  {
+    "id": "fh",
+    "text": "Mother: \nFather: \nSiblings: \nChildren:"
+  },
+  {
+    "id": "etoh",
+    "text": "*x/week, * drinks/session, *x/month of >6 drinks on one occasion"
+  },
+  {
+    "id": "exercise",
+    "text": "*x/week, * min/session"
+  },
+  {
+    "id": "diet",
+    "text": "*x/week eats out, *% plant-based, *x/week sweetened beverages"
+  },
+  {
+    "id": "sh",
+    "text": "General:\nOccupation: \nLiving situation: \nRelationship status: \nSexually active w/: \nExercise: \nDiet & Nutrition: \nTobacco: \nAlcohol: \nSubstances: "
+  },
+  { "id": "gen",
+    "text": "Awake, alert, not in acute distress."
+  },
+  {
+    "id": "heent",
+    "text": "Pupils equal, round, and reactive to light and accommodation; extraocular movements intact, normal conjunctiva & lids, hearing grossly normal, external auditory canals and tympanic membranes normal, good dentition, oropharynx clear."
+  },
+  {
+    "id": "neck",
+    "text": "Supple, no thyromegaly or nodules, no lymphadenopathy"
+  },
+  {
+    "id": "lungs",
+    "text": "Clear to auscultation bilaterally."
+  },
+  {
+    "id": "cv",
+    "text": "Regular rate and rhythm. No murmurs, rubs, or gallops. No edema."
+  },
+  {
+    "id": "abd",
+    "text": "Normoactive bowel sounds, nontender, nondistended, no masses or hepatosplenomegaly."
+  },
+  {
+    "id": "ms",
+    "text": "Grossly normal."
+  },
+  {
+    "id": "neuro",
+    "text": "Normal cognition, cranial nerves 2-12 grossly intact, normal strength, normal gait."
+  },
+  {
+    "id": "psych",
+    "text": "Normal judgment, insight, mood, affect."
+  },
+  {
+    "id": "skin",
+    "text": "No rashes, ecchymoses, suspicious lesions."
+  }
+]

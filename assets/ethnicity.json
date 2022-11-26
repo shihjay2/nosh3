@@ -1,0 +1,248 @@
+[
+  {
+      "Code": "2137-8",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Spaniard",
+      "Definition": ""
+  },
+  {
+      "Code": "2138-6",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Andalusian",
+      "Definition": ""
+  },
+  {
+      "Code": "2139-4",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Asturian",
+      "Definition": ""
+  },
+  {
+      "Code": "2140-2",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Castillian",
+      "Definition": ""
+  },
+  {
+      "Code": "2141-0",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Catalonian",
+      "Definition": ""
+  },
+  {
+      "Code": "2142-8",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Belearic Islander",
+      "Definition": ""
+  },
+  {
+      "Code": "2143-6",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Gallego",
+      "Definition": ""
+  },
+  {
+      "Code": "2144-4",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Valencian",
+      "Definition": ""
+  },
+  {
+      "Code": "2145-1",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Canarian",
+      "Definition": ""
+  },
+  {
+      "Code": "2146-9",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Spanish Basque",
+      "Definition": ""
+  },
+  {
+      "Code": "2148-5",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Mexican",
+      "Definition": ""
+  },
+  {
+      "Code": "2149-3",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Mexican American",
+      "Definition": ""
+  },
+  {
+      "Code": "2150-1",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Mexicano",
+      "Definition": ""
+  },
+  {
+      "Code": "2151-9",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Chicano",
+      "Definition": ""
+  },
+  {
+      "Code": "2152-7",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "La Raza",
+      "Definition": ""
+  },
+  {
+      "Code": "2153-5",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Mexican American Indian",
+      "Definition": ""
+  },
+  {
+      "Code": "2155-0",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Central American",
+      "Definition": ""
+  },
+  {
+      "Code": "2156-8",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Costa Rican",
+      "Definition": ""
+  },
+  {
+      "Code": "2157-6",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Guatemalan",
+      "Definition": ""
+  },
+  {
+      "Code": "2158-4",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Honduran",
+      "Definition": ""
+  },
+  {
+      "Code": "2159-2",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Nicaraguan",
+      "Definition": ""
+  },
+  {
+      "Code": "2160-0",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Panamanian",
+      "Definition": ""
+  },
+  {
+      "Code": "2161-8",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Salvadoran",
+      "Definition": ""
+  },
+  {
+      "Code": "2162-6",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Central American Indian",
+      "Definition": ""
+  },
+  {
+      "Code": "2163-4",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Canal Zone",
+      "Definition": ""
+  },
+  {
+      "Code": "2165-9",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "South American",
+      "Definition": ""
+  },
+  {
+      "Code": "2166-7",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Argentinean",
+      "Definition": ""
+  },
+  {
+      "Code": "2167-5",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Bolivian",
+      "Definition": ""
+  },
+  {
+      "Code": "2168-3",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Chilean",
+      "Definition": ""
+  },
+  {
+      "Code": "2169-1",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Colombian",
+      "Definition": ""
+  },
+  {
+      "Code": "2170-9",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Ecuadorian",
+      "Definition": ""
+  },
+  {
+      "Code": "2171-7",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Paraguayan",
+      "Definition": ""
+  },
+  {
+      "Code": "2172-5",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Peruvian",
+      "Definition": ""
+  },
+  {
+      "Code": "2173-3",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Uruguayan",
+      "Definition": ""
+  },
+  {
+      "Code": "2174-1",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Venezuelan",
+      "Definition": ""
+  },
+  {
+      "Code": "2175-8",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "South American Indian",
+      "Definition": ""
+  },
+  {
+      "Code": "2176-6",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Criollo",
+      "Definition": ""
+  },
+  {
+      "Code": "2178-2",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Latin American",
+      "Definition": ""
+  },
+  {
+      "Code": "2180-8",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Puerto Rican",
+      "Definition": ""
+  },
+  {
+      "Code": "2182-4",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Cuban",
+      "Definition": ""
+  },
+  {
+      "Code": "2184-0",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Dominican",
+      "Definition": ""
+  }
+]

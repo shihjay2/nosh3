@@ -1,0 +1,209 @@
+{
+  "fhir" : {
+    "resourceType": "Condition",
+    "id": "",
+    "clinicalStatus": {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+          "code": ""
+        }
+      ]
+    },
+    "verificationStatus": {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+          "code": ""
+        }
+      ]
+    },
+    "code": {
+      "coding": [
+        {
+          "system": "http://hl7.org/fhir/sid/icd-10",
+          "code": "",
+          "display": ""
+        }
+      ]
+    },
+    "subject": {
+      "reference": ""
+    },
+    "onsetDateTime": ""
+  },
+  "resourceName": "Condition",
+  "activeField": "clinicalStatus.coding.0.code",
+  "compField": "code.coding.0.code",
+  "patientField": "subject.reference",
+  "divContent": "{conditionText} [{conditionICD10}] (Date: {onsetDateTime})",
+  "defaultDate": [
+    {
+      "id": "onsetDateTime",
+      "format": "YYYY-MM-DD"
+    },
+    {
+      "id": "recordedDate",
+      "format": "YYYY-MM-DD"
+    }
+  ],
+  "timelineDate": "onsetDateTime",
+  "uiListContent": {
+    "title": "{conditionText} [{conditionICD10}]",
+    "subhead": "Onset: {onsetDateTime}, Recorded: {recordedDate}",
+    "contentFields": ["severity", "bodySiteText", "status", "category"],
+    "contentStyle": "p",
+    "extended": "{note}",
+    "status": "{status}"
+  },
+  "uiSchema": [
+    [
+      {
+        "id": "conditionICD10",
+        "label": "Condition ICD10",
+        "model": "code.coding.0.code",
+        "type": "text",
+        "readonly": true,
+        "rules": "required"
+      },
+      {
+        "id": "conditionText",
+        "label": "Condition Text",
+        "model": "code.coding.0.display",
+        "type": "text",
+        "readonly": true,
+        "rules": "required"
+      }
+    ],
+    [
+      {
+        "id": "onsetDateTime",
+        "label": "Onset Date",
+        "model": "onsetDateTime",
+        "type": "date",
+        "rules": "required",
+        "mask": "####-##-##",
+        "placeholder": "YYYY-MM-DD"
+      },
+      {
+        "id": "recordedDate",
+        "label": "Recorded Date",
+        "model": "recordedDate",
+        "type": "date",
+        "rules": "required",
+        "mask": "####-##-##",
+        "placeholder": "YYYY-MM-DD"
+      }
+    ],
+    {
+      "id": "note",
+      "label": "Note",
+      "model": "note.text",
+      "type": "textarea",
+      "rules": ""
+    },
+    [
+      {
+        "id": "bodySite",
+        "label": "Body Site Code",
+        "model": "bodySite.coding.0.code",
+        "type": "text",
+        "readonly": true,
+        "rules": ""
+      },
+      {
+        "id": "bodySiteText",
+        "label": "Body Site Text",
+        "model": "bodySite.coding.0.display",
+        "type": "text",
+        "readonly": true,
+        "rules": ""
+      }
+    ],
+    [
+      {
+        "id": "status",
+        "label": "Status",
+        "modelRoot": "clinicalStatus.coding",
+        "modelArray": true,
+        "model": "code",
+        "type": "select",
+        "options": [
+          {"value": "active", "label": "Active"},
+          {"value": "recurrence", "label": "Recurrence"},
+          {"value": "relapse", "label": "Relapse"},
+          {"value": "inactive", "label": "Inactive"},
+          {"value": "remission", "label": "Remission"},
+          {"value": "resolved", "label": "Resolved"}
+        ],
+        "display": "display",
+        "system": {
+          "model": "system",
+          "value": "http://hl7.org/fhir/sid/icd-10"
+        },
+        "rules": "required"
+      },
+      {
+        "id": "severity",
+        "label": "Severity",
+        "modelRoot": "severity.coding",
+        "modelArray": true,
+        "model": "code",
+        "type": "select",
+        "options": [
+          {"value": "255604002", "label": "Mild"},
+          {"value": "6736007", "label": "Moderate"},
+          {"value": "24484000", "label": "Severe"}
+        ],
+        "display": "display",
+        "system": {
+          "model": "system",
+          "value": "http://snomed.info/sct"
+        },
+        "rules": ""
+      }
+    ],
+    {
+      "id": "category",
+      "label": "Category",
+      "modelRoot": "category.0.coding",
+      "modelArray": true,
+      "model": "code",
+      "type": "select",
+      "options": [
+        {"value": "problem-list-item", "label": "Problem List Item"},
+        {"value": "encounter-diagnosis", "label": "Encounter Diagnosis"}
+      ],
+      "display": "display",
+      "system": {
+        "model": "system",
+        "value": "http://terminology.hl7.org/CodeSystem/condition-category"
+      },
+      "multiple": true,
+      "rules": "required"
+    },
+    {
+      "id": "tags",
+      "label": "Tags",
+      "modelRoot": "meta.tag",
+      "modelArray": true,
+      "model": "display",
+      "type": "tags",
+      "rules": ""
+    }
+  ],
+  "uiSearchBars": [
+    {
+      "bar": "searchICD10",
+      "label": "Search ICD10 Code",
+      "code": "conditionICD10",
+      "text": "conditionText"
+    },
+    {
+      "bar": "searchBodySite",
+      "label": "Search Body Site",
+      "code": "bodySite",
+      "text": "bodySiteText"
+    }
+  ]
+}

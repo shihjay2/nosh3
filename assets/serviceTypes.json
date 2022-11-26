@@ -1,0 +1,2982 @@
+[
+  {
+    "Code": "1",
+    "Display": "Adoption/Permanent Care Info/Support",
+    "Definition": "Adoption & permanent care information/support"
+  },
+  {
+    "Code": "2",
+    "Display": "Aged Care Assessment",
+    "Definition": "Aged care assessment"
+  },
+  {
+    "Code": "3",
+    "Display": "Aged Care Information/Referral",
+    "Definition": "Aged Care information/referral"
+  },
+  {
+    "Code": "4",
+    "Display": "Aged Residential Care",
+    "Definition": "Aged Residential Care"
+  },
+  {
+    "Code": "5",
+    "Display": "Case Management for Older Persons",
+    "Definition": "Case management for older persons"
+  },
+  {
+    "Code": "6",
+    "Display": "Delivered Meals (Meals On Wheels)",
+    "Definition": "Delivered meals (meals on wheels)"
+  },
+  {
+    "Code": "7",
+    "Display": "Friendly Visiting",
+    "Definition": "Friendly visiting"
+  },
+  {
+    "Code": "8",
+    "Display": "Home Care/Housekeeping Assistance",
+    "Definition": "Home care/housekeeping assistance"
+  },
+  {
+    "Code": "9",
+    "Display": "Home Maintenance and Repair",
+    "Definition": "Home maintenance and repair"
+  },
+  {
+    "Code": "10",
+    "Display": "Personal Alarms/Alerts",
+    "Definition": "Personal alarms/alerts"
+  },
+  {
+    "Code": "11",
+    "Display": "Personal Care for Older Persons",
+    "Definition": "Personal care for older persons"
+  },
+  {
+    "Code": "12",
+    "Display": "Planned Activity Groups",
+    "Definition": "Planned activity groups"
+  },
+  {
+    "Code": "13",
+    "Display": "Acupuncture",
+    "Definition": "Acupuncture"
+  },
+  {
+    "Code": "14",
+    "Display": "Alexander Technique Therapy",
+    "Definition": "Alexander technique therapy"
+  },
+  {
+    "Code": "15",
+    "Display": "Aromatherapy",
+    "Definition": "Aromatherapy"
+  },
+  {
+    "Code": "16",
+    "Display": "Biorhythm Services",
+    "Definition": "Biorhythm services"
+  },
+  {
+    "Code": "17",
+    "Display": "Bowen Therapy",
+    "Definition": "Bowen therapy"
+  },
+  {
+    "Code": "18",
+    "Display": "Chinese Herbal Medicine",
+    "Definition": "Chinese herbal medicine"
+  },
+  {
+    "Code": "19",
+    "Display": "Feldenkrais",
+    "Definition": "Feldenkrais"
+  },
+  {
+    "Code": "20",
+    "Display": "Homoeopathy",
+    "Definition": "Homoeopathy"
+  },
+  {
+    "Code": "21",
+    "Display": "Hydrotherapy",
+    "Definition": "Hydrotherapy"
+  },
+  {
+    "Code": "22",
+    "Display": "Hypnotherapy",
+    "Definition": "Hypnotherapy"
+  },
+  {
+    "Code": "23",
+    "Display": "Kinesiology",
+    "Definition": "Kinesiology"
+  },
+  {
+    "Code": "24",
+    "Display": "Magnetic Therapy",
+    "Definition": "Magnetic therapy"
+  },
+  {
+    "Code": "25",
+    "Display": "Massage Therapy",
+    "Definition": "Massage therapy"
+  },
+  {
+    "Code": "26",
+    "Display": "Meditation",
+    "Definition": "Meditation"
+  },
+  {
+    "Code": "27",
+    "Display": "Myotherapy",
+    "Definition": "Myotherapy"
+  },
+  {
+    "Code": "28",
+    "Display": "Naturopathy",
+    "Definition": "Naturopathy"
+  },
+  {
+    "Code": "29",
+    "Display": "Reflexology",
+    "Definition": "Reflexology"
+  },
+  {
+    "Code": "30",
+    "Display": "Reiki",
+    "Definition": "Reiki"
+  },
+  {
+    "Code": "31",
+    "Display": "Relaxation Therapy",
+    "Definition": "Relaxation therapy"
+  },
+  {
+    "Code": "32",
+    "Display": "Shiatsu",
+    "Definition": "Shiatsu"
+  },
+  {
+    "Code": "33",
+    "Display": "Western Herbal Medicine",
+    "Definition": "Western herbal medicine"
+  },
+  {
+    "Code": "34",
+    "Display": "Family Day care",
+    "Definition": "Family day care"
+  },
+  {
+    "Code": "35",
+    "Display": "Holiday Programs",
+    "Definition": "Holiday programs"
+  },
+  {
+    "Code": "36",
+    "Display": "Kindergarten Inclusion Support",
+    "Definition": "Kindergarten inclusion support for children with a disability"
+  },
+  {
+    "Code": "37",
+    "Display": "Kindergarten/Preschool",
+    "Definition": "Kindergarten/preschool"
+  },
+  {
+    "Code": "38",
+    "Display": "Long Day Child Care",
+    "Definition": "Long day child care"
+  },
+  {
+    "Code": "39",
+    "Display": "Occasional Child Care",
+    "Definition": "Occasional child care"
+  },
+  {
+    "Code": "40",
+    "Display": "Outside School Hours Care",
+    "Definition": "Outside school hours care"
+  },
+  {
+    "Code": "41",
+    "Display": "Children's Play Programs",
+    "Definition": "Children's play programs"
+  },
+  {
+    "Code": "42",
+    "Display": "Parenting/Family Support/Education",
+    "Definition": "Parenting & family management support/education"
+  },
+  {
+    "Code": "43",
+    "Display": "Playgroup",
+    "Definition": "Playgroup"
+  },
+  {
+    "Code": "44",
+    "Display": "School Nursing",
+    "Definition": "School nursing"
+  },
+  {
+    "Code": "45",
+    "Display": "Toy Library",
+    "Definition": "Toy library"
+  },
+  {
+    "Code": "46",
+    "Display": "Child Protection/Child Abuse Report",
+    "Definition": "Child protection/child abuse report"
+  },
+  {
+    "Code": "47",
+    "Display": "Foster Care",
+    "Definition": "Foster care"
+  },
+  {
+    "Code": "48",
+    "Display": "Residential/Out-of-Home Care",
+    "Definition": "Residential/out of home care"
+  },
+  {
+    "Code": "49",
+    "Display": "Support - Young People Leaving Care",
+    "Definition": "Support for young people leaving care"
+  },
+  {
+    "Code": "50",
+    "Display": "Audiology",
+    "Definition": "Audiology"
+  },
+  {
+    "Code": "51",
+    "Display": "Blood Donation",
+    "Definition": "Blood donation"
+  },
+  {
+    "Code": "52",
+    "Display": "Chiropractic",
+    "Definition": "Chiropractic"
+  },
+  {
+    "Code": "53",
+    "Display": "Dietetics",
+    "Definition": "Dietetics"
+  },
+  {
+    "Code": "54",
+    "Display": "Family Planning",
+    "Definition": "Family planning"
+  },
+  {
+    "Code": "55",
+    "Display": "Health Advocacy/Liaison Service",
+    "Definition": "Health advocacy/Liaison service"
+  },
+  {
+    "Code": "56",
+    "Display": "Health Information/Referral",
+    "Definition": "Health information/referral"
+  },
+  {
+    "Code": "57",
+    "Display": "Immunization",
+    "Definition": "Immunization"
+  },
+  {
+    "Code": "58",
+    "Display": "Maternal & Child Health",
+    "Definition": "Maternal & child health"
+  },
+  {
+    "Code": "59",
+    "Display": "Nursing",
+    "Definition": "Nursing"
+  },
+  {
+    "Code": "60",
+    "Display": "Nutrition",
+    "Definition": "Nutrition"
+  },
+  {
+    "Code": "61",
+    "Display": "Occupational Therapy",
+    "Definition": "Occupational therapy"
+  },
+  {
+    "Code": "62",
+    "Display": "Optometry",
+    "Definition": "Optometry"
+  },
+  {
+    "Code": "63",
+    "Display": "Osteopathy",
+    "Definition": "Osteopathy"
+  },
+  {
+    "Code": "64",
+    "Display": "Pharmacy",
+    "Definition": "Pharmacy"
+  },
+  {
+    "Code": "65",
+    "Display": "Physiotherapy",
+    "Definition": "Physiotherapy"
+  },
+  {
+    "Code": "66",
+    "Display": "Podiatry",
+    "Definition": "Podiatry"
+  },
+  {
+    "Code": "67",
+    "Display": "Sexual Health",
+    "Definition": "Sexual health"
+  },
+  {
+    "Code": "68",
+    "Display": "Speech Pathology/Therapy",
+    "Definition": "Speech pathology/therapy"
+  },
+  {
+    "Code": "69",
+    "Display": "Bereavement Counseling",
+    "Definition": "Bereavement counseling"
+  },
+  {
+    "Code": "70",
+    "Display": "Crisis Counseling",
+    "Definition": "Crisis counseling"
+  },
+  {
+    "Code": "71",
+    "Display": "Family Counseling/Therapy",
+    "Definition": "Family counseling and/or family therapy"
+  },
+  {
+    "Code": "72",
+    "Display": "Family Violence Counseling",
+    "Definition": "Family violence counseling"
+  },
+  {
+    "Code": "73",
+    "Display": "Financial Counseling",
+    "Definition": "Financial counseling"
+  },
+  {
+    "Code": "74",
+    "Display": "Generalist Counseling",
+    "Definition": "Generalist counseling"
+  },
+  {
+    "Code": "75",
+    "Display": "Genetic Counseling",
+    "Definition": "Genetic counseling"
+  },
+  {
+    "Code": "76",
+    "Display": "Health Counseling",
+    "Definition": "Health counseling"
+  },
+  {
+    "Code": "77",
+    "Display": "Mediation",
+    "Definition": "Mediation"
+  },
+  {
+    "Code": "78",
+    "Display": "Problem Gambling Counseling",
+    "Definition": "Problem gambling counseling"
+  },
+  {
+    "Code": "79",
+    "Display": "Relationship Counseling",
+    "Definition": "Relationship counseling"
+  },
+  {
+    "Code": "80",
+    "Display": "Sexual Assault Counseling",
+    "Definition": "Sexual assault counseling"
+  },
+  {
+    "Code": "81",
+    "Display": "Trauma Counseling",
+    "Definition": "Trauma counseling"
+  },
+  {
+    "Code": "82",
+    "Display": "Victims of Crime Counseling",
+    "Definition": "Victims of crime counseling"
+  },
+  {
+    "Code": "83",
+    "Display": "Cemetery Operation",
+    "Definition": "Cemetery operation"
+  },
+  {
+    "Code": "84",
+    "Display": "Cremation",
+    "Definition": "Cremation"
+  },
+  {
+    "Code": "85",
+    "Display": "Death Service Information",
+    "Definition": "Death service information"
+  },
+  {
+    "Code": "86",
+    "Display": "Funeral Services",
+    "Definition": "Funeral services"
+  },
+  {
+    "Code": "87",
+    "Display": "Endodontic",
+    "Definition": "Endodontic"
+  },
+  {
+    "Code": "88",
+    "Display": "General Dental",
+    "Definition": "General dental"
+  },
+  {
+    "Code": "89",
+    "Display": "Oral Medicine",
+    "Definition": "Oral medicine"
+  },
+  {
+    "Code": "90",
+    "Display": "Oral Surgery",
+    "Definition": "Oral surgery"
+  },
+  {
+    "Code": "91",
+    "Display": "Orthodontic",
+    "Definition": "Orthodontic"
+  },
+  {
+    "Code": "92",
+    "Display": "Pediatric Dentistry",
+    "Definition": "Pediatric Dentistry"
+  },
+  {
+    "Code": "93",
+    "Display": "Periodontic",
+    "Definition": "Periodontic"
+  },
+  {
+    "Code": "94",
+    "Display": "Prosthodontic",
+    "Definition": "Prosthodontic"
+  },
+  {
+    "Code": "95",
+    "Display": "Acquired Brain Injury Info/Referral",
+    "Definition": "Acquired brain injury information/referral"
+  },
+  {
+    "Code": "96",
+    "Display": "Disability Advocacy",
+    "Definition": "Disability advocacy"
+  },
+  {
+    "Code": "97",
+    "Display": "Disability Aids & Equipment",
+    "Definition": "Disability aids & equipment"
+  },
+  {
+    "Code": "98",
+    "Display": "Disability Case Management",
+    "Definition": "Disability case management"
+  },
+  {
+    "Code": "99",
+    "Display": "Disability Day Programs/Activities",
+    "Definition": "Disability day programs & activities"
+  },
+  {
+    "Code": "100",
+    "Display": "Disability Information/Referral",
+    "Definition": "Disability information/referral"
+  },
+  {
+    "Code": "101",
+    "Display": "Disability Support Packages",
+    "Definition": "Disability support packages"
+  },
+  {
+    "Code": "102",
+    "Display": "Disability Supported Accommodation",
+    "Definition": "Disability supported accommodation"
+  },
+  {
+    "Code": "103",
+    "Display": "Early Childhood Intervention",
+    "Definition": "Early childhood intervention"
+  },
+  {
+    "Code": "104",
+    "Display": "Hearing Aids & Equipment",
+    "Definition": "Hearing aids & equipment"
+  },
+  {
+    "Code": "105",
+    "Display": "Drug and/or Alcohol Counseling",
+    "Definition": "Drug and/or alcohol counseling"
+  },
+  {
+    "Code": "106",
+    "Display": "Drug/Alcohol Information/Referral",
+    "Definition": "Drug and/or alcohol information/referral"
+  },
+  {
+    "Code": "107",
+    "Display": "Needle & Syringe Exchange",
+    "Definition": "Needle & Syringe exchange"
+  },
+  {
+    "Code": "108",
+    "Display": "Non-resid. Alcohol/Drug Treatment",
+    "Definition": "Non-residential alcohol and/or drug dependence treatment"
+  },
+  {
+    "Code": "109",
+    "Display": "Pharmacotherapy",
+    "Definition": "Pharmacotherapy (eg. methadone) program"
+  },
+  {
+    "Code": "110",
+    "Display": "Quit Program",
+    "Definition": "Quit program"
+  },
+  {
+    "Code": "111",
+    "Display": "Residential Alcohol/Drug Treatment",
+    "Definition": "Residential alcohol and/or drug dependence treatment"
+  },
+  {
+    "Code": "112",
+    "Display": "Adult/Community Education",
+    "Definition": "Adult/community education"
+  },
+  {
+    "Code": "113",
+    "Display": "Higher Education",
+    "Definition": "Higher education"
+  },
+  {
+    "Code": "114",
+    "Display": "Primary Education",
+    "Definition": "Primary education"
+  },
+  {
+    "Code": "115",
+    "Display": "Secondary Education",
+    "Definition": "Secondary education"
+  },
+  {
+    "Code": "116",
+    "Display": "Training & Vocational Education",
+    "Definition": "Training & vocational education"
+  },
+  {
+    "Code": "117",
+    "Display": "Emergency Medical",
+    "Definition": "Emergency medical"
+  },
+  {
+    "Code": "118",
+    "Display": "Employment Placement and/or Support",
+    "Definition": "Employment placement and/or support"
+  },
+  {
+    "Code": "119",
+    "Display": "Vocational Rehabilitation",
+    "Definition": "Vocational Rehabilitation"
+  },
+  {
+    "Code": "120",
+    "Display": "Work Safety/Accident Prevention",
+    "Definition": "Workplace safety and/or accident prevention"
+  },
+  {
+    "Code": "121",
+    "Display": "Financial Assistance",
+    "Definition": "Financial assistance"
+  },
+  {
+    "Code": "122",
+    "Display": "Financial Information/Advice",
+    "Definition": "Financial information/advice"
+  },
+  {
+    "Code": "123",
+    "Display": "Material Aid",
+    "Definition": "Material aid"
+  },
+  {
+    "Code": "124",
+    "Display": "General Practice",
+    "Definition": "General Practice/GP (doctor)"
+  },
+  {
+    "Code": "125",
+    "Display": "Accommodation Placement/Support",
+    "Definition": "Accommodation placement and/or support"
+  },
+  {
+    "Code": "126",
+    "Display": "Crisis/Emergency Accommodation",
+    "Definition": "Crisis/emergency accommodation"
+  },
+  {
+    "Code": "127",
+    "Display": "Homelessness Support",
+    "Definition": "Homelessness support"
+  },
+  {
+    "Code": "128",
+    "Display": "Housing Information/Referral",
+    "Definition": "Housing information/referral"
+  },
+  {
+    "Code": "129",
+    "Display": "Public Rental Housing",
+    "Definition": "Public rental housing"
+  },
+  {
+    "Code": "130",
+    "Display": "Interpreting/Multilingual Service",
+    "Definition": "Interpreting/Multilingual/Language service"
+  },
+  {
+    "Code": "131",
+    "Display": "Juvenile Justice",
+    "Definition": "Juvenile Justice"
+  },
+  {
+    "Code": "132",
+    "Display": "Legal Advocacy",
+    "Definition": "Legal advocacy"
+  },
+  {
+    "Code": "133",
+    "Display": "Legal Information/Advice/Referral",
+    "Definition": "Legal information/advice/referral"
+  },
+  {
+    "Code": "134",
+    "Display": "Mental Health Advocacy",
+    "Definition": "Mental health advocacy"
+  },
+  {
+    "Code": "135",
+    "Display": "Mental Health Assess/Triage/Crisis Response",
+    "Definition": "Mental health assessment/triage/crisis response"
+  },
+  {
+    "Code": "136",
+    "Display": "Mental Health Case Management",
+    "Definition": "Mental health case management/continuing care"
+  },
+  {
+    "Code": "137",
+    "Display": "Mental Health Information/Referral",
+    "Definition": "Mental health information/referral"
+  },
+  {
+    "Code": "138",
+    "Display": "Mental Health Inpatient Services",
+    "Definition": "Mental health inpatient services (hospital psychiatric unit) - requires referral"
+  },
+  {
+    "Code": "139",
+    "Display": "Mental Health Non-residential Rehab",
+    "Definition": "Mental health non-residential rehabilitation"
+  },
+  {
+    "Code": "140",
+    "Display": "Mental Health Residential Rehab/CCU",
+    "Definition": "Mental health residential rehabilitation/community care unit"
+  },
+  {
+    "Code": "141",
+    "Display": "Psychiatry (Requires Referral)",
+    "Definition": "Psychiatry (requires referral)"
+  },
+  {
+    "Code": "142",
+    "Display": "Psychology",
+    "Definition": "Psychology"
+  },
+  {
+    "Code": "143",
+    "Display": "Martial Arts",
+    "Definition": "Martial arts"
+  },
+  {
+    "Code": "144",
+    "Display": "Personal Fitness Training",
+    "Definition": "Personal fitness training"
+  },
+  {
+    "Code": "145",
+    "Display": "Physical Activity Group",
+    "Definition": "Physical activity group"
+  },
+  {
+    "Code": "146",
+    "Display": "Physical Activity Programs",
+    "Definition": "Physical activity programs"
+  },
+  {
+    "Code": "147",
+    "Display": "Physical Fitness Testing",
+    "Definition": "Physical fitness testing"
+  },
+  {
+    "Code": "148",
+    "Display": "Pilates",
+    "Definition": "Pilates"
+  },
+  {
+    "Code": "149",
+    "Display": "Self-Defence",
+    "Definition": "Self defence"
+  },
+  {
+    "Code": "150",
+    "Display": "Sporting Club",
+    "Definition": "Sporting club"
+  },
+  {
+    "Code": "151",
+    "Display": "Yoga",
+    "Definition": "Yoga"
+  },
+  {
+    "Code": "152",
+    "Display": "Food Safety",
+    "Definition": "Food safety"
+  },
+  {
+    "Code": "153",
+    "Display": "Health Regulatory /Inspection /Cert.",
+    "Definition": "Health regulatory, inspection and/or certification"
+  },
+  {
+    "Code": "154",
+    "Display": "Work Health/Safety Inspection/Cert.",
+    "Definition": "Workplace health and/or safety inspection and/or certification"
+  },
+  {
+    "Code": "155",
+    "Display": "Carer Support",
+    "Definition": "Carer support"
+  },
+  {
+    "Code": "156",
+    "Display": "Respite Care",
+    "Definition": "Respite care"
+  },
+  {
+    "Code": "157",
+    "Display": "Anatomical Pathology",
+    "Definition": "Anatomical Pathology (including Cytopathology & Forensic Pathology)"
+  },
+  {
+    "Code": "158",
+    "Display": "Pathology - Clinical Chemistry",
+    "Definition": "Pathology - Clinical Chemistry"
+  },
+  {
+    "Code": "159",
+    "Display": "Pathology - General",
+    "Definition": "Pathology - General"
+  },
+  {
+    "Code": "160",
+    "Display": "Pathology - Genetics",
+    "Definition": "Pathology - Genetics"
+  },
+  {
+    "Code": "161",
+    "Display": "Pathology - Haematology",
+    "Definition": "Pathology - Haematology"
+  },
+  {
+    "Code": "162",
+    "Display": "Pathology - Immunology",
+    "Definition": "Pathology - Immunology"
+  },
+  {
+    "Code": "163",
+    "Display": "Pathology - Microbiology",
+    "Definition": "Pathology - Microbiology"
+  },
+  {
+    "Code": "164",
+    "Display": "Anaesthesiology - Pain Medicine",
+    "Definition": "Anaesthesiology - Pain Medicine"
+  },
+  {
+    "Code": "165",
+    "Display": "Cardiology",
+    "Definition": "Cardiology"
+  },
+  {
+    "Code": "166",
+    "Display": "Clinical Genetics",
+    "Definition": "Clinical Genetics"
+  },
+  {
+    "Code": "167",
+    "Display": "Clinical Pharmacology",
+    "Definition": "Clinical Pharmacology"
+  },
+  {
+    "Code": "168",
+    "Display": "Dermatology",
+    "Definition": "Dermatology"
+  },
+  {
+    "Code": "169",
+    "Display": "Endocrinology",
+    "Definition": "Endocrinology"
+  },
+  {
+    "Code": "170",
+    "Display": "Gastroenterology & Hepatology",
+    "Definition": "Gastroenterology & Hepatology"
+  },
+  {
+    "Code": "171",
+    "Display": "Geriatric Medicine",
+    "Definition": "Geriatric medicine"
+  },
+  {
+    "Code": "172",
+    "Display": "Immunology & Allergy",
+    "Definition": "Immunology & Allergy"
+  },
+  {
+    "Code": "173",
+    "Display": "Infectious Diseases",
+    "Definition": "Infectious diseases"
+  },
+  {
+    "Code": "174",
+    "Display": "Intensive Care Medicine",
+    "Definition": "Intensive care medicine"
+  },
+  {
+    "Code": "175",
+    "Display": "Medical Oncology",
+    "Definition": "Medical Oncology"
+  },
+  {
+    "Code": "176",
+    "Display": "Nephrology",
+    "Definition": "Nephrology"
+  },
+  {
+    "Code": "177",
+    "Display": "Neurology",
+    "Definition": "Neurology"
+  },
+  {
+    "Code": "178",
+    "Display": "Occupational Medicine",
+    "Definition": "Occupational Medicine"
+  },
+  {
+    "Code": "179",
+    "Display": "Palliative Medicine",
+    "Definition": "Palliative Medicine"
+  },
+  {
+    "Code": "180",
+    "Display": "Public Health Medicine",
+    "Definition": "Public Health Medicine"
+  },
+  {
+    "Code": "181",
+    "Display": "Rehabilitation Medicine",
+    "Definition": "Rehabilitation Medicine"
+  },
+  {
+    "Code": "182",
+    "Display": "Rheumatology",
+    "Definition": "Rheumatology"
+  },
+  {
+    "Code": "183",
+    "Display": "Sleep Medicine",
+    "Definition": "Sleep Medicine"
+  },
+  {
+    "Code": "184",
+    "Display": "Thoracic Medicine",
+    "Definition": "Thoracic medicine"
+  },
+  {
+    "Code": "185",
+    "Display": "Gynaecological Oncology",
+    "Definition": "Gynaecological Oncology"
+  },
+  {
+    "Code": "186",
+    "Display": "Obstetrics & Gynaecology",
+    "Definition": "Obstetrics & Gynaecology"
+  },
+  {
+    "Code": "187",
+    "Display": "Reproductive Endocrinology/Infertility",
+    "Definition": "Reproductive Endocrinology & Infertility"
+  },
+  {
+    "Code": "188",
+    "Display": "Urogynaecology",
+    "Definition": "Urogynaecology"
+  },
+  {
+    "Code": "189",
+    "Display": "Neonatology & Perinatology",
+    "Definition": "Neonatology & Perinatology"
+  },
+  {
+    "Code": "190",
+    "Display": "Pediatric Cardiology",
+    "Definition": "Pediatric Cardiology"
+  },
+  {
+    "Code": "191",
+    "Display": "Pediatric Clinical Genetics",
+    "Definition": "Pediatric Clinical Genetics"
+  },
+  {
+    "Code": "192",
+    "Display": "Pediatric Clinical Pharmacology",
+    "Definition": "Pediatric Clinical Pharmacology"
+  },
+  {
+    "Code": "193",
+    "Display": "Pediatric Endocrinology",
+    "Definition": "Pediatric Endocrinology"
+  },
+  {
+    "Code": "194",
+    "Display": "Pediatric Gastroenterology/Hepatology",
+    "Definition": "Pediatric Gastroenterology & Hepatology"
+  },
+  {
+    "Code": "195",
+    "Display": "Pediatric Haematology",
+    "Definition": "Pediatric Haematology"
+  },
+  {
+    "Code": "196",
+    "Display": "Pediatric Immunology & Allergy",
+    "Definition": "Pediatric Immunology & Allergy"
+  },
+  {
+    "Code": "197",
+    "Display": "Pediatric Infectious Diseases",
+    "Definition": "Pediatric Infectious diseases"
+  },
+  {
+    "Code": "198",
+    "Display": "Pediatric Intensive Care Medicine",
+    "Definition": "Pediatric intensive care medicine"
+  },
+  {
+    "Code": "199",
+    "Display": "Pediatric Medical Oncology",
+    "Definition": "Pediatric Medical Oncology"
+  },
+  {
+    "Code": "200",
+    "Display": "Pediatric Medicine",
+    "Definition": "Pediatric Medicine"
+  },
+  {
+    "Code": "201",
+    "Display": "Pediatric Nephrology",
+    "Definition": "Pediatric Nephrology"
+  },
+  {
+    "Code": "202",
+    "Display": "Pediatric Neurology",
+    "Definition": "Pediatric Neurology"
+  },
+  {
+    "Code": "203",
+    "Display": "Pediatric Nuclear Medicine",
+    "Definition": "Pediatric Nuclear Medicine"
+  },
+  {
+    "Code": "204",
+    "Display": "Pediatric Rehabilitation Medicine",
+    "Definition": "Pediatric Rehabilitation Medicine"
+  },
+  {
+    "Code": "205",
+    "Display": "Pediatric Rheumatology",
+    "Definition": "Pediatric Rheumatology"
+  },
+  {
+    "Code": "206",
+    "Display": "Pediatric Sleep Medicine",
+    "Definition": "Pediatric Sleep Medicine"
+  },
+  {
+    "Code": "207",
+    "Display": "Pediatric Surgery",
+    "Definition": "Pediatric Surgery"
+  },
+  {
+    "Code": "208",
+    "Display": "Pediatric Thoracic Medicine",
+    "Definition": "Pediatric Thoracic Medicine"
+  },
+  {
+    "Code": "209",
+    "Display": "Diag. Radiology /Xray /CT /Fluoroscopy",
+    "Definition": "Diagnostic Radiology/Xray/CT/Fluoroscopy"
+  },
+  {
+    "Code": "210",
+    "Display": "Diagnostic Ultrasound",
+    "Definition": "Diagnostic Ultrasound"
+  },
+  {
+    "Code": "211",
+    "Display": "Magnetic Resonance Imaging (MRI)",
+    "Definition": "Magnetic Resonance Imaging (MRI)"
+  },
+  {
+    "Code": "212",
+    "Display": "Nuclear Medicine",
+    "Definition": "Nuclear Medicine"
+  },
+  {
+    "Code": "213",
+    "Display": "Obstetric/Gynaecological Ultrasound",
+    "Definition": "Obstetric & Gynaecological Ultrasound"
+  },
+  {
+    "Code": "214",
+    "Display": "Radiation Oncology",
+    "Definition": "Radiation oncology"
+  },
+  {
+    "Code": "215",
+    "Display": "Cardiothoracic Surgery",
+    "Definition": "Cardiothoracic surgery"
+  },
+  {
+    "Code": "216",
+    "Display": "Neurosurgery",
+    "Definition": "Neurosurgery"
+  },
+  {
+    "Code": "217",
+    "Display": "Ophthalmology",
+    "Definition": "Ophthalmology"
+  },
+  {
+    "Code": "218",
+    "Display": "Orthopedic Surgery",
+    "Definition": "Orthopedic surgery"
+  },
+  {
+    "Code": "219",
+    "Display": "Otolaryngology/Head & Neck Surgery",
+    "Definition": "Otolaryngology - Head & Neck Surgery"
+  },
+  {
+    "Code": "220",
+    "Display": "Plastic & Reconstructive Surgery",
+    "Definition": "Plastic & Reconstructive Surgery"
+  },
+  {
+    "Code": "221",
+    "Display": "Surgery - General",
+    "Definition": "Surgery - General"
+  },
+  {
+    "Code": "222",
+    "Display": "Urology",
+    "Definition": "Urology"
+  },
+  {
+    "Code": "223",
+    "Display": "Vascular Surgery",
+    "Definition": "Vascular surgery"
+  },
+  {
+    "Code": "224",
+    "Display": "Support Groups",
+    "Definition": "Support groups"
+  },
+  {
+    "Code": "225",
+    "Display": "Air ambulance",
+    "Definition": "Air ambulance"
+  },
+  {
+    "Code": "226",
+    "Display": "Ambulance",
+    "Definition": "Ambulance"
+  },
+  {
+    "Code": "227",
+    "Display": "Blood Transport",
+    "Definition": "Blood transport"
+  },
+  {
+    "Code": "228",
+    "Display": "Community Bus",
+    "Definition": "Community bus"
+  },
+  {
+    "Code": "229",
+    "Display": "Flying Doctor Service",
+    "Definition": "Flying doctor service"
+  },
+  {
+    "Code": "230",
+    "Display": "Patient Transport",
+    "Definition": "Patient transport"
+  },
+  {
+    "Code": "231",
+    "Display": "A&E",
+    "Definition": "A&E"
+  },
+  {
+    "Code": "232",
+    "Display": "A&EP",
+    "Definition": "A&EP"
+  },
+  {
+    "Code": "233",
+    "Display": "Abuse",
+    "Definition": "Abuse"
+  },
+  {
+    "Code": "234",
+    "Display": "ACAS",
+    "Definition": "ACAS"
+  },
+  {
+    "Code": "235",
+    "Display": "Access",
+    "Definition": "Access"
+  },
+  {
+    "Code": "236",
+    "Display": "Accident",
+    "Definition": "Accident"
+  },
+  {
+    "Code": "237",
+    "Display": "Acute Inpatient Serv",
+    "Definition": "Acute Inpatient Service's"
+  },
+  {
+    "Code": "238",
+    "Display": "Adult Day Programs",
+    "Definition": "Adult Day Programs"
+  },
+  {
+    "Code": "239",
+    "Display": "Adult Mental Health Services",
+    "Definition": "Adult Mental Health Services"
+  },
+  {
+    "Code": "240",
+    "Display": "Advice",
+    "Definition": "Advice"
+  },
+  {
+    "Code": "241",
+    "Display": "Advocacy",
+    "Definition": "Advocacy"
+  },
+  {
+    "Code": "242",
+    "Display": "Aged Persons Mental",
+    "Definition": "Aged Persons Mental Health Residential Units"
+  },
+  {
+    "Code": "243",
+    "Display": "Aged Persons Mental",
+    "Definition": "Aged Persons Mental Health Services"
+  },
+  {
+    "Code": "244",
+    "Display": "Aged Persons Mental",
+    "Definition": "Aged Persons Mental Health Teams"
+  },
+  {
+    "Code": "245",
+    "Display": "Aids",
+    "Definition": "Aids"
+  },
+  {
+    "Code": "246",
+    "Display": "Al-Anon",
+    "Definition": "Al-Anon"
+  },
+  {
+    "Code": "247",
+    "Display": "Alcohol",
+    "Definition": "Alcohol"
+  },
+  {
+    "Code": "248",
+    "Display": "Al-Teen",
+    "Definition": "Al-Teen"
+  },
+  {
+    "Code": "249",
+    "Display": "Antenatal",
+    "Definition": "Antenatal"
+  },
+  {
+    "Code": "250",
+    "Display": "Anxiety",
+    "Definition": "Anxiety"
+  },
+  {
+    "Code": "251",
+    "Display": "Arthritis",
+    "Definition": "Arthritis"
+  },
+  {
+    "Code": "252",
+    "Display": "Assessment",
+    "Definition": "Assessment"
+  },
+  {
+    "Code": "253",
+    "Display": "Assistance",
+    "Definition": "Assistance"
+  },
+  {
+    "Code": "254",
+    "Display": "Asthma",
+    "Definition": "Asthma"
+  },
+  {
+    "Code": "255",
+    "Display": "ATSS",
+    "Definition": "ATSS"
+  },
+  {
+    "Code": "256",
+    "Display": "Attendant Care",
+    "Definition": "Attendant Care"
+  },
+  {
+    "Code": "257",
+    "Display": "Babies",
+    "Definition": "Babies"
+  },
+  {
+    "Code": "258",
+    "Display": "Bathroom Modificatio",
+    "Definition": "Bathroom Modification"
+  },
+  {
+    "Code": "259",
+    "Display": "Behavior",
+    "Definition": "Behavior"
+  },
+  {
+    "Code": "260",
+    "Display": "Behavior Interventi",
+    "Definition": "Behavior Intervention"
+  },
+  {
+    "Code": "261",
+    "Display": "Bereavement",
+    "Definition": "Bereavement"
+  },
+  {
+    "Code": "262",
+    "Display": "Bipolar",
+    "Definition": "Bipolar"
+  },
+  {
+    "Code": "263",
+    "Display": "Birth",
+    "Definition": "Birth"
+  },
+  {
+    "Code": "264",
+    "Display": "Birth Control",
+    "Definition": "Birth Control"
+  },
+  {
+    "Code": "265",
+    "Display": "Birthing Options",
+    "Definition": "Birthing Options"
+  },
+  {
+    "Code": "266",
+    "Display": "BIST",
+    "Definition": "BIST"
+  },
+  {
+    "Code": "267",
+    "Display": "Blood",
+    "Definition": "Blood"
+  },
+  {
+    "Code": "268",
+    "Display": "Bone",
+    "Definition": "Bone"
+  },
+  {
+    "Code": "269",
+    "Display": "Bowel",
+    "Definition": "Bowel"
+  },
+  {
+    "Code": "270",
+    "Display": "Brain",
+    "Definition": "Brain"
+  },
+  {
+    "Code": "271",
+    "Display": "Breast Feeding",
+    "Definition": "Breast Feeding"
+  },
+  {
+    "Code": "272",
+    "Display": "Breast Screen",
+    "Definition": "Breast Screen"
+  },
+  {
+    "Code": "273",
+    "Display": "Brokerage",
+    "Definition": "Brokerage"
+  },
+  {
+    "Code": "274",
+    "Display": "Cancer",
+    "Definition": "Cancer"
+  },
+  {
+    "Code": "275",
+    "Display": "Cancer Support",
+    "Definition": "Cancer Support"
+  },
+  {
+    "Code": "276",
+    "Display": "Cardiovascular Disea",
+    "Definition": "Cardiovascular Disease"
+  },
+  {
+    "Code": "277",
+    "Display": "Care Packages",
+    "Definition": "Care Packages"
+  },
+  {
+    "Code": "278",
+    "Display": "Carer",
+    "Definition": "Carer"
+  },
+  {
+    "Code": "279",
+    "Display": "Case Management",
+    "Definition": "Case Management"
+  },
+  {
+    "Code": "280",
+    "Display": "Casualty",
+    "Definition": "Casualty"
+  },
+  {
+    "Code": "281",
+    "Display": "Centrelink",
+    "Definition": "Centrelink"
+  },
+  {
+    "Code": "282",
+    "Display": "Chemists",
+    "Definition": "Chemists"
+  },
+  {
+    "Code": "283",
+    "Display": "Child And Adolescent",
+    "Definition": "Child And Adolescent Mental Health Services"
+  },
+  {
+    "Code": "284",
+    "Display": "Child Care",
+    "Definition": "Child Care"
+  },
+  {
+    "Code": "285",
+    "Display": "Child Services",
+    "Definition": "Child Services"
+  },
+  {
+    "Code": "286",
+    "Display": "Children",
+    "Definition": "Children"
+  },
+  {
+    "Code": "287",
+    "Display": "Children's Services",
+    "Definition": "Children's Services"
+  },
+  {
+    "Code": "288",
+    "Display": "Cholesterol",
+    "Definition": "Cholesterol"
+  },
+  {
+    "Code": "289",
+    "Display": "Clothing",
+    "Definition": "Clothing"
+  },
+  {
+    "Code": "290",
+    "Display": "Community Based Acco",
+    "Definition": "Community Based Accommodation"
+  },
+  {
+    "Code": "291",
+    "Display": "Community Care Unit",
+    "Definition": "Community Care Unit"
+  },
+  {
+    "Code": "292",
+    "Display": "Community Child And",
+    "Definition": "Community Child And Adolescent Mental Health Services"
+  },
+  {
+    "Code": "293",
+    "Display": "Community Health",
+    "Definition": "Community Health"
+  },
+  {
+    "Code": "294",
+    "Display": "Community Residentia",
+    "Definition": "Community Residential Unit"
+  },
+  {
+    "Code": "295",
+    "Display": "Community Transport",
+    "Definition": "Community Transport"
+  },
+  {
+    "Code": "296",
+    "Display": "Companion Visiting",
+    "Definition": "Companion Visiting"
+  },
+  {
+    "Code": "297",
+    "Display": "Companionship",
+    "Definition": "Companionship"
+  },
+  {
+    "Code": "298",
+    "Display": "Consumer Advice",
+    "Definition": "Consumer Advice"
+  },
+  {
+    "Code": "299",
+    "Display": "Consumer Issues",
+    "Definition": "Consumer Issues"
+  },
+  {
+    "Code": "300",
+    "Display": "Continuing Care Serv",
+    "Definition": "Continuing Care Services"
+  },
+  {
+    "Code": "301",
+    "Display": "Contraception Inform",
+    "Definition": "Contraception Information"
+  },
+  {
+    "Code": "302",
+    "Display": "Coordinating Bodies",
+    "Definition": "Coordinating Bodies"
+  },
+  {
+    "Code": "303",
+    "Display": "Correctional Service",
+    "Definition": "Correctional Services"
+  },
+  {
+    "Code": "304",
+    "Display": "Council Environmenta",
+    "Definition": "Council Environmental Health"
+  },
+  {
+    "Code": "305",
+    "Display": "Counseling",
+    "Definition": "Counseling"
+  },
+  {
+    "Code": "306",
+    "Display": "Criminal",
+    "Definition": "Criminal"
+  },
+  {
+    "Code": "307",
+    "Display": "Crises",
+    "Definition": "Crises"
+  },
+  {
+    "Code": "308",
+    "Display": "Crisis Assessment An",
+    "Definition": "Crisis Assessment And Treatment Services (Cats)"
+  },
+  {
+    "Code": "309",
+    "Display": "Crisis Assistance",
+    "Definition": "Crisis Assistance"
+  },
+  {
+    "Code": "310",
+    "Display": "Crisis Refuge",
+    "Definition": "Crisis Refuge"
+  },
+  {
+    "Code": "311",
+    "Display": "Day Program",
+    "Definition": "Day Program"
+  },
+  {
+    "Code": "312",
+    "Display": "Deaf",
+    "Definition": "Deaf"
+  },
+  {
+    "Code": "313",
+    "Display": "Dental Hygiene",
+    "Definition": "Dental Hygiene"
+  },
+  {
+    "Code": "314",
+    "Display": "Dentistry",
+    "Definition": "Dentistry"
+  },
+  {
+    "Code": "315",
+    "Display": "Dentures",
+    "Definition": "Dentures"
+  },
+  {
+    "Code": "316",
+    "Display": "Depression",
+    "Definition": "Depression"
+  },
+  {
+    "Code": "317",
+    "Display": "Detoxification",
+    "Definition": "Detoxification"
+  },
+  {
+    "Code": "318",
+    "Display": "Diabetes",
+    "Definition": "Diabetes"
+  },
+  {
+    "Code": "319",
+    "Display": "Diaphragm Fitting",
+    "Definition": "Diaphragm Fitting"
+  },
+  {
+    "Code": "320",
+    "Display": "Dieticians",
+    "Definition": "Dieticians"
+  },
+  {
+    "Code": "321",
+    "Display": "Disabled Parking",
+    "Definition": "Disabled Parking"
+  },
+  {
+    "Code": "322",
+    "Display": "District Nursing",
+    "Definition": "District Nursing"
+  },
+  {
+    "Code": "323",
+    "Display": "Divorce",
+    "Definition": "Divorce"
+  },
+  {
+    "Code": "324",
+    "Display": "Doctors",
+    "Definition": "Doctors"
+  },
+  {
+    "Code": "325",
+    "Display": "Drink-Drive",
+    "Definition": "Drink-Drive"
+  },
+  {
+    "Code": "326",
+    "Display": "Dual Diagnosis Servi",
+    "Definition": "Dual Diagnosis Services"
+  },
+  {
+    "Code": "327",
+    "Display": "Early Choice",
+    "Definition": "Early Choice"
+  },
+  {
+    "Code": "328",
+    "Display": "Eating Disorder",
+    "Definition": "Eating Disorder"
+  },
+  {
+    "Code": "330",
+    "Display": "Emergency Relief",
+    "Definition": "Emergency Relief"
+  },
+  {
+    "Code": "331",
+    "Display": "Employment And Train",
+    "Definition": "Employment And Training"
+  },
+  {
+    "Code": "332",
+    "Display": "Environment",
+    "Definition": "Environment"
+  },
+  {
+    "Code": "333",
+    "Display": "Equipment",
+    "Definition": "Equipment"
+  },
+  {
+    "Code": "334",
+    "Display": "Exercise",
+    "Definition": "Exercise"
+  },
+  {
+    "Code": "335",
+    "Display": "Facility",
+    "Definition": "Facility"
+  },
+  {
+    "Code": "336",
+    "Display": "Family Choice",
+    "Definition": "Family Choice"
+  },
+  {
+    "Code": "337",
+    "Display": "Family Law",
+    "Definition": "Family Law"
+  },
+  {
+    "Code": "338",
+    "Display": "Family Options",
+    "Definition": "Family Options"
+  },
+  {
+    "Code": "339",
+    "Display": "Family Services",
+    "Definition": "Family Services"
+  },
+  {
+    "Code": "340",
+    "Display": "FFYA",
+    "Definition": "FFYA"
+  },
+  {
+    "Code": "341",
+    "Display": "Financial Aid",
+    "Definition": "Financial Aid"
+  },
+  {
+    "Code": "342",
+    "Display": "Fitness",
+    "Definition": "Fitness"
+  },
+  {
+    "Code": "343",
+    "Display": "Flexible Care Packag",
+    "Definition": "Flexible Care Packages"
+  },
+  {
+    "Code": "344",
+    "Display": "Food",
+    "Definition": "Food"
+  },
+  {
+    "Code": "345",
+    "Display": "Food Vouchers",
+    "Definition": "Food Vouchers"
+  },
+  {
+    "Code": "346",
+    "Display": "Forensic Mental Heal",
+    "Definition": "Forensic Mental Health Services"
+  },
+  {
+    "Code": "347",
+    "Display": "Futures",
+    "Definition": "Futures"
+  },
+  {
+    "Code": "348",
+    "Display": "Futures For Young Ad",
+    "Definition": "Futures For Young Adults"
+  },
+  {
+    "Code": "349",
+    "Display": "General Practitioner",
+    "Definition": "General Practitioners"
+  },
+  {
+    "Code": "350",
+    "Display": "Grants",
+    "Definition": "Grants"
+  },
+  {
+    "Code": "351",
+    "Display": "Grief",
+    "Definition": "Grief"
+  },
+  {
+    "Code": "352",
+    "Display": "Grief Counseling",
+    "Definition": "Grief Counseling"
+  },
+  {
+    "Code": "353",
+    "Display": "HACC",
+    "Definition": "HACC"
+  },
+  {
+    "Code": "354",
+    "Display": "Heart Disease",
+    "Definition": "Heart Disease"
+  },
+  {
+    "Code": "355",
+    "Display": "Help",
+    "Definition": "Help"
+  },
+  {
+    "Code": "356",
+    "Display": "High Blood Pressure",
+    "Definition": "High Blood Pressure"
+  },
+  {
+    "Code": "357",
+    "Display": "Home Help",
+    "Definition": "Home Help"
+  },
+  {
+    "Code": "358",
+    "Display": "Home Nursing",
+    "Definition": "Home Nursing"
+  },
+  {
+    "Code": "359",
+    "Display": "Homefirst",
+    "Definition": "Homefirst"
+  },
+  {
+    "Code": "360",
+    "Display": "Hospice Care",
+    "Definition": "Hospice Care"
+  },
+  {
+    "Code": "361",
+    "Display": "Hospital Services",
+    "Definition": "Hospital Services"
+  },
+  {
+    "Code": "362",
+    "Display": "Hospital To Home",
+    "Definition": "Hospital To Home"
+  },
+  {
+    "Code": "364",
+    "Display": "Hostel",
+    "Definition": "Hostel"
+  },
+  {
+    "Code": "365",
+    "Display": "Hostel Accommodation",
+    "Definition": "Hostel Accommodation"
+  },
+  {
+    "Code": "366",
+    "Display": "Household Items",
+    "Definition": "Household Items"
+  },
+  {
+    "Code": "367",
+    "Display": "Hypertension",
+    "Definition": "Hypertension"
+  },
+  {
+    "Code": "368",
+    "Display": "Illness",
+    "Definition": "Illness"
+  },
+  {
+    "Code": "369",
+    "Display": "Independent Living",
+    "Definition": "Independent Living"
+  },
+  {
+    "Code": "370",
+    "Display": "Information",
+    "Definition": "Information"
+  },
+  {
+    "Code": "371",
+    "Display": "Injury",
+    "Definition": "Injury"
+  },
+  {
+    "Code": "372",
+    "Display": "Intake",
+    "Definition": "Intake"
+  },
+  {
+    "Code": "373",
+    "Display": "Intensive Mobile You",
+    "Definition": "Intensive Mobile Youth Outreach Services (Imyos)"
+  },
+  {
+    "Code": "374",
+    "Display": "Intervention",
+    "Definition": "Intervention"
+  },
+  {
+    "Code": "375",
+    "Display": "Job Searching",
+    "Definition": "Job Searching"
+  },
+  {
+    "Code": "376",
+    "Display": "Justice",
+    "Definition": "Justice"
+  },
+  {
+    "Code": "377",
+    "Display": "Leisure",
+    "Definition": "Leisure"
+  },
+  {
+    "Code": "378",
+    "Display": "Loans",
+    "Definition": "Loans"
+  },
+  {
+    "Code": "379",
+    "Display": "Low Income Earners",
+    "Definition": "Low Income Earners"
+  },
+  {
+    "Code": "380",
+    "Display": "Lung",
+    "Definition": "Lung"
+  },
+  {
+    "Code": "381",
+    "Display": "Making A Difference",
+    "Definition": "Making A Difference"
+  },
+  {
+    "Code": "382",
+    "Display": "Medical Services",
+    "Definition": "Medical Services"
+  },
+  {
+    "Code": "383",
+    "Display": "Medical Specialists",
+    "Definition": "Medical Specialists"
+  },
+  {
+    "Code": "384",
+    "Display": "Medication Administration",
+    "Definition": "Medication Administration"
+  },
+  {
+    "Code": "385",
+    "Display": "Menstrual Informatio",
+    "Definition": "Menstrual Information"
+  },
+  {
+    "Code": "386",
+    "Display": "Methadone",
+    "Definition": "Methadone"
+  },
+  {
+    "Code": "387",
+    "Display": "Mobile Support And T",
+    "Definition": "Mobile Support And Treatment Services (MSTS)"
+  },
+  {
+    "Code": "388",
+    "Display": "Motor Neurone",
+    "Definition": "Motor Neurone"
+  },
+  {
+    "Code": "389",
+    "Display": "Multiple Sclerosis",
+    "Definition": "Multiple Sclerosis"
+  },
+  {
+    "Code": "390",
+    "Display": "Neighbourhood House",
+    "Definition": "Neighbourhood House"
+  },
+  {
+    "Code": "391",
+    "Display": "Nursing Home",
+    "Definition": "Nursing Home"
+  },
+  {
+    "Code": "392",
+    "Display": "Nursing Mothers",
+    "Definition": "Nursing Mothers"
+  },
+  {
+    "Code": "393",
+    "Display": "Obesity",
+    "Definition": "Obesity"
+  },
+  {
+    "Code": "394",
+    "Display": "Occupational Health",
+    "Definition": "Occupational Health & Safety"
+  },
+  {
+    "Code": "395",
+    "Display": "Optometrist",
+    "Definition": "Optometrist"
+  },
+  {
+    "Code": "396",
+    "Display": "Oral Hygiene",
+    "Definition": "Oral Hygiene"
+  },
+  {
+    "Code": "397",
+    "Display": "Outpatients",
+    "Definition": "Outpatients"
+  },
+  {
+    "Code": "398",
+    "Display": "Outreach Service",
+    "Definition": "Outreach Service"
+  },
+  {
+    "Code": "399",
+    "Display": "PADP",
+    "Definition": "PADP"
+  },
+  {
+    "Code": "400",
+    "Display": "Pain",
+    "Definition": "Pain"
+  },
+  {
+    "Code": "401",
+    "Display": "Pap Smear",
+    "Definition": "Pap Smear"
+  },
+  {
+    "Code": "402",
+    "Display": "Parenting",
+    "Definition": "Parenting"
+  },
+  {
+    "Code": "403",
+    "Display": "Peak Organizations",
+    "Definition": "Peak Organizations"
+  },
+  {
+    "Code": "404",
+    "Display": "Personal Care",
+    "Definition": "Personal Care"
+  },
+  {
+    "Code": "405",
+    "Display": "Pharmacies",
+    "Definition": "Pharmacies"
+  },
+  {
+    "Code": "406",
+    "Display": "Phobias",
+    "Definition": "Phobias"
+  },
+  {
+    "Code": "407",
+    "Display": "Physical",
+    "Definition": "Physical"
+  },
+  {
+    "Code": "408",
+    "Display": "Physical Activity",
+    "Definition": "Physical Activity"
+  },
+  {
+    "Code": "409",
+    "Display": "Postnatal",
+    "Definition": "Postnatal"
+  },
+  {
+    "Code": "410",
+    "Display": "Pregnancy",
+    "Definition": "Pregnancy"
+  },
+  {
+    "Code": "411",
+    "Display": "Pregnancy Tests",
+    "Definition": "Pregnancy Tests"
+  },
+  {
+    "Code": "412",
+    "Display": "Preschool",
+    "Definition": "Preschool"
+  },
+  {
+    "Code": "413",
+    "Display": "Prescriptions",
+    "Definition": "Prescriptions"
+  },
+  {
+    "Code": "414",
+    "Display": "Primary Mental Health",
+    "Definition": "Primary Mental Health And Early Intervention Teams"
+  },
+  {
+    "Code": "415",
+    "Display": "Property Maintenance",
+    "Definition": "Property Maintenance"
+  },
+  {
+    "Code": "416",
+    "Display": "Prostate",
+    "Definition": "Prostate"
+  },
+  {
+    "Code": "417",
+    "Display": "Psychiatric",
+    "Definition": "Psychiatric"
+  },
+  {
+    "Code": "418",
+    "Display": "Psychiatric Disabili",
+    "Definition": "Psychiatric Disability Support Services - Home-Based Outreach"
+  },
+  {
+    "Code": "419",
+    "Display": "Psychiatric Disabili",
+    "Definition": "Psychiatric Disability Support Services - Planned Respite"
+  },
+  {
+    "Code": "420",
+    "Display": "Psychiatric Disabili",
+    "Definition": "Psychiatric Disability Support Services - Residential Rehabilitation"
+  },
+  {
+    "Code": "421",
+    "Display": "Psychiatric Disabili",
+    "Definition": "Psychiatric Disability Support Services Home-Based Outreach"
+  },
+  {
+    "Code": "422",
+    "Display": "Psychiatric Disabili",
+    "Definition": "Psychiatric Disability Support Services Mutual Support And Self Help"
+  },
+  {
+    "Code": "423",
+    "Display": "Psychiatric Support",
+    "Definition": "Psychiatric Support"
+  },
+  {
+    "Code": "424",
+    "Display": "Recreation",
+    "Definition": "Recreation"
+  },
+  {
+    "Code": "425",
+    "Display": "Referral",
+    "Definition": "Referral"
+  },
+  {
+    "Code": "426",
+    "Display": "Refuge",
+    "Definition": "Refuge"
+  },
+  {
+    "Code": "427",
+    "Display": "Rent Assistance",
+    "Definition": "Rent Assistance"
+  },
+  {
+    "Code": "428",
+    "Display": "Residential Faciliti",
+    "Definition": "Residential Facilities"
+  },
+  {
+    "Code": "429",
+    "Display": "Residential Respite",
+    "Definition": "Residential Respite"
+  },
+  {
+    "Code": "430",
+    "Display": "Respiratory",
+    "Definition": "Respiratory"
+  },
+  {
+    "Code": "431",
+    "Display": "Response",
+    "Definition": "Response"
+  },
+  {
+    "Code": "432",
+    "Display": "Rooming Houses",
+    "Definition": "Rooming Houses"
+  },
+  {
+    "Code": "433",
+    "Display": "Safe Sex",
+    "Definition": "Safe Sex"
+  },
+  {
+    "Code": "434",
+    "Display": "Secure Extended Care",
+    "Definition": "Secure Extended Care Inpatient Services"
+  },
+  {
+    "Code": "435",
+    "Display": "Self Help",
+    "Definition": "Self Help"
+  },
+  {
+    "Code": "436",
+    "Display": "Separation",
+    "Definition": "Separation"
+  },
+  {
+    "Code": "437",
+    "Display": "Services",
+    "Definition": "Services"
+  },
+  {
+    "Code": "438",
+    "Display": "Sex Education",
+    "Definition": "Sex Education"
+  },
+  {
+    "Code": "439",
+    "Display": "Sexual Abuse",
+    "Definition": "Sexual Abuse"
+  },
+  {
+    "Code": "440",
+    "Display": "Sexual Issues",
+    "Definition": "Sexual Issues"
+  },
+  {
+    "Code": "441",
+    "Display": "Sexually Transmitted",
+    "Definition": "Sexually Transmitted Diseases"
+  },
+  {
+    "Code": "442",
+    "Display": "SIDS",
+    "Definition": "SIDS"
+  },
+  {
+    "Code": "443",
+    "Display": "Social Support",
+    "Definition": "Social Support"
+  },
+  {
+    "Code": "444",
+    "Display": "Socialisation",
+    "Definition": "Socialisation"
+  },
+  {
+    "Code": "445",
+    "Display": "Special Needs",
+    "Definition": "Special Needs"
+  },
+  {
+    "Code": "446",
+    "Display": "Speech Therapist",
+    "Definition": "Speech Therapist"
+  },
+  {
+    "Code": "447",
+    "Display": "Splinting",
+    "Definition": "Splinting"
+  },
+  {
+    "Code": "448",
+    "Display": "Sport",
+    "Definition": "Sport"
+  },
+  {
+    "Code": "449",
+    "Display": "Statewide And Specia",
+    "Definition": "Statewide And Specialist Services"
+  },
+  {
+    "Code": "450",
+    "Display": "STD",
+    "Definition": "STD"
+  },
+  {
+    "Code": "451",
+    "Display": "STI",
+    "Definition": "STI"
+  },
+  {
+    "Code": "452",
+    "Display": "Stillbirth",
+    "Definition": "Stillbirth"
+  },
+  {
+    "Code": "453",
+    "Display": "Stomal Care",
+    "Definition": "Stomal Care"
+  },
+  {
+    "Code": "454",
+    "Display": "Stroke",
+    "Definition": "Stroke"
+  },
+  {
+    "Code": "455",
+    "Display": "Substance Abuse",
+    "Definition": "Substance Abuse"
+  },
+  {
+    "Code": "456",
+    "Display": "Support",
+    "Definition": "Support"
+  },
+  {
+    "Code": "457",
+    "Display": "Syringes",
+    "Definition": "Syringes"
+  },
+  {
+    "Code": "458",
+    "Display": "Teeth",
+    "Definition": "Teeth"
+  },
+  {
+    "Code": "459",
+    "Display": "Tenancy Advice",
+    "Definition": "Tenancy Advice"
+  },
+  {
+    "Code": "460",
+    "Display": "Terminal Illness",
+    "Definition": "Terminal Illness"
+  },
+  {
+    "Code": "461",
+    "Display": "Therapy",
+    "Definition": "Therapy"
+  },
+  {
+    "Code": "462",
+    "Display": "Transcription",
+    "Definition": "Transcription"
+  },
+  {
+    "Code": "463",
+    "Display": "Translating Services",
+    "Definition": "Translating Services"
+  },
+  {
+    "Code": "464",
+    "Display": "Translator",
+    "Definition": "Translator"
+  },
+  {
+    "Code": "465",
+    "Display": "Transport",
+    "Definition": "Transport"
+  },
+  {
+    "Code": "466",
+    "Display": "Vertebrae",
+    "Definition": "Vertebrae"
+  },
+  {
+    "Code": "467",
+    "Display": "Violence",
+    "Definition": "Violence"
+  },
+  {
+    "Code": "468",
+    "Display": "Vocational Guidance",
+    "Definition": "Vocational Guidance"
+  },
+  {
+    "Code": "469",
+    "Display": "Weight",
+    "Definition": "Weight"
+  },
+  {
+    "Code": "470",
+    "Display": "Welfare Assistance",
+    "Definition": "Welfare Assistance"
+  },
+  {
+    "Code": "471",
+    "Display": "Welfare Counseling",
+    "Definition": "Welfare Counseling"
+  },
+  {
+    "Code": "472",
+    "Display": "Wheelchairs",
+    "Definition": "Wheelchairs"
+  },
+  {
+    "Code": "473",
+    "Display": "Wound Management",
+    "Definition": "Wound Management"
+  },
+  {
+    "Code": "474",
+    "Display": "Young People At Risk",
+    "Definition": "Young People At Risk"
+  },
+  {
+    "Code": "475",
+    "Display": "Further Desc. - Community Health Care",
+    "Definition": "Further Description - Community Health Care"
+  },
+  {
+    "Code": "476",
+    "Display": "Library",
+    "Definition": "Library"
+  },
+  {
+    "Code": "477",
+    "Display": "Community Hours",
+    "Definition": "Community Hours"
+  },
+  {
+    "Code": "478",
+    "Display": "Further Desc. - Specialist Medical",
+    "Definition": "Further Description - Specialist Medical"
+  },
+  {
+    "Code": "479",
+    "Display": "Hepatology",
+    "Definition": "Hepatology"
+  },
+  {
+    "Code": "480",
+    "Display": "Gastroenterology",
+    "Definition": "Gastroenterology"
+  },
+  {
+    "Code": "481",
+    "Display": "Gynaecology",
+    "Definition": "Gynaecology"
+  },
+  {
+    "Code": "482",
+    "Display": "Obstetrics",
+    "Definition": "Obstetrics"
+  },
+  {
+    "Code": "483",
+    "Display": "Further Desc. - Specialist Surgical",
+    "Definition": "Further Description - Specialist Surgical"
+  },
+  {
+    "Code": "484",
+    "Display": "Placement Protection",
+    "Definition": "Placement Protection"
+  },
+  {
+    "Code": "485",
+    "Display": "Family Violence",
+    "Definition": "Family Violence"
+  },
+  {
+    "Code": "486",
+    "Display": "Integrated Family Services",
+    "Definition": "Integrated Family Services"
+  },
+  {
+    "Code": "488",
+    "Display": "Diabetes Educator",
+    "Definition": "Diabetes Educator"
+  },
+  {
+    "Code": "489",
+    "Display": "Kinship Care",
+    "Definition": "Kinship Care"
+  },
+  {
+    "Code": "490",
+    "Display": "General Mental Health Services",
+    "Definition": "General Mental Health Services"
+  },
+  {
+    "Code": "491",
+    "Display": "Exercise Physiology",
+    "Definition": "Exercise Physiology"
+  },
+  {
+    "Code": "492",
+    "Display": "Medical Research",
+    "Definition": "Medical Research"
+  },
+  {
+    "Code": "493",
+    "Display": "Youth",
+    "Definition": "Youth"
+  },
+  {
+    "Code": "494",
+    "Display": "Youth Services",
+    "Definition": "Youth Services"
+  },
+  {
+    "Code": "495",
+    "Display": "Youth Health",
+    "Definition": "Youth Health"
+  },
+  {
+    "Code": "496",
+    "Display": "Child and Family Ser",
+    "Definition": "Child and Family Services"
+  },
+  {
+    "Code": "497",
+    "Display": "Home Visits",
+    "Definition": "Home Visits"
+  },
+  {
+    "Code": "498",
+    "Display": "Mobile Services",
+    "Definition": "Mobile Services"
+  },
+  {
+    "Code": "500",
+    "Display": "Before and/or After",
+    "Definition": "Before and/or After School Care"
+  },
+  {
+    "Code": "501",
+    "Display": "Cancer Services",
+    "Definition": "Cancer Services"
+  },
+  {
+    "Code": "502",
+    "Display": "Integrated Cancer Se",
+    "Definition": "Integrated Cancer Services"
+  },
+  {
+    "Code": "503",
+    "Display": "Multidisciplinary Se",
+    "Definition": "Multidisciplinary Services"
+  },
+  {
+    "Code": "504",
+    "Display": "Multidisciplinary Ca",
+    "Definition": "Multidisciplinary Cancer Services"
+  },
+  {
+    "Code": "505",
+    "Display": "Meetings",
+    "Definition": "Meetings"
+  },
+  {
+    "Code": "506",
+    "Display": "Blood pressure monit",
+    "Definition": "Blood pressure monitoring"
+  },
+  {
+    "Code": "507",
+    "Display": "Dose administration",
+    "Definition": "Dose administration aid"
+  },
+  {
+    "Code": "508",
+    "Display": "Medical Equipment Hire",
+    "Definition": "Medical Equipment Hire"
+  },
+  {
+    "Code": "509",
+    "Display": "Parenting/Family Support/Education",
+    "Definition": "Parenting & family support/education"
+  },
+  {
+    "Code": "510",
+    "Display": "Deputising Service",
+    "Definition": "Deputising Service"
+  },
+  {
+    "Code": "513",
+    "Display": "Cancer Support Groups",
+    "Definition": "Cancer Support Groups"
+  },
+  {
+    "Code": "514",
+    "Display": "Community Cancer Services",
+    "Definition": "Community Cancer Services"
+  },
+  {
+    "Code": "530",
+    "Display": "Disability Care Transport",
+    "Definition": "Disability Care Transport"
+  },
+  {
+    "Code": "531",
+    "Display": "Aged Care Transport",
+    "Definition": "Aged Care Transport"
+  },
+  {
+    "Code": "532",
+    "Display": "Diabetes Education s",
+    "Definition": "Diabetes Education service"
+  },
+  {
+    "Code": "533",
+    "Display": "Cardiac Rehabilitati",
+    "Definition": "Cardiac Rehabilitation Service"
+  },
+  {
+    "Code": "534",
+    "Display": "Young Adult Diabetes",
+    "Definition": "Young Adult Diabetes services (YADS)"
+  },
+  {
+    "Code": "535",
+    "Display": "Pulmonary Rehabilita",
+    "Definition": "Pulmonary Rehabilitation Service"
+  },
+  {
+    "Code": "536",
+    "Display": "Art therapy",
+    "Definition": "Art therapy"
+  },
+  {
+    "Code": "537",
+    "Display": "Medication Reviews",
+    "Definition": "Medication Reviews"
+  },
+  {
+    "Code": "538",
+    "Display": "Telephone Counseling",
+    "Definition": "Telephone Counseling"
+  },
+  {
+    "Code": "539",
+    "Display": "Telephone Help Line",
+    "Definition": "Telephone Help Line"
+  },
+  {
+    "Code": "540",
+    "Display": "Online Service",
+    "Definition": "Online Service"
+  },
+  {
+    "Code": "541",
+    "Display": "Crisis - Mental Health",
+    "Definition": "Crisis - Mental Health"
+  },
+  {
+    "Code": "542",
+    "Display": "Youth Crisis",
+    "Definition": "Youth Crisis"
+  },
+  {
+    "Code": "543",
+    "Display": "Sexual Assault",
+    "Definition": "Sexual Assault"
+  },
+  {
+    "Code": "544",
+    "Display": "GPAH Other",
+    "Definition": "GPAH Other"
+  },
+  {
+    "Code": "545",
+    "Display": "Pediatric Dermatology",
+    "Definition": "Pediatric Dermatology"
+  },
+  {
+    "Code": "546",
+    "Display": "Veterans Services",
+    "Definition": "Veterans Services"
+  },
+  {
+    "Code": "547",
+    "Display": "Veterans",
+    "Definition": "Veterans"
+  },
+  {
+    "Code": "548",
+    "Display": "Food Relief/Food/Meals",
+    "Definition": "Food Relief/food/meals"
+  },
+  {
+    "Code": "550",
+    "Display": "Dementia Care",
+    "Definition": "Dementia Care"
+  },
+  {
+    "Code": "551",
+    "Display": "Alzheimer",
+    "Definition": "Alzheimer"
+  },
+  {
+    "Code": "552",
+    "Display": "Drug and/or Alcohol Support Groups",
+    "Definition": "Drug and/or alcohol support groups"
+  },
+  {
+    "Code": "553",
+    "Display": "1-on-1 Support /Mentoring /Coaching",
+    "Definition": "One on One Support/Mentoring/Coaching"
+  },
+  {
+    "Code": "554",
+    "Display": "Chronic Disease Management",
+    "Definition": "Chronic Disease Management"
+  },
+  {
+    "Code": "555",
+    "Display": "Liaison Services",
+    "Definition": "Liaison Services"
+  },
+  {
+    "Code": "556",
+    "Display": "Walk-in Centre /Non-Emergency",
+    "Definition": "Walk in Centre / non emergency"
+  },
+  {
+    "Code": "557",
+    "Display": "Inpatients",
+    "Definition": "Inpatients"
+  },
+  {
+    "Code": "558",
+    "Display": "Spiritual Counseling",
+    "Definition": "Spiritual Counseling"
+  },
+  {
+    "Code": "559",
+    "Display": "Women's Health",
+    "Definition": "Women's Health"
+  },
+  {
+    "Code": "560",
+    "Display": "Men's Health",
+    "Definition": "Men's Health"
+  },
+  {
+    "Code": "561",
+    "Display": "Health Education/Awareness Program",
+    "Definition": "Health education/Health awareness program"
+  },
+  {
+    "Code": "562",
+    "Display": "Test Message",
+    "Definition": "Test Message"
+  },
+  {
+    "Code": "563",
+    "Display": "Remedial Massage",
+    "Definition": "Remedial Massage"
+  },
+  {
+    "Code": "564",
+    "Display": "Adolescent Mental Health Services",
+    "Definition": "Adolescent Mental Health Services"
+  },
+  {
+    "Code": "565",
+    "Display": "Youth Drop In/Assistance/Support",
+    "Definition": "Youth drop in/assistance/support"
+  },
+  {
+    "Code": "566",
+    "Display": "Aboriginal Health Worker",
+    "Definition": "Aboriginal Health Worker"
+  },
+  {
+    "Code": "567",
+    "Display": "Women's Health Clinic",
+    "Definition": "Women's Health Clinic"
+  },
+  {
+    "Code": "568",
+    "Display": "Men's Health Clinic",
+    "Definition": "Men's Health Clinic"
+  },
+  {
+    "Code": "569",
+    "Display": "Migrant Health Clinic",
+    "Definition": "Migrant Health Clinic"
+  },
+  {
+    "Code": "570",
+    "Display": "Refugee Health Clinic",
+    "Definition": "Refugee Health Clinic"
+  },
+  {
+    "Code": "571",
+    "Display": "Aboriginal Health Clinic",
+    "Definition": "Aboriginal Health Clinic"
+  },
+  {
+    "Code": "572",
+    "Display": "Nurse Practitioner Lead Clinic/s",
+    "Definition": "Nurse Practitioner lead Clinic/s"
+  },
+  {
+    "Code": "573",
+    "Display": "Nurse Lead Clinic/s",
+    "Definition": "Nurse lead Clinic/s"
+  },
+  {
+    "Code": "574",
+    "Display": "Culturally Tailored Support Groups",
+    "Definition": "Culturally tailored support groups"
+  },
+  {
+    "Code": "575",
+    "Display": "Culturally Tailored Health Promotion",
+    "Definition": "Culturally tailored health promotion"
+  },
+  {
+    "Code": "576",
+    "Display": "Rehabilitation",
+    "Definition": "Rehabilitation"
+  },
+  {
+    "Code": "577",
+    "Display": "Education Information/Referral",
+    "Definition": "Education information/referral"
+  },
+  {
+    "Code": "580",
+    "Display": "Social Work",
+    "Definition": "Social Work"
+  },
+  {
+    "Code": "581",
+    "Display": "Haematology",
+    "Definition": "Haematology"
+  },
+  {
+    "Code": "582",
+    "Display": "Maternity Shared Care",
+    "Definition": "Maternity Shared Care"
+  },
+  {
+    "Code": "583",
+    "Display": "Rehabilitation Service",
+    "Definition": "Rehabilitation Service"
+  },
+  {
+    "Code": "584",
+    "Display": "Cranio-sacral Therapy",
+    "Definition": "Cranio-Sacral Therapy"
+  },
+  {
+    "Code": "585",
+    "Display": "Prosthetics & Orthotics",
+    "Definition": "Prosthetics & Orthotics"
+  },
+  {
+    "Code": "589",
+    "Display": "Home Medicine Review",
+    "Definition": "Home Medicine Review"
+  },
+  {
+    "Code": "590",
+    "Display": "GPAH - Medical",
+    "Definition": "GPAH - Medical"
+  },
+  {
+    "Code": "591",
+    "Display": "Music Therapy",
+    "Definition": "Music Therapy"
+  },
+  {
+    "Code": "593",
+    "Display": "Falls Prevention",
+    "Definition": "Falls Prevention"
+  },
+  {
+    "Code": "599",
+    "Display": "Accommodation/Tenancy",
+    "Definition": "Accommodation/Tenancy"
+  },
+  {
+    "Code": "600",
+    "Display": "Assess-Skill, Ability, Needs",
+    "Definition": "Assess-Skill, Ability, Needs"
+  },
+  {
+    "Code": "601",
+    "Display": "Assist Access/Maintain Employ",
+    "Definition": "Assist Access/Maintain Employ"
+  },
+  {
+    "Code": "602",
+    "Display": "Assist Prod-Pers Care/Safety",
+    "Definition": "Assist Prod-Pers Care/Safety"
+  },
+  {
+    "Code": "603",
+    "Display": "Assist-Integrate School/Ed",
+    "Definition": "Assist-Integrate School/Ed"
+  },
+  {
+    "Code": "604",
+    "Display": "Assist-Life Stage, Transition",
+    "Definition": "Assist-Life Stage, Transition"
+  },
+  {
+    "Code": "605",
+    "Display": "Assist-Personal Activities",
+    "Definition": "Assist-Personal Activities"
+  },
+  {
+    "Code": "606",
+    "Display": "Assist-Travel/Transport",
+    "Definition": "Assist-Travel/Transport"
+  },
+  {
+    "Code": "607",
+    "Display": "Assistive Equip-General Tasks",
+    "Definition": "Assistive Equip-General Tasks"
+  },
+  {
+    "Code": "608",
+    "Display": "Assistive Equip-Recreation",
+    "Definition": "Assistive Equip-Recreation"
+  },
+  {
+    "Code": "609",
+    "Display": "Assistive Prod-Household Task",
+    "Definition": "Assistive Prod-Household Task"
+  },
+  {
+    "Code": "610",
+    "Display": "Behavior Support",
+    "Definition": "Behavior Support"
+  },
+  {
+    "Code": "611",
+    "Display": "Comms & Info Equipment",
+    "Definition": "Comms & Info Equipment"
+  },
+  {
+    "Code": "612",
+    "Display": "Community Nursing Care",
+    "Definition": "Community Nursing Care"
+  },
+  {
+    "Code": "613",
+    "Display": "Daily Tasks/Shared Living",
+    "Definition": "Daily Tasks/Shared Living"
+  },
+  {
+    "Code": "614",
+    "Display": "Development-Life Skills",
+    "Definition": "Development-Life Skills"
+  },
+  {
+    "Code": "615",
+    "Display": "Early Childhood Supports",
+    "Definition": "Early Childhood Supports"
+  },
+  {
+    "Code": "616",
+    "Display": "Equipment Special Assess Setup",
+    "Definition": "Equipment Special Assess Setup"
+  },
+  {
+    "Code": "617",
+    "Display": "Hearing Equipment",
+    "Definition": "Hearing Equipment"
+  },
+  {
+    "Code": "618",
+    "Display": "Home Modification",
+    "Definition": "Home Modification"
+  },
+  {
+    "Code": "619",
+    "Display": "Household Tasks",
+    "Definition": "Household Tasks"
+  },
+  {
+    "Code": "620",
+    "Display": "Interpret/Translate",
+    "Definition": "Interpret/Translate"
+  },
+  {
+    "Code": "621",
+    "Display": "Other Innovative Supports",
+    "Definition": "Other Innovative Supports"
+  },
+  {
+    "Code": "622",
+    "Display": "Participate Community",
+    "Definition": "Participate Community"
+  },
+  {
+    "Code": "623",
+    "Display": "Personal Mobility Equipment",
+    "Definition": "Personal Mobility Equipment"
+  },
+  {
+    "Code": "624",
+    "Display": "Physical Wellbeing",
+    "Definition": "Physical Wellbeing"
+  },
+  {
+    "Code": "625",
+    "Display": "Plan Management",
+    "Definition": "Plan Management"
+  },
+  {
+    "Code": "626",
+    "Display": "Therapeutic Supports",
+    "Definition": "Therapeutic Supports"
+  },
+  {
+    "Code": "627",
+    "Display": "Training-Travel Independence",
+    "Definition": "Training-Travel Independence"
+  },
+  {
+    "Code": "628",
+    "Display": "Vehicle modifications",
+    "Definition": "Vehicle modifications"
+  },
+  {
+    "Code": "629",
+    "Display": "Vision Equipment",
+    "Definition": "Vision Equipment"
+  }
+]

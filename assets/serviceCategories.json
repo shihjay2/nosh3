@@ -1,0 +1,192 @@
+[
+  {
+    "Code": " 1",
+    "Display": "Adoption",
+    "Definition": "Adoption"
+  },
+  {
+    "Code": " 2",
+    "Display": "Aged Care",
+    "Definition": "Aged Care"
+  },
+  {
+    "Code": " 34",
+    "Display": "Allied Health",
+    "Definition": "Allied Health"
+  },
+  {
+    "Code": " 3",
+    "Display": "Alternative/Complementary Therapies",
+    "Definition": "Alternative & Complementary Therapies"
+  },
+  {
+    "Code": " 4",
+    "Display": "Child Care /Kindergarten",
+    "Definition": "Child Care and/or Kindergarten"
+  },
+  {
+    "Code": " 5",
+    "Display": "Child Development",
+    "Definition": "Child Development"
+  },
+  {
+    "Code": " 6",
+    "Display": "Child Protection & Family Services",
+    "Definition": "Child Protection & Family Services"
+  },
+  {
+    "Code": " 7",
+    "Display": "Community Health Care",
+    "Definition": "Community Health Care"
+  },
+  {
+    "Code": " 8",
+    "Display": "Counseling",
+    "Definition": "Counseling"
+  },
+  {
+    "Code": " 36",
+    "Display": "Crisis Line (GPAH use only)",
+    "Definition": "Crisis Line (GPAH use only)"
+  },
+  {
+    "Code": " 9",
+    "Display": "Death Services",
+    "Definition": "Death Services"
+  },
+  {
+    "Code": " 10",
+    "Display": "Dental",
+    "Definition": "Dental"
+  },
+  {
+    "Code": " 11",
+    "Display": "Disability Support",
+    "Definition": "Disability Support"
+  },
+  {
+    "Code": " 12",
+    "Display": "Drug/Alcohol",
+    "Definition": "Drug/Alcohol"
+  },
+  {
+    "Code": " 13",
+    "Display": "Education & Learning",
+    "Definition": "Education & Learning"
+  },
+  {
+    "Code": " 14",
+    "Display": "Emergency Department",
+    "Definition": "Emergency Department"
+  },
+  {
+    "Code": " 15",
+    "Display": "Employment",
+    "Definition": "Employment"
+  },
+  {
+    "Code": " 16",
+    "Display": "Financial & Material Aid",
+    "Definition": "Financial & Material aid"
+  },
+  {
+    "Code": " 17",
+    "Display": "General Practice",
+    "Definition": "General Practice/GP (doctor)"
+  },
+  {
+    "Code": " 35",
+    "Display": "Hospital",
+    "Definition": "Hospital"
+  },
+  {
+    "Code": " 18",
+    "Display": "Housing/Homelessness",
+    "Definition": "Housing/Homelessness"
+  },
+  {
+    "Code": " 19",
+    "Display": "Interpreting",
+    "Definition": "Interpreting"
+  },
+  {
+    "Code": " 20",
+    "Display": "Justice",
+    "Definition": "Justice"
+  },
+  {
+    "Code": " 21",
+    "Display": "Legal",
+    "Definition": "Legal"
+  },
+  {
+    "Code": " 22",
+    "Display": "Mental Health",
+    "Definition": "Mental Health"
+  },
+  {
+    "Code": " 38",
+    "Display": "NDIA",
+    "Definition": "NDIA"
+  },
+  {
+    "Code": " 23",
+    "Display": "Physical Activity & Recreation",
+    "Definition": "Physical Activity & Recreation"
+  },
+  {
+    "Code": " 24",
+    "Display": "Regulation",
+    "Definition": "Regulation"
+  },
+  {
+    "Code": " 25",
+    "Display": "Respite/Carer Support",
+    "Definition": "Respite/Carer Support"
+  },
+  {
+    "Code": " 26",
+    "Display": "Specialist Clinical Pathology",
+    "Definition": "Specialist Clinical Pathology - requires referral"
+  },
+  {
+    "Code": " 27",
+    "Display": "Specialist Medical",
+    "Definition": "Specialist Medical - requires referral"
+  },
+  {
+    "Code": " 28",
+    "Display": "Specialist Obstetrics & Gynecology",
+    "Definition": "Specialist Obstetrics & Gynecology - requires referral"
+  },
+  {
+    "Code": " 29",
+    "Display": "Specialist Pediatric",
+    "Definition": "Specialist Pediatric - requires referral"
+  },
+  {
+    "Code": " 30",
+    "Display": "Specialist Radiology/Imaging",
+    "Definition": "Specialist Radiology/Imaging - requires referral"
+  },
+  {
+    "Code": " 31",
+    "Display": "Specialist Surgical",
+    "Definition": "Specialist Surgical - requires referral"
+  },
+  {
+    "Code": " 32",
+    "Display": "Support Group/s",
+    "Definition": "Support group/s"
+  },
+  {
+    "Code": " 37",
+    "Display": "Test Message (HSD admin)",
+    "Definition": "Test Message (HSD admin use only)"
+  },
+  {
+    "Code": " 33",
+    "Display": "Transport",
+    "Definition": "Transport"
+  }
+]

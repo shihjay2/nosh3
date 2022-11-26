@@ -1,0 +1,333 @@
+143       |Adenovirus types 4 and 7|253088698300001111110714|Adenovirus VIS|2011-07-14 00:00:00|Historic
+143       |Adenovirus types 4 and 7|253088698300001111140611|Adenovirus VIS|2014-06-11 00:00:00|Historic
+143       |Adenovirus types 4 and 7|253088698300001111200108|Adenovirus Vaccine VIS|2020-01-08 00:00:00|Current
+24        |anthrax|253088698300002811100310|Anthrax VIS|2010-03-10 00:00:00|Historic
+24        |anthrax|253088698300002811180321|Anthrax Vaccine VIS|2018-03-21 00:00:00|Historic
+24        |anthrax|253088698300002811200108|Anthrax Vaccine VIS|2020-01-08 00:00:00|Current
+106       |DTaP, 5 pertussis antigens|253088698300003511070517|Diphtheria/Tetanus/Pertussis (DTaP) VIS|2007-05-17 00:00:00|Historic
+20        |DTaP|253088698300003511070517|Diphtheria/Tetanus/Pertussis (DTaP) VIS|2007-05-17 00:00:00|Historic
+110       |DTaP-Hep B-IPV|253088698300003511070517|Diphtheria/Tetanus/Pertussis (DTaP) VIS|2007-05-17 00:00:00|Historic
+120       |DTaP-Hib-IPV|253088698300003511070517|Diphtheria/Tetanus/Pertussis (DTaP) VIS|2007-05-17 00:00:00|Historic
+146       |DTaP,IPV,Hib,HepB|253088698300003511070517|Diphtheria/Tetanus/Pertussis (DTaP) VIS|2007-05-17 00:00:00|Historic
+130       |DTaP-IPV|253088698300003511070517|Diphtheria/Tetanus/Pertussis (DTaP) VIS|2007-05-17 00:00:00|Historic
+130       |DTaP-IPV|253088698300003511180824|DTaP (Diphtheria, Tetanus, Pertussis) Vaccine VIS|2018-08-24 00:00:00|Historic
+146       |DTaP,IPV,Hib,HepB|253088698300003511180824|DTaP (Diphtheria, Tetanus, Pertussis) Vaccine VIS|2018-08-24 00:00:00|Historic
+120       |DTaP-Hib-IPV|253088698300003511180824|DTaP (Diphtheria, Tetanus, Pertussis) Vaccine VIS|2018-08-24 00:00:00|Historic
+110       |DTaP-Hep B-IPV|253088698300003511180824|DTaP (Diphtheria, Tetanus, Pertussis) Vaccine VIS|2018-08-24 00:00:00|Historic
+106       |DTaP, 5 pertussis antigens|253088698300003511180824|DTaP (Diphtheria, Tetanus, Pertussis) Vaccine VIS|2018-08-24 00:00:00|Historic
+20        |DTaP|253088698300003511180824|DTaP (Diphtheria, Tetanus, Pertussis) Vaccine VIS|2018-08-24 00:00:00|Historic
+28        |DT (pediatric)|253088698300003511180824|DTaP (Diphtheria, Tetanus, Pertussis) Vaccine VIS|2018-08-24 00:00:00|Historic
+28        |DT (pediatric)|253088698300003511200401|DTaP (Diphtheria, Tetanus, Pertussis) Vaccine VIS|2020-04-01 00:00:00|Current
+20        |DTaP|253088698300003511200401|DTaP (Diphtheria, Tetanus, Pertussis) Vaccine VIS|2020-04-01 00:00:00|Current
+106       |DTaP, 5 pertussis antigens|253088698300003511200401|DTaP (Diphtheria, Tetanus, Pertussis) Vaccine VIS|2020-04-01 00:00:00|Current
+110       |DTaP-Hep B-IPV|253088698300003511200401|DTaP (Diphtheria, Tetanus, Pertussis) Vaccine VIS|2020-04-01 00:00:00|Current
+120       |DTaP-Hib-IPV|253088698300003511200401|DTaP (Diphtheria, Tetanus, Pertussis) Vaccine VIS|2020-04-01 00:00:00|Current
+146       |DTaP,IPV,Hib,HepB|253088698300003511200401|DTaP (Diphtheria, Tetanus, Pertussis) Vaccine VIS|2020-04-01 00:00:00|Current
+130       |DTaP-IPV|253088698300003511200401|DTaP (Diphtheria, Tetanus, Pertussis) Vaccine VIS|2020-04-01 00:00:00|Current
+52        |Hep A, adult|253088698300004211111025|Hepatitis A VIS|2011-10-25 00:00:00|Historic
+83        |Hep A, ped/adol, 2 dose|253088698300004211111025|Hepatitis A VIS|2011-10-25 00:00:00|Historic
+104       |Hep A-Hep B|253088698300004211111025|Hepatitis A VIS|2011-10-25 00:00:00|Historic
+104       |Hep A-Hep B|253088698300004211160720|Hepatitis A Vaccine VIS|2016-07-20 00:00:00|Historic
+52        |Hep A, adult|253088698300004211160720|Hepatitis A Vaccine VIS|2016-07-20 00:00:00|Historic
+83        |Hep A, ped/adol, 2 dose|253088698300004211160720|Hepatitis A Vaccine VIS|2016-07-20 00:00:00|Historic
+83        |Hep A, ped/adol, 2 dose|253088698300004211200728|Hepatitis A Vaccine VIS|2020-07-28 00:00:00|Current
+52        |Hep A, adult|253088698300004211200728|Hepatitis A Vaccine VIS|2020-07-28 00:00:00|Current
+104       |Hep A-Hep B|253088698300004211200728|Hepatitis A Vaccine VIS|2020-07-28 00:00:00|Current
+104       |Hep A-Hep B|253088698300005911120202|Hepatitis B VIS|2012-02-02 00:00:00|Historic
+44        |Hep B, dialysis|253088698300005911120202|Hepatitis B VIS|2012-02-02 00:00:00|Historic
+42        |Hep B, adolescent/high risk infant|253088698300005911120202|Hepatitis B VIS|2012-02-02 00:00:00|Historic
+51        |Hib-Hep B|253088698300005911120202|Hepatitis B VIS|2012-02-02 00:00:00|Historic
+110       |DTaP-Hep B-IPV|253088698300005911120202|Hepatitis B VIS|2012-02-02 00:00:00|Historic
+146       |DTaP,IPV,Hib,HepB|253088698300005911120202|Hepatitis B VIS|2012-02-02 00:00:00|Historic
+08        |Hep B, adolescent or pediatric|253088698300005911120202|Hepatitis B VIS|2012-02-02 00:00:00|Historic
+43        |Hep B, adult|253088698300005911120202|Hepatitis B VIS|2012-02-02 00:00:00|Historic
+43        |Hep B, adult|253088698300005911160720|Hepatitis B Vaccine VIS|2016-07-20 00:00:00|Historic
+146       |DTaP,IPV,Hib,HepB|253088698300005911160720|Hepatitis B Vaccine VIS|2016-07-20 00:00:00|Historic
+110       |DTaP-Hep B-IPV|253088698300005911160720|Hepatitis B Vaccine VIS|2016-07-20 00:00:00|Historic
+51        |Hib-Hep B|253088698300005911160720|Hepatitis B Vaccine VIS|2016-07-20 00:00:00|Historic
+42        |Hep B, adolescent/high risk infant|253088698300005911160720|Hepatitis B Vaccine VIS|2016-07-20 00:00:00|Historic
+104       |Hep A-Hep B|253088698300005911160720|Hepatitis B Vaccine VIS|2016-07-20 00:00:00|Historic
+44        |Hep B, dialysis|253088698300005911160720|Hepatitis B Vaccine VIS|2016-07-20 00:00:00|Historic
+08        |Hep B, adolescent or pediatric|253088698300005911160720|Hepatitis B Vaccine VIS|2016-07-20 00:00:00|Historic
+189       |HepB-CpG|253088698300005911160720|Hepatitis B Vaccine VIS|2016-07-20 00:00:00|Historic
+189       |HepB-CpG|253088698300005911181012|Hepatitis B Vaccine VIS|2018-10-12 00:00:00|Historic
+104       |Hep A-Hep B|253088698300005911181012|Hepatitis B Vaccine VIS|2018-10-12 00:00:00|Historic
+44        |Hep B, dialysis|253088698300005911181012|Hepatitis B Vaccine VIS|2018-10-12 00:00:00|Historic
+51        |Hib-Hep B|253088698300005911181012|Hepatitis B Vaccine VIS|2018-10-12 00:00:00|Historic
+42        |Hep B, adolescent/high risk infant|253088698300005911181012|Hepatitis B Vaccine VIS|2018-10-12 00:00:00|Historic
+110       |DTaP-Hep B-IPV|253088698300005911181012|Hepatitis B Vaccine VIS|2018-10-12 00:00:00|Historic
+43        |Hep B, adult|253088698300005911181012|Hepatitis B Vaccine VIS|2018-10-12 00:00:00|Historic
+08        |Hep B, adolescent or pediatric|253088698300005911181012|Hepatitis B Vaccine VIS|2018-10-12 00:00:00|Historic
+146       |DTaP,IPV,Hib,HepB|253088698300005911181012|Hepatitis B Vaccine VIS|2018-10-12 00:00:00|Historic
+146       |DTaP,IPV,Hib,HepB|253088698300005911190815|Hepatitis B Vaccine VIS|2019-08-15 00:00:00|Current
+43        |Hep B, adult|253088698300005911190815|Hepatitis B Vaccine VIS|2019-08-15 00:00:00|Current
+08        |Hep B, adolescent or pediatric|253088698300005911190815|Hepatitis B Vaccine VIS|2019-08-15 00:00:00|Current
+110       |DTaP-Hep B-IPV|253088698300005911190815|Hepatitis B Vaccine VIS|2019-08-15 00:00:00|Current
+104       |Hep A-Hep B|253088698300005911190815|Hepatitis B Vaccine VIS|2019-08-15 00:00:00|Current
+51        |Hib-Hep B|253088698300005911190815|Hepatitis B Vaccine VIS|2019-08-15 00:00:00|Current
+42        |Hep B, adolescent/high risk infant|253088698300005911190815|Hepatitis B Vaccine VIS|2019-08-15 00:00:00|Current
+44        |Hep B, dialysis|253088698300005911190815|Hepatitis B Vaccine VIS|2019-08-15 00:00:00|Current
+189       |HepB-CpG|253088698300005911190815|Hepatitis B Vaccine VIS|2019-08-15 00:00:00|Current
+148       |Meningococcal C/Y-HIB PRP|253088698300006611140204|Haemophilus Influenzae type b VIS|2014-02-04 00:00:00|Historic
+51        |Hib-Hep B|253088698300006611140204|Haemophilus Influenzae type b VIS|2014-02-04 00:00:00|Historic
+49        |Hib (PRP-OMP)|253088698300006611140204|Haemophilus Influenzae type b VIS|2014-02-04 00:00:00|Historic
+146       |DTaP,IPV,Hib,HepB|253088698300006611140204|Haemophilus Influenzae type b VIS|2014-02-04 00:00:00|Historic
+48        |Hib (PRP-T)|253088698300006611140204|Haemophilus Influenzae type b VIS|2014-02-04 00:00:00|Historic
+120       |DTaP-Hib-IPV|253088698300006611140204|Haemophilus Influenzae type b VIS|2014-02-04 00:00:00|Historic
+120       |DTaP-Hib-IPV|253088698300006611150402|Haemophilus Influenzae type b VIS|2015-04-02 00:00:00|Historic
+48        |Hib (PRP-T)|253088698300006611150402|Haemophilus Influenzae type b VIS|2015-04-02 00:00:00|Historic
+146       |DTaP,IPV,Hib,HepB|253088698300006611150402|Haemophilus Influenzae type b VIS|2015-04-02 00:00:00|Historic
+51        |Hib-Hep B|253088698300006611150402|Haemophilus Influenzae type b VIS|2015-04-02 00:00:00|Historic
+49        |Hib (PRP-OMP)|253088698300006611150402|Haemophilus Influenzae type b VIS|2015-04-02 00:00:00|Historic
+148       |Meningococcal C/Y-HIB PRP|253088698300006611150402|Haemophilus Influenzae type b VIS|2015-04-02 00:00:00|Historic
+49        |Hib (PRP-OMP)|253088698300006611191030|Hib Vaccine VIS|2019-10-30 00:00:00|Current
+148       |Meningococcal C/Y-HIB PRP|253088698300006611191030|Hib Vaccine VIS|2019-10-30 00:00:00|Current
+48        |Hib (PRP-T)|253088698300006611191030|Hib Vaccine VIS|2019-10-30 00:00:00|Current
+146       |DTaP,IPV,Hib,HepB|253088698300006611191030|Hib Vaccine VIS|2019-10-30 00:00:00|Current
+120       |DTaP-Hib-IPV|253088698300006611191030|Hib Vaccine VIS|2019-10-30 00:00:00|Current
+51        |Hib-Hep B|253088698300006611191030|Hib Vaccine VIS|2019-10-30 00:00:00|Current
+148       |Meningococcal C/Y-HIB PRP|253088698300006611981216|Haemophilus Influenzae type b VIS|1998-12-16 00:00:00|Historic
+120       |DTaP-Hib-IPV|253088698300006611981216|Haemophilus Influenzae type b VIS|1998-12-16 00:00:00|Historic
+146       |DTaP,IPV,Hib,HepB|253088698300006611981216|Haemophilus Influenzae type b VIS|1998-12-16 00:00:00|Historic
+48        |Hib (PRP-T)|253088698300006611981216|Haemophilus Influenzae type b VIS|1998-12-16 00:00:00|Historic
+51        |Hib-Hep B|253088698300006611981216|Haemophilus Influenzae type b VIS|1998-12-16 00:00:00|Historic
+49        |Hib (PRP-OMP)|253088698300006611981216|Haemophilus Influenzae type b VIS|1998-12-16 00:00:00|Historic
+118       |HPV, bivalent|253088698300007311110503|Human papillomavirus Vaccine (Cervarix) VIS|2011-05-03 00:00:00|Historic
+62        |HPV, quadrivalent|253088698300008011120222|Human papillomavirus Vaccine (Gardasil) VIS|2012-02-22 00:00:00|Historic
+62        |HPV, quadrivalent|253088698300008011130517|Human papillomavirus Vaccine (Gardasil) VIS|2013-05-17 00:00:00|Historic
+111       |influenza, live, intranasal|253088698300009711120702|Influenza Vaccine - Live, Intranasal VIS|2012-07-02 00:00:00|Historic
+149       |influenza, live, intranasal, quadrivalent|253088698300009711120702|Influenza Vaccine - Live, Intranasal VIS|2012-07-02 00:00:00|Historic
+149       |influenza, live, intranasal, quadrivalent|253088698300009711130726|Influenza Vaccine - Live, Intranasal VIS|2013-07-26 00:00:00|Historic
+111       |influenza, live, intranasal|253088698300009711130726|Influenza Vaccine - Live, Intranasal VIS|2013-07-26 00:00:00|Historic
+111       |influenza, live, intranasal|253088698300009711140819|Influenza Vaccine - Live, Intranasal VIS|2014-08-19 00:00:00|Historic
+149       |influenza, live, intranasal, quadrivalent|253088698300009711140819|Influenza Vaccine - Live, Intranasal VIS|2014-08-19 00:00:00|Historic
+149       |influenza, live, intranasal, quadrivalent|253088698300009711150807|Influenza Vaccine - Live, Intranasal VIS|2015-08-07 00:00:00|Historic
+111       |influenza, live, intranasal|253088698300009711150807|Influenza Vaccine - Live, Intranasal VIS|2015-08-07 00:00:00|Historic
+111       |influenza, live, intranasal|253088698300009711190815|Live Attenuated Influenza Vaccine VIS|2019-08-15 00:00:00|Current
+149       |influenza, live, intranasal, quadrivalent|253088698300009711190815|Live Attenuated Influenza Vaccine VIS|2019-08-15 00:00:00|Current
+140       |Influenza, seasonal, injectable, preservative free|253088698300010311120702|Influenza Vaccine - Inactivated VIS|2012-07-02 00:00:00|Historic
+155       |influenza, recombinant, injectable, preservative free|253088698300010311120702|Influenza Vaccine - Inactivated VIS|2012-07-02 00:00:00|Historic
+158       |influenza, injectable, quadrivalent|253088698300010311120702|Influenza Vaccine - Inactivated VIS|2012-07-02 00:00:00|Historic
+135       |Influenza, high dose seasonal|253088698300010311120702|Influenza Vaccine - Inactivated VIS|2012-07-02 00:00:00|Historic
+150       |influenza, injectable, quadrivalent, preservative free|253088698300010311120702|Influenza Vaccine - Inactivated VIS|2012-07-02 00:00:00|Historic
+153       |Influenza, injectable, MDCK, preservative free|253088698300010311120702|Influenza Vaccine - Inactivated VIS|2012-07-02 00:00:00|Historic
+144       |influenza, seasonal, intradermal, preservative free|253088698300010311120702|Influenza Vaccine - Inactivated VIS|2012-07-02 00:00:00|Historic
+141       |Influenza, seasonal, injectable|253088698300010311120702|Influenza Vaccine - Inactivated VIS|2012-07-02 00:00:00|Historic
+141       |Influenza, seasonal, injectable|253088698300010311130726|Influenza Vaccine - Inactivated VIS|2013-07-26 00:00:00|Historic
+153       |Influenza, injectable, MDCK, preservative free|253088698300010311130726|Influenza Vaccine - Inactivated VIS|2013-07-26 00:00:00|Historic
+144       |influenza, seasonal, intradermal, preservative free|253088698300010311130726|Influenza Vaccine - Inactivated VIS|2013-07-26 00:00:00|Historic
+135       |Influenza, high dose seasonal|253088698300010311130726|Influenza Vaccine - Inactivated VIS|2013-07-26 00:00:00|Historic
+158       |influenza, injectable, quadrivalent|253088698300010311130726|Influenza Vaccine - Inactivated VIS|2013-07-26 00:00:00|Historic
+161       |Influenza, injectable,quadrivalent, preservative free, pediatric|253088698300010311130726|Influenza Vaccine - Inactivated VIS|2013-07-26 00:00:00|Historic
+150       |influenza, injectable, quadrivalent, preservative free|253088698300010311130726|Influenza Vaccine - Inactivated VIS|2013-07-26 00:00:00|Historic
+155       |influenza, recombinant, injectable, preservative free|253088698300010311130726|Influenza Vaccine - Inactivated VIS|2013-07-26 00:00:00|Historic
+140       |Influenza, seasonal, injectable, preservative free|253088698300010311130726|Influenza Vaccine - Inactivated VIS|2013-07-26 00:00:00|Historic
+140       |Influenza, seasonal, injectable, preservative free|253088698300010311140819|Influenza Vaccine - Inactivated VIS|2014-08-19 00:00:00|Historic
+155       |influenza, recombinant, injectable, preservative free|253088698300010311140819|Influenza Vaccine - Inactivated VIS|2014-08-19 00:00:00|Historic
+150       |influenza, injectable, quadrivalent, preservative free|253088698300010311140819|Influenza Vaccine - Inactivated VIS|2014-08-19 00:00:00|Historic
+166       |influenza, intradermal, quadrivalent, preservative free|253088698300010311140819|Influenza Vaccine - Inactivated VIS|2014-08-19 00:00:00|Historic
+135       |Influenza, high dose seasonal|253088698300010311140819|Influenza Vaccine - Inactivated VIS|2014-08-19 00:00:00|Historic
+161       |Influenza, injectable,quadrivalent, preservative free, pediatric|253088698300010311140819|Influenza Vaccine - Inactivated VIS|2014-08-19 00:00:00|Historic
+158       |influenza, injectable, quadrivalent|253088698300010311140819|Influenza Vaccine - Inactivated VIS|2014-08-19 00:00:00|Historic
+141       |Influenza, seasonal, injectable|253088698300010311140819|Influenza Vaccine - Inactivated VIS|2014-08-19 00:00:00|Historic
+144       |influenza, seasonal, intradermal, preservative free|253088698300010311140819|Influenza Vaccine - Inactivated VIS|2014-08-19 00:00:00|Historic
+153       |Influenza, injectable, MDCK, preservative free|253088698300010311140819|Influenza Vaccine - Inactivated VIS|2014-08-19 00:00:00|Historic
+153       |Influenza, injectable, MDCK, preservative free|253088698300010311150807|Influenza Vaccine - Inactivated VIS|2015-08-07 00:00:00|Historic
+171       |Influenza, injectable, MDCK, preservative free, quadrivalent|253088698300010311150807|Influenza Vaccine - Inactivated VIS|2015-08-07 00:00:00|Historic
+144       |influenza, seasonal, intradermal, preservative free|253088698300010311150807|Influenza Vaccine - Inactivated VIS|2015-08-07 00:00:00|Historic
+158       |influenza, injectable, quadrivalent|253088698300010311150807|Influenza Vaccine - Inactivated VIS|2015-08-07 00:00:00|Historic
+185       |influenza, recombinant, quadrivalent,injectable, preservative free|253088698300010311150807|Influenza Vaccine - Inactivated VIS|2015-08-07 00:00:00|Historic
+161       |Influenza, injectable,quadrivalent, preservative free, pediatric|253088698300010311150807|Influenza Vaccine - Inactivated VIS|2015-08-07 00:00:00|Historic
+141       |Influenza, seasonal, injectable|253088698300010311150807|Influenza Vaccine - Inactivated VIS|2015-08-07 00:00:00|Historic
+135       |Influenza, high dose seasonal|253088698300010311150807|Influenza Vaccine - Inactivated VIS|2015-08-07 00:00:00|Historic
+166       |influenza, intradermal, quadrivalent, preservative free|253088698300010311150807|Influenza Vaccine - Inactivated VIS|2015-08-07 00:00:00|Historic
+150       |influenza, injectable, quadrivalent, preservative free|253088698300010311150807|Influenza Vaccine - Inactivated VIS|2015-08-07 00:00:00|Historic
+186       |Influenza, injectable, MDCK, quadrivalent, preservative|253088698300010311150807|Influenza Vaccine - Inactivated VIS|2015-08-07 00:00:00|Historic
+168       |influenza, trivalent, adjuvanted|253088698300010311150807|Influenza Vaccine - Inactivated VIS|2015-08-07 00:00:00|Historic
+155       |influenza, recombinant, injectable, preservative free|253088698300010311150807|Influenza Vaccine - Inactivated VIS|2015-08-07 00:00:00|Historic
+140       |Influenza, seasonal, injectable, preservative free|253088698300010311150807|Influenza Vaccine - Inactivated VIS|2015-08-07 00:00:00|Historic
+140       |Influenza, seasonal, injectable, preservative free|253088698300010311190815|Inactivated Influenza Vaccine VIS|2019-08-15 00:00:00|Current
+155       |influenza, recombinant, injectable, preservative free|253088698300010311190815|Inactivated Influenza Vaccine VIS|2019-08-15 00:00:00|Current
+205       |Influenza vaccine, quadrivalent, adjuvanted|253088698300010311190815|Inactivated Influenza Vaccine VIS|2019-08-15 00:00:00|Current
+168       |influenza, trivalent, adjuvanted|253088698300010311190815|Inactivated Influenza Vaccine VIS|2019-08-15 00:00:00|Current
+186       |Influenza, injectable, MDCK, quadrivalent, preservative|253088698300010311190815|Inactivated Influenza Vaccine VIS|2019-08-15 00:00:00|Current
+197       |influenza, high-dose, quadrivalent|253088698300010311190815|Inactivated Influenza Vaccine VIS|2019-08-15 00:00:00|Current
+166       |influenza, intradermal, quadrivalent, preservative free|253088698300010311190815|Inactivated Influenza Vaccine VIS|2019-08-15 00:00:00|Current
+161       |Influenza, injectable,quadrivalent, preservative free, pediatric|253088698300010311190815|Inactivated Influenza Vaccine VIS|2019-08-15 00:00:00|Current
+150       |influenza, injectable, quadrivalent, preservative free|253088698300010311190815|Inactivated Influenza Vaccine VIS|2019-08-15 00:00:00|Current
+185       |influenza, recombinant, quadrivalent,injectable, preservative free|253088698300010311190815|Inactivated Influenza Vaccine VIS|2019-08-15 00:00:00|Current
+158       |influenza, injectable, quadrivalent|253088698300010311190815|Inactivated Influenza Vaccine VIS|2019-08-15 00:00:00|Current
+135       |Influenza, high dose seasonal|253088698300010311190815|Inactivated Influenza Vaccine VIS|2019-08-15 00:00:00|Current
+141       |Influenza, seasonal, injectable|253088698300010311190815|Inactivated Influenza Vaccine VIS|2019-08-15 00:00:00|Current
+171       |Influenza, injectable, MDCK, preservative free, quadrivalent|253088698300010311190815|Inactivated Influenza Vaccine VIS|2019-08-15 00:00:00|Current
+144       |influenza, seasonal, intradermal, preservative free|253088698300010311190815|Inactivated Influenza Vaccine VIS|2019-08-15 00:00:00|Current
+153       |Influenza, injectable, MDCK, preservative free|253088698300010311190815|Inactivated Influenza Vaccine VIS|2019-08-15 00:00:00|Current
+134       |Japanese Encephalitis IM|253088698300011011111207|Japanese Encephalitis VIS|2011-12-07 00:00:00|Historic
+134       |Japanese Encephalitis IM|253088698300011011140124|Japanese Encephalitis VIS|2014-01-24 00:00:00|Historic
+134       |Japanese Encephalitis IM|253088698300011011190815|Japanese Encephalitis Vaccine VIS|2019-08-15 00:00:00|Current
+03        |MMR|253088698300012711120420|Measles/Mumps/Rubella VIS|2012-04-20 00:00:00|Historic
+03        |MMR|253088698300012711180212|MMR Vaccine VIS|2018-02-12 00:00:00|Historic
+03        |MMR|253088698300012711190815|MMR Vaccine VIS|2019-08-15 00:00:00|Current
+94        |MMRV|253088698300013411100521|Measles/Mumps/Rubella/Varicella VIS|2010-05-21 00:00:00|Historic
+94        |MMRV|253088698300013411180212|MMRV Vaccine VIS|2018-02-12 00:00:00|Historic
+94        |MMRV|253088698300013411190815|MMRV Vaccine VIS|2019-08-15 00:00:00|Current
+114       |meningococcal MCV4P|253088698300014111111014|Meningococcal VIS|2011-10-14 00:00:00|Historic
+32        |meningococcal MPSV4|253088698300014111111014|Meningococcal VIS|2011-10-14 00:00:00|Historic
+136       |Meningococcal MCV4O|253088698300014111111014|Meningococcal VIS|2011-10-14 00:00:00|Historic
+136       |Meningococcal MCV4O|253088698300014111160331|Meningococcal ACWY Vaccines VIS|2016-03-31 00:00:00|Historic
+32        |meningococcal MPSV4|253088698300014111160331|Meningococcal ACWY Vaccines VIS|2016-03-31 00:00:00|Historic
+114       |meningococcal MCV4P|253088698300014111160331|Meningococcal ACWY Vaccines VIS|2016-03-31 00:00:00|Historic
+114       |meningococcal MCV4P|253088698300014111180824|Meningococcal ACWY Vaccines VIS|2018-08-24 00:00:00|Historic 
+136       |Meningococcal MCV4O|253088698300014111180824|Meningococcal ACWY Vaccines VIS|2018-08-24 00:00:00|Historic 
+136       |Meningococcal MCV4O|253088698300014111190815|Meningococcal ACWY Vaccine VIS|2019-08-15 00:00:00|Current
+114       |meningococcal MCV4P|253088698300014111190815|Meningococcal ACWY Vaccine VIS|2019-08-15 00:00:00|Current
+133       |Pneumococcal conjugate PCV 13|253088698300015811100416|Pneumococcal Conjugate (PCV13) VIS|2010-04-16 00:00:00|Historic
+133       |Pneumococcal conjugate PCV 13|253088698300015811130227|Pneumococcal Conjugate (PCV13) VIS|2013-02-27 00:00:00|Historic
+133       |Pneumococcal conjugate PCV 13|253088698300015811151105|PCV13 Vaccine VIS|2015-11-05 00:00:00|Historic
+133       |Pneumococcal conjugate PCV 13|253088698300015811191030|PCV13 VIS|2019-10-30 00:00:00|Current
+33        |pneumococcal polysaccharide PPV23|253088698300016511091006|Pneumococcal Polysaccharide VIS|2009-10-06 00:00:00|Historic
+33        |pneumococcal polysaccharide PPV23|253088698300016511150424|Pneumococcal Polysaccharide VIS|2015-04-24 00:00:00|Historic
+33        |pneumococcal polysaccharide PPV23|253088698300016511191030|PPSV23 VIS|2019-10-30 00:00:00|Current
+110       |DTaP-Hep B-IPV|253088698300017211111108|Polio VIS|2011-11-08 00:00:00|Historic
+120       |DTaP-Hib-IPV|253088698300017211111108|Polio VIS|2011-11-08 00:00:00|Historic
+130       |DTaP-IPV|253088698300017211111108|Polio VIS|2011-11-08 00:00:00|Historic
+146       |DTaP,IPV,Hib,HepB|253088698300017211111108|Polio VIS|2011-11-08 00:00:00|Historic
+10        |IPV|253088698300017211111108|Polio VIS|2011-11-08 00:00:00|Historic
+130       |DTaP-IPV|253088698300017211160720|Polio Vaccine VIS|2016-07-20 00:00:00|Historic
+146       |DTaP,IPV,Hib,HepB|253088698300017211160720|Polio Vaccine VIS|2016-07-20 00:00:00|Historic
+10        |IPV|253088698300017211160720|Polio Vaccine VIS|2016-07-20 00:00:00|Historic
+120       |DTaP-Hib-IPV|253088698300017211160720|Polio Vaccine VIS|2016-07-20 00:00:00|Historic
+110       |DTaP-Hep B-IPV|253088698300017211160720|Polio Vaccine VIS|2016-07-20 00:00:00|Historic
+110       |DTaP-Hep B-IPV|253088698300017211191030|Polio Vaccine VIS|2019-10-30 00:00:00|Current
+120       |DTaP-Hib-IPV|253088698300017211191030|Polio Vaccine VIS|2019-10-30 00:00:00|Current
+10        |IPV|253088698300017211191030|Polio Vaccine VIS|2019-10-30 00:00:00|Current
+130       |DTaP-IPV|253088698300017211191030|Polio Vaccine VIS|2019-10-30 00:00:00|Current
+146       |DTaP,IPV,Hib,HepB|253088698300017211191030|Polio Vaccine VIS|2019-10-30 00:00:00|Current
+176       |Rabies - IM fibroblast culture|253088698300018911091006|Rabies VIS|2009-10-06 00:00:00|Historic
+175       |Rabies - IM Diploid cell culture|253088698300018911091006|Rabies VIS|2009-10-06 00:00:00|Historic
+18        |rabies, intramuscular injection|253088698300018911091006|Rabies VIS|2009-10-06 00:00:00|Historic
+175       |Rabies - IM Diploid cell culture|253088698300018911200108|Rabies Vaccine VIS|2020-01-08 00:00:00|Current
+176       |Rabies - IM fibroblast culture|253088698300018911200108|Rabies Vaccine VIS|2020-01-08 00:00:00|Current
+116       |rotavirus, pentavalent|253088698300019611101206|Rotavirus VIS|2010-12-06 00:00:00|Historic
+119       |rotavirus, monovalent|253088698300019611101206|Rotavirus VIS|2010-12-06 00:00:00|Historic
+119       |rotavirus, monovalent|253088698300019611130826|Rotavirus VIS|2013-08-26 00:00:00|Historic
+116       |rotavirus, pentavalent|253088698300019611130826|Rotavirus VIS|2013-08-26 00:00:00|Historic
+116       |rotavirus, pentavalent|253088698300019611150415|Rotavirus VIS|2015-04-15 00:00:00|Historic
+119       |rotavirus, monovalent|253088698300019611150415|Rotavirus VIS|2015-04-15 00:00:00|Historic
+119       |rotavirus, monovalent|253088698300019611180223|Rotavirus Vaccine VIS|2018-02-23 00:00:00|Historic
+116       |rotavirus, pentavalent|253088698300019611180223|Rotavirus Vaccine VIS|2018-02-23 00:00:00|Historic
+116       |rotavirus, pentavalent|253088698300019611191030|Rotavirus Vaccine VIS|2019-10-30 00:00:00|Current
+119       |rotavirus, monovalent|253088698300019611191030|Rotavirus Vaccine VIS|2019-10-30 00:00:00|Current
+121       |zoster live|253088698300020211091006|Shingles VIS|2009-10-06 00:00:00|Historic
+121       |zoster live|253088698300020211180212|Live Zoster Vaccine VIS|2018-02-12 00:00:00|Historic
+121       |zoster live|253088698300020211191030|Live Zoster Vaccine VIS|2019-10-30 00:00:00|Current
+35        |tetanus toxoid, adsorbed|253088698300022611120124|Tetanus/Diphtheria/Pertussis (Tdap/Td) VIS|2012-01-24 00:00:00|Historic
+142       |tetanus toxoid, not adsorbed|253088698300022611120124|Tetanus/Diphtheria/Pertussis (Tdap/Td) VIS|2012-01-24 00:00:00|Historic
+09        |Td (adult), 2 Lf tetanus toxoid, preservative free, adsorbed|253088698300022611120124|Tetanus/Diphtheria/Pertussis (Tdap/Td) VIS|2012-01-24 00:00:00|Historic
+113       |Td (adult), 5 Lf tetanus toxoid, preservative free, adsorbed|253088698300022611120124|Tetanus/Diphtheria/Pertussis (Tdap/Td) VIS|2012-01-24 00:00:00|Historic
+138       |Td (adult)|253088698300022611120124|Tetanus/Diphtheria/Pertussis (Tdap/Td) VIS|2012-01-24 00:00:00|Historic
+41        |typhoid, parenteral|253088698300023311120529|Typhoid VIS|2012-05-29 00:00:00|Historic
+101       |typhoid, ViCPs|253088698300023311120529|Typhoid VIS|2012-05-29 00:00:00|Historic
+25        |typhoid, oral|253088698300023311120529|Typhoid VIS|2012-05-29 00:00:00|Historic
+25        |typhoid, oral|253088698300023311191030|Typhoid VIS|2019-10-30 00:00:00|Current
+101       |typhoid, ViCPs|253088698300023311191030|Typhoid VIS|2019-10-30 00:00:00|Current
+41        |typhoid, parenteral|253088698300023311191030|Typhoid VIS|2019-10-30 00:00:00|Current
+21        |varicella|253088698300024011080313|Varicella (Chickenpox) VIS|2008-03-13 00:00:00|Historic
+21        |varicella|253088698300024011180212|Varicella Vaccine VIS|2018-02-12 00:00:00|Historic
+21        |varicella|253088698300024011190815|Varicella Vaccine VIS|2019-08-15 00:00:00|Current
+37        |yellow fever|253088698300025711110330|Yellow Fever VIS|2011-03-30 00:00:00|Historic
+183       |Yellow fever vaccine - alt|253088698300025711110330|Yellow Fever VIS|2011-03-30 00:00:00|Historic
+183       |Yellow fever vaccine - alt|253088698300025711200401|Yellow Fever VIS|2020-04-01 00:00:00|Current
+37        |yellow fever|253088698300025711200401|Yellow Fever VIS|2020-04-01 00:00:00|Current
+110       |DTaP-Hep B-IPV|253088698300026411121116|Multiple Vaccines VIS|2012-11-16 00:00:00|Historic
+120       |DTaP-Hib-IPV|253088698300026411121116|Multiple Vaccines VIS|2012-11-16 00:00:00|Historic
+116       |rotavirus, pentavalent|253088698300026411121116|Multiple Vaccines VIS|2012-11-16 00:00:00|Historic
+51        |Hib-Hep B|253088698300026411121116|Multiple Vaccines VIS|2012-11-16 00:00:00|Historic
+133       |Pneumococcal conjugate PCV 13|253088698300026411121116|Multiple Vaccines VIS|2012-11-16 00:00:00|Historic
+49        |Hib (PRP-OMP)|253088698300026411121116|Multiple Vaccines VIS|2012-11-16 00:00:00|Historic
+20        |DTaP|253088698300026411121116|Multiple Vaccines VIS|2012-11-16 00:00:00|Historic
+106       |DTaP, 5 pertussis antigens|253088698300026411121116|Multiple Vaccines VIS|2012-11-16 00:00:00|Historic
+146       |DTaP,IPV,Hib,HepB|253088698300026411121116|Multiple Vaccines VIS|2012-11-16 00:00:00|Historic
+130       |DTaP-IPV|253088698300026411121116|Multiple Vaccines VIS|2012-11-16 00:00:00|Historic
+08        |Hep B, adolescent or pediatric|253088698300026411121116|Multiple Vaccines VIS|2012-11-16 00:00:00|Historic
+48        |Hib (PRP-T)|253088698300026411121116|Multiple Vaccines VIS|2012-11-16 00:00:00|Historic
+119       |rotavirus, monovalent|253088698300026411121116|Multiple Vaccines VIS|2012-11-16 00:00:00|Historic
+10        |IPV|253088698300026411121116|Multiple Vaccines VIS|2012-11-16 00:00:00|Historic
+10        |IPV|253088698300026411141022|Multiple Vaccines VIS|2014-10-22 00:00:00|Historic
+119       |rotavirus, monovalent|253088698300026411141022|Multiple Vaccines VIS|2014-10-22 00:00:00|Historic
+48        |Hib (PRP-T)|253088698300026411141022|Multiple Vaccines VIS|2014-10-22 00:00:00|Historic
+08        |Hep B, adolescent or pediatric|253088698300026411141022|Multiple Vaccines VIS|2014-10-22 00:00:00|Historic
+146       |DTaP,IPV,Hib,HepB|253088698300026411141022|Multiple Vaccines VIS|2014-10-22 00:00:00|Historic
+130       |DTaP-IPV|253088698300026411141022|Multiple Vaccines VIS|2014-10-22 00:00:00|Historic
+120       |DTaP-Hib-IPV|253088698300026411141022|Multiple Vaccines VIS|2014-10-22 00:00:00|Historic
+20        |DTaP|253088698300026411141022|Multiple Vaccines VIS|2014-10-22 00:00:00|Historic
+106       |DTaP, 5 pertussis antigens|253088698300026411141022|Multiple Vaccines VIS|2014-10-22 00:00:00|Historic
+116       |rotavirus, pentavalent|253088698300026411141022|Multiple Vaccines VIS|2014-10-22 00:00:00|Historic
+110       |DTaP-Hep B-IPV|253088698300026411141022|Multiple Vaccines VIS|2014-10-22 00:00:00|Historic
+51        |Hib-Hep B|253088698300026411141022|Multiple Vaccines VIS|2014-10-22 00:00:00|Historic
+49        |Hib (PRP-OMP)|253088698300026411141022|Multiple Vaccines VIS|2014-10-22 00:00:00|Historic
+133       |Pneumococcal conjugate PCV 13|253088698300026411141022|Multiple Vaccines VIS|2014-10-22 00:00:00|Historic
+133       |Pneumococcal conjugate PCV 13|253088698300026411151105|Multi Pediatric Vaccines VIS|2015-11-05 00:00:00|Historic
+49        |Hib (PRP-OMP)|253088698300026411151105|Multi Pediatric Vaccines VIS|2015-11-05 00:00:00|Historic
+28        |DT (pediatric)|253088698300026411151105|Multi Pediatric Vaccines VIS|2015-11-05 00:00:00|Historic
+110       |DTaP-Hep B-IPV|253088698300026411151105|Multi Pediatric Vaccines VIS|2015-11-05 00:00:00|Historic
+106       |DTaP, 5 pertussis antigens|253088698300026411151105|Multi Pediatric Vaccines VIS|2015-11-05 00:00:00|Historic
+20        |DTaP|253088698300026411151105|Multi Pediatric Vaccines VIS|2015-11-05 00:00:00|Historic
+120       |DTaP-Hib-IPV|253088698300026411151105|Multi Pediatric Vaccines VIS|2015-11-05 00:00:00|Historic
+51        |Hib-Hep B|253088698300026411151105|Multi Pediatric Vaccines VIS|2015-11-05 00:00:00|Historic
+130       |DTaP-IPV|253088698300026411151105|Multi Pediatric Vaccines VIS|2015-11-05 00:00:00|Historic
+146       |DTaP,IPV,Hib,HepB|253088698300026411151105|Multi Pediatric Vaccines VIS|2015-11-05 00:00:00|Historic
+08        |Hep B, adolescent or pediatric|253088698300026411151105|Multi Pediatric Vaccines VIS|2015-11-05 00:00:00|Historic
+48        |Hib (PRP-T)|253088698300026411151105|Multi Pediatric Vaccines VIS|2015-11-05 00:00:00|Historic
+10        |IPV|253088698300026411151105|Multi Pediatric Vaccines VIS|2015-11-05 00:00:00|Historic
+08        |Hep B, adolescent or pediatric|253088698300026411200401|Multi Pediatric Vaccines VIS|2020-04-01 00:00:00|Current
+48        |Hib (PRP-T)|253088698300026411200401|Multi Pediatric Vaccines VIS|2020-04-01 00:00:00|Current
+10        |IPV|253088698300026411200401|Multi Pediatric Vaccines VIS|2020-04-01 00:00:00|Current
+130       |DTaP-IPV|253088698300026411200401|Multi Pediatric Vaccines VIS|2020-04-01 00:00:00|Current
+146       |DTaP,IPV,Hib,HepB|253088698300026411200401|Multi Pediatric Vaccines VIS|2020-04-01 00:00:00|Current
+120       |DTaP-Hib-IPV|253088698300026411200401|Multi Pediatric Vaccines VIS|2020-04-01 00:00:00|Current
+20        |DTaP|253088698300026411200401|Multi Pediatric Vaccines VIS|2020-04-01 00:00:00|Current
+106       |DTaP, 5 pertussis antigens|253088698300026411200401|Multi Pediatric Vaccines VIS|2020-04-01 00:00:00|Current
+49        |Hib (PRP-OMP)|253088698300026411200401|Multi Pediatric Vaccines VIS|2020-04-01 00:00:00|Current
+28        |DT (pediatric)|253088698300026411200401|Multi Pediatric Vaccines VIS|2020-04-01 00:00:00|Current
+110       |DTaP-Hep B-IPV|253088698300026411200401|Multi Pediatric Vaccines VIS|2020-04-01 00:00:00|Current
+133       |Pneumococcal conjugate PCV 13|253088698300026411200401|Multi Pediatric Vaccines VIS|2020-04-01 00:00:00|Current
+115       |Tdap|253088698300027111130509|Tetanus/Diphtheria/Pertussis (Tdap) VIS|2013-05-09 00:00:00|Historic
+115       |Tdap|253088698300027111150224|Tetanus/Diphtheria/Pertussis (Tdap) VIS|2015-02-24 00:00:00|Historic
+115       |Tdap|253088698300027111200401|Tetanus, Diphtheria, Pertussis (Tdap) VIS|2020-04-01 00:00:00|Current
+09        |Td (adult), 2 Lf tetanus toxoid, preservative free, adsorbed|253088698300028811140204|Tetanus/Diphtheria (Td) VIS|2014-02-04 00:00:00|Historic
+113       |Td (adult), 5 Lf tetanus toxoid, preservative free, adsorbed|253088698300028811140204|Tetanus/Diphtheria (Td) VIS|2014-02-04 00:00:00|Historic
+35        |tetanus toxoid, adsorbed|253088698300028811140204|Tetanus/Diphtheria (Td) VIS|2014-02-04 00:00:00|Historic
+142       |tetanus toxoid, not adsorbed|253088698300028811140204|Tetanus/Diphtheria (Td) VIS|2014-02-04 00:00:00|Historic
+138       |Td (adult)|253088698300028811140204|Tetanus/Diphtheria (Td) VIS|2014-02-04 00:00:00|Historic
+138       |Td (adult)|253088698300028811150224|Tetanus/Diphtheria (Td) VIS|2015-02-24 00:00:00|Historic
+35        |tetanus toxoid, adsorbed|253088698300028811150224|Tetanus/Diphtheria (Td) VIS|2015-02-24 00:00:00|Historic
+142       |tetanus toxoid, not adsorbed|253088698300028811150224|Tetanus/Diphtheria (Td) VIS|2015-02-24 00:00:00|Historic
+113       |Td (adult), 5 Lf tetanus toxoid, preservative free, adsorbed|253088698300028811150224|Tetanus/Diphtheria (Td) VIS|2015-02-24 00:00:00|Historic
+09        |Td (adult), 2 Lf tetanus toxoid, preservative free, adsorbed|253088698300028811150224|Tetanus/Diphtheria (Td) VIS|2015-02-24 00:00:00|Historic
+09        |Td (adult), 2 Lf tetanus toxoid, preservative free, adsorbed|253088698300028811170411|Tetanus/Diphtheria (Td) Vaccine VIS|2017-04-11 00:00:00|Historic
+113       |Td (adult), 5 Lf tetanus toxoid, preservative free, adsorbed|253088698300028811170411|Tetanus/Diphtheria (Td) Vaccine VIS|2017-04-11 00:00:00|Historic
+142       |tetanus toxoid, not adsorbed|253088698300028811170411|Tetanus/Diphtheria (Td) Vaccine VIS|2017-04-11 00:00:00|Historic
+35        |tetanus toxoid, adsorbed|253088698300028811170411|Tetanus/Diphtheria (Td) Vaccine VIS|2017-04-11 00:00:00|Historic
+138       |Td (adult)|253088698300028811170411|Tetanus/Diphtheria (Td) Vaccine VIS|2017-04-11 00:00:00|Historic
+113       |Td (adult), 5 Lf tetanus toxoid, preservative free, adsorbed|253088698300028811200401|Tetanus/Diphtheria (Td) Vaccine VIS|2020-04-01 00:00:00|Current
+09        |Td (adult), 2 Lf tetanus toxoid, preservative free, adsorbed|253088698300028811200401|Tetanus/Diphtheria (Td) Vaccine VIS|2020-04-01 00:00:00|Current
+196       |Td, adsorbed, preservative free, adult use, Lf unspecified|253088698300028811200401|Tetanus/Diphtheria (Td) Vaccine VIS|2020-04-01 00:00:00|Current
+165       |HPV9|253088698300029511150415|Human papillomavirus Vaccine, 9-valent (Gardasil 9) VIS|2015-04-15 00:00:00|Historic
+165       |HPV9|253088698300029511160331|HPV Vaccine (Gardasil-9) VIS|2016-03-31 00:00:00|Historic
+165       |HPV9|253088698300029511161202|HPV Vaccine VIS|2016-12-02 00:00:00|Historic
+165       |HPV9|253088698300029511191030|HPV Vaccine VIS|2019-10-30 00:00:00|Current
+162       |meningococcal B, recombinant|253088698300030111150814|Meningococcal B VIS|2015-08-14 00:00:00|Historic
+163       |meningococcal B, OMV|253088698300030111150814|Meningococcal B VIS|2015-08-14 00:00:00|Historic
+163       |meningococcal B, OMV|253088698300030111160809|Serogroup B Meningococcal Vaccine VIS|2016-08-09 00:00:00|Historic
+162       |meningococcal B, recombinant|253088698300030111160809|Serogroup B Meningococcal Vaccine VIS|2016-08-09 00:00:00|Historic
+162       |meningococcal B, recombinant|253088698300030111190815|Meningococcal B Vaccine VIS|2019-08-15 00:00:00|Current
+163       |meningococcal B, OMV|253088698300030111190815|Meningococcal B Vaccine VIS|2019-08-15 00:00:00|Current
+174       |cholera, live attenuated|253088698300031811170706|Cholera Vaccine VIS|2017-07-06 00:00:00|Historic
+174       |cholera, live attenuated|253088698300031811191030|Cholera Vaccine VIS|2019-10-30 00:00:00|Current
+187       |zoster recombinant|253088698300032511180212|Recombinant Zoster Vaccine VIS|2018-02-12 00:00:00|Historic
+187       |zoster recombinant|253088698300032511191030|Recombinant Zoster Vaccine VIS|2019-10-30 00:00:00|Current
+208       |COVID-19, mRNA, LNP-S, PF, 30 mcg/0.3 mL dose|253088698300033211201201|COVID-19 Pfizer BioNTech Vaccine EUA Recipient-Caregiver Fact Sheet|2021-02-25 00:00:00|Current
+207       |COVID-19, mRNA, LNP-S, PF, 100 mcg/0.5 mL dose|253088698300034911201201|COVID-19 Moderna Vaccine EUA Recipient-Caregiver Fact Sheet|2020-12-01 00:00:00|Current
+210       |COVID-19 vaccine, vector-nr, rS-ChAdOx1, PF, 0.5 mL |253088698300035611210201|COVID-19 AstraZeneca Vaccine EUA Recipient-Caregiver Fact Sheet |2021-02-01 00:00:00|Current
+212       |COVID-19 vaccine, vector-nr, rS-Ad26, PF, 0.5 mL|253088698300036311210201|COVID-19 Janssen Vaccine EUA Recipient-Caregiver Fact Sheet |2021-02-01 00:00:00|Current

@@ -1,0 +1,1406 @@
+[
+  {
+    "a": {
+      "@href": "/snomed/265572009--abdominoperineal-suspension-of-urethra.html",
+      "@title": "SNOMED code for Abdominoperineal suspension of urethra",
+      "small": "265572009"
+    },
+    "#text": "Abdominoperineal suspension of urethra"
+  },
+  {
+    "a": {
+      "@href": "/snomed/416118004--administration.html",
+      "@title": "SNOMED code for Administration",
+      "small": "416118004"
+    },
+    "#text": "Administration"
+  },
+  {
+    "a": {
+      "@href": "/snomed/87786004--anesthesia-procedure.html",
+      "@title": "SNOMED code for Anesthesia procedure",
+      "small": "87786004"
+    },
+    "span": {
+      "@style": "color:red;",
+      "#text": "removed: 2003-07-31"
+    },
+    "#text": "Anesthesia procedure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/233419004--application-of-direct-pressure-to-artery.html",
+      "@title": "SNOMED code for Application of direct pressure to artery",
+      "small": "233419004"
+    },
+    "#text": "Application of direct pressure to artery"
+  },
+  {
+    "a": {
+      "@href": "/snomed/385539003--assessment-procedure.html",
+      "@title": "SNOMED code for Assessment procedure",
+      "small": "385539003"
+    },
+    "span": {
+      "@style": "color:red;",
+      "#text": "removed: 2004-07-31"
+    },
+    "#text": "Assessment procedure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/119265000--assisting.html",
+      "@title": "SNOMED code for Assisting",
+      "small": "119265000"
+    },
+    "#text": "Assisting"
+  },
+  {
+    "a": {
+      "@href": "/snomed/231361000--attention-to-catheter.html",
+      "@title": "SNOMED code for Attention to catheter",
+      "small": "231361000"
+    },
+    "#text": "Attention to catheter"
+  },
+  {
+    "a": {
+      "@href": "/snomed/450335000--attention-to-cerebroventricular-shunt.html",
+      "@title": "SNOMED code for Attention to cerebroventricular shunt",
+      "small": "450335000"
+    },
+    "#text": "Attention to cerebroventricular shunt"
+  },
+  {
+    "a": {
+      "@href": "/snomed/265316002--attention-to-cochlear-prosthesis.html",
+      "@title": "SNOMED code for Attention to cochlear prosthesis",
+      "small": "265316002"
+    },
+    "#text": "Attention to cochlear prosthesis"
+  },
+  {
+    "a": {
+      "@href": "/snomed/392446004--attention-to-device-anastomosis-andor-stoma.html",
+      "@title": "SNOMED code for Attention to device, anastomosis AND/OR stoma",
+      "small": "392446004"
+    },
+    "#text": "Attention to device, anastomosis AND/OR stoma"
+  },
+  {
+    "a": {
+      "@href": "/snomed/302436000--attention-to-dressing-of-skin.html",
+      "@title": "SNOMED code for Attention to dressing of skin",
+      "small": "302436000"
+    },
+    "#text": "Attention to dressing of skin"
+  },
+  {
+    "a": {
+      "@href": "/snomed/235444009--attention-to-gastrointestinal-tract-tube.html",
+      "@title": "SNOMED code for Attention to gastrointestinal tract tube",
+      "small": "235444009"
+    },
+    "#text": "Attention to gastrointestinal tract tube"
+  },
+  {
+    "a": {
+      "@href": "/snomed/428619000--attention-to-hearing-implant-in-external-ear.html",
+      "@title": "SNOMED code for Attention to hearing implant in external ear",
+      "small": "428619000"
+    },
+    "#text": "Attention to hearing implant in external ear"
+  },
+  {
+    "a": {
+      "@href": "/snomed/429383008--attention-to-hearing-implant-in-middle-ear.html",
+      "@title": "SNOMED code for Attention to hearing implant in middle ear",
+      "small": "429383008"
+    },
+    "#text": "Attention to hearing implant in middle ear"
+  },
+  {
+    "a": {
+      "@href": "/snomed/762051003--attention-to-hybrid-total-knee-replacement.html",
+      "@title": "SNOMED code for Attention to hybrid total knee replacement",
+      "small": "762051003"
+    },
+    "#text": "Attention to hybrid total knee replacement"
+  },
+  {
+    "a": {
+      "@href": "/snomed/173984004--attention-to-ileostomy.html",
+      "@title": "SNOMED code for Attention to ileostomy",
+      "small": "173984004"
+    },
+    "#text": "Attention to ileostomy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/232192008--attention-to-middle-ear-ventilation-tube.html",
+      "@title": "SNOMED code for Attention to middle ear ventilation tube",
+      "small": "232192008"
+    },
+    "#text": "Attention to middle ear ventilation tube"
+  },
+  {
+    "a": {
+      "@href": "/snomed/180300007--attention-to-plaster-cast.html",
+      "@title": "SNOMED code for Attention to plaster cast",
+      "small": "180300007"
+    },
+    "#text": "Attention to plaster cast"
+  },
+  {
+    "a": {
+      "@href": "/snomed/225141004--attention-to-skin-creases.html",
+      "@title": "SNOMED code for Attention to skin creases",
+      "small": "225141004"
+    },
+    "#text": "Attention to skin creases"
+  },
+  {
+    "a": {
+      "@href": "/snomed/762052005--attention-to-total-knee-replacement.html",
+      "@title": "SNOMED code for Attention to total knee replacement",
+      "small": "762052005"
+    },
+    "#text": "Attention to total knee replacement"
+  },
+  {
+    "a": {
+      "@href": "/snomed/762053000--attention-to-total-prosthetic-replacement-of-shoulder-joint.html",
+      "@title": "SNOMED code for Attention to total prosthetic replacement of shoulder joint",
+      "small": "762053000"
+    },
+    "#text": "Attention to total prosthetic replacement of shoulder joint"
+  },
+  {
+    "a": {
+      "@href": "/snomed/445758008--balloon-compression-of-trigeminal-ganglion.html",
+      "@title": "SNOMED code for Balloon compression of trigeminal ganglion",
+      "small": "445758008"
+    },
+    "#text": "Balloon compression of trigeminal ganglion"
+  },
+  {
+    "a": {
+      "@href": "/snomed/699803004--balloon-test-occlusion.html",
+      "@title": "SNOMED code for Balloon test occlusion",
+      "small": "699803004"
+    },
+    "#text": "Balloon test occlusion"
+  },
+  {
+    "a": {
+      "@href": "/snomed/274474001--bone-immobilization.html",
+      "@title": "SNOMED code for Bone immobilization",
+      "small": "274474001"
+    },
+    "#text": "Bone immobilization"
+  },
+  {
+    "a": {
+      "@href": "/snomed/234743006--bridge-preparation-of-tooth-or-teeth.html",
+      "@title": "SNOMED code for Bridge preparation of tooth or teeth",
+      "small": "234743006"
+    },
+    "#text": "Bridge preparation of tooth or teeth"
+  },
+  {
+    "a": {
+      "@href": "/snomed/18590009--cardiac-pacing.html",
+      "@title": "SNOMED code for Cardiac pacing",
+      "small": "18590009"
+    },
+    "#text": "Cardiac pacing"
+  },
+  {
+    "a": {
+      "@href": "/snomed/234734002--cavity-preparation-of-tooth.html",
+      "@title": "SNOMED code for Cavity preparation of tooth",
+      "small": "234734002"
+    },
+    "#text": "Cavity preparation of tooth"
+  },
+  {
+    "a": {
+      "@href": "/snomed/236965001--cervical-ripening-with-drug.html",
+      "@title": "SNOMED code for Cervical ripening with drug",
+      "small": "236965001"
+    },
+    "#text": "Cervical ripening with drug"
+  },
+  {
+    "a": {
+      "@href": "/snomed/236962003--cervical-ripening-with-foley-catheter.html",
+      "@title": "SNOMED code for Cervical ripening with Foley catheter",
+      "small": "236962003"
+    },
+    "#text": "Cervical ripening with Foley catheter"
+  },
+  {
+    "a": {
+      "@href": "/snomed/398041008--cervical-spine-immobilization.html",
+      "@title": "SNOMED code for Cervical spine immobilization",
+      "small": "398041008"
+    },
+    "#text": "Cervical spine immobilization"
+  },
+  {
+    "a": {
+      "@href": "/snomed/225253009--checking-cervix-covered-by-cap.html",
+      "@title": "SNOMED code for Checking cervix covered by cap",
+      "small": "225253009"
+    },
+    "#text": "Checking cervix covered by cap"
+  },
+  {
+    "a": {
+      "@href": "/snomed/425890004--checking-contraceptive-diaphragm.html",
+      "@title": "SNOMED code for Checking contraceptive diaphragm",
+      "small": "425890004"
+    },
+    "#text": "Checking contraceptive diaphragm"
+  },
+  {
+    "a": {
+      "@href": "/snomed/223491008--checking-fit-of-appliance.html",
+      "@title": "SNOMED code for Checking fit of appliance",
+      "small": "223491008"
+    },
+    "#text": "Checking fit of appliance"
+  },
+  {
+    "a": {
+      "@href": "/snomed/225200000--checking-intravenous-tubing-for-air-bubbles.html",
+      "@title": "SNOMED code for Checking intravenous tubing for air bubbles",
+      "small": "225200000"
+    },
+    "#text": "Checking intravenous tubing for air bubbles"
+  },
+  {
+    "a": {
+      "@href": "/snomed/440474004--checking-of-arm-sling.html",
+      "@title": "SNOMED code for Checking of arm sling",
+      "small": "440474004"
+    },
+    "#text": "Checking of arm sling"
+  },
+  {
+    "a": {
+      "@href": "/snomed/700223001--checking-of-automatic-implantable-cardiac-defibrillator.html",
+      "@title": "SNOMED code for Checking of automatic implantable cardiac defibrillator",
+      "small": "700223001"
+    },
+    "#text": "Checking of automatic implantable cardiac defibrillator"
+  },
+  {
+    "a": {
+      "@href": "/snomed/439326006--checking-of-special-footwear.html",
+      "@title": "SNOMED code for Checking of special footwear",
+      "small": "439326006"
+    },
+    "#text": "Checking of special footwear"
+  },
+  {
+    "a": {
+      "@href": "/snomed/228604003--checking-of-splint.html",
+      "@title": "SNOMED code for Checking of splint",
+      "small": "228604003"
+    },
+    "#text": "Checking of splint"
+  },
+  {
+    "a": {
+      "@href": "/snomed/710958003--checking-patient-identity.html",
+      "@title": "SNOMED code for Checking patient identity",
+      "small": "710958003"
+    },
+    "#text": "Checking patient identity"
+  },
+  {
+    "a": {
+      "@href": "/snomed/225718003--checking-position-of-endotracheal-tube.html",
+      "@title": "SNOMED code for Checking position of endotracheal tube",
+      "small": "225718003"
+    },
+    "#text": "Checking position of endotracheal tube"
+  },
+  {
+    "a": {
+      "@href": "/snomed/310221001--chemical-inactivation-of-non-adherent-skin-contaminant.html",
+      "@title": "SNOMED code for Chemical inactivation of non-adherent skin contaminant",
+      "small": "310221001"
+    },
+    "#text": "Chemical inactivation of non-adherent skin contaminant"
+  },
+  {
+    "a": {
+      "@href": "/snomed/288176006--circulation-maintenance.html",
+      "@title": "SNOMED code for Circulation maintenance",
+      "small": "288176006"
+    },
+    "#text": "Circulation maintenance"
+  },
+  {
+    "a": {
+      "@href": "/snomed/314124008--cleaning-of-skin-wound-head-or-neck.html",
+      "@title": "SNOMED code for Cleaning of skin wound of head or neck",
+      "small": "314124008"
+    },
+    "#text": "Cleaning of skin wound of head or neck"
+  },
+  {
+    "a": {
+      "@href": "/snomed/8367003--clipping-nails-of-patient.html",
+      "@title": "SNOMED code for Clipping nails of patient",
+      "small": "8367003"
+    },
+    "#text": "Clipping nails of patient"
+  },
+  {
+    "a": {
+      "@href": "/snomed/425680009--cognitive-behavioral-therapy-by-multidisciplinary-team.html",
+      "@title": "SNOMED code for Cognitive behavioral therapy by multidisciplinary team",
+      "small": "425680009"
+    },
+    "#text": "Cognitive behavioral therapy by multidisciplinary team"
+  },
+  {
+    "a": {
+      "@href": "/snomed/718026005--cognitive-behavioral-therapy-for-psychosis.html",
+      "@title": "SNOMED code for Cognitive behavioral therapy for psychosis",
+      "small": "718026005"
+    },
+    "#text": "Cognitive behavioral therapy for psychosis"
+  },
+  {
+    "a": {
+      "@href": "/snomed/230848003--connection-from-brain-lesion-to-subcutaneous-reservoir.html",
+      "@title": "SNOMED code for Connection from brain lesion to subcutaneous reservoir",
+      "small": "230848003"
+    },
+    "#text": "Connection from brain lesion to subcutaneous reservoir"
+  },
+  {
+    "a": {
+      "@href": "/snomed/11429006--consultation.html",
+      "@title": "SNOMED code for Consultation",
+      "small": "11429006"
+    },
+    "#text": "Consultation"
+  },
+  {
+    "a": {
+      "@href": "/snomed/451121000124106--consultation-with-caregiver.html",
+      "@title": "SNOMED code for Consultation with caregiver",
+      "small": "451121000124106"
+    },
+    "#text": "Consultation with caregiver"
+  },
+  {
+    "a": {
+      "@href": "/snomed/229837008--contouring-of-a-nail.html",
+      "@title": "SNOMED code for Contouring of a nail",
+      "small": "229837008"
+    },
+    "#text": "Contouring of a nail"
+  },
+  {
+    "a": {
+      "@href": "/snomed/439115008--contouring-of-forehead.html",
+      "@title": "SNOMED code for Contouring of forehead",
+      "small": "439115008"
+    },
+    "#text": "Contouring of forehead"
+  },
+  {
+    "a": {
+      "@href": "/snomed/735346000--control-of-hemorrhage-by-application-direct-pressure.html",
+      "@title": "SNOMED code for Control of hemorrhage by application of direct pressure",
+      "small": "735346000"
+    },
+    "#text": "Control of hemorrhage by application of direct pressure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/409063005--counseling.html",
+      "@title": "SNOMED code for Counseling",
+      "small": "409063005"
+    },
+    "#text": "Counseling"
+  },
+  {
+    "a": {
+      "@href": "/snomed/372042004--counting-procedure-related-devices.html",
+      "@title": "SNOMED code for Counting procedure-related devices",
+      "small": "372042004"
+    },
+    "#text": "Counting procedure-related devices"
+  },
+  {
+    "a": {
+      "@href": "/snomed/26782000--cryotherapy.html",
+      "@title": "SNOMED code for Cryotherapy",
+      "small": "26782000"
+    },
+    "#text": "Cryotherapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/697972001--cutting-of-hair.html",
+      "@title": "SNOMED code for Cutting of hair",
+      "small": "697972001"
+    },
+    "#text": "Cutting of hair"
+  },
+  {
+    "a": {
+      "@href": "/snomed/229832002--cutting-toenails.html",
+      "@title": "SNOMED code for Cutting toenails",
+      "small": "229832002"
+    },
+    "#text": "Cutting toenails"
+  },
+  {
+    "a": {
+      "@href": "/snomed/424128006--decompression.html",
+      "@title": "SNOMED code for Decompression",
+      "small": "424128006"
+    },
+    "#text": "Decompression"
+  },
+  {
+    "a": {
+      "@href": "/snomed/236973005--delivery-procedure.html",
+      "@title": "SNOMED code for Delivery procedure",
+      "small": "236973005"
+    },
+    "#text": "Delivery procedure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/367428009--desensitization-therapy.html",
+      "@title": "SNOMED code for Desensitization therapy",
+      "small": "367428009"
+    },
+    "#text": "Desensitization therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/108241001--dialysis-procedure.html",
+      "@title": "SNOMED code for Dialysis procedure",
+      "small": "108241001"
+    },
+    "#text": "Dialysis procedure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/397403008--diaphragm-pacing.html",
+      "@title": "SNOMED code for Diaphragm pacing",
+      "small": "397403008"
+    },
+    "#text": "Diaphragm pacing"
+  },
+  {
+    "a": {
+      "@href": "/snomed/21825005--diathermy.html",
+      "@title": "SNOMED code for Diathermy",
+      "small": "21825005"
+    },
+    "#text": "Diathermy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/281572005--direct-current-cardiac-shock.html",
+      "@title": "SNOMED code for Direct current cardiac shock",
+      "small": "281572005"
+    },
+    "#text": "Direct current cardiac shock"
+  },
+  {
+    "a": {
+      "@href": "/snomed/223482009--discussion.html",
+      "@title": "SNOMED code for Discussion",
+      "small": "223482009"
+    },
+    "#text": "Discussion"
+  },
+  {
+    "a": {
+      "@href": "/snomed/765172009--doppler-ultrasound.html",
+      "@title": "SNOMED code for Doppler ultrasound",
+      "small": "765172009"
+    },
+    "#text": "Doppler ultrasound"
+  },
+  {
+    "a": {
+      "@href": "/snomed/271462004--dynamic-non-imaging-isotope-study-blood-flow.html",
+      "@title": "SNOMED code for Dynamic non-imaging isotope study: blood flow",
+      "small": "271462004"
+    },
+    "#text": "Dynamic non-imaging isotope study: blood flow"
+  },
+  {
+    "a": {
+      "@href": "/snomed/271461006--dynamic-non-imaging-isotope-study-spleen.html",
+      "@title": "SNOMED code for Dynamic non-imaging isotope study: spleen",
+      "small": "271461006"
+    },
+    "#text": "Dynamic non-imaging isotope study: spleen"
+  },
+  {
+    "a": {
+      "@href": "/snomed/271458005--dynamic-non-imaging-isotope-study-thorax.html",
+      "@title": "SNOMED code for Dynamic non-imaging isotope study: thorax",
+      "small": "271458005"
+    },
+    "#text": "Dynamic non-imaging isotope study: thorax"
+  },
+  {
+    "a": {
+      "@href": "/snomed/409073007--education.html",
+      "@title": "SNOMED code for Education",
+      "small": "409073007"
+    },
+    "#text": "Education"
+  },
+  {
+    "a": {
+      "@href": "/snomed/122463005--embolization-procedure.html",
+      "@title": "SNOMED code for Embolization procedure",
+      "small": "122463005"
+    },
+    "#text": "Embolization procedure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/235158004--endoscopic-localization-of-lesion-git.html",
+      "@title": "SNOMED code for Endoscopic localization of lesion of GIT",
+      "small": "235158004"
+    },
+    "#text": "Endoscopic localization of lesion of GIT"
+  },
+  {
+    "a": {
+      "@href": "/snomed/133907004--episiotomy-care.html",
+      "@title": "SNOMED code for Episiotomy care",
+      "small": "133907004"
+    },
+    "#text": "Episiotomy care"
+  },
+  {
+    "a": {
+      "@href": "/snomed/122503006--evaluation.html",
+      "@title": "SNOMED code for Evaluation",
+      "small": "122503006"
+    },
+    "span": {
+      "@style": "color:red;",
+      "#text": "removed: 2003-01-31"
+    },
+    "#text": "Evaluation"
+  },
+  {
+    "a": {
+      "@href": "/snomed/386053000--evaluation-procedure.html",
+      "@title": "SNOMED code for Evaluation procedure",
+      "small": "386053000"
+    },
+    "#text": "Evaluation procedure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/439334000--extracorporeal-shock-wave-therapy-for-plantar-fasciitis-using-ultrasound-guidance.html",
+      "@title": "SNOMED code for Extracorporeal shock wave therapy for plantar fasciitis using ultrasound guidance",
+      "small": "439334000"
+    },
+    "#text": "Extracorporeal shock wave therapy for plantar fasciitis using ultrasound guidance"
+  },
+  {
+    "a": {
+      "@href": "/snomed/439204007--extracorporeal-shock-wave-therapy-of-musculoskeletal-system.html",
+      "@title": "SNOMED code for Extracorporeal shock wave therapy of musculoskeletal system",
+      "small": "439204007"
+    },
+    "#text": "Extracorporeal shock wave therapy of musculoskeletal system"
+  },
+  {
+    "a": {
+      "@href": "/snomed/440190007--extracranial-contouring-of-facial-and-skull-bones-for-benign-neoplasm.html",
+      "@title": "SNOMED code for Extracranial contouring of facial and skull bones for benign neoplasm",
+      "small": "440190007"
+    },
+    "#text": "Extracranial contouring of facial and skull bones for benign neoplasm"
+  },
+  {
+    "a": {
+      "@href": "/snomed/229835000--filing-of-a-nail.html",
+      "@title": "SNOMED code for Filing of a nail",
+      "small": "229835000"
+    },
+    "#text": "Filing of a nail"
+  },
+  {
+    "a": {
+      "@href": "/snomed/122467006--fitting-procedure.html",
+      "@title": "SNOMED code for Fitting procedure",
+      "small": "122467006"
+    },
+    "#text": "Fitting procedure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/302230009--generic-cognitive-behavioral-therapy.html",
+      "@title": "SNOMED code for Generic cognitive behavioral therapy",
+      "small": "302230009"
+    },
+    "#text": "Generic cognitive behavioral therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/444175001--guided-self-help-cognitive-behavioral-therapy.html",
+      "@title": "SNOMED code for Guided self-help cognitive behavioral therapy",
+      "small": "444175001"
+    },
+    "#text": "Guided self-help cognitive behavioral therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/266694003--heat-therapy.html",
+      "@title": "SNOMED code for Heat therapy",
+      "small": "266694003"
+    },
+    "#text": "Heat therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/232533005--hyoid-bone-suspension.html",
+      "@title": "SNOMED code for Hyoid bone suspension",
+      "small": "232533005"
+    },
+    "#text": "Hyoid bone suspension"
+  },
+  {
+    "a": {
+      "@href": "/snomed/182678001--hyposensitization-to-allergens.html",
+      "@title": "SNOMED code for Hyposensitization to allergens",
+      "small": "182678001"
+    },
+    "#text": "Hyposensitization to allergens"
+  },
+  {
+    "a": {
+      "@href": "/snomed/182557005--immobilization-by-bandaging.html",
+      "@title": "SNOMED code for Immobilization by bandaging",
+      "small": "182557005"
+    },
+    "#text": "Immobilization by bandaging"
+  },
+  {
+    "a": {
+      "@href": "/snomed/182558000--immobilization-by-sling.html",
+      "@title": "SNOMED code for Immobilization by sling",
+      "small": "182558000"
+    },
+    "#text": "Immobilization by sling"
+  },
+  {
+    "a": {
+      "@href": "/snomed/287630006--immobilization-by-splinting.html",
+      "@title": "SNOMED code for Immobilization by splinting",
+      "small": "287630006"
+    },
+    "#text": "Immobilization by splinting"
+  },
+  {
+    "a": {
+      "@href": "/snomed/182561004--immobilization-of-wound.html",
+      "@title": "SNOMED code for Immobilization of wound",
+      "small": "182561004"
+    },
+    "#text": "Immobilization of wound"
+  },
+  {
+    "a": {
+      "@href": "/snomed/450591000124106--immobilization-using-long-board.html",
+      "@title": "SNOMED code for Immobilization using long board",
+      "small": "450591000124106"
+    },
+    "#text": "Immobilization using long board"
+  },
+  {
+    "a": {
+      "@href": "/snomed/438319004--induction-of-involution-thyroid.html",
+      "@title": "SNOMED code for Induction of involution of thyroid",
+      "small": "438319004"
+    },
+    "#text": "Induction of involution of thyroid"
+  },
+  {
+    "a": {
+      "@href": "/snomed/288084007--infected-tissue-surgical-toilet.html",
+      "@title": "SNOMED code for Infected tissue surgical toilet",
+      "small": "288084007"
+    },
+    "#text": "Infected tissue surgical toilet"
+  },
+  {
+    "a": {
+      "@href": "/snomed/68641000--insufflation.html",
+      "@title": "SNOMED code for Insufflation",
+      "small": "68641000"
+    },
+    "#text": "Insufflation"
+  },
+  {
+    "a": {
+      "@href": "/snomed/414525000--interposition-procedure.html",
+      "@title": "SNOMED code for Interposition procedure",
+      "small": "414525000"
+    },
+    "#text": "Interposition procedure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/108217004--interview-history-andor-physical-examination.html",
+      "@title": "SNOMED code for Interview, history AND/OR physical examination",
+      "small": "108217004"
+    },
+    "#text": "Interview, history AND/OR physical examination"
+  },
+  {
+    "a": {
+      "@href": "/snomed/274407009--intrauterine-device-check.html",
+      "@title": "SNOMED code for Intrauterine device check",
+      "small": "274407009"
+    },
+    "#text": "Intrauterine device check"
+  },
+  {
+    "a": {
+      "@href": "/snomed/107733003--introduction-procedure.html",
+      "@title": "SNOMED code for Introduction procedure",
+      "small": "107733003"
+    },
+    "#text": "Introduction procedure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/252142004--investigations.html",
+      "@title": "SNOMED code for Investigations",
+      "small": "252142004"
+    },
+    "span": {
+      "@style": "color:red;",
+      "#text": "removed: 2003-01-31"
+    },
+    "#text": "Investigations"
+  },
+  {
+    "a": {
+      "@href": "/snomed/31394004--light-therapy.html",
+      "@title": "SNOMED code for Light therapy",
+      "small": "31394004"
+    },
+    "#text": "Light therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/257883005--lubrication.html",
+      "@title": "SNOMED code for Lubrication",
+      "small": "257883005"
+    },
+    "#text": "Lubrication"
+  },
+  {
+    "a": {
+      "@href": "/snomed/133909001--maintenance-of-device.html",
+      "@title": "SNOMED code for Maintenance of device",
+      "small": "133909001"
+    },
+    "#text": "Maintenance of device"
+  },
+  {
+    "a": {
+      "@href": "/snomed/233232006--maintenance-of-ductus-arteriosus-patency.html",
+      "@title": "SNOMED code for Maintenance of ductus arteriosus patency",
+      "small": "233232006"
+    },
+    "#text": "Maintenance of ductus arteriosus patency"
+  },
+  {
+    "a": {
+      "@href": "/snomed/230965008--maintenance-of-neurostimulator-in-cranial-nerve-ganglion.html",
+      "@title": "SNOMED code for Maintenance of neurostimulator in cranial nerve ganglion",
+      "small": "230965008"
+    },
+    "#text": "Maintenance of neurostimulator in cranial nerve ganglion"
+  },
+  {
+    "a": {
+      "@href": "/snomed/314122007--maintenance-therapy.html",
+      "@title": "SNOMED code for Maintenance therapy",
+      "small": "314122007"
+    },
+    "#text": "Maintenance therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/119270007--management-procedure.html",
+      "@title": "SNOMED code for Management procedure",
+      "small": "119270007"
+    },
+    "#text": "Management procedure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/19207007--manipulation.html",
+      "@title": "SNOMED code for Manipulation",
+      "small": "19207007"
+    },
+    "#text": "Manipulation"
+  },
+  {
+    "a": {
+      "@href": "/snomed/737007008--mapping-of-skin-ulcer.html",
+      "@title": "SNOMED code for Mapping of skin ulcer",
+      "small": "737007008"
+    },
+    "#text": "Mapping of skin ulcer"
+  },
+  {
+    "a": {
+      "@href": "/snomed/440054002--mechanical-construction.html",
+      "@title": "SNOMED code for Mechanical construction",
+      "small": "440054002"
+    },
+    "#text": "Mechanical construction"
+  },
+  {
+    "a": {
+      "@href": "/snomed/429283006--mechanically-assisted-chest-compression.html",
+      "@title": "SNOMED code for Mechanically assisted chest compression",
+      "small": "429283006"
+    },
+    "#text": "Mechanically assisted chest compression"
+  },
+  {
+    "a": {
+      "@href": "/snomed/74923002--mobilization.html",
+      "@title": "SNOMED code for Mobilization",
+      "small": "74923002"
+    },
+    "#text": "Mobilization"
+  },
+  {
+    "a": {
+      "@href": "/snomed/308710004--neurolytic-block-of-cranial-nerve-or-ganglion.html",
+      "@title": "SNOMED code for Neurolytic block of cranial nerve or ganglion",
+      "small": "308710004"
+    },
+    "span": {
+      "@style": "color:red;",
+      "#text": "removed: 2016-01-31"
+    },
+    "#text": "Neurolytic block of cranial nerve or ganglion"
+  },
+  {
+    "a": {
+      "@href": "/snomed/426008007--noncontact-normothermic-wound-therapy.html",
+      "@title": "SNOMED code for Noncontact normothermic wound therapy",
+      "small": "426008007"
+    },
+    "#text": "Noncontact normothermic wound therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/234727004--occlusal-rehabilitation.html",
+      "@title": "SNOMED code for Occlusal rehabilitation",
+      "small": "234727004"
+    },
+    "#text": "Occlusal rehabilitation"
+  },
+  {
+    "a": {
+      "@href": "/snomed/172310003--occlusion-of-lacrimal-punctum.html",
+      "@title": "SNOMED code for Occlusion of lacrimal punctum",
+      "small": "172310003"
+    },
+    "#text": "Occlusion of lacrimal punctum"
+  },
+  {
+    "a": {
+      "@href": "/snomed/441676000--occlusion-of-patent-ductus-arteriosus-using-embolization-coil.html",
+      "@title": "SNOMED code for Occlusion of patent ductus arteriosus using embolization coil",
+      "small": "441676000"
+    },
+    "#text": "Occlusion of patent ductus arteriosus using embolization coil"
+  },
+  {
+    "a": {
+      "@href": "/snomed/448779009--occlusion-of-systemic-to-pulmonary-artery-shunt-using-transluminal-embolic-device.html",
+      "@title": "SNOMED code for Occlusion of systemic to pulmonary artery shunt using transluminal embolic device",
+      "small": "448779009"
+    },
+    "#text": "Occlusion of systemic to pulmonary artery shunt using transluminal embolic device"
+  },
+  {
+    "a": {
+      "@href": "/snomed/386375006--oral-health-maintenance.html",
+      "@title": "SNOMED code for Oral health maintenance",
+      "small": "386375006"
+    },
+    "#text": "Oral health maintenance"
+  },
+  {
+    "a": {
+      "@href": "/snomed/439916005--paradoxical-intention-behavior-therapy.html",
+      "@title": "SNOMED code for Paradoxical intention behavior therapy",
+      "small": "439916005"
+    },
+    "#text": "Paradoxical intention behavior therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/707826003--percutaneous-transluminal-occlusion-of-anastomosis-between-pulmonary-artery-and-subclavian.html",
+      "@title": "SNOMED code for Percutaneous transluminal occlusion of anastomosis between pulmonary artery and subclavian artery",
+      "small": "707826003"
+    },
+    "#text": "Percutaneous transluminal occlusion of anastomosis between pulmonary artery and subclavian artery"
+  },
+  {
+    "a": {
+      "@href": "/snomed/182766006--physiotherapy-for-maintenance-of-cardiovascular-performance.html",
+      "@title": "SNOMED code for Physiotherapy for maintenance of cardiovascular performance",
+      "small": "182766006"
+    },
+    "#text": "Physiotherapy for maintenance of cardiovascular performance"
+  },
+  {
+    "a": {
+      "@href": "/snomed/237380007--pre-biopsy-localization-of-breast-lesion.html",
+      "@title": "SNOMED code for Pre-biopsy localization of breast lesion",
+      "small": "237380007"
+    },
+    "#text": "Pre-biopsy localization of breast lesion"
+  },
+  {
+    "a": {
+      "@href": "/snomed/443425001--preparation-for-procedure.html",
+      "@title": "SNOMED code for Preparation for procedure",
+      "small": "443425001"
+    },
+    "#text": "Preparation for procedure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/85921004--puncture-procedure.html",
+      "@title": "SNOMED code for Puncture procedure",
+      "small": "85921004"
+    },
+    "#text": "Puncture procedure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/108272002--radiology-radiotherapy-nuclear-medicine-andor-ultrasound-procedure-technique-service.html",
+      "@title": "SNOMED code for Radiology, radiotherapy, nuclear medicine AND/OR ultrasound procedure, technique AND/OR service",
+      "small": "108272002"
+    },
+    "span": {
+      "@style": "color:red;",
+      "#text": "removed: 2002-07-31"
+    },
+    "#text": "Radiology, radiotherapy, nuclear medicine AND/OR ultrasound procedure, technique AND/OR service"
+  },
+  {
+    "a": {
+      "@href": "/snomed/429685005--radiotherapy-by-body-site.html",
+      "@title": "SNOMED code for Radiotherapy by body site",
+      "small": "429685005"
+    },
+    "#text": "Radiotherapy by body site"
+  },
+  {
+    "a": {
+      "@href": "/snomed/420227002--recommendation-to.html",
+      "@title": "SNOMED code for Recommendation to",
+      "small": "420227002"
+    },
+    "#text": "Recommendation to"
+  },
+  {
+    "a": {
+      "@href": "/snomed/234725007--recontour-tooth.html",
+      "@title": "SNOMED code for Recontour tooth",
+      "small": "234725007"
+    },
+    "#text": "Recontour tooth"
+  },
+  {
+    "a": {
+      "@href": "/snomed/122469009--reduction-procedure.html",
+      "@title": "SNOMED code for Reduction procedure",
+      "small": "122469009"
+    },
+    "#text": "Reduction procedure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/789482004--regenerative-endodontic-procedure.html",
+      "@title": "SNOMED code for Regenerative endodontic procedure",
+      "small": "789482004"
+    },
+    "#text": "Regenerative endodontic procedure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/118292001--removal.html",
+      "@title": "SNOMED code for Removal",
+      "small": "118292001"
+    },
+    "#text": "Removal"
+  },
+  {
+    "a": {
+      "@href": "/snomed/183201005--repair-of-appliance.html",
+      "@title": "SNOMED code for Repair of appliance",
+      "small": "183201005"
+    },
+    "#text": "Repair of appliance"
+  },
+  {
+    "a": {
+      "@href": "/snomed/23325006--repair-of-cardiac-pacemaker.html",
+      "@title": "SNOMED code for Repair of cardiac pacemaker",
+      "small": "23325006"
+    },
+    "#text": "Repair of cardiac pacemaker"
+  },
+  {
+    "a": {
+      "@href": "/snomed/439909009--repair-of-central-venous-access-catheter.html",
+      "@title": "SNOMED code for Repair of central venous access catheter",
+      "small": "439909009"
+    },
+    "#text": "Repair of central venous access catheter"
+  },
+  {
+    "a": {
+      "@href": "/snomed/287371006--repair-of-vessel.html",
+      "@title": "SNOMED code for Repair of vessel",
+      "small": "287371006"
+    },
+    "span": {
+      "@style": "color:red;",
+      "#text": "removed: 2004-07-31"
+    },
+    "#text": "Repair of vessel"
+  },
+  {
+    "a": {
+      "@href": "/snomed/55120005--repair-to-denture.html",
+      "@title": "SNOMED code for Repair to denture",
+      "small": "55120005"
+    },
+    "#text": "Repair to denture"
+  },
+  {
+    "a": {
+      "@href": "/snomed/230588002--reposition-of-cardiac-pacemaker-pocket.html",
+      "@title": "SNOMED code for Reposition of cardiac pacemaker pocket",
+      "small": "230588002"
+    },
+    "#text": "Reposition of cardiac pacemaker pocket"
+  },
+  {
+    "a": {
+      "@href": "/snomed/234684004--repositioned-periodontal-flap.html",
+      "@title": "SNOMED code for Repositioned periodontal flap",
+      "small": "234684004"
+    },
+    "#text": "Repositioned periodontal flap"
+  },
+  {
+    "a": {
+      "@href": "/snomed/78635008--repositioning-of-aberrant-renal-vessels.html",
+      "@title": "SNOMED code for Repositioning of aberrant renal vessels",
+      "small": "78635008"
+    },
+    "#text": "Repositioning of aberrant renal vessels"
+  },
+  {
+    "a": {
+      "@href": "/snomed/235562003--repositioning-of-bile-duct-prosthesis.html",
+      "@title": "SNOMED code for Repositioning of bile duct prosthesis",
+      "small": "235562003"
+    },
+    "#text": "Repositioning of bile duct prosthesis"
+  },
+  {
+    "a": {
+      "@href": "/snomed/447361006--repositioning-of-corneal-flap.html",
+      "@title": "SNOMED code for Repositioning of corneal flap",
+      "small": "447361006"
+    },
+    "#text": "Repositioning of corneal flap"
+  },
+  {
+    "a": {
+      "@href": "/snomed/231023008--repositioning-of-epidural-electrode.html",
+      "@title": "SNOMED code for Repositioning of epidural electrode",
+      "small": "231023008"
+    },
+    "#text": "Repositioning of epidural electrode"
+  },
+  {
+    "a": {
+      "@href": "/snomed/239621008--repositioning-of-external-fixator-pin.html",
+      "@title": "SNOMED code for Repositioning of external fixator pin",
+      "small": "239621008"
+    },
+    "#text": "Repositioning of external fixator pin"
+  },
+  {
+    "a": {
+      "@href": "/snomed/440364001--repositioning-of-gastric-feeding-tube-via-duodenum.html",
+      "@title": "SNOMED code for Repositioning of gastric feeding tube via duodenum",
+      "small": "440364001"
+    },
+    "#text": "Repositioning of gastric feeding tube via duodenum"
+  },
+  {
+    "a": {
+      "@href": "/snomed/448591002--repositioning-of-tenckhoff-catheter.html",
+      "@title": "SNOMED code for Repositioning of Tenckhoff catheter",
+      "small": "448591002"
+    },
+    "#text": "Repositioning of Tenckhoff catheter"
+  },
+  {
+    "a": {
+      "@href": "/snomed/173281003--repositioning-of-tooth.html",
+      "@title": "SNOMED code for Repositioning of tooth",
+      "small": "173281003"
+    },
+    "#text": "Repositioning of tooth"
+  },
+  {
+    "a": {
+      "@href": "/snomed/712471003--restorative-dental-procedure-on-tooth.html",
+      "@title": "SNOMED code for Restorative dental procedure on tooth",
+      "small": "712471003"
+    },
+    "#text": "Restorative dental procedure on tooth"
+  },
+  {
+    "a": {
+      "@href": "/snomed/234707000--root-canal-preparation.html",
+      "@title": "SNOMED code for Root canal preparation",
+      "small": "234707000"
+    },
+    "#text": "Root canal preparation"
+  },
+  {
+    "a": {
+      "@href": "/snomed/231084004--semi-permanent-pressure-technique.html",
+      "@title": "SNOMED code for Semi-permanent pressure technique",
+      "small": "231084004"
+    },
+    "#text": "Semi-permanent pressure technique"
+  },
+  {
+    "a": {
+      "@href": "/snomed/225136007--skin-preparation.html",
+      "@title": "SNOMED code for Skin preparation",
+      "small": "225136007"
+    },
+    "#text": "Skin preparation"
+  },
+  {
+    "a": {
+      "@href": "/snomed/440461005--skin-ulcer-care.html",
+      "@title": "SNOMED code for Skin ulcer care",
+      "small": "440461005"
+    },
+    "#text": "Skin ulcer care"
+  },
+  {
+    "a": {
+      "@href": "/snomed/387821004--spinal-deformity-correction.html",
+      "@title": "SNOMED code for Spinal deformity correction",
+      "small": "387821004"
+    },
+    "#text": "Spinal deformity correction"
+  },
+  {
+    "a": {
+      "@href": "/snomed/266689003--splint-teeth-with-orthodontic-bands.html",
+      "@title": "SNOMED code for Splint teeth with orthodontic bands",
+      "small": "266689003"
+    },
+    "#text": "Splint teeth with orthodontic bands"
+  },
+  {
+    "a": {
+      "@href": "/snomed/115979005--stabilization.html",
+      "@title": "SNOMED code for Stabilization",
+      "small": "115979005"
+    },
+    "#text": "Stabilization"
+  },
+  {
+    "a": {
+      "@href": "/snomed/122545008--stimulation.html",
+      "@title": "SNOMED code for Stimulation",
+      "small": "122545008"
+    },
+    "#text": "Stimulation"
+  },
+  {
+    "a": {
+      "@href": "/snomed/177129005--surgical-induction-of-labor.html",
+      "@title": "SNOMED code for Surgical induction of labor",
+      "small": "177129005"
+    },
+    "#text": "Surgical induction of labor"
+  },
+  {
+    "a": {
+      "@href": "/snomed/387713003--surgical-procedure.html",
+      "@title": "SNOMED code for Surgical procedure",
+      "small": "387713003"
+    },
+    "#text": "Surgical procedure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/48692003--surgical-procedure.html",
+      "@title": "SNOMED code for Surgical procedure",
+      "small": "48692003"
+    },
+    "span": {
+      "@style": "color:red;",
+      "#text": "removed: 2003-01-31"
+    },
+    "#text": "Surgical procedure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/234745004--take-oral-or-dental-impression.html",
+      "@title": "SNOMED code for Take oral or dental impression",
+      "small": "234745004"
+    },
+    "#text": "Take oral or dental impression"
+  },
+  {
+    "a": {
+      "@href": "/snomed/439865001--taking-an-impression-for-creation-of-custom-definitive-obturator-prosthesis.html",
+      "@title": "SNOMED code for Taking an impression for creation of custom definitive obturator prosthesis",
+      "small": "439865001"
+    },
+    "#text": "Taking an impression for creation of custom definitive obturator prosthesis"
+  },
+  {
+    "a": {
+      "@href": "/snomed/439760002--taking-an-impression-for-creation-of-custom-ear-prosthesis.html",
+      "@title": "SNOMED code for Taking an impression for creation of custom ear prosthesis",
+      "small": "439760002"
+    },
+    "#text": "Taking an impression for creation of custom ear prosthesis"
+  },
+  {
+    "a": {
+      "@href": "/snomed/439761003--taking-an-impression-for-creation-of-custom-interim-obturator-prosthesis.html",
+      "@title": "SNOMED code for Taking an impression for creation of custom interim obturator prosthesis",
+      "small": "439761003"
+    },
+    "#text": "Taking an impression for creation of custom interim obturator prosthesis"
+  },
+  {
+    "a": {
+      "@href": "/snomed/439762005--taking-an-impression-for-creation-of-custom-nasal-prosthesis.html",
+      "@title": "SNOMED code for Taking an impression for creation of custom nasal prosthesis",
+      "small": "439762005"
+    },
+    "#text": "Taking an impression for creation of custom nasal prosthesis"
+  },
+  {
+    "a": {
+      "@href": "/snomed/439262009--taking-an-impression-for-creation-of-custom-orbital-prosthesis.html",
+      "@title": "SNOMED code for Taking an impression for creation of custom orbital prosthesis",
+      "small": "439262009"
+    },
+    "#text": "Taking an impression for creation of custom orbital prosthesis"
+  },
+  {
+    "a": {
+      "@href": "/snomed/439263004--taking-an-impression-for-creation-of-custom-palatal-lift-prosthesis.html",
+      "@title": "SNOMED code for Taking an impression for creation of custom palatal lift prosthesis",
+      "small": "439263004"
+    },
+    "#text": "Taking an impression for creation of custom palatal lift prosthesis"
+  },
+  {
+    "a": {
+      "@href": "/snomed/439975002--taking-an-impression-for-creation-of-custom-surgical-obturator-prosthesis.html",
+      "@title": "SNOMED code for Taking an impression for creation of custom surgical obturator prosthesis",
+      "small": "439975002"
+    },
+    "#text": "Taking an impression for creation of custom surgical obturator prosthesis"
+  },
+  {
+    "a": {
+      "@href": "/snomed/444326006--taking-impression-of-chest-for-custom-breast-implant.html",
+      "@title": "SNOMED code for Taking impression of chest for custom breast implant",
+      "small": "444326006"
+    },
+    "#text": "Taking impression of chest for custom breast implant"
+  },
+  {
+    "a": {
+      "@href": "/snomed/387612003--tamponade-of-vagina.html",
+      "@title": "SNOMED code for Tamponade of vagina",
+      "small": "387612003"
+    },
+    "span": {
+      "@style": "color:red;",
+      "#text": "removed: 2019-07-31"
+    },
+    "#text": "Tamponade of vagina"
+  },
+  {
+    "a": {
+      "@href": "/snomed/89002000--therapeutic-ultrasound.html",
+      "@title": "SNOMED code for Therapeutic ultrasound",
+      "small": "89002000"
+    },
+    "#text": "Therapeutic ultrasound"
+  },
+  {
+    "a": {
+      "@href": "/snomed/66391000--traction.html",
+      "@title": "SNOMED code for Traction",
+      "small": "66391000"
+    },
+    "#text": "Traction"
+  },
+  {
+    "a": {
+      "@href": "/snomed/189234004--tubal-occlusion.html",
+      "@title": "SNOMED code for Tubal occlusion",
+      "small": "189234004"
+    },
+    "#text": "Tubal occlusion"
+  },
+  {
+    "a": {
+      "@href": "/snomed/173327004--wiring-of-teeth.html",
+      "@title": "SNOMED code for Wiring of teeth",
+      "small": "173327004"
+    },
+    "#text": "Wiring of teeth"
+  }
+]

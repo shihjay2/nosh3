@@ -1,0 +1,737 @@
+[
+  {
+    "loinc": "27899-4",
+    "name": "Diagnostic studies.non-lab (set)",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "26441-6",
+    "name": "Cardiology studies (set)",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "42148-7",
+    "name": "US Heart",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "18745-0",
+    "name": "Cardiac catheterization study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "11524-6",
+    "name": "EKG study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "18750-0",
+    "name": "Cardiac electrophysiology study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "18752-6",
+    "name": "Exercise stress test study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "18754-2",
+    "name": "Ambulatory cardiac rhythm monitor (Holter) study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "27895-2",
+    "name": "Gastroenterology endoscopy studies (set)",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "28028-9",
+    "name": "Anoscopy study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "18746-8",
+    "name": "Colonoscopy study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "28016-4",
+    "name": "ERCP study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "18751-8",
+    "name": "Endoscopy study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "28018-0",
+    "name": "Enteroscopy study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "18753-4",
+    "name": "Flexible sigmoidoscopy study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "27897-8",
+    "name": "Neuromuscular electrophysiology studies (set)",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "11523-8",
+    "name": "EEG study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "18749-2",
+    "name": "Electromyogram study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "29755-6",
+    "name": "Nerve conduction study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "29754-9",
+    "name": "Nystagmogram study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "26442-4",
+    "name": "Obstetrical studies (set)",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "11525-3",
+    "name": "US for pregnancy",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "28619-5",
+    "name": "Ophthalmology/Optometry studies (set)",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "29268-0",
+    "name": "Contact lens measurements",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "29269-8",
+    "name": "Eye glasses measurements",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "29271-4",
+    "name": "Eye physical examination",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "29272-2",
+    "name": "Eye ultrasound study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "28632-8",
+    "name": "Heterophoria study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "28629-4",
+    "name": "Perimetry study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "29270-6",
+    "name": "Retinal treatments",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "28630-2",
+    "name": "Tonometry study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "28631-0",
+    "name": "Visual acuity study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "27898-6",
+    "name": "Pathology studies (set)",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "18743-5",
+    "name": "Autopsy report",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "11526-1",
+    "name": "Pathology study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "11529-5",
+    "name": "Surgical pathology study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "27896-0",
+    "name": "Pulmonary studies (set)",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "18744-3",
+    "name": "Bronchoscopy study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "28633-6",
+    "name": "Polysomnography (sleep) study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "18759-1",
+    "name": "Spirometry study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "18726-0",
+    "name": "Radiology studies (set)",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "18748-4",
+    "name": "Diagnostic imaging study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "18782-3",
+    "name": "X-ray unspecified site study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "28564-3",
+    "name": "X-ray head study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "28613-8",
+    "name": "X-ray spine unspecified study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24946-6",
+    "name": "X-ray spine cervical study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24983-9",
+    "name": "X-ray spine thoracic study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24972-2",
+    "name": "X-ray spine lumbar study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24762-7",
+    "name": "X-ray hip study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "28561-9",
+    "name": "X-ray pelvis study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24704-9",
+    "name": "X-ray femur study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "28565-0",
+    "name": "X-ray knee study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "25011-8",
+    "name": "X-ray tibia and fibula study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24541-5",
+    "name": "X-ray ankle study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24709-8",
+    "name": "X-ray foot study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24909-4",
+    "name": "X-ray shoulder study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "28567-6",
+    "name": "X-ray humerus study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24891-4",
+    "name": "X-ray radius and ulna study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24676-9",
+    "name": "X-ray elbow study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24619-9",
+    "name": "X-ray wrist study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "28582-5",
+    "name": "X-ray hand study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "25045-6",
+    "name": "CT Unspecified body region",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24725-4",
+    "name": "CT Head",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "28566-8",
+    "name": "CT spine study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24932-6",
+    "name": "CT spine cervical study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24978-9",
+    "name": "CT spine thoracic study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24963-1",
+    "name": "CT spine lumbar study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24627-2",
+    "name": "CT Chest",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "41806-1",
+    "name": "CT Abdomen",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24866-6",
+    "name": "CT pelvis study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24690-0",
+    "name": "CT extremity study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "25056-3",
+    "name": "MR Unspecified body region",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "42698-1",
+    "name": "MRI spine study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24590-2",
+    "name": "MR Brain",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24935-9",
+    "name": "MRI spine cervical study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24980-5",
+    "name": "MRI spine thoracic study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24968-0",
+    "name": "MRI spine lumbar study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24629-8",
+    "name": "MRI chest study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24556-3",
+    "name": "MRI abdomen study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24872-4",
+    "name": "MRI pelvis and hips study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24707-2",
+    "name": "MRI foot study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24710-6",
+    "name": "MRI forearm study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "28576-7",
+    "name": "MRI joint study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24720-5",
+    "name": "MRI hand study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24605-8",
+    "name": "Mammogram diagnostic views study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24606-6",
+    "name": "Mammogram screening views study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24888-0",
+    "name": "Nuclear medicine pulmonary VQ scan study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "30695-1",
+    "name": "Nuclear medicine thyroid scan study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "44136-0",
+    "name": "PT Unspecified body region",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "25043-1",
+    "name": "CT guidance for aspiration of unspecified site study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "25044-9",
+    "name": "CT guidance for biopsy of unspecified site study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "25069-6",
+    "name": "Fluoroscopic guidance for biopsy of unspecified site study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "25059-7",
+    "name": "Ultrasound guidance for biopsy of unspecified site study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "25061-3",
+    "name": "US Unspecified body region",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24731-2",
+    "name": "Ultrasound of head study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24842-7",
+    "name": "Ultrasound of neck study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24558-9",
+    "name": "Ultrasound of abdomen study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "28614-6",
+    "name": "Ultrasound of liver study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24601-7",
+    "name": "Ultrasound of breast study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "24869-0",
+    "name": "Ultrasound of pelvis study",
+    "r/o/c": "",
+    "cardinality": "",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "28634-4",
+    "name": "Miscellaneous studies (set)",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "18742-7",
+    "name": "Arthroscopy study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "28615-3",
+    "name": "Audiology study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "29756-4",
+    "name": "Peritoneoscopy study",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  },
+  {
+    "loinc": "28620-3",
+    "name": "Urology studies (set)",
+    "r/o/c": "",
+    "cardinality": "0..*",
+    "example ucum units": ""
+  }
+]

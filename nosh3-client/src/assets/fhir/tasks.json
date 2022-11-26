@@ -1,0 +1,270 @@
+{
+  "fhir" : {
+    "resourceType": "Task",
+    "id": "",
+    "basedOn": [
+      {
+        "reference": ""
+      }
+    ],
+    "status": "",
+    "priority": "",
+    "for": {
+      "reference": ""
+    },
+    "owner": {
+      "reference": ""
+    },
+    "authoredOn": "",
+    "lastModified": ""
+  },
+  "resourceName": "Task",
+  "activeField": "status",
+  "patientField": "for.reference",
+  "divContent": "{description} (Date: {authoredOn})",
+  "defaultDate": [
+    {
+      "id": "authoredOn",
+      "format": "YYYY-MM-DD HH:mm"
+    },
+    {
+      "id": "lastModified",
+      "format": "YYYY-MM-DD HH:mm"
+    }
+  ],
+  "uiListContent": {
+    "title": "{description}",
+    "subhead": "{authoredOn}",
+    "contentFields": ["status", "priority"],
+    "contentStyle": "p",
+    "extended": "{note}",
+    "status": "{status}"
+  },
+  "uiSchema": [
+    [
+      {
+        "id": "owner",
+        "label": "Assigned To",
+        "modelRoot": "owner",
+        "modelArray": false,
+        "model": "reference",
+        "display": "display",
+        "type": "select",
+        "options": [],
+        "rules": "required"
+      },
+      {
+        "id": "authoredOn",
+        "label": "Onset Date",
+        "model": "authoredOn",
+        "type": "datetime",
+        "rules": "required",
+        "mask": "####-##-## ##:##",
+        "placeholder": "YYYY-MM-DD HH:mm"
+      }
+    ],
+    [
+      {
+        "id": "status",
+        "label": "Status",
+        "model": "status",
+        "type": "select",
+        "options": [
+          {"value": "draft", "label": "Draft"},
+          {"value": "requested", "label": "Requested"},
+          {"value": "received", "label": "Received"},
+          {"value": "accepted", "label": "Accpted"},
+          {"value": "rejected", "label": "Rejected"},
+          {"value": "ready", "label": "Ready"},
+          {"value": "cancelled", "label": "Cancelled"},
+          {"value": "in-progress", "label": "In Progress"},
+          {"value": "on-hold", "label": "On Hold"},
+          {"value": "failed", "label": "Failed"},
+          {"value": "completed", "label": "Completed"},
+          {"value": "entered-in-error", "label": "Entered in Error"}
+        ],
+        "rules": "required"
+      },
+      {
+        "id": "priority",
+        "label": "Priority",
+        "model": "priority",
+        "type": "select",
+        "options": [
+          {"value": "routine", "label": "Routine"},
+          {"value": "urgent", "label": "Urgent"},
+          {"value": "asap", "label": "ASAP"},
+          {"value": "stat", "label": "STAT"}
+        ],
+        "rules": "required"
+      }
+    ],
+    [
+      {
+        "id": "code",
+        "label": "Task Code",
+        "modelRoot": "code",
+        "modelArray": false,
+        "model": "coding.0.code",
+        "type": "select",
+        "options": [
+          {"value": "approve", "label": "Activate/approve the focal resource"},
+          {"value": "fulfill", "label": "Fulfill the focal request"},
+          {"value": "abort", "label": "Mark the focal resource as no longer active"},
+          {"value": "replace", "label": "Replace the focal resource with the input resource"},
+          {"value": "change", "label": "Change the focal resource"},
+          {"value": "suspend", "label": "Change the focal resource"},
+          {"value": "resume", "label": "Re-activate the focal resource"}
+        ],
+        "display": "display",
+        "system": {
+          "model": "system",
+          "value": "http://hl7.org/fhir/CodeSystem/task-code"
+        },
+        "rules": ""
+      },
+      {
+        "id": "description",
+        "label": "Description",
+        "model": "description",
+        "type": "text",
+        "rules": ""
+      }
+    ],
+    {
+      "id": "note",
+      "label": "Note",
+      "model": "note.text",
+      "type": "textarea",
+      "rules": ""
+    },
+    {
+      "id": "tags",
+      "label": "Tags",
+      "modelRoot": "meta.tag",
+      "modelArray": true,
+      "model": "display",
+      "type": "tags",
+      "rules": ""
+    }
+  ],
+  "inbox": {
+    "uiListContent": {
+      "title": "{description}",
+      "subhead": "{authoredOn}",
+      "contentFields": ["status", "priority"],
+      "contentStyle": "p",
+      "extended": "{note}",
+      "status": "{status}"
+    },
+    "divContent": "{description} (Date: {authoredOn})",
+    "uiSchema": [
+      [
+        {
+          "id": "owner",
+          "label": "Assigned To",
+          "modelRoot": "owner",
+          "modelArray": false,
+          "model": "reference",
+          "display": "display",
+          "type": "select",
+          "options": [],
+          "rules": "required"
+        },
+        {
+          "id": "authoredOn",
+          "label": "Onset Date",
+          "model": "authoredOn",
+          "type": "datetime",
+          "rules": "required",
+          "mask": "####-##-## ##:##",
+          "placeholder": "YYYY-MM-DD HH:mm"
+        }
+      ],
+      [
+        {
+          "id": "status",
+          "label": "Status",
+          "model": "status",
+          "type": "select",
+          "options": [
+            {"value": "draft", "label": "Draft"},
+            {"value": "requested", "label": "Requested"},
+            {"value": "received", "label": "Received"},
+            {"value": "accepted", "label": "Accpted"},
+            {"value": "rejected", "label": "Rejected"},
+            {"value": "ready", "label": "Ready"},
+            {"value": "cancelled", "label": "Cancelled"},
+            {"value": "in-progress", "label": "In Progress"},
+            {"value": "on-hold", "label": "On Hold"},
+            {"value": "failed", "label": "Failed"},
+            {"value": "completed", "label": "Completed"},
+            {"value": "entered-in-error", "label": "Entered in Error"}
+          ],
+          "rules": "required"
+        },
+        {
+          "id": "priority",
+          "label": "Priority",
+          "model": "priority",
+          "type": "select",
+          "options": [
+            {"value": "routine", "label": "Routine"},
+            {"value": "urgent", "label": "Urgent"},
+            {"value": "asap", "label": "ASAP"},
+            {"value": "stat", "label": "STAT"}
+          ],
+          "rules": "required"
+        }
+      ],
+      [
+        {
+          "id": "code",
+          "label": "Task Code",
+          "modelRoot": "code",
+          "modelArray": false,
+          "model": "coding.0.code",
+          "type": "select",
+          "options": [
+            {"value": "approve", "label": "Activate/approve the focal resource"},
+            {"value": "fulfill", "label": "Fulfill the focal request"},
+            {"value": "abort", "label": "Mark the focal resource as no longer active"},
+            {"value": "replace", "label": "Replace the focal resource with the input resource"},
+            {"value": "change", "label": "Change the focal resource"},
+            {"value": "suspend", "label": "Change the focal resource"},
+            {"value": "resume", "label": "Re-activate the focal resource"}
+          ],
+          "display": "display",
+          "system": {
+            "model": "system",
+            "value": "http://hl7.org/fhir/CodeSystem/task-code"
+          },
+          "rules": ""
+        },
+        {
+          "id": "description",
+          "label": "Description",
+          "model": "description",
+          "type": "text",
+          "rules": ""
+        }
+      ],
+      {
+        "id": "note",
+        "label": "Note",
+        "model": "note.text",
+        "type": "textarea",
+        "rules": ""
+      },
+      {
+        "id": "tags",
+        "label": "Tags",
+        "modelRoot": "meta.tag",
+        "modelArray": true,
+        "model": "display",
+        "type": "tags",
+        "rules": ""
+      }
+    ]
+  }
+}

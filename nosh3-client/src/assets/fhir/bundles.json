@@ -1,0 +1,48 @@
+{
+  "fhir" : {
+    "resourceType": "Bundle",
+    "id": "",
+    "status": "",
+    "subject": {
+      "reference": ""
+    }
+  },
+  "resourceName": "Bundle",
+  "activeField": "status",
+  "patientField": "subject.reference",
+  "divContent": "{reasonCode} (Date of Service: {periodStart})",
+  "uiListContent": {
+    "title": "{reasonCode}",
+    "subhead": "{periodStart}",
+    "contentFields": ["participant", "class", "serviceType"],
+    "contentStyle": "p",
+    "extended": "{priority}",
+    "status": ""
+  },
+  "tabs": [
+    {
+      "category": "encounter",
+      "label": "Details",
+      "template": "info",
+      "resource": "encounters"
+    },
+    {
+      "category": "subjective",
+      "label": "Subjective",
+      "template": "list",
+      "resource": "compositions"
+    },
+    {
+      "category": "assessment_plan",
+      "label": "Assessment and Plan",
+      "template": "list",
+      "resource": "care_plans"
+    },
+    {
+      "category": "objective",
+      "label": "Objective",
+      "template": "mixed",
+      "resource": "observations"
+    }
+  ]
+}

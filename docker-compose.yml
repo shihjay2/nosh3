@@ -1,0 +1,57 @@
+version: '3.1'
+services:
+  router:
+    image: traefik:latest
+    container_name: router
+    ports:
+      - 80:80
+      - 443:443 
+    restart: always
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+  couchdb:
+    image: couchdb:latest
+    container_name: couchdb
+    ports:
+      - 5984:5984
+    restart: always
+    env_file:
+      - ./.env
+    environment:
+      COUCHDB_USER: ${COUCHDB_USER}
+      COUCHDB_PASSWORD: ${COUCHDB_PASSWORD}
+    volumes:
+      - ./dbdata:/opt/couchdb/data
+      - ./dbconfig:/opt/couchdb/etc/local.d
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.couchdb.loadbalancer.server.port=5984"
+      - "traefik.http.routers.couchdb.rule=PathPrefix(`/couchdb`)"
+      - "traefik.http.routers.couchdb.middlewares=couchdb-stripprefix"
+      - "traefik.http.middlewares.couchdb-stripprefix.stripprefix.prefixes=/couchdb"
+  nosh:
+    image: shihjay2/nosh3 
+    container_name: nosh 
+    ports:
+      - 4000:4000
+    restart: always
+    env_file:
+      - ./.env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.nosh.loadbalancer.server.port=4000"
+      - "traefik.http.routers.nosh.rule=PathPrefix(`/app`) || PathPrefix(`/fhir`) || PathPrefix(`/fetch`) || Path(`/oidc`) || PathPrefix(`/auth`) || Path(`/start`) || Path(`/help`)"
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: couchdb nosh
+    labels:
+      - "traefik.enable=false"

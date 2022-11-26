@@ -1,0 +1,637 @@
+{
+  "rows": [
+    {
+      "type": "AAP",
+      "title": "Adult Access to Preventive/Ambulatory Health Services",
+      "years": 1,
+      "includes": {
+        "min_age": 20
+      },
+      "query": [
+        {
+          "name": "visit",
+          "outcome": "score",
+          "resource": "Condition",
+          "model": "code.coding.0.code",
+          "needle_arr": ["Z00.00","Z00.01","Z00.121","Z00.129","Z00.3","Z00.5","Z00.8","Z02.0","Z02.1","Z02.2","Z02.3","Z02.4","Z02.5","Z02.6","Z02.71","Z02.79","Z02.81","Z02.82","Z02.83","Z02.89","Z02.9","Z76.1","Z76.2","V20.2","V70.0","V70.3","V70.5","V70.6","V70.8","V70.9"],
+          "result": 0,
+          "score_goal": 1,
+          "text": "1 preventive visit this year: "
+        }
+      ]
+    },
+    {
+      "type": "BPD",
+      "title": "Blood Pressure Control for Patients With Diabetes",
+      "years": 1,
+      "includes": {
+        "min_age": 18,
+        "max_age": 75,
+        "dx": ["E08.","E09.","E10.","E11.","E13."]
+      },
+      "observationResult": [
+        {
+          "type": ["8480-6"],
+          "max_goal": 140,
+          "text": "Systolic blood pressure: "
+        },
+        {
+          "type": ["8462-4"],
+          "max_goal": 90,
+          "text": "Diastolic blood pressure: "
+        }
+      ]
+    },
+    {
+      "type": "EED",
+      "title": "Eye Exam for Patients With Diabetes",
+      "years": 1,
+      "includes": {
+        "min_age": 18,
+        "max_age": 75,
+        "dx": ["E08.","E09.","E10.","E11.","E13."]
+      },
+      "query": [
+        {
+          "name": "eye_exam",
+          "outcome": "score",
+          "resource": "Observation",
+          "model": "code.coding.0.code",
+          "needle_arr": ["79903-1", "79902-3"],
+          "result": 0,
+          "score_goal": 1,
+          "text": "Diabetic eye exam: "
+        }
+      ]
+    },
+    {
+      "type": "HBD",
+      "title": "Hemoglobin A1c Control for Patients With Diabetes",
+      "years": 1,
+      "includes": {
+        "min_age": 18,
+        "max_age": 75,
+        "dx": ["E08.","E09.","E10.","E11.","E13."]
+      },
+      "query": [
+        {
+          "name": "hgba1c",
+          "outcome": "percent",
+          "resource": "Observation",
+          "model": "code.coding.0.code",
+          "needle_arr": ["17856-6", "4548-4", "4549-2"],
+          "result": 0,
+          "result_percent": 0,
+          "min_percent_goal": 80,
+          "text": "HgbA1c level within control: "
+        }
+      ],
+      "observationResult": [
+        {
+          "type": ["17856-6", "4548-4", "4549-2"],
+          "max_goal": 8,
+          "text": "HgbA1c: "
+        }
+      ]
+    },
+    {
+      "type": "KED",
+      "title": "Kidney Health Evaluation for Patients with Diabetes",
+      "years": 1,
+      "includes": {
+        "min_age": 18,
+        "max_age": 75,
+        "dx": ["E08.","E09.","E10.","E11.","E13."]
+      },
+      "query": [
+        {
+          "name": "uma",
+          "outcome": "score",
+          "resource": "Observation",
+          "model": "code.coding.0.code",
+          "needle_arr": ["48642-3","48643-1","50044-7","50210-4","50384-7","62238-1","69405-9","70969-1","77147-7","88293-6","88294-4","94677-2","96591-3","96592-1","14957-5","1754-1","21059-1","30003-8","43605-5","53530-2","53531-0","57369-1","89999-7","14957-5","1754-1","21059-1","30003-8","43605-5","53530-2","53531-0","57369-1","89999-7"],
+          "result": 0,
+          "score_goal": 1,
+          "text": "Kidney evaluation: "
+        }
+      ]
+    },
+    {
+      "type": "WCC",
+      "title": "Weight Assessment and Counseling for Nutrition and Physical Activity for Children/Adolescents",
+      "years": 1,
+      "includes": {
+        "min_age": 3,
+        "max_age": 17
+      },
+      "query": [
+        {
+          "name": "bmi",
+          "outcome": "score",
+          "resource": "Observation",
+          "model": "code.coding.0.code",
+          "needle_arr": ["39156-5"],
+          "result": 0,
+          "score_goal": 1,
+          "text": "BMI: "
+        },
+        {
+          "name": "nutrition",
+          "outcome": "score",
+          "resource": "ServiceRequest",
+          "model": "code.coding.0.code",
+          "needle_arr": ["11816003","61310001","183059007","183060002","183061003","183062005","183063000","183065007","183066008","183067004","183070000","183071001","226067002","266724001","275919002","281085002","284352003","305849009","305850009","305851008","306163007","306164001","306165000","306626002","306627006","306628001","313210009","370847001","386464006","404923009","408910007","410171007","410177006","410200000","429095004","431482008","443288003","609104008","698471002","699827002","699829004","699830009","699849008","700154005","700258004","705060005","710881000","14051000175103","428461000124101","428691000124107","441041000124100","441201000124108","441231000124100","441241000124105","441251000124107","441261000124109","441271000124102","441281000124104","441291000124101","441301000124100","441311000124102","441321000124105","441331000124108","441341000124103","441351000124101","445291000124103","445301000124102","445331000124105","445641000124105"],
+          "result": 0,
+          "score_goal": 1,
+          "text": "Nutrition counseling: "
+        },
+        {
+          "name": "exercise",
+          "outcome": "score",
+          "resource": "ServiceRequest",
+          "model": "code.coding.0.code",
+          "needle_arr": ["103736005","183073003","281090004","304507003","304549008","304558001","310882002","386291006","386292004","386463000","390864007","390893007","398636004","398752005","408289007","410200000","410289001","410335001","429778002","710849009","435551000124105"],
+          "result": 0,
+          "score_goal": 1,
+          "text": "Exercise counseling: "
+        }
+      ]
+    },
+    {
+      "type": "CIS",
+      "title": "Childhood Immunization Status",
+      "years": 1,
+      "includes": {
+        "min_age": 2
+      },
+      "query": [
+        {
+          "name": "dtap",
+          "outcome": "score",
+          "resource": "Immunization",
+          "model": "vaccineCode.coding.0.code",
+          "needle_arr": ["20","50","106","107","110","120","146"],
+          "result": 0,
+          "score_goal": 4,
+          "text": "DTaP: "
+        },
+        {
+          "name": "hib",
+          "outcome": "score",
+          "resource": "Immunization",
+          "model": "vaccineCode.coding.0.code",
+          "needle_arr": ["17","46","47","48","49","50","51","120","146","148"],
+          "result": 0,
+          "score_goal": 3,
+          "text": "HiB: "
+        },
+        {
+          "name": "hepa",
+          "outcome": "score",
+          "resource": "Immunization",
+          "model": "vaccineCode.coding.0.code",
+          "needle_arr": ["31","83","85"],
+          "result": 0,
+          "score_goal": 1,
+          "text": "HepA: "
+        },
+        {
+          "name": "hepb",
+          "outcome": "score",
+          "resource": "Immunization",
+          "model": "vaccineCode.coding.0.code",
+          "needle_arr": ["08","44","45","51","110","146"],
+          "result": 0,
+          "score_goal": 3,
+          "text": "HepB: "
+        },
+        {
+          "name": "ipv",
+          "outcome": "score",
+          "resource": "Immunization",
+          "model": "vaccineCode.coding.0.code",
+          "needle_arr": ["10","89","110","120","146"],
+          "result": 0,
+          "score_goal": 3,
+          "text": "Polio: "
+        },
+        {
+          "name": "flu",
+          "outcome": "score",
+          "resource": "Immunization",
+          "model": "vaccineCode.coding.0.code",
+          "needle_arr": ["88","140","141","150","153","155","158","161"],
+          "result": 0,
+          "score_goal": 2,
+          "text": "Influenza: "
+        },
+        {
+          "name": "mmr",
+          "outcome": "score",
+          "resource": "Immunization",
+          "model": "vaccineCode.coding.0.code",
+          "needle_arr": ["03","94"],
+          "result": 0,
+          "score_goal": 1,
+          "text": "MMR: "
+        },
+        {
+          "name": "pcv",
+          "outcome": "score",
+          "resource": "Immunization",
+          "model": "vaccineCode.coding.0.code",
+          "needle_arr": ["109","133","152"],
+          "result": 0,
+          "score_goal": 4,
+          "text": "Pneumococcal: "
+        },
+        {
+          "name": "rotavirus2",
+          "outcome": "score",
+          "resource": "Immunization",
+          "model": "vaccineCode.coding.0.code",
+          "needle_arr": ["119", "116", "122"],
+          "result": 0,
+          "score_goal": 2,
+          "text": "Rotavirus (2-dose): "
+        },
+        {
+          "name": "rotavirus3",
+          "outcome": "score",
+          "resource": "Immunization",
+          "model": "vaccineCode.coding.0.code",
+          "needle_arr": ["116", "122"],
+          "result": 0,
+          "score_goal": 3,
+          "text": "Rotavirus (3-dose): "
+        },
+        {
+          "name": "vzv",
+          "outcome": "score",
+          "resource": "Immunization",
+          "model": "vaccineCode.coding.0.code",
+          "needle_arr": ["21","94"],
+          "result": 0,
+          "score_goal": 1,
+          "text": "Varicella: "
+        }
+      ]
+    },
+    {
+      "type": "IMA",
+      "title": "Immunizations for Adolescents",
+      "years": 1,
+      "includes": {
+        "min_age": 13,
+        "max_age": 18
+      },
+      "query": [
+        {
+          "name": "hpv",
+          "outcome": "score",
+          "resource": "Immunization",
+          "model": "vaccineCode.coding.0.code",
+          "needle_arr": ["62","118","137","165"],
+          "result": 0,
+          "score_goal": 2,
+          "text": "HPV: "
+        },
+        {
+          "name": "meningococcal",
+          "outcome": "score",
+          "resource": "Immunization",
+          "model": "vaccineCode.coding.0.code",
+          "needle_arr": ["32","108","114","136","147","167","203"],
+          "result": 0,
+          "score_goal": 1,
+          "text": "Meningococcal: "
+        },
+        {
+          "name": "vzv",
+          "outcome": "score",
+          "resource": "Immunization",
+          "model": "vaccineCode.coding.0.code",
+          "needle_arr": ["21","94"],
+          "result": 0,
+          "score_goal": 1,
+          "text": "Varicella: "
+        },
+        {
+          "name": "tdap",
+          "outcome": "score",
+          "resource": "Immunization",
+          "model": "vaccineCode.coding.0.code",
+          "needle_arr": ["115"],
+          "result": 0,
+          "score_goal": 1,
+          "text": "TDaP: "
+        }
+      ]
+    },
+    {
+      "type": "LSC",
+      "title": "Lead Screening in Children",
+      "years": 1,
+      "includes": {
+        "max_age": 2
+      },
+      "query": [
+        {
+          "name": "lead",
+          "outcome": "score",
+          "resource": "Observation",
+          "model": "code.coding.0.code",
+          "needle_arr": ["10368-9","10912-4","14807-2","17052-2","25459-9","27129-6","32325-3","5671-3","5674-7","77307-7"],
+          "result": 0,
+          "score_goal": 1,
+          "text": "Lead testing: "
+        }
+      ]
+    },
+    {
+      "type": "BCS",
+      "title": "Breast Cancer Screening",
+      "years": 2,
+      "includes": {
+        "min_age": 50,
+        "max_age": 74,
+        "gender": "female"
+      },
+      "query": [
+        {
+          "name": "mammogram",
+          "outcome": "score",
+          "resource": "Observation",
+          "model": "code.coding.0.code",
+          "needle_arr": ["24604-1","24605-8","24606-6","24610-8","26175-0","26176-8","26177-6","26287-3","26289-9","26291-5","26346-7","26347-5","26348-3","26349-1","26350-9","26351-7","36319-2","36625-2","36626-0","36627-8","36642-7","36962-9","37005-6","37006-4","37016-3","37017-1","37028-8","37029-6","37030-4","37037-9","37038-7","37052-8","37053-6","37539-4","37542-8","37543-6","37551-9","37552-7","37553-5","37554-3","37768-9","37769-7","37770-5","37771-3","37772-1","37773-9","37774-7","37775-4","38070-9","38071-7","38072-5","38090-7","38091-5","38807-4","38820-7","38854-6","38855-3","42415-0","42416-8","46335-6","46336-4","46337-2","46338-0","46339-8","46350-5","46351-3","46356-2","46380-2","48475-8","48492-3","69150-1","69251-7","69259-0"],
+          "result": 0,
+          "score_goal": 1,
+          "text": "Mammogram: "
+        }
+      ]
+    },
+    {
+      "type": "CCS-3",
+      "title": "Cervical Cancer Screening - 3 year interval",
+      "years": 3,
+      "includes": {
+        "min_age": 21,
+        "max_age": 64,
+        "gender": "female"
+      },
+      "query": [
+        {
+          "name": "pap",
+          "outcome": "score",
+          "resource": "Observation",
+          "model": "code.coding.0.code",
+          "needle_arr": ["10524-7","18500-9","19762-4","19764-0","19765-7","19766-5","19774-9","33717-0","47527-7","47528-5"],
+          "result": 0,
+          "score_goal": 1,
+          "text": "Cervical cytology: "
+        }
+      ]
+    },
+    {
+      "type": "CCS-5",
+      "title": "Cervical Cancer Screening - 5 year interval",
+      "years": 3,
+      "includes": {
+        "min_age": 30,
+        "max_age": 64,
+        "gender": "female"
+      },
+      "query": [
+        {
+          "name": "pap",
+          "outcome": "score",
+          "resource": "Observation",
+          "model": "code.coding.0.code",
+          "needle_arr": ["10524-7","18500-9","19762-4","19764-0","19765-7","19766-5","19774-9","33717-0","47527-7","47528-5"],
+          "result": 0,
+          "score_goal": 1,
+          "text": "Cervical cytology: "
+        },
+        {
+          "name": "hpv",
+          "outcome": "score",
+          "resource": "Observation",
+          "model": "code.coding.0.code",
+          "needle_arr": ["21440-3","30167-1","38372-9","59263-4","59264-2","59420-0","69002-4","71431-1","75694-0","77379-6","77399-4","77400-0","82354-2","82456-5","82675-0","95539-3"],
+          "result": 0,
+          "score_goal": 1,
+          "text": "High Risk HPV test: "
+        }
+      ],
+      "post_query": [
+        {
+          "name": "cotest",
+          "outcome": "score",
+          "process": "sum",
+          "items": ["abx","test"],
+          "result": 0,
+          "min_goal": 2,
+          "text": "Cervical cytology with high risk HPV testing: "
+        }
+      ]
+    },
+    {
+      "type": "COL-FIT",
+      "title": "Colorectal Cancer Screening",
+      "years": 1,
+      "includes": {
+        "min_age": 45,
+        "max_age": 75
+      },
+      "query": [
+        {
+          "name": "fit",
+          "outcome": "score",
+          "resource": "Observation",
+          "model": "code.coding.0.code",
+          "needle_arr": ["77353-1", "77354-9"],
+          "result": 0,
+          "score_goal": 1,
+          "text": "FIT test: "
+        }
+      ]
+    },
+    {
+      "type": "COL-COL",
+      "title": "Colorectal Cancer Screening",
+      "years": 9,
+      "includes": {
+        "min_age": 45,
+        "max_age": 75
+      },
+      "query": [
+        {
+          "name": "colonoscopy",
+          "outcome": "score",
+          "resource": "Observation",
+          "model": "code.coding.0.code",
+          "needle_arr": ["18746-8"],
+          "result": 0,
+          "score_goal": 1,
+          "text": "Colonoscopy: "
+        }
+      ]
+    },
+    {
+      "type": "CHL",
+      "title": "Chlamydia Screening in Women",
+      "years": 1,
+      "includes": {
+        "min_age": 16,
+        "max_age": 24,
+        "gender": "female"
+      },
+      "query": [
+        {
+          "name": "chlamydia",
+          "outcome": "score",
+          "resource": "Observation",
+          "model": "code.coding.0.code",
+          "needle_arr": ["14463-4","14464-2","14467-5","14474-1","14513-6","16600-9","21190-4","21191-2","21613-5","23838-6","31775-0","31777-6","36902-5","36903-3","42931-6","43304-5","43404-3","43405-0","43406-8","44806-8","44807-6","45068-4","45069-2","45075-9","45076-7","45084-1","45091-6","45095-7","45098-1","45100-5","47211-8","47212-6","49096-1","4993-2","50387-0","53925-4","53926-2","557-9","560-3","6349-5","6354-5","6355-2","6356-0","6357-8","80360-1","80361-9","80362-7","91860-7"],
+          "result": 0,
+          "score_goal": 1,
+          "text": "Chlamydia screening: "
+        }
+      ]
+    },
+    {
+      "type": "CWP",
+      "title": "Appropriate Testing for Children with Pharyngitis",
+      "years": 1,
+      "includes": {
+        "min_age": 3,
+        "dx": ["J02.0","J02.8","J02.9","J03.00","J03.01","J03.80","J03.81","J03.90","J03.91"]
+      },
+      "query": [
+        {
+          "name": "test",
+          "outcome": "percent",
+          "resource": "Observation",
+          "model": "code.coding.0.code",
+          "needle_arr": ["11268-0","17656-0","17898-8","18481-2","31971-5","49610-9","5036-9","60489-2","626-2","6557-3","6558-1","6559-9","68954-7","78012-2"],
+          "result": 0,
+          "result_percent": 0,
+          "min_percent_goal": 80,
+          "text": "Percentage tested: "
+        },
+        {
+          "name": "abx",
+          "outcome": "percent",
+          "resource": "MedicationRequest",
+          "model": "medicationCodeableConcept.coding.0.display",
+          "needle_arr": ["cillin","amox","zith","cef","kef","mycin","eryth","pen","bac","sulf","cycl","lox"],
+          "result": 0,
+          "result_percent": 0,
+          "max_percent_goal": 20,
+          "text": "Percentage treated with antibiotics: "
+        }
+      ],
+      "post_query": [
+        {
+          "name": "abx_no_test",
+          "outcome": "percent",
+          "process": "subtract",
+          "items": ["abx","test"],
+          "result": 0,
+          "result_percent": 0,
+          "max_percent_goal": 20,
+          "text": "Percentage treated with antibiotics without testing: "
+        }
+      ]
+    },
+    {
+      "type": "URI",
+      "title": "Appropriate Treatment for Upper Respiratory Infection",
+      "years": 1,
+      "includes": {
+        "min_age_months": 3,
+        "dx": ["J00","J06.0","J06.9"]
+      },
+      "query": [
+        {
+          "name": "abx",
+          "outcome": "percent",
+          "resource": "MedicationRequest",
+          "model": "medicationCodeableConcept.coding.0.display",
+          "needle_arr": ["cillin","amox","zith","cef","kef","mycin","eryth","pen","bac","sulf","cycl","lox"],
+          "result": 0,
+          "result_percent": 0,
+          "min_percent_goal": 80,
+          "text": "Percentage treated with antibiotics: "
+        }
+      ]
+    },
+    {
+      "type": "AAB",
+      "title": "Avoidance of Antibiotic Treatment for Acute Bronchitis/Bronchiolitis",
+      "years": 1,
+      "includes": {
+        "dx": ["J20.3","J20.4","J20.5","J20.6","J20.7","J20.8","J20.9","J21.8","J21.9"]
+      },
+      "query": [
+        {
+          "name": "abx",
+          "outcome": "percent",
+          "resource": "MedicationRequest",
+          "model": "medicationCodeableConcept.coding.0.display",
+          "needle_arr": ["cillin","amox","zith","cef","kef","mycin","eryth","pen","bac","sulf","cycl","lox"],
+          "result": 0,
+          "result_percent": 0,
+          "max_percent_goal": 20,
+          "text": "Percentage treated with antibiotics: "
+        }
+      ]
+    },
+    {
+      "type": "AMR",
+      "title": "Asthma Medication Ratio",
+      "years": 1,
+      "includes": {
+        "min_age": 5,
+        "max_age": 64,
+        "dx": ["J45.909","J45.998","J45.20","J45.22","J45.21","J44.9","J44.0","J44.1","J45.990","J45.991","J45.902","J45.901"]
+      },
+      "query": [
+        {
+          "name": "controller",
+          "outcome": "count",
+          "resource": "MedicationRequest",
+          "model": "medicationCodeableConcept.coding.0.display",
+          "needle_arr": ["Dyphylline-guaifenesin","Omalizumab","Dupilumab","Benralizumab","Mepolizumab","Reslizumab","Budesonide-formoterol","Fluticasone-salmeterol","Fluticasone-vilanterol","Formoterol-mometasone","Beclomethasone","Budesonide","Ciclesonide","Flunisolide","Fluticasone","Mometasone","Montelukast","Zafirlukast","Zileuton","Theophylline"],
+          "result": 0,
+          "text": "Units of controller medications: "
+        },
+        {
+          "name": "reliever",
+          "outcome": "count",
+          "resource": "MedicationRequest",
+          "model": "medicationCodeableConcept.coding.0.display",
+          "needle_arr": ["Albuterol","Levalbuterol"],
+          "result": 0,
+          "text": "Units of reliever medications: "
+        }
+      ],
+      "post_query": [
+        {
+          "name": "total",
+          "outcome": "count",
+          "process": "sum",
+          "items": ["controller","reliever"],
+          "result": 0,
+          "text": "Units of total medications: "
+        },
+        {
+          "name": "ratio",
+          "outcome": "ratio",
+          "min_goal": "0.5",
+          "text": "Ratio of controller medications to total asthma medications: "
+        }
+      ]
+    }
+  ]
+}

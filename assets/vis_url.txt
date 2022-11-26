@@ -1,0 +1,32 @@
+Adenovirus Vaccine VIS|0886983000011|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/adenovirus.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/adenovirus.html
+Anthrax Vaccine VIS|0886983000028|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/anthrax.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/anthrax.html
+DTaP (Diphtheria, Tetanus, Pertussis) Vaccine VIS|0886983000035|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/dtap.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/dtap.html
+Hepatitis A Vaccine VIS|0886983000042|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/hep-a.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/hep-a.html
+Hepatitis B Vaccine VIS|0886983000059|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/hep-b.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/hep-b.html
+Hib Vaccine VIS|0886983000066|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/hib.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/hib.html
+Live Attenuated Influenza Vaccine VIS|0886983000097|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/flulive.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/flulive.html
+Inactivated Influenza Vaccine VIS|0886983000103|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/flu.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/flu.html
+Japanese Encephalitis Vaccine VIS|0886983000110|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/je-ixiaro.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/je-ixiaro.html
+MMR Vaccine VIS|0886983000127|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/mmr.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/mmr.html
+MMRV Vaccine VIS|0886983000134|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/mmrv.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/mmrv.html 
+Meningococcal ACWY Vaccine VIS|0886983000141|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/mening.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/mening.html
+PCV13 VIS|0886983000158|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/pcv13.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/pcv13.pdf
+PPSV23 VIS|0886983000165|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/ppv.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/ppv.html
+Polio Vaccine VIS|0886983000172|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/ipv.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/ipv.html
+Rabies Vaccine VIS|0886983000189|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/rabies.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/rabies.html
+Rotavirus Vaccine VIS|0886983000196|http://www.cdc.gov/vaccines/hcp/vis/vis-statements/rotavirus.pdf|http://www.cdc.gov/vaccines/hcp/vis/vis-statements/rotavirus.html
+Live Zoster Vaccine VIS|0886983000202|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/shingles.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/shingles.html
+Typhoid VIS|0886983000233|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/typhoid.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/typhoid.html
+Varicella Vaccine VIS|0886983000240|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/varicella.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/varicella.html 
+Yellow Fever VIS|0886983000257|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/yf.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/yf.html
+Multi Pediatric Vaccines VIS|0886983000264|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/multi.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/multi.html
+Tetanus, Diphtheria, Pertussis (Tdap) VIS|0886983000271|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/tdap.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/tdap.html
+Tetanus/Diphtheria (Td) Vaccine VIS|0886983000288|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/td.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/td.html
+HPV Vaccine VIS|0886983000295|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/hpv.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/hpv.html
+Meningococcal B Vaccine VIS|0886983000301|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/mening-serogroup.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/mening-serogroup.html
+Cholera Vaccine VIS|0886983000318|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/cholera.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/cholera.html
+Recombinant Zoster Vaccine VIS|0886983000325|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/shingles-recombinant.pdf|https://www.cdc.gov/vaccines/hcp/vis/vis-statements/shingles-recombinant.html
+COVID-19 Pfizer BioNTech Vaccine EUA Recipient-Caregiver Fact Sheet|0886983000332|https://www.cdc.gov/vaccines/covid-19/eua/pfizer.pdf|https://www.cdc.gov/vaccines/covid-19/eua/pfizer.html
+COVID-19 Moderna Vaccine EUA Recipient-Caregiver Fact Sheet|0886983000349|https://www.cdc.gov/vaccines/covid-19/eua/modernatx.pdf|https://www.cdc.gov/vaccines/covid-19/eua/modernatx.html
+COVID-19 AstraZeneca Vaccine EUA Recipient-Caregiver Fact Sheet |0886983000356|https://www.cdc.gov/vaccines/covid-19/eua/astrazeneca.pdf|https://www.cdc.gov/vaccines/covid-19/eua/astrazeneca.html
+COVID-19 Janssen Vaccine EUA Recipient-Caregiver Fact Sheet |0886983000363|https://www.cdc.gov/vaccines/covid-19/eua/janssen.pdf|https://www.cdc.gov/vaccines/covid-19/eua/janssen.html

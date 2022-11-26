@@ -1,0 +1,342 @@
+[
+  {
+    "a": {
+      "@href": "/snomed/84478008--occupational-therapy.html",
+      "@title": "SNOMED code for Occupational therapy",
+      "small": "84478008"
+    },
+    "#text": "Occupational therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/423162003--paraprofessionalaide-care.html",
+      "@title": "SNOMED code for Paraprofessional/aide care",
+      "small": "423162003"
+    },
+    "#text": "Paraprofessional/aide care"
+  },
+  {
+    "a": {
+      "@href": "/snomed/91251008--physical-therapy-procedure.html",
+      "@title": "SNOMED code for Physical therapy procedure",
+      "small": "91251008"
+    },
+    "#text": "Physical therapy procedure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/183425000--social-care.html",
+      "@title": "SNOMED code for Social care",
+      "small": "183425000"
+    },
+    "#text": "Social care"
+  },
+  {
+    "a": {
+      "@href": "/snomed/243224001--social-therapy.html",
+      "@title": "SNOMED code for Social therapy",
+      "small": "243224001"
+    },
+    "#text": "Social therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/5154007--speech-therapy.html",
+      "@title": "SNOMED code for Speech therapy",
+      "small": "5154007"
+    },
+    "#text": "Speech therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/386515000--animal-assisted-therapy.html",
+      "@title": "SNOMED code for Animal-assisted therapy",
+      "small": "386515000"
+    },
+    "#text": "Animal-assisted therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/65153003--art-therapy.html",
+      "@title": "SNOMED code for Art therapy",
+      "small": "65153003"
+    },
+    "#text": "Art therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/386526006--bibliotherapy.html",
+      "@title": "SNOMED code for Bibliotherapy",
+      "small": "386526006"
+    },
+    "#text": "Bibliotherapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/28150003--biofeedback-procedure.html",
+      "@title": "SNOMED code for Biofeedback procedure",
+      "small": "28150003"
+    },
+    "#text": "Biofeedback procedure"
+  },
+  {
+    "a": {
+      "@href": "/snomed/182660006--cold-therapy.html",
+      "@title": "SNOMED code for Cold therapy",
+      "small": "182660006"
+    },
+    "#text": "Cold therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/229554006--combination-therapy.html",
+      "@title": "SNOMED code for Combination therapy",
+      "small": "229554006"
+    },
+    "#text": "Combination therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/225423004--complementary-therapy.html",
+      "@title": "SNOMED code for Complementary therapy",
+      "small": "225423004"
+    },
+    "#text": "Complementary therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/281131004--conservative-therapy.html",
+      "@title": "SNOMED code for Conservative therapy",
+      "small": "281131004"
+    },
+    "#text": "Conservative therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/371018001--empirical-therapy.html",
+      "@title": "SNOMED code for Empirical therapy",
+      "small": "371018001"
+    },
+    "#text": "Empirical therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/1129491000000109--guided-self-help.html",
+      "@title": "SNOMED code for Guided self-help",
+      "small": "1129491000000109"
+    },
+    "#text": "Guided self-help"
+  },
+  {
+    "a": {
+      "@href": "/snomed/108250004--hearing-therapy-andor-auditory-rehabilitation.html",
+      "@title": "SNOMED code for Hearing therapy AND/OR auditory rehabilitation",
+      "small": "108250004"
+    },
+    "#text": "Hearing therapy AND/OR auditory rehabilitation"
+  },
+  {
+    "a": {
+      "@href": "/snomed/228652008--horticultural-therapy.html",
+      "@title": "SNOMED code for Horticultural therapy",
+      "small": "228652008"
+    },
+    "#text": "Horticultural therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/46903006--hydrotherapy.html",
+      "@title": "SNOMED code for Hydrotherapy",
+      "small": "46903006"
+    },
+    "#text": "Hydrotherapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/311602008--language-promotion-therapy.html",
+      "@title": "SNOMED code for Language promotion therapy",
+      "small": "311602008"
+    },
+    "#text": "Language promotion therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/426008007--noncontact-normothermic-wound-therapy.html",
+      "@title": "SNOMED code for Noncontact normothermic wound therapy",
+      "small": "426008007"
+    },
+    "#text": "Noncontact normothermic wound therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/386373004--nutrition-therapy.html",
+      "@title": "SNOMED code for Nutrition therapy",
+      "small": "386373004"
+    },
+    "#text": "Nutrition therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/84478008--occupational-therapy.html",
+      "@title": "SNOMED code for Occupational therapy",
+      "small": "84478008"
+    },
+    "#text": "Occupational therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/266740003--orthoptic-treatment.html",
+      "@title": "SNOMED code for Orthoptic treatment",
+      "small": "266740003"
+    },
+    "#text": "Orthoptic treatment"
+  },
+  {
+    "a": {
+      "@href": "/snomed/773504003--ozone-therapy.html",
+      "@title": "SNOMED code for Ozone therapy",
+      "small": "773504003"
+    },
+    "#text": "Ozone therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/229553000--physical-agent-therapy.html",
+      "@title": "SNOMED code for Physical agent therapy",
+      "small": "229553000"
+    },
+    "#text": "Physical agent therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/266739000--physiotherapyremedial-therapy.html",
+      "@title": "SNOMED code for Physiotherapy/remedial therapy",
+      "small": "266739000"
+    },
+    "#text": "Physiotherapy/remedial therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/786455008--prehabilitation.html",
+      "@title": "SNOMED code for Prehabilitation",
+      "small": "786455008"
+    },
+    "#text": "Prehabilitation"
+  },
+  {
+    "a": {
+      "@href": "/snomed/399498001--prelymphadenectomy-treatment.html",
+      "@title": "SNOMED code for Prelymphadenectomy treatment",
+      "small": "399498001"
+    },
+    "#text": "Prelymphadenectomy treatment"
+  },
+  {
+    "a": {
+      "@href": "/snomed/75516001--psychotherapy.html",
+      "@title": "SNOMED code for Psychotherapy",
+      "small": "75516001"
+    },
+    "#text": "Psychotherapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/42364006--recreational-therapy.html",
+      "@title": "SNOMED code for Recreational therapy",
+      "small": "42364006"
+    },
+    "#text": "Recreational therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/52052004--rehabilitation-therapy.html",
+      "@title": "SNOMED code for Rehabilitation therapy",
+      "small": "52052004"
+    },
+    "#text": "Rehabilitation therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/64299003--relaxation-training-therapy.html",
+      "@title": "SNOMED code for Relaxation training therapy",
+      "small": "64299003"
+    },
+    "#text": "Relaxation training therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/710081004--smoking-cessation-therapy.html",
+      "@title": "SNOMED code for Smoking cessation therapy",
+      "small": "710081004"
+    },
+    "#text": "Smoking cessation therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/243224001--social-therapy.html",
+      "@title": "SNOMED code for Social therapy",
+      "small": "243224001"
+    },
+    "#text": "Social therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/5154007--speech-therapy.html",
+      "@title": "SNOMED code for Speech therapy",
+      "small": "5154007"
+    },
+    "#text": "Speech therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/385989002--substance-use-therapy.html",
+      "@title": "SNOMED code for Substance use therapy",
+      "small": "385989002"
+    },
+    "#text": "Substance use therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/261570006--thermotherapy.html",
+      "@title": "SNOMED code for Thermotherapy",
+      "small": "261570006"
+    },
+    "#text": "Thermotherapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/773412008--traditional-medicine.html",
+      "@title": "SNOMED code for Traditional medicine",
+      "small": "773412008"
+    },
+    "#text": "Traditional medicine"
+  },
+  {
+    "a": {
+      "@href": "/snomed/710985005--traditional-therapy.html",
+      "@title": "SNOMED code for Traditional therapy",
+      "small": "710985005"
+    },
+    "span": {
+      "@style": "color:red;",
+      "#text": "removed: 2019-01-31"
+    },
+    "#text": "Traditional therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/386243005--vision-therapy.html",
+      "@title": "SNOMED code for Vision therapy",
+      "small": "386243005"
+    },
+    "#text": "Vision therapy"
+  },
+  {
+    "a": {
+      "@href": "/snomed/454541000124108--whole-brain-radiation-therapy.html",
+      "@title": "SNOMED code for Whole brain radiation therapy",
+      "small": "454541000124108"
+    },
+    "#text": "Whole brain radiation therapy"
+  }
+]

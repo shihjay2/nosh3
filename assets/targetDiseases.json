@@ -1,0 +1,228 @@
+{
+  "resourceType": "ValueSet",
+  "id": "targetDisease",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><ul><li>Include these codes as defined in <a href=\"http://www.snomed.org/\"><code>http://snomed.info/sct</code></a><table class=\"none\"><tr><td style=\"white-space:nowrap\"><b>Code</b></td><td><b>Display</b></td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=397428000\">397428000</a></td><td>Diphtheria</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=27836007\">27836007</a></td><td>Pertussis</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=76902006\">76902006</a></td><td>Tetanus</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=721764008\">721764008</a></td><td>Infection caused by Human poliovirus</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=14189004\">14189004</a></td><td>Measles</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=36989005\">36989005</a></td><td>Mumps</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=36653000\">36653000</a></td><td>Rubella</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=16814004\">16814004</a></td><td>Pneumococcal infectious disease</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=23511006\">23511006</a></td><td>Meningococcal infectious disease</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=709410003\">709410003</a></td><td>Haemophilus influenzae type b infection</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=56717001\">56717001</a></td><td>Tuberculosis</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=363354003\">363354003</a></td><td>Malignant tumour of cervix</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=266113007\">266113007</a></td><td>Genital warts</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=415822001\">415822001</a></td><td>Viral gastroenteritis due to Rotavirus</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=66071002\">66071002</a></td><td>Type B viral hepatitis</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=40468003\">40468003</a></td><td>Viral hepatitis, type A</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=7111000119109\">7111000119109</a></td><td>Hepatitis E virus infection</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=719590007\">719590007</a></td><td>Influenza caused by seasonal influenza virus</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=719865001\">719865001</a></td><td>Influenza caused by pandemic influenza virus</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=38907003\">38907003</a></td><td>Varicella</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=4740000\">4740000</a></td><td>Herpes zoster</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=55735004\">55735004</a></td><td>Respiratory syncytial virus infection</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=240613006\">240613006</a></td><td>Typhus group rickettsial disease</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=4834000\">4834000</a></td><td>Typhoid fever</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=85904008\">85904008</a></td><td>Paratyphoid fever</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=63650001\">63650001</a></td><td>Cholera</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=16541001\">16541001</a></td><td>Yellow fever</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=38362002\">38362002</a></td><td>Dengue</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=61462000\">61462000</a></td><td>Malaria</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=14168008\">14168008</a></td><td>Rabies</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=186772009\">186772009</a></td><td>RMSF - Rocky Mountain spotted fever</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=712986001\">712986001</a></td><td>Tickborne encephalitis</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=52947006\">52947006</a></td><td>Japanese encephalitis virus disease</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=186788009\">186788009</a></td><td>Q fever</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=409498004\">409498004</a></td><td>Anthrax</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=58750007\">58750007</a></td><td>Plague</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=19265001\">19265001</a></td><td>Tularemia</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=23502006\">23502006</a></td><td>Lyme disease</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=75702008\">75702008</a></td><td>Brucellosis</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=80612004\">80612004</a></td><td>Leishmaniasis</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=186747009\">186747009</a></td><td>Coronavirus infection</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=67924001\">67924001</a></td><td>Smallpox</td></tr><tr><td><a href=\"http://browser.ihtsdotools.org/?perspective=full&amp;conceptId1=70090004\">70090004</a></td><td>Cowpox</td></tr></table></li></ul></div>"
+  },
+  "url": "http://hl7.org/fhir/us/immds/ValueSet/targetDisease",
+  "version": "1.0.0",
+  "name": "TargetDisease",
+  "title": "Vaccine Target Disease",
+  "status": "active",
+  "date": "2021-07-07T15:16:23+00:00",
+  "publisher": "HL7 Public Health Work Group",
+  "contact": [
+    {
+      "name": "HL7 Public Health Work Group",
+      "telecom": [
+        {
+          "system": "url",
+          "value": "http://www.hl7.org/Special/committees/pher/index.cfm"
+        }
+      ]
+    },
+    {
+      "name": "Nathan Bunker",
+      "telecom": [
+        {
+          "system": "email",
+          "value": "mailto:nbunker@immregistry.org"
+        }
+      ]
+    }
+  ],
+  "description": "A set of vaccine preventable target diseases.",
+  "jurisdiction": [
+    {
+      "coding": [
+        {
+          "system": "urn:iso:std:iso:3166",
+          "code": "US"
+        }
+      ]
+    }
+  ],
+  "copyright": "This value set includes content from SNOMED CT, which is copyright © 2002+ International Health Terminology Standards Development Organisation (IHTSDO), and distributed by agreement between IHTSDO and HL7. Implementer use of SNOMED CT is not covered by this agreement",
+  "compose": {
+    "include": [
+      {
+        "system": "http://snomed.info/sct",
+        "concept": [
+          {
+            "code": "397428000",
+            "display": "Diphtheria"
+          },
+          {
+            "code": "27836007",
+            "display": "Pertussis"
+          },
+          {
+            "code": "76902006",
+            "display": "Tetanus"
+          },
+          {
+            "code": "721764008",
+            "display": "Infection caused by Human poliovirus"
+          },
+          {
+            "code": "14189004",
+            "display": "Measles"
+          },
+          {
+            "code": "36989005",
+            "display": "Mumps"
+          },
+          {
+            "code": "36653000",
+            "display": "Rubella"
+          },
+          {
+            "code": "16814004",
+            "display": "Pneumococcal infectious disease"
+          },
+          {
+            "code": "23511006",
+            "display": "Meningococcal infectious disease"
+          },
+          {
+            "code": "709410003",
+            "display": "Haemophilus influenzae type b infection"
+          },
+          {
+            "code": "56717001",
+            "display": "Tuberculosis"
+          },
+          {
+            "code": "363354003",
+            "display": "Malignant tumour of cervix"
+          },
+          {
+            "code": "266113007",
+            "display": "Genital warts"
+          },
+          {
+            "code": "415822001",
+            "display": "Viral gastroenteritis due to Rotavirus"
+          },
+          {
+            "code": "66071002",
+            "display": "Type B viral hepatitis"
+          },
+          {
+            "code": "40468003",
+            "display": "Viral hepatitis, type A"
+          },
+          {
+            "code": "7111000119109",
+            "display": "Hepatitis E virus infection"
+          },
+          {
+            "code": "719590007",
+            "display": "Influenza caused by seasonal influenza virus"
+          },
+          {
+            "code": "719865001",
+            "display": "Influenza caused by pandemic influenza virus"
+          },
+          {
+            "code": "38907003",
+            "display": "Varicella"
+          },
+          {
+            "code": "4740000",
+            "display": "Herpes zoster"
+          },
+          {
+            "code": "55735004",
+            "display": "Respiratory syncytial virus infection"
+          },
+          {
+            "code": "240613006",
+            "display": "Typhus group rickettsial disease"
+          },
+          {
+            "code": "4834000",
+            "display": "Typhoid fever"
+          },
+          {
+            "code": "85904008",
+            "display": "Paratyphoid fever"
+          },
+          {
+            "code": "63650001",
+            "display": "Cholera"
+          },
+          {
+            "code": "16541001",
+            "display": "Yellow fever"
+          },
+          {
+            "code": "38362002",
+            "display": "Dengue"
+          },
+          {
+            "code": "61462000",
+            "display": "Malaria"
+          },
+          {
+            "code": "14168008",
+            "display": "Rabies"
+          },
+          {
+            "code": "186772009",
+            "display": "RMSF - Rocky Mountain spotted fever"
+          },
+          {
+            "code": "712986001",
+            "display": "Tickborne encephalitis"
+          },
+          {
+            "code": "52947006",
+            "display": "Japanese encephalitis virus disease"
+          },
+          {
+            "code": "186788009",
+            "display": "Q fever"
+          },
+          {
+            "code": "409498004",
+            "display": "Anthrax"
+          },
+          {
+            "code": "58750007",
+            "display": "Plague"
+          },
+          {
+            "code": "19265001",
+            "display": "Tularemia"
+          },
+          {
+            "code": "23502006",
+            "display": "Lyme disease"
+          },
+          {
+            "code": "75702008",
+            "display": "Brucellosis"
+          },
+          {
+            "code": "80612004",
+            "display": "Leishmaniasis"
+          },
+          {
+            "code": "186747009",
+            "display": "Coronavirus infection"
+          },
+          {
+            "code": "67924001",
+            "display": "Smallpox"
+          },
+          {
+            "code": "70090004",
+            "display": "Cowpox"
+          }
+        ]
+      }
+    ]
+  }
+}

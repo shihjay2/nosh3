@@ -1,0 +1,218 @@
+[
+  {
+    "a": {
+      "@href": "/snomed/416835003--abstinence-history.html",
+      "@title": "SNOMED code for Abstinence history",
+      "small": "416835003"
+    },
+    "#text": "Abstinence history"
+  },
+  {
+    "a": {
+      "@href": "/snomed/406197004--belief-pattern.html",
+      "@title": "SNOMED code for Belief pattern",
+      "small": "406197004"
+    },
+    "#text": "Belief pattern"
+  },
+  {
+    "a": {
+      "@href": "/snomed/406195007--community-details.html",
+      "@title": "SNOMED code for Community details",
+      "small": "406195007"
+    },
+    "#text": "Community details"
+  },
+  {
+    "a": {
+      "@href": "/snomed/160553008--degree-of-religious-observance.html",
+      "@title": "SNOMED code for Degree of religious observance",
+      "small": "160553008"
+    },
+    "#text": "Degree of religious observance"
+  },
+  {
+    "a": {
+      "@href": "/snomed/302147001--demographic-history-detail.html",
+      "@title": "SNOMED code for Demographic history detail",
+      "small": "302147001"
+    },
+    "#text": "Demographic history detail"
+  },
+  {
+    "a": {
+      "@href": "/snomed/443846001--detail-of-history-travel.html",
+      "@title": "SNOMED code for Detail of history of travel",
+      "small": "443846001"
+    },
+    "#text": "Detail of history of travel"
+  },
+  {
+    "a": {
+      "@href": "/snomed/224285004--education-and-schooling-detail.html",
+      "@title": "SNOMED code for Education and schooling detail",
+      "small": "224285004"
+    },
+    "#text": "Education and schooling detail"
+  },
+  {
+    "a": {
+      "@href": "/snomed/406548001--emergency-contact-details.html",
+      "@title": "SNOMED code for Emergency contact details",
+      "small": "406548001"
+    },
+    "#text": "Emergency contact details"
+  },
+  {
+    "a": {
+      "@href": "/snomed/414361006--going-to-live-abroad.html",
+      "@title": "SNOMED code for Going to live abroad",
+      "small": "414361006"
+    },
+    "#text": "Going to live abroad"
+  },
+  {
+    "a": {
+      "@href": "/snomed/712495001--health-of-partner.html",
+      "@title": "SNOMED code for Health of partner",
+      "small": "712495001"
+    },
+    "#text": "Health of partner"
+  },
+  {
+    "a": {
+      "@href": "/snomed/302160007--household-family-and-support-network-detail.html",
+      "@title": "SNOMED code for Household, family and support network detail",
+      "small": "302160007"
+    },
+    "#text": "Household, family and support network detail"
+  },
+  {
+    "a": {
+      "@href": "/snomed/302148006--legal-financial-employment-and-socioeconomic-history-detail.html",
+      "@title": "SNOMED code for Legal, financial, employment and socioeconomic history detail",
+      "small": "302148006"
+    },
+    "#text": "Legal, financial, employment and socioeconomic history detail"
+  },
+  {
+    "a": {
+      "@href": "/snomed/364706004--life-event-observable.html",
+      "@title": "SNOMED code for Life event observable",
+      "small": "364706004"
+    },
+    "#text": "Life event observable"
+  },
+  {
+    "a": {
+      "@href": "/snomed/224158002--life-events.html",
+      "@title": "SNOMED code for Life events",
+      "small": "224158002"
+    },
+    "span": {
+      "@style": "color:red;",
+      "#text": "removed: 2002-07-31"
+    },
+    "#text": "Life events"
+  },
+  {
+    "a": {
+      "@href": "/snomed/447057006--occupation-of-spouse.html",
+      "@title": "SNOMED code for Occupation of spouse",
+      "small": "447057006"
+    },
+    "#text": "Occupation of spouse"
+  },
+  {
+    "a": {
+      "@href": "/snomed/161167003--other-socialpersonal-hist-nos.html",
+      "@title": "SNOMED code for Other social/personal hist NOS",
+      "small": "161167003"
+    },
+    "span": {
+      "@style": "color:red;",
+      "#text": "removed: 2010-01-31"
+    },
+    "#text": "Other social/personal hist NOS"
+  },
+  {
+    "a": {
+      "@href": "/snomed/406534001--out-of-hours-contact-details.html",
+      "@title": "SNOMED code for Out of hours contact details",
+      "small": "406534001"
+    },
+    "#text": "Out of hours contact details"
+  },
+  {
+    "a": {
+      "@href": "/snomed/7542004--personal-status.html",
+      "@title": "SNOMED code for Personal status",
+      "small": "7542004"
+    },
+    "#text": "Personal status"
+  },
+  {
+    "a": {
+      "@href": "/snomed/364707008--religious-affiliation.html",
+      "@title": "SNOMED code for Religious affiliation",
+      "small": "364707008"
+    },
+    "span": {
+      "@style": "color:red;",
+      "#text": "removed: 2006-07-31"
+    },
+    "#text": "Religious affiliation"
+  },
+  {
+    "a": {
+      "@href": "/snomed/160538000--religious-affiliation.html",
+      "@title": "SNOMED code for Religious affiliation",
+      "small": "160538000"
+    },
+    "#text": "Religious affiliation"
+  },
+  {
+    "a": {
+      "@href": "/snomed/105575000--religiousness.html",
+      "@title": "SNOMED code for Religiousness",
+      "small": "105575000"
+    },
+    "#text": "Religiousness"
+  },
+  {
+    "a": {
+      "@href": "/snomed/161033005--social-history-baseline.html",
+      "@title": "SNOMED code for Social history baseline",
+      "small": "161033005"
+    },
+    "#text": "Social history baseline"
+  },
+  {
+    "a": {
+      "@href": "/snomed/699089001--social-wellbeing.html",
+      "@title": "SNOMED code for Social wellbeing",
+      "small": "699089001"
+    },
+    "#text": "Social wellbeing"
+  },
+  {
+    "a": {
+      "@href": "/snomed/161111006--socialpersonal-history-nos.html",
+      "@title": "SNOMED code for Social/personal history NOS",
+      "small": "161111006"
+    },
+    "span": {
+      "@style": "color:red;",
+      "#text": "removed: 2010-01-31"
+    },
+    "#text": "Social/personal history NOS"
+  },
+  {
+    "a": {
+      "@href": "/snomed/105569009--spiritual-health-of-patient.html",
+      "@title": "SNOMED code for Spiritual health of patient",
+      "small": "105569009"
+    },
+    "#text": "Spiritual health of patient"
+  }
+]

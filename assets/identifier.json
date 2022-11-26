@@ -1,0 +1,408 @@
+[
+  {
+    "identifier": "URIs (W3C ): when the identifier is a URI",
+    "uri": "urn:ietf:rfc:3986 ",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.873",
+    "type": "",
+    "comment": "As defined by RFC 3986  (with many schemes defined in many RFCs). "
+  },
+  {
+    "identifier": "DICOM Unique Id ",
+    "uri": "urn:dicom:uid",
+    "oid (for non-fhir systems)": "",
+    "type": "",
+    "comment": "An OID issued under DICOM OID rules. DICOM OIDs are represented as plain OIDs"
+  },
+  {
+    "identifier": "United States Social Security Number ",
+    "uri": "http://hl7.org/fhir/sid/us-ssn",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.1",
+    "type": "SB  (US)",
+    "comment": "The SSN is represented in resources with dashes removed"
+  },
+  {
+    "identifier": "United States Medicare Number ",
+    "uri": "http://hl7.org/fhir/sid/us-medicare",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.572",
+    "type": "SB  (US)",
+    "comment": "Medicare Numbers (HIC or HICN) are represented without any spaces or dashes"
+  },
+  {
+    "identifier": "Medicare Beneficiary Identifier (United States) ",
+    "uri": "http://hl7.org/fhir/sid/us-mbi",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.927",
+    "type": "SB  (US)",
+    "comment": "Medicare Beneficiary Identifiers are represented without any spaces or dashes"
+  },
+  {
+    "identifier": "United States National Provider Identifier ",
+    "uri": "http://hl7.org/fhir/sid/us-npi",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.6",
+    "type": "PRN  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Global Trade Item Number (GTIN) ",
+    "uri": "https://www.gs1.org/gtin",
+    "oid (for non-fhir systems)": "1.3.160",
+    "type": "",
+    "comment": "Note: GTINs may be used in both Codes and Identifiers"
+  },
+  {
+    "identifier": "Alaska Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.2",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.2",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Alabama Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.1",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.1",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Arkansas Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.5",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.5",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Arizona Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.4",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.4",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "California Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.6",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.6",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Colorado Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.8",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.8",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Connecticut Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.9",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.9",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "DC Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.11",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.11",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Delaware Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.10",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.10",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Florida Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.12",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.12",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Georgia Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.13",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.13",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Hawaii Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.15",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.15",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Indiana Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.18",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.18",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Iowa Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.19",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.19",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Idaho Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.16",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.16",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Illinois Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.17",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.17",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Kansas Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.20",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.20",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Kentucky Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.21",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.21",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Louisiana Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.22",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.22",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Massachusetts Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.25",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.25",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Maryland Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.24",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.24",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Maine Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.23",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.23",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Michigan Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.26",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.26",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Minnesota Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.27",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.27",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Missouri Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.29",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.29",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Mississippi Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.28",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.28",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Montana Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.30",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.30",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "New York Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.36",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.36",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "North Carolina Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.37",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.37",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "North Dakota Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.38",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.38",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Nebraska Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.31",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.31",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "New Hampshire Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.33",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.33",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "New Jersey Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.34",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.34",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "New Mexico Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.35",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.35",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Nevada Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.32",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.32",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Ohio Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.39",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.39",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Oklahoma Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.40",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.40",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Oregon Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.41",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.41",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Pennsylvania Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.42",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.42",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Rhode Island Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.44",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.44",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "South Carolina Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.45",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.45",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "South Dakota Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.46",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.46",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Tennessee Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.47",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.47",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Texas Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.48",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.48",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Utah Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.49",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.49",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Virginia Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.51",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.51",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Vermont Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.50",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.50",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Washington Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.53",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.53",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Wisconsin Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.55",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.55",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "West Virginia Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.54",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.54",
+    "type": "DL  (US)",
+    "comment": ""
+  },
+  {
+    "identifier": "Wyoming Driver's License",
+    "uri": "urn:oid:2.16.840.1.113883.4.3.56",
+    "oid (for non-fhir systems)": "2.16.840.1.113883.4.3.56",
+    "type": "DL  (US)",
+    "comment": ""
+  }
+]

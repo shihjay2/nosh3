@@ -1,0 +1,842 @@
+[
+  {
+    "Code": "308335008",
+    "Display": "Patient encounter procedure",
+    "Definition": ""
+  },
+  {
+    "Code": "680007",
+    "Display": "Radiation physics consultation",
+    "Definition": ""
+  },
+  {
+    "Code": "726007",
+    "Display": "Pathology consultation, comprehensive, records and specimen with report",
+    "Definition": ""
+  },
+  {
+    "Code": "2530001",
+    "Display": "Chiropractic visit",
+    "Definition": ""
+  },
+  {
+    "Code": "4525004",
+    "Display": "Emergency department patient visit",
+    "Definition": ""
+  },
+  {
+    "Code": "5947002",
+    "Display": "Consultation for hearing and/or speech problem",
+    "Definition": ""
+  },
+  {
+    "Code": "8502007",
+    "Display": "Radiation physics consultation with therapeutic radiologist",
+    "Definition": ""
+  },
+  {
+    "Code": "11429006",
+    "Display": "Consultation",
+    "Definition": ""
+  },
+  {
+    "Code": "12566000",
+    "Display": "Consultation in computer dosimetry and isodose chart, teletherapy",
+    "Definition": ""
+  },
+  {
+    "Code": "12843005",
+    "Display": "Subsequent hospital visit by physician",
+    "Definition": ""
+  },
+  {
+    "Code": "14736009",
+    "Display": "Patient evaluation and management",
+    "Definition": ""
+  },
+  {
+    "Code": "15301000",
+    "Display": "Consultation in chemotherapy",
+    "Definition": ""
+  },
+  {
+    "Code": "18170008",
+    "Display": "Subsequent nursing facility visit",
+    "Definition": ""
+  },
+  {
+    "Code": "19681004",
+    "Display": "Nursing evaluation of patient and report",
+    "Definition": ""
+  },
+  {
+    "Code": "24882007",
+    "Display": "Medical consultation on hospital inpatient",
+    "Definition": ""
+  },
+  {
+    "Code": "25028003",
+    "Display": "Dermatology consultation and report, comprehensive",
+    "Definition": ""
+  },
+  {
+    "Code": "28191001",
+    "Display": "Consultation and report by radiologist",
+    "Definition": ""
+  },
+  {
+    "Code": "30078008",
+    "Display": "Dermatology consultation and report, brief",
+    "Definition": ""
+  },
+  {
+    "Code": "30274002",
+    "Display": "Chiropractic consultation",
+    "Definition": ""
+  },
+  {
+    "Code": "31108002",
+    "Display": "Consultation for laboratory medicine",
+    "Definition": ""
+  },
+  {
+    "Code": "34043003",
+    "Display": "Dental consultation and report",
+    "Definition": ""
+  },
+  {
+    "Code": "35437002",
+    "Display": "Consultation in computer dosimetry and isodose chart for brachytherapy",
+    "Definition": ""
+  },
+  {
+    "Code": "35755007",
+    "Display": "Chiropractic interpretation of x-rays (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "42423000",
+    "Display": "Chiropractic consultation, history and examination",
+    "Definition": ""
+  },
+  {
+    "Code": "44340006",
+    "Display": "Prosthodontic dental consultation and report",
+    "Definition": ""
+  },
+  {
+    "Code": "48550003",
+    "Display": "Medical consultation on nursing facility inpatient",
+    "Definition": ""
+  },
+  {
+    "Code": "49463003",
+    "Display": "Consultation for paternity case",
+    "Definition": ""
+  },
+  {
+    "Code": "49569001",
+    "Display": "Consultation in teletherapy",
+    "Definition": ""
+  },
+  {
+    "Code": "50357006",
+    "Display": "Evaluation and management of patient at home",
+    "Definition": ""
+  },
+  {
+    "Code": "50687007",
+    "Display": "Digestive tract consultation and report",
+    "Definition": ""
+  },
+  {
+    "Code": "53923005",
+    "Display": "Medical consultation on inpatient",
+    "Definition": ""
+  },
+  {
+    "Code": "58400001",
+    "Display": "Chiropractic examination",
+    "Definition": ""
+  },
+  {
+    "Code": "59000001",
+    "Display": "Surgical pathology consultation and report on referred slides prepared elsewhere",
+    "Definition": ""
+  },
+  {
+    "Code": "65981005",
+    "Display": "Consultation in laboratory medicine for test interpretation",
+    "Definition": ""
+  },
+  {
+    "Code": "68341005",
+    "Display": "Hemodialysis, supervision at home",
+    "Definition": ""
+  },
+  {
+    "Code": "69399002",
+    "Display": "Initial hospital visit by physician",
+    "Definition": ""
+  },
+  {
+    "Code": "70495004",
+    "Display": "Limited consultation",
+    "Definition": ""
+  },
+  {
+    "Code": "71318009",
+    "Display": "Physical medicine consultation and report",
+    "Definition": ""
+  },
+  {
+    "Code": "71387007",
+    "Display": "Endodontic dental consultation and report",
+    "Definition": ""
+  },
+  {
+    "Code": "73007006",
+    "Display": "Dermatology consultation and report",
+    "Definition": ""
+  },
+  {
+    "Code": "73575006",
+    "Display": "Chiropractic consultation with history",
+    "Definition": ""
+  },
+  {
+    "Code": "77406008",
+    "Display": "Confirmatory medical consultation",
+    "Definition": ""
+  },
+  {
+    "Code": "77965002",
+    "Display": "Consultation in brachytherapy",
+    "Definition": ""
+  },
+  {
+    "Code": "83362003",
+    "Display": "Final inpatient visit with instructions at discharge",
+    "Definition": ""
+  },
+  {
+    "Code": "84251009",
+    "Display": "Comprehensive consultation",
+    "Definition": ""
+  },
+  {
+    "Code": "86013001",
+    "Display": "Periodic reevaluation and management of healthy individual",
+    "Definition": ""
+  },
+  {
+    "Code": "86181006",
+    "Display": "Evaluation and management of inpatient",
+    "Definition": ""
+  },
+  {
+    "Code": "87790002",
+    "Display": "Follow-up inpatient consultation visit",
+    "Definition": ""
+  },
+  {
+    "Code": "89291005",
+    "Display": "Orthodontic dental consultation and report",
+    "Definition": ""
+  },
+  {
+    "Code": "90526000",
+    "Display": "Initial evaluation and management of healthy individual",
+    "Definition": ""
+  },
+  {
+    "Code": "108219001",
+    "Display": "Physician visit with evaluation AND/OR management service",
+    "Definition": ""
+  },
+  {
+    "Code": "108220007",
+    "Display": "Evaluation AND/OR management - new patient",
+    "Definition": ""
+  },
+  {
+    "Code": "108221006",
+    "Display": "Evaluation AND/OR management - established patient",
+    "Definition": ""
+  },
+  {
+    "Code": "185316007",
+    "Display": "Indirect encounter",
+    "Definition": ""
+  },
+  {
+    "Code": "185317003",
+    "Display": "Telephone encounter",
+    "Definition": ""
+  },
+  {
+    "Code": "185318008",
+    "Display": "Third party encounter",
+    "Definition": ""
+  },
+  {
+    "Code": "185320006",
+    "Display": "Encounter by computer link",
+    "Definition": ""
+  },
+  {
+    "Code": "185321005",
+    "Display": "Letter encounter to patient",
+    "Definition": ""
+  },
+  {
+    "Code": "185345009",
+    "Display": "Encounter for symptom",
+    "Definition": ""
+  },
+  {
+    "Code": "185346005",
+    "Display": "Encounter for sign",
+    "Definition": ""
+  },
+  {
+    "Code": "185347001",
+    "Display": "Encounter for problem",
+    "Definition": ""
+  },
+  {
+    "Code": "185348006",
+    "Display": "Encounter for fear",
+    "Definition": ""
+  },
+  {
+    "Code": "185349003",
+    "Display": "Encounter for check up (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "185387006",
+    "Display": "New patient consultation",
+    "Definition": ""
+  },
+  {
+    "Code": "185389009",
+    "Display": "Follow-up visit",
+    "Definition": ""
+  },
+  {
+    "Code": "185462000",
+    "Display": "Home visit request by relative",
+    "Definition": ""
+  },
+  {
+    "Code": "185463005",
+    "Display": "Visit out of hours",
+    "Definition": ""
+  },
+  {
+    "Code": "185464004",
+    "Display": "Out of hours visit - not night visit",
+    "Definition": ""
+  },
+  {
+    "Code": "185465003",
+    "Display": "Weekend visit",
+    "Definition": ""
+  },
+  {
+    "Code": "185466002",
+    "Display": "Home visit for urgent condition (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "185467006",
+    "Display": "Home visit for acute condition (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "185468001",
+    "Display": "Home visit for chronic condition (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "185469009",
+    "Display": "District nurse visit",
+    "Definition": ""
+  },
+  {
+    "Code": "185470005",
+    "Display": "Home visit elderly assessment",
+    "Definition": ""
+  },
+  {
+    "Code": "207195004",
+    "Display": "History and physical examination with evaluation and management of nursing facility patient",
+    "Definition": ""
+  },
+  {
+    "Code": "209099002",
+    "Display": "History and physical examination with management of domiciliary or rest home patient",
+    "Definition": ""
+  },
+  {
+    "Code": "210098006",
+    "Display": "Domiciliary or rest home patient evaluation and management",
+    "Definition": ""
+  },
+  {
+    "Code": "225929007",
+    "Display": "Joint home visit",
+    "Definition": ""
+  },
+  {
+    "Code": "270424005",
+    "Display": "Letter encounter from patient",
+    "Definition": ""
+  },
+  {
+    "Code": "270425006",
+    "Display": "Letter from specialist",
+    "Definition": ""
+  },
+  {
+    "Code": "270427003",
+    "Display": "Patient-initiated encounter",
+    "Definition": ""
+  },
+  {
+    "Code": "270430005",
+    "Display": "Provider-initiated encounter",
+    "Definition": ""
+  },
+  {
+    "Code": "275693003",
+    "Display": "Letter from consultant",
+    "Definition": ""
+  },
+  {
+    "Code": "281036007",
+    "Display": "Follow-up consultation",
+    "Definition": ""
+  },
+  {
+    "Code": "288836004",
+    "Display": "Agreeing on elements of the care plan",
+    "Definition": ""
+  },
+  {
+    "Code": "308720009",
+    "Display": "Letter encounter",
+    "Definition": ""
+  },
+  {
+    "Code": "310587004",
+    "Display": "First annual visit by district nurse",
+    "Definition": ""
+  },
+  {
+    "Code": "310588009",
+    "Display": "Visit by health visitor",
+    "Definition": ""
+  },
+  {
+    "Code": "313183009",
+    "Display": "Inappropriate use of out of hours service",
+    "Definition": ""
+  },
+  {
+    "Code": "314849005",
+    "Display": "Telephone contact by consultant",
+    "Definition": ""
+  },
+  {
+    "Code": "315205008",
+    "Display": "Bank holiday home visit",
+    "Definition": ""
+  },
+  {
+    "Code": "386472008",
+    "Display": "Telephone consultation (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "386473003",
+    "Display": "Telephone follow-up (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "388970003",
+    "Display": "Weight maintenance consultation",
+    "Definition": ""
+  },
+  {
+    "Code": "388975008",
+    "Display": "Weight reduction consultation",
+    "Definition": ""
+  },
+  {
+    "Code": "388977000",
+    "Display": "Weight increase consultation",
+    "Definition": ""
+  },
+  {
+    "Code": "390906007",
+    "Display": "Follow-up encounter (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "398228004",
+    "Display": "Anesthesia consultation (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "400979004",
+    "Display": "Homeopathic consultation (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "401267002",
+    "Display": "Telephone triage encounter (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "401271004",
+    "Display": "E-mail sent to patient (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "406547006",
+    "Display": "Urgent follow-up (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "408482001",
+    "Display": "District nurse follow up (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "408483006",
+    "Display": "District nurse initial visit (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "408487007",
+    "Display": "Health visitor follow up (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "416520008",
+    "Display": "Consultation for unaccompanied minor (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "420454001",
+    "Display": "Consultation for chronic pain (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "420650002",
+    "Display": "Consultation for pain (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "421946003",
+    "Display": "Consultation for acute pain (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "423215004",
+    "Display": "Provision of continuity of care (regime/therapy)",
+    "Definition": ""
+  },
+  {
+    "Code": "423861007",
+    "Display": "Consultation for restraint debriefing (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "425604002",
+    "Display": "Case management follow up (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "438515009",
+    "Display": "E-mail encounter from carer",
+    "Definition": ""
+  },
+  {
+    "Code": "438516005",
+    "Display": "E-mail encounter to carer",
+    "Definition": ""
+  },
+  {
+    "Code": "439058005",
+    "Display": "Home visit for care and maintenance of urinary catheter (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "439708006",
+    "Display": "Home visit (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "439740005",
+    "Display": "Postoperative follow-up visit (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "439887005",
+    "Display": "Home visit for mechanical ventilation care (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "440068009",
+    "Display": "Home visit for newborn care and assessment (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "440085006",
+    "Display": "Home visit for postpartum care and assessment (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "440146002",
+    "Display": "Home visit for care and maintenance of colostomy (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "440168007",
+    "Display": "Provision of copy of letter from specialist to patient (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "440568002",
+    "Display": "Visit with nurse at next appointment requested (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "440611006",
+    "Display": "Home visit for marriage counseling (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "440696002",
+    "Display": "Home visit for intramuscular injection (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "441244001",
+    "Display": "Home visit for cystostomy care and maintenance (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "445450000",
+    "Display": "Encounter by short message service text messaging (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "448337001",
+    "Display": "Telemedicine consultation with patient (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "698307003",
+    "Display": "Consultation for benign neoplasm disease (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "698308008",
+    "Display": "Consultation for malignant neoplasm disease",
+    "Definition": ""
+  },
+  {
+    "Code": "698309000",
+    "Display": "Consultation for endoscopic procedure",
+    "Definition": ""
+  },
+  {
+    "Code": "698310005",
+    "Display": "Consultation for colposcopy related procedure (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "698311009",
+    "Display": "Consultation for assisted reproductive procedure (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "698312002",
+    "Display": "Consultation for minor abdominal procedure (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "698313007",
+    "Display": "Consultation for minor operation",
+    "Definition": ""
+  },
+  {
+    "Code": "698314001",
+    "Display": "Consultation for treatment",
+    "Definition": ""
+  },
+  {
+    "Code": "698704008",
+    "Display": "Home visit for rheumatology service (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "704126008",
+    "Display": "Home visit for anticoagulant drug monitoring (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "711420002",
+    "Display": "X-ray consultation (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "711458003",
+    "Display": "Encounter for fitness for duty exam",
+    "Definition": ""
+  },
+  {
+    "Code": "711532000",
+    "Display": "Surgical pathology consultation on slides with comprehensive review and interpretation",
+    "Definition": ""
+  },
+  {
+    "Code": "713281006",
+    "Display": "Consultation for palliative care",
+    "Definition": ""
+  },
+  {
+    "Code": "713776001",
+    "Display": "Email encounter from third party",
+    "Definition": ""
+  },
+  {
+    "Code": "719407002",
+    "Display": "Remote non-verbal consultation (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "719410009",
+    "Display": "Consultation via video conference (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "763184009",
+    "Display": "Telepractice consultation (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "773298008",
+    "Display": "Trauma dental consultation and report",
+    "Definition": ""
+  },
+  {
+    "Code": "788339009",
+    "Display": "Genetic consultation (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "788542004",
+    "Display": "Consultation by acupuncturist",
+    "Definition": ""
+  },
+  {
+    "Code": "788543009",
+    "Display": "Consultation by ergotherapist (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "866149003",
+    "Display": "Annual visit",
+    "Definition": ""
+  },
+  {
+    "Code": "866203004",
+    "Display": "Consultation for asthma",
+    "Definition": ""
+  },
+  {
+    "Code": "866204005",
+    "Display": "Consultation for chronic obstructive pulmonary disease (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "868184008",
+    "Display": "Telemedicine consultation with provider (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "870191006",
+    "Display": "Follow up for depression",
+    "Definition": ""
+  },
+  {
+    "Code": "870194003",
+    "Display": "Body mass index follow-up planning (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "3391000175108",
+    "Display": "Office visit for pediatric care and assessment (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "4141000175103",
+    "Display": "Encounter for blood donation (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "6051000124107",
+    "Display": "Pharmacokinetic consultation (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "6061000124109",
+    "Display": "Risk evaluation and mitigation strategy consultation (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "428921000124100",
+    "Display": "Consultation for transition of care (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "428931000124102",
+    "Display": "Pharmacogenetic consultation (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "444971000124105",
+    "Display": "Annual wellness visit (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "452081000124104",
+    "Display": "Health evaluation of new immigrant (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "453131000124105",
+    "Display": "Videotelephony encounter (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "453701000124103",
+    "Display": "In-person encounter (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "456201000124103",
+    "Display": "Medicare Annual Wellness Visit (procedure)",
+    "Definition": ""
+  },
+  {
+    "Code": "461231000124109",
+    "Display": "Consultation for suicide risk management",
+    "Definition": ""
+  }
+]

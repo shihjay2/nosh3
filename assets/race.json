@@ -1,0 +1,38 @@
+[
+  {
+      "Code": "1002-5",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "American Indian or Alaska Native",
+      "Definition": ""
+  },
+  {
+      "Code": "2028-9",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Asian",
+      "Definition": ""
+  },
+  {
+      "Code": "2054-5",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Black or African American",
+      "Definition": ""
+  },
+  {
+      "Code": "2076-8",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Native Hawaiian or Other Pacific Islander",
+      "Definition": ""
+  },
+  {
+      "Code": "2106-3",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "White",
+      "Definition": ""
+  },
+  {
+      "Code": "2131-1",
+      "System": "urn:oid:2.16.840.1.113883.6.238",
+      "Display": "Other Race",
+      "Definition": ""
+  }
+]

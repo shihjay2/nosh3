@@ -1,0 +1,237 @@
+[
+  {
+    "Code": "10154-3 ",
+    "Display": "Chief Complaint",
+    "Common": true
+  },
+  {
+    "Code": "10157-6 ",
+    "Display": "History of Family Member Diseases",
+    "Common": true
+  },
+  {
+    "Code": "10160-0 ",
+    "Display": "History of Medication Use",
+    "resource": "medication_statements"
+  },
+  {
+    "Code": "10164-2 ",
+    "Display": "History of Present Illness",
+    "Common": true
+  },
+  {
+    "Code": "10183-2 ",
+    "Display": "Hospital discharge medications Narrative"
+  },
+  {
+    "Code": "10184-0 ",
+    "Display": "Hospital discharge physical findings Narrative"
+  },
+  {
+    "Code": "10187-3 ",
+    "Display": "Review of Systems",
+    "Common": true
+  },
+  {
+    "Code": "10210-3 ",
+    "Display": "Physical findings of General status Narrative"
+  },
+  {
+    "Code": "10216-0 ",
+    "Display": "Surgical operation note fluids Narrative"
+  },
+  {
+    "Code": "10218-6 ",
+    "Display": "Surgical operation note postoperative diagnosis Narrative"
+  },
+  {
+    "Code": "10218-6 ",
+    "Display": "Surgical operation note postoperative diagnosis Narrative"
+  },
+  {
+    "Code": "10223-6 ",
+    "Display": "Surgical operation note surgical procedure Narrative"
+  },
+  {
+    "Code": "10222-8 ",
+    "Display": "Surgical operation note surgical complications [interpretation] Narrative"
+  },
+  {
+    "Code": "11329-0 ",
+    "Display": "History general Narrative - Reported"
+  },
+  {
+    "Code": "11348-0 ",
+    "Display": "History of Past Illness",
+    "Common": true
+  },
+  {
+    "Code": "11369-6 ",
+    "Display": "History of Immunization",
+    "resource": "immunizations"
+  },
+  {
+    "Code": "57852-6 ",
+    "Display": "Problem List",
+    "resource": "conditions"
+  },
+  {
+    "Code": "11493-4 ",
+    "Display": "Hospital discharge studies summary Narrative"
+  },
+  {
+    "Code": "11535-2 ",
+    "Display": "Hospital discharge Dx Narrative"
+  },
+  {
+    "Code": "11537-8 ",
+    "Display": "Surgical drains Narrative"
+  },
+  {
+    "Code": "18776-5 ",
+    "Display": "Plan of treatment (narrative)"
+  },
+  {
+    "Code": "18841-7 ",
+    "Display": "Hospital consultations Document"
+  },
+  {
+    "Code": "29299-5 ",
+    "Display": "Reason for Visit"
+  },
+  {
+    "Code": "29545-1 ",
+    "Display": "Physical findings Narrative"
+  },
+  {
+    "Code": "29549-3 ",
+    "Display": "Medication Administered",
+    "resource": "medication_requests"
+  },
+  {
+    "Code": "29554-3 ",
+    "Display": "Procedure Narrative"
+  },
+  {
+    "Code": "29762-2 ",
+    "Display": "Social history Narrative",
+    "Common": true
+  },
+  {
+    "Code": "30954-2 ",
+    "Display": "Relevant diagnostic tests/laboratory data Narrative"
+  },
+  {
+    "Code": "42344-2 ",
+    "Display": "Discharge diet (narrative)"
+  },
+  {
+    "Code": "42346-7 ",
+    "Display": "Medications on admission (narrative)"
+  },
+  {
+    "Code": "42348-3 ",
+    "Display": "Advance directives (narrative)"
+  },
+  {
+    "Code": "42349-1 ",
+    "Display": "Reason for referral (narrative)"
+  },
+  {
+    "Code": "46240-8 ",
+    "Display": "History of hospitalizations+History of outpatient visits Narrative"
+  },
+  {
+    "Code": "46241-6 ",
+    "Display": "Hospital admission diagnosis Narrative - Reported"
+  },
+  {
+    "Code": "46264-8 ",
+    "Display": "History of medical device use"
+  },
+  {
+    "Code": "47420-5 ",
+    "Display": "Functional status assessment note"
+  },
+  {
+    "Code": "47519-4 ",
+    "Display": "History of Procedures Document"
+  },
+  {
+    "Code": "48765-2 ",
+    "Display": "Allergies and Adverse Reactions",
+    "resource": "allergy_intolerances"
+  },
+  {
+    "Code": "48768-6 ",
+    "Display": "Payment sources Document"
+  },
+  {
+    "Code": "51848-0 ",
+    "Display": "Evaluation note"
+  },
+  {
+    "Code": "55109-3 ",
+    "Display": "Complications Document"
+  },
+  {
+    "Code": "55122-6 ",
+    "Display": "Surgical operation note implants Narrative"
+  },
+  {
+    "Code": "59768-2 ",
+    "Display": "Procedure indications [interpretation] Narrative"
+  },
+  {
+    "Code": "59769-0 ",
+    "Display": "Postprocedure diagnosis Narrative"
+  },
+  {
+    "Code": "59770-8 ",
+    "Display": "Procedure estimated blood loss Narrative"
+  },
+  {
+    "Code": "59771-6 ",
+    "Display": "Procedure implants Narrative"
+  },
+  {
+    "Code": "59772-4 ",
+    "Display": "Planned procedure Narrative"
+  },
+  {
+    "Code": "59773-2 ",
+    "Display": "Procedure specimens taken Narrative"
+  },
+  {
+    "Code": "59775-7 ",
+    "Display": "Procedure disposition Narrative"
+  },
+  {
+    "Code": "59776-5 ",
+    "Display": "Procedure findings Narrative"
+  },
+  {
+    "Code": "61149-1 ",
+    "Display": "Objective Narrative"
+  },
+  {
+    "Code": "61150-9 ",
+    "Display": "Subjective Narrative"
+  },
+  {
+    "Code": "69730-0 ",
+    "Display": "Instructions"
+  },
+  {
+    "Code": "8648-8 ",
+    "Display": "Hospital course Narrative"
+  },
+  {
+    "Code": "8653-8 ",
+    "Display": "Hospital Discharge instructions"
+  },
+  {
+    "Code": "8716-3 ",
+    "Display": "Vital Signs"
+  }
+]

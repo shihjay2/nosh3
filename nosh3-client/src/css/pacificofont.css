@@ -1,0 +1,11 @@
+@font-face {
+  font-family: 'Pacifico';
+  src: url('../css/fonts/Pacifico-Regular.ttf');
+}
+
+#logo{
+  font-family: 'Pacifico', arial, serif;
+  font-size: 30px;
+  text-shadow: 4px 4px 4px #aaa;
+  vertical-align: middle;
+}
