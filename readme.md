@@ -48,7 +48,7 @@ wget https://raw.githubusercontent.com/shihjay2/nosh3/master/docker-compose.yml
 
 ```
 cat << EOF > .env
-COUCHDB_URL=http://127.0.0.1:5984
+COUCHDB_URL=http://couchdb:5984
 COUCHDB_USER=admin
 COUCHDB_PASSWORD=my_couchdb_password
 COUCHDB_ENCRYPT_PIN=my_couchdb_pin
@@ -64,7 +64,7 @@ EOF
 Below is an example for a patient health record (pNOSH)
 ```
 cat << EOF > .env
-COUCHDB_URL=http://127.0.0.1:5984
+COUCHDB_URL=http://couchdb:5984
 COUCHDB_USER=admin
 COUCHDB_PASSWORD=my_couchdb_password
 COUCHDB_ENCRYPT_PIN=my_couchdb_pin
