@@ -195,6 +195,16 @@ app.get('/start', async(req, res) => {
   }
 })
 
+app.get('/ready', async(req, res) => {
+  var b = false
+  for (let a = 0; a < 20; a++) {
+    if (!b) {
+      b = await isReachable(settings.couchdb_uri)
+    }
+  }
+  res.status(200).send('OK')
+})
+
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
     console.log(`listening on ${port}`)
