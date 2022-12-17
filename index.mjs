@@ -90,6 +90,7 @@ app.get('/start', async(req, res) => {
       c++;
     }
   }
+  console.log(c)
   if (b) {
     var opts = JSON.parse(JSON.stringify(settings.couchdb_auth))
     objectPath.set(opts, 'skip_setup', true)
@@ -97,7 +98,10 @@ app.get('/start', async(req, res) => {
     var info = await check.info()
     console.log(info)
     if (objectPath.has(info, 'error')) {
+      console.log('error found')
+      console.log(info.error)
       if (info.error == 'not_found') {
+        console.log('setting up')
         await couchdbInstall()
         var b1 = false
         var c1 = 0
@@ -205,8 +209,11 @@ app.get('/start', async(req, res) => {
         } else {
           res.status(200).send('CouchDB is not restarting for some reason; try again')
         }
+      } else {
+        console.log('something is wrong')
       }
     } else {
+      console.log('proceeding')
       res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/login')
     }
   } else {
