@@ -64,6 +64,7 @@ async function couchdbInstall() {
     result.push({command: command, result: a})
   }
   await couchdbRestart()
+  await sleep(5)
   return result
 }
 
@@ -252,6 +253,10 @@ function equals (a, b) {
   return keys.every(k => equals(a[k], b[k]))
 }
 
+async function sleep(seconds) {
+  return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+}
+
 function urlFix(url) {
   return url.replace(/\/?$/, '/')
 }
@@ -315,4 +320,4 @@ async function verifyJWT(req, res, next) {
   }
 }
 
-export {couchdbDatabase, couchdbInstall, createKeyPair, getKeys, getNPI, gnapResourceRegistration, equals, urlFix, verify, verifyJWT}
+export {couchdbDatabase, couchdbInstall, createKeyPair, getKeys, getNPI, gnapResourceRegistration, equals, sleep, urlFix, verify, verifyJWT}

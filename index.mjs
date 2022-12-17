@@ -98,11 +98,9 @@ app.get('/start', async(req, res) => {
         }
       }
       if (b) {
-        console.log(c)
-        await couchdbDatabase()
         const users = new PouchDB((settings.couchdb_uri + '/_users'), settings.couchdb_auth)
-        var d = await users.info()
-        console.log(d)
+        await users.info()
+        await couchdbDatabase()
         const db_users = new PouchDB((settings.couchdb_uri + '/users'), settings.couchdb_auth)
         var result = await db_users.find({selector: {_id: {$regex: "^nosh_*"}}})
         if (result.docs.length === 0) {
