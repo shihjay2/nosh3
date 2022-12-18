@@ -40,6 +40,7 @@
     vertical
     color="primary"
     animated
+    @before-transition="stopVideo"
   >
     <q-step
       :name="1"
@@ -66,20 +67,6 @@
       :done="state.step > 2"
     >
       <q-card>
-        <q-card-section class="bg-grey-3">
-          <div class="q-pa-sm q-gutter-sm">
-            <div class="row">
-              <q-btn-group push>
-                <q-btn push color="primary" icon="play_arrow" size="sm" :disable="state.startVideoDisable" clickable @click="startVideo()">
-                  <q-tooltip>Start Video</q-tooltip>
-                </q-btn>
-                <q-btn push color="primary" icon="camera" size="sm" :disable="state.captureVideoDisable" clickable @click="captureVideo()">
-                  <q-tooltip>Capture</q-tooltip>
-                </q-btn>
-              </q-btn-group>
-            </div>
-          </div>
-        </q-card-section>
         <q-card-section>
           <div class="q-pa-sm q-gutter-sm">
             <video autoplay style="display:none;width: 100% !important;height: auto !important;"></video>
@@ -88,8 +75,15 @@
         </q-card-section>
         <q-card-actions align="right">
           <div class="q-pa-sm q-gutter-sm">
-            <q-btn push icon="repeat" color="green" @click="startVideo()" label="Retake" />
-            <q-btn push icon="save" color="primary" @click="saveVideo()" label="Save" />
+            <q-btn push icon="camera" color="red" :disable="state.captureVideoDisable" @click="captureVideo()">
+              <q-tooltip>Capture</q-tooltip>
+            </q-btn>
+            <q-btn push icon="repeat" color="green" @click="startVideo()">
+              <q-tooltip>Retake</q-tooltip>
+            </q-btn>
+            <q-btn push icon="save" color="primary" @click="saveVideo()">
+              <q-tooltip>Save</q-tooltip>
+            </q-btn>
           </div>
         </q-card-actions>
       </q-card>
@@ -352,6 +346,12 @@ export default defineComponent({
         emit('open-detail-complete')
       }
     })
+    watch(() => state.step, async(newVal) => {
+      if (newVal === 2) {
+        await nextTick()
+        startVideo()
+      }
+    })
     const addedFn = (files) => {
       for (var i in files) {
         getBase64(files[i]).then(data => {
@@ -381,11 +381,11 @@ export default defineComponent({
       }
     }
     const captureVideo = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      canvas.getContext('2d').drawImage(video, 0, 0);
-      img.src = canvas.toDataURL('image/png');
+      const canvas = document.createElement('canvas')
+      canvas.width = video.videoWidth
+      canvas.height = video.videoHeight
+      canvas.getContext('2d').drawImage(video, 0, 0)
+      img.src = canvas.toDataURL('image/png')
       state.dataVideo = img.src
       img.style.display = "block"
       video.style.display = "none"
@@ -442,11 +442,11 @@ export default defineComponent({
       }
     }
     const handleError = (error) => {
-			console.error('navigator.getUserMedia error: ', error);
+			console.error('navigator.getUserMedia error: ', error)
 		}
     const handleSuccess = (stream) => {
       state.captureVideoDisable = false
-      video.srcObject = stream;
+      video.srcObject = stream
     }
     const loading = () => {
       emit('loading')
@@ -549,6 +549,7 @@ export default defineComponent({
         } else {
           state.viewer = true
         }
+        stopVideo()
         emit('reload-drawer', props.resource)
         if (state.detailsPending == true) {
           openForm()
@@ -581,6 +582,7 @@ export default defineComponent({
     const saveVideo = () => {
       state.image.data = state.dataVideo
       state.image.name = 'cameraCapture'
+      // stop video
       state.edit = true
     }
     const showFHIR = () => {
@@ -594,6 +596,16 @@ export default defineComponent({
         then(handleSuccess).catch(handleError)
       state.cameraImg = true
       state.startVideoDisable = true
+    }
+    const stopVideo = () => {
+      if (video.srcObject !== null) {
+        const stream = video.srcObject
+        const tracks = stream.getTracks()
+        tracks.forEach((track) => {
+          track.stop()
+        })
+        video.srcObject = null
+      }
     }
     return {
       addedFn,
@@ -628,6 +640,7 @@ export default defineComponent({
       saveVideo,
       showFHIR,
       startVideo,
+      stopVideo,
       sync,
       state
     }
