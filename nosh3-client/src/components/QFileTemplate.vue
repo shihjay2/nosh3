@@ -21,7 +21,7 @@
       </div>
     </q-card-section>
     <q-card-section>
-      <q-img :src="state.data" spinner-color="white" fit="none" position="0 0"/>
+      <q-img :src="state.data" spinner-color="white" fit="fill" position="0 0"/>
     </q-card-section>
   </q-card>
   <PDFDocument
@@ -320,6 +320,9 @@ export default defineComponent({
         if (state.subcategory !== '') {
           state.model += '.' + state.subcategory
         }
+        if (props.resource === 'patients') {
+          state.model = state.category + '.0'
+        }
         if (state.index == 0) {
           // new file
           state.viewer = false
@@ -395,6 +398,8 @@ export default defineComponent({
         objectPath.del(state, 'fhir.' + state.category)
         state.fhir1 = JSON.stringify(state.fhir, null, "  ")
         await sync(props.resource, props.online, props.couchdb, props.auth, props.pin, true, state.fhir)
+        var doc = await localDB.get(props.id)
+        objectPath.set(state, 'fhir', doc)
         $q.notify({
           message: 'The image was removed!',
           color: 'primary',
@@ -582,7 +587,6 @@ export default defineComponent({
     const saveVideo = () => {
       state.image.data = state.dataVideo
       state.image.name = 'cameraCapture'
-      // stop video
       state.edit = true
     }
     const showFHIR = () => {
@@ -598,13 +602,15 @@ export default defineComponent({
       state.startVideoDisable = true
     }
     const stopVideo = () => {
-      if (video.srcObject !== null) {
-        const stream = video.srcObject
-        const tracks = stream.getTracks()
-        tracks.forEach((track) => {
-          track.stop()
-        })
-        video.srcObject = null
+      if (video !== undefined) {
+        if (video.srcObject !== null) {
+          const stream = video.srcObject
+          const tracks = stream.getTracks()
+          tracks.forEach((track) => {
+            track.stop()
+          })
+          video.srcObject = null
+        }
       }
     }
     return {
