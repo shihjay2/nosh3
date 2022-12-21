@@ -515,7 +515,7 @@ export default defineComponent({
 },
   setup () {
     const $q = useQuasar()
-    const { addSchemaOptions, fetchJSON, fhirModel, fhirReplace, inbox, loadSchema, loadSelect, patientList, removeTags, sync, syncAll, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
+    const { addSchemaOptions, fetchJSON, fhirModel, fhirReplace, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, sync, syncAll, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
     const state = reactive({
       menuVisible: false,
       showDrawer: false,
@@ -1469,6 +1469,10 @@ export default defineComponent({
         }
         var sub = state.pulldown_base.categories.find(o => o.value === state.pulldown_category)
         state.pulldown_schema = sub.uiSchema
+        var old_val = await observationStatusRaw(type, state.patient)
+        state.pulldown_defaults = {
+          value: old_val.code
+        }
       }
       state.pulldown_form = true
     }
