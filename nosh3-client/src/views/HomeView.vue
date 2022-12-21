@@ -1470,8 +1470,10 @@ export default defineComponent({
         var sub = state.pulldown_base.categories.find(o => o.value === state.pulldown_category)
         state.pulldown_schema = sub.uiSchema
         var old_val = await observationStatusRaw(type, state.patient)
-        state.pulldown_defaults = {
-          value: old_val.code
+        if (objectPath.has(old_val, 'code')) {
+          state.pulldown_defaults = {
+            value: old_val.code
+          }
         }
       }
       state.pulldown_form = true
