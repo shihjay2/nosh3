@@ -689,6 +689,36 @@ export function common() {
       return ret
     }
   }
+  const observationStatusRaw = async(type, patient) => {
+    var map = [
+      {
+        type: 'pregnancy',
+        search: '82810-3'
+      },
+      {
+        type: 'tobacco',
+        search: '72166-2'
+      },
+      {
+        type: 'sexually_active',
+        search: '86648-3'
+      }
+    ]
+    var item = map.find(a => a.type === type)
+    var ret = {}
+    const observationDB = new PouchDB('observations')
+    const result = await observationDB.find({selector: {
+      'subject.reference': {$eq: 'Patient/' + patient },
+      'code.coding.0.code': {$eq: item.search},
+      _id: {"$gte": null}}})
+    if (result.docs.length > 0) {
+      result.docs.sort((b, c) => moment(c.effectivePeriod.start) - moment(b.effectivePeriod.start))
+      if (objectPath.has(result, 'docs.0.valueCodableConcept.coding.0.code')) {
+        ret = objectPath.get(result, 'docs.0.valueCodableConcept.coding.0')
+      }
+    }
+    return ret
+  }
   const patientList = async(user) => {
     var arr = []
     const patientDB = new PouchDB('patients')
@@ -922,6 +952,7 @@ export function common() {
     loadSelect,
     observationResult,
     observationStatus,
+    observationStatusRaw,
     patientList,
     patientStatus,
     removeTags,

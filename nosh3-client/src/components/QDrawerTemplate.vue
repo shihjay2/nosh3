@@ -76,6 +76,7 @@
           @click="openPulldown('tobacco')"
         >
           {{ state.smokingStatus }}
+          <q-tooltip>{{  state.smokingStatusTooltip }}</q-tooltip>
         </q-chip>
       </q-item>
       <div v-for="(item, index) in state.ui" :key="index">
@@ -122,7 +123,7 @@ export default defineComponent({
   },
   emits: ['open-care-opportunities', 'open-list', 'open-page', 'open-pulldown', 'reload-drawer-complete', 'unset'],
   setup (props, { emit }) {
-    const { observationStatus } = common()
+    const { observationStatus, observationStatusRaw } = common()
     const state = reactive({
       patientName: '',
       patientAge: '',
@@ -146,6 +147,7 @@ export default defineComponent({
       smokingCheck: false,
       pregnancyStatus: '',
       smokingStatus: '',
+      smokingStatusTooltip: '',
       careplan: ''
     })
     onMounted(async() => {
@@ -226,6 +228,10 @@ export default defineComponent({
       var d = await observationStatus('tobacco', props.patient, false, true)
       var e = tobacco_arr.find(f => f.val === d)
       state.smokingStatus = e.label
+      var g = await observationStatusRaw('tobacco', props.patient)
+      if (objectPath.has(g, 'display')) {
+        state.smokingStatusTooltip = g.display
+      }
       state.smokingCheck = true
       state.encounter = props.encounter
       state.careplan = objectPath.get(props, 'care_plan_doc.contained.0.code.coding.0.display')

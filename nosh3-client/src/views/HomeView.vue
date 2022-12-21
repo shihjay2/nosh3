@@ -1459,13 +1459,13 @@ export default defineComponent({
           objectPath.set(state, 'pulldown_doc.code.coding.0.code', '82810-3')
           objectPath.set(state, 'pulldown_doc.code.coding.0.display', 'Pregnancy Status')
           state.pulldown_category = 'pregnancy'
-          state.pulldown_title = 'Pregnancy Status'
+          state.pulldown_title = 'Set Pregnancy Status'
         }
         if (type === 'tobacco') {
           objectPath.set(state, 'pulldown_doc.code.coding.0.code', '72166-2')
           objectPath.set(state, 'pulldown_doc.code.coding.0.display', 'Tobacco Smoking Status')
           state.pulldown_category = 'tobacco'
-          state.pulldown_title = 'Smoking Status'
+          state.pulldown_title = 'Set Smoking Status'
         }
         var sub = state.pulldown_base.categories.find(o => o.value === state.pulldown_category)
         state.pulldown_schema = sub.uiSchema
