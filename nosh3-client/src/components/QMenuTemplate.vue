@@ -41,6 +41,14 @@
           <q-icon color="primary" style="font-size: 1.5em" name="qr_code_2" />
         </q-item-section>
       </q-item>
+      <q-item>
+        <q-item-section>
+          <q-item-label>Trustee Policies</q-item-label>
+        </q-item-section>
+        <q-item-section avatar>
+          <q-icon color="primary" style="font-size: 1.5em" name="policy" />
+        </q-item-section>
+      </q-item>
       <q-item clickable @click="logout()">
         <q-item-section>
           <q-item-label>Logout</q-item-label>

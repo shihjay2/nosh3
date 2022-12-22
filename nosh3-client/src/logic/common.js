@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Case from 'case'
+import { reactive } from '@vue/reactivity'
 import * as jose from 'jose'
 import moment from 'moment'
 import objectPath from 'object-path'
@@ -825,10 +826,14 @@ export function common() {
   }
   const syncAll = async(online, couchdb, auth, pin) => {
     var resources = await fetchJSON('resources', online)
+    objectPath.set(syncState, 'total', resources.rows.length)
+    objectPath.set(syncState, 'complete', 0)
     for (var resource of resources.rows) {
       await sync(resource.resource, online, couchdb, auth, pin, false)
+      objectPath.set(syncState, 'complete', objectPath.get(syncState, 'complete') + 1)
     }
   }
+  const syncState = reactive({ total: 0, complete: 0 })
   const syncEmailToUser = async(resource, category, doc, couchdb, auth, pin, online) => {
     if (resource === 'patients' ||
         resource === 'practitioners' ||
@@ -959,6 +964,7 @@ export function common() {
     setOptions,
     sync,
     syncAll,
+    syncState,
     syncEmailToUser,
     thread,
     threadEarlier,

@@ -56,6 +56,7 @@
           </q-card-section>
           <q-card-section>
             <div class="text-subtitle2"><div v-html="state.progress"></div></div>
+            <div class="text-caption text-primary"><div v-html="state.progressNum"></div></div>
           </q-card-section>
         </q-card>
       </div>
@@ -63,7 +64,7 @@
   </q-layout>
 </template>
 <script>
-import { defineComponent, onMounted, nextTick, reactive, ref } from 'vue'
+import { defineComponent, onMounted, nextTick, reactive, ref, watchEffect } from 'vue'
 import { useQuasar } from 'quasar'
 import axios from 'axios'
 import { common } from '@/logic/common'
@@ -87,14 +88,16 @@ export default defineComponent({
     const $q = useQuasar()
     const auth = useAuthStore()
     const myInput = ref(null)
-    const { syncAll } = common()
+    const { syncAll, syncState } = common()
     const state = reactive({
       login: true,
       complete: false,
       form: {},
       sending: false,
       verifying: false,
+      count: {},
       progress: '',
+      progressNum: '',
       config: {},
       timeout: 30,
       schema: [
@@ -129,6 +132,11 @@ export default defineComponent({
         var a = myInput.value.find(b => b._.props.readonly !== true)
         a._.props.focus = true
       })
+    })
+    watchEffect(() => {
+      if (syncState.total > 0) {
+        state.progressNum = syncState.complete + ' out of ' + syncState.total + ' resources completed.'
+      }
     })
     const authenticate = async(body) => {
       if (auth_status !== null) {
@@ -316,6 +324,7 @@ export default defineComponent({
       resubmit,
       updateValue,
       myInput,
+      syncState,
       state
     }
   }
