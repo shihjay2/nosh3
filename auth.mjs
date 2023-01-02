@@ -81,7 +81,11 @@ async function authenticate(req, res) {
     if (req.body.auth === 'magic') {
       var email = req.body.email
     }
-    const db_users = new PouchDB((settings.couchdb_uri + '/users'), settings.couchdb_auth)
+    var prefix = ''
+    if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+      prefix = process.env.NOSH_PATIENT + '_'
+    }
+    const db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
     const result_users = await db_users.find({
       selector: {'email': {$eq: email}}
     })
@@ -190,7 +194,11 @@ async function gnapAuth(req, res) {
 }
 
 async function gnapVerify(req, res) {
-  var db = new PouchDB((settings.couchdb_uri + '/gnap'), settings.couchdb_auth)
+  var prefix = ''
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    prefix = process.env.NOSH_PATIENT + '_'
+  }
+  var db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'gnap', settings.couchdb_auth)
   var result = await db.find({
     selector: {_id: {"$gte": null}, nonce: {"$eq": req.query.state_id}}
   })
@@ -233,7 +241,7 @@ async function gnapVerify(req, res) {
           selector.push({'did': {$eq: did_id.url}, _id: {"$gte": null}})
           objectPath.set(nosh, 'did', did_id.url)
         }
-        var db_users = new PouchDB((settings.couchdb_uri + '/users'), settings.couchdb_auth)
+        var db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
         var result_users = await db_users.find({
           selector: {$or: selector}
         })
@@ -298,7 +306,7 @@ async function gnapVerify(req, res) {
           objectPath.set(payload, 'noshAPI', api)
           if (process.env.NOSH_ROLE == 'patient') {
             await sync('patients')
-            const db_patients = new PouchDB((settings.couchdb_uri + '/patients'), settings.couchdb_auth)
+            const db_patients = new PouchDB('patients')
             const result_patients = await db_patients.find({selector: {'isEncrypted': {$eq: true}}})
             if (result_patients.docs.length === 1) {
               if (result.docs[0].route === null) {
