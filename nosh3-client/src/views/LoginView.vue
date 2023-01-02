@@ -188,7 +188,7 @@ export default defineComponent({
       state.progress += '<br/>Setting user...'
       var prefix = ''
       if (state.payload._nosh.instance === 'digitalocean' && state.payload._noshType === 'pnosh') {
-        prefix = patient_id + '_'
+        prefix = state.payload._noshRedirect.replace('/app/chart/', '') + '_'
       }
       var users = new PouchDB(state.couchdb +  prefix + 'users', state.auth)
       var selector = {'email': {$eq: state.payload._nosh.email}, _id: {"$gte": null}}
