@@ -2,16 +2,17 @@ import axios from 'axios'
 import Case from 'case'
 import { reactive } from '@vue/reactivity'
 import * as jose from 'jose'
+import fastDiff from 'fast-diff'
 import moment from 'moment'
 import objectPath from 'object-path'
 import * as Papa from 'papaparse'
 import pluralize from 'pluralize'
 import PouchDB from 'pouchdb-browser'
-import * as PouchDBFind from 'pouchdb-find'
-import * as comdb from 'comdb'
+import PouchDBFind from 'pouchdb-find'
+import comdb from 'comdb'
 PouchDB.plugin(PouchDBFind)
 PouchDB.plugin(comdb)
-
+import {v4 as uuidv4} from 'uuid'
 import { useAuthStore } from '@/stores'
 
 export function common() {
@@ -39,6 +40,22 @@ export function common() {
       }
     }
     return schema
+  }
+  const eventAdd = async(event, online, patient_id, opts={doc_db: null, doc_id: null, diff: null}) => {
+    const auth_store = useAuthStore()
+    const db = new PouchDB('activities')
+    var doc = {
+      _id: 'nosh_' + uuidv4(),
+      datetime: moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
+      event: event,
+      user: auth_store.user.display,
+      user_id: auth_store.user.id,
+      doc_db: opts.doc_db,
+      doc_id: opts.doc_id,
+      diff: opts.diff
+    }
+    await db.put(doc)
+    await sync('activities', online, patient_id)
   }
   const fetchJSON = async(type, online) => {
     if (localStorage.getItem(type) === null) {
@@ -794,17 +811,44 @@ export function common() {
       }
     ]
   }
-  const sync = async(resource, online, couchdb, auth, pin, save, data) => {
-    var local = new PouchDB(resource)
+  const sync = async(resource, online, patient_id, save=false, data={}) => {
+    const auth_store = useAuthStore()
+    const couchdb = auth_store.couchdb
+    const auth = {fetch: (url, opts) => {
+      opts.headers.set('Authorization', 'Bearer ' + auth_store.jwt)
+      return PouchDB.fetch(url, opts)
+    }}
+    const pin = auth_store.pin
+    const local = new PouchDB(resource)
+    var prefix = ''
+    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
+      prefix = patient_id + '_'
+    }
     if (resource !== 'users' && online) {
-      await local.setPassword(pin, {name: couchdb + resource, opts: auth})
+      await local.setPassword(pin, {name: couchdb + prefix + resource, opts: auth})
     }
     if (save) {
-      await local.put(data)
-      const auth1 = useAuthStore()
-      if (resource === 'users' && data.id === auth1.user.id) {
-        auth1.update(data)
+      var prev_data = ''
+      var diff = null
+      try {
+        const prev = await local.get(data._id)
+        prev_data = JSON.stringify(prev)
+      } catch (e) {
+        console.log('New Document!')
       }
+      const result = await local.put(data)
+      if (prev_data !== '') {
+        diff = fastDiff(prev_data, JSON.stringify(data))
+      }
+      const opts = {
+        doc_db: resource,
+        doc_id: result.id,
+        diff: diff
+      }
+      if (resource === 'users' && data.id === auth_store.user.id) {
+        auth_store.update(data)
+      }
+      await eventAdd('Updated ' + pluralize.singular(resource.replace('_statements', '')), online, patient_id, opts)
     }
     if (online) {
       if (resource !== 'users') {
@@ -815,7 +859,7 @@ export function common() {
         await local.loadEncrypted()
         console.log('PouchDB sync complete for DB: ' + resource)
       } else {
-        var remote = new PouchDB(couchdb + resource, auth)
+        const remote = new PouchDB(couchdb + prefix + resource, auth)
         await local.sync(remote).on('complete', () => {
           console.log('PouchDB sync complete for DB: ' + resource)
         }).on('error', (err) => {
@@ -824,17 +868,17 @@ export function common() {
       }
     }
   }
-  const syncAll = async(online, couchdb, auth, pin) => {
+  const syncAll = async(online, patient_id) => {
     var resources = await fetchJSON('resources', online)
     objectPath.set(syncState, 'total', resources.rows.length)
     objectPath.set(syncState, 'complete', 0)
     for (var resource of resources.rows) {
-      await sync(resource.resource, online, couchdb, auth, pin, false)
+      await sync(resource.resource, online, patient_id, false)
       objectPath.set(syncState, 'complete', objectPath.get(syncState, 'complete') + 1)
     }
   }
   const syncState = reactive({ total: 0, complete: 0 })
-  const syncEmailToUser = async(resource, category, doc, couchdb, auth, pin, online) => {
+  const syncEmailToUser = async(resource, category, doc, patient_id, online) => {
     if (resource === 'patients' ||
         resource === 'practitioners' ||
         resource === 'related_persons') {
@@ -848,7 +892,7 @@ export function common() {
           if (a !== undefined) {
             if (result_users.docs[0].email !== a.value) {
               result_users.docs[0].email = a.value
-              await sync('users', online, couchdb, auth, pin, true, result_users.docs[0])
+              await sync('users', online, patient_id, true, result_users.docs[0])
             }
           }
         }
@@ -856,17 +900,17 @@ export function common() {
           var c = removeTags(doc.text.div)
           if (result_users.docs[0].display !== c) {
             result_users.docs[0].display = c
-            await sync('users', online, couchdb, auth, pin, true, result_users.docs[0])
+            await sync('users', online, patient_id, true, result_users.docs[0])
           }
         }
       }
     }
   }
-  const thread = async(doc, online, couchdb, auth, pin) => {
+  const thread = async(doc, online, patient_id) => {
     var arr = []
     arr.push(doc)
     arr = await threadEarlier(doc, arr)
-    arr = await threadLater(doc.id, arr, doc.status, online, couchdb, auth, pin)
+    arr = await threadLater(doc.id, arr, doc.status, online, patient_id)
     return arr
   }
   const threadEarlier = async(doc, arr) => {
@@ -878,7 +922,7 @@ export function common() {
     }
     return arr
   }
-  const threadLater = async(id, arr, status, online, couchdb, auth, pin) => {
+  const threadLater = async(id, arr, status, online, couchdb, auth, pin, patient_id) => {
     var localDB = new PouchDB('communications')
     if (status === 'completed') {
       var selector = {"inResponseTo.reference": {$eq: 'Communication/' + id }, status: {$eq: 'completed'}, _id: {"$gte": null}}
@@ -889,7 +933,7 @@ export function common() {
         for (var a in pending_result.docs) {
           if (moment(pending_result.docs[a].sent).isBefore()) {
             objectPath.set(pending_result, 'docs.' + a + '.status', 'in-progress')
-            await sync('communications', online, couchdb, auth, pin, true, pending_result.docs[a])
+            await sync('communications', online, patient_id, true, pending_result.docs[a])
           }
         }
       }
@@ -942,6 +986,7 @@ export function common() {
   }
   return {
     addSchemaOptions,
+    eventAdd,
     fetchJSON,
     fetchTXT,
     fhirDisplay,

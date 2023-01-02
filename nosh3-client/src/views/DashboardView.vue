@@ -70,6 +70,7 @@
             @open-schedule="openSchedule"
             @stop-inbox-timer="stopInboxTimer"
             :user="state.user"
+            :online="state.online"
           />
         </q-btn>
       </q-toolbar>
@@ -515,7 +516,7 @@ export default defineComponent({
       }}
       state.default_med_category = 'outpatient'
       state.couchdb = auth.db
-      await syncAll(state.online, state.couchdb, state.auth)
+      state.pin = auth.pin
       var userDB = new PouchDB('users')
       var user = await userDB.get(auth.user.id)
       var user_arr = user.reference.split('/')
@@ -535,7 +536,7 @@ export default defineComponent({
       }, 5000)
       syncTimer = setInterval(async() => {
         state.loading = true
-        await syncAll(state.online, state.couchdb, state.auth, state.pin)
+        await syncAll(state.online, state.patient)
         state.loading = false
       }, 1800000)
     })
@@ -787,12 +788,12 @@ export default defineComponent({
     const lockThread = async(id) => {
       var localDB = new PouchDB('communications')
       var a = await localDB.get(id)
-      arr = await thread(a, state.online, state.couchdb, state.auth, state.pin)
+      arr = await thread(a, state.online, state.patient)
       for (var b in arr) {
         objectPath.set(arr, b + '.status', 'completed')
         await localDB.put(arr[b])
       }
-      await sync('communications', state.online, state.couchdb, state.auth, state.pin, false)
+      await sync('communications', state.online, state.patient, false)
     }
     const openChart = (id) => {
       state.patientSearch = ''

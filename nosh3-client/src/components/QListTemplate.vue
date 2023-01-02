@@ -380,7 +380,7 @@ export default defineComponent({
   emits: ['care-plan', 'complete-task', 'composition', 'loading', 'lock-thread', 'new-prescription', 'open-bundle', 'open-chat', 'open-form', 'open-file', 'open-page', 'open-qr', 'reload-complete', 'remove-oidc', 'set-composition-section'],
   setup (props, { emit }) {
     const $q = useQuasar()
-    const { addSchemaOptions, fetchJSON, fhirModel, fhirReplace, groupItems, inbox, loadSelect, removeTags, sync } = common()
+    const { addSchemaOptions, eventAdd, fetchJSON, fhirModel, fhirReplace, groupItems, inbox, loadSelect, removeTags, sync } = common()
     const auth = useAuthStore()
     const state = reactive({
       auth: {},
@@ -551,7 +551,7 @@ export default defineComponent({
       if (props.resource === 'medication_statements') {
         objectPath.set(doc, 'informationSource.reference', props.user.reference)
       }
-      await sync(props.resource, props.online, props.couchdb, props.auth, props.pin, true, doc)
+      await sync(props.resource, props.online, props.patient, true, doc)
       await reloadList()
       $q.notify({
         message: 'The ' + pluralize.singular(props.resource.replace('_statements', '')) + ' has been marked as confirmed.',
@@ -604,16 +604,28 @@ export default defineComponent({
       emit('remove-oidc', index, props.resource, origin)
     }
     const deleteRow = async(doc, index) => {
-      await localDB.remove(doc)
+      const result = await localDB.remove(doc)
+      const opts = {
+        doc_db: props.resource,
+        doc_id: result.id,
+        diff: null
+      }
+      await eventAdd('Deleted ' + pluralize.singular(props.resource.replace('_statements', '')), props.online, props.patient, opts)
       if (props.resource === 'conditions') {
         if (state.rows[index].history) {
           for (var a in state.rows[index].history) {
             var b = localDB1.get(state.rows[index].history[a].id)
-            await localDB1.remove(b)
+            const result_b = await localDB1.remove(b)
+            const opts_b = {
+              doc_db: props.resource,
+              doc_id: result_b.id,
+              diff: null
+            }
+            await eventAdd('Deleted Care Plan', props.online, props.patient, opts_b)
           }
         }
       }
-      await sync(props.resource, props.online, props.couchdb, props.auth, props.pin, false)
+      await sync(props.resource, props.online, props.patient, false)
       await reloadList()
     }
     const importRow = async(doc, index, origin) => {
@@ -635,7 +647,7 @@ export default defineComponent({
           objectPath.set(doc, 'subject.reference', 'Patient/' + props.patient)
         }
       }
-      await sync(props.resource, props.online, props.couchdb, props.auth, props.pin, true, doc)
+      await sync(props.resource, props.online, props.patient, true, doc)
       emit('remove-oidc', index, props.resource, origin)
       await reloadList()
       $q.notify({
@@ -653,7 +665,7 @@ export default defineComponent({
       } else {
         objectPath.set(doc, 'status', 'stopped')
       }
-      await sync(props.resource, props.online, props.couchdb, props.auth, props.pin, true, doc)
+      await sync(props.resource, props.online, props.patient, true, doc)
       $q.notify({
         message: 'The ' + pluralize.singular(props.resource.replace('_statements', '')) + ' has been inactivated.',
         color: 'primary',
@@ -720,7 +732,7 @@ export default defineComponent({
           props.resource === 'related_persons') {
         await checkUser(state.rows)
       }
-      if (props.oidc.length > 0) {
+      if (props.oidc !== null && props.oidc.length > 0) {
         var a1 = state.rows.length
         for (var e in props.oidc) {
           if (objectPath.has(props, 'oidc.' + e + '.docs')) {
@@ -1233,7 +1245,7 @@ export default defineComponent({
       } else {
         objectPath.set(doc, 'status', 'active')
       }
-      await sync(props.resource, props.online, props.couchdb, props.auth, props.pin, true, doc)
+      await sync(props.resource, props.online, props.patient, true, doc)
       $q.notify({
         message: 'The ' + pluralize.singular(props.resource.replace('_statements', '')) + ' has been reactivated.',
         color: 'primary',
@@ -1250,7 +1262,7 @@ export default defineComponent({
     const removeActivity = async(doc, index1, index) => {
       doc.activity.splice(index1,1)
       state.rows[index].activity.splice(index1,1)
-      await sync('care_plans', props.online, props.couchdb, props.auth, props.pin, true, doc)
+      await sync('care_plans', props.online, props.patient, true, doc)
       var doc2 = await localDB1.get(doc.id)
       state.careplanDoc = doc2
       emit('care-plan', doc2)
@@ -1266,7 +1278,7 @@ export default defineComponent({
     const removeSection = async(doc, index1, index) => {
       doc.section.splice(index1,1)
       state.rows[index].section.splice(index1,1)
-      await sync('compositions', props.online, props.couchdb, props.auth, props.pin, true, doc)
+      await sync('compositions', props.online, props.patient, true, doc)
       var doc2 = await localDB2.get(doc.id)
       state.compositionDoc = doc2
       emit('composition', doc2)
@@ -1293,7 +1305,7 @@ export default defineComponent({
       } else {
         objectPath.set(doc1, 'activity.0.reference', Case.pascal(pluralize.singular(props.resource)) + '/' + doc.id)
       }
-      await sync('care_plans', props.online, props.couchdb, props.auth, props.pin, true, doc1)
+      await sync('care_plans', props.online, props.patient, true, doc1)
       var doc2 = await localDB1.get(state.careplanDoc.id)
       state.careplanDoc = doc2
       emit('care-plan', doc2)
@@ -1323,7 +1335,7 @@ export default defineComponent({
     }
     const setEncounter = async(doc) => {
       objectPath.set(doc, 'context.encounter.0.reference', 'Encounter/' + props.encounter)
-      await sync(props.resource, props.online, props.couchdb, props.auth, props.pin, true, doc)
+      await sync(props.resource, props.online, props.patient, true, doc)
       $q.notify({
         message: 'The ' + pluralize.singular(props.resource) + ' is now associated with the active encounter.',
         color: 'primary',
@@ -1430,7 +1442,7 @@ export default defineComponent({
       if (doc.resourceType === 'RelatedPerson') {
         objectPath.set(user, 'role', 'proxy')
       }
-      await sync('users', props.online, props.couchdb, props.auth, props.pin, true, user)
+      await sync('users', props.online, props.patient, true, user)
       // if (auth.auth === 'mojoauth') {
       //   var url = auth.returnUrl
       //   const body = {email: email.value, route: url}

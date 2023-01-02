@@ -1,109 +1,136 @@
 {
   "rows": [
     {
+      "resource": "activities",
+      "icon": "receipt_long",
+      "label": "Activities",
+      "patientField": "none"
+    },
+    {
       "resource": "allergy_intolerances",
       "icon": "warning",
-      "label": "Allergies"
+      "label": "Allergies",
+      "patientField": "patient"
     },
     {
       "resource": "appointments",
       "icon": "event",
-      "label": "Appointments"
+      "label": "Appointments",
+      "patientField": "participant"
     },
     {
       "resource": "bundles",
       "icon": "source",
-      "label": "Bundles"
+      "label": "Bundles",
+      "patientField": "subject"
     },
     {
       "resource": "care_plans",
       "icon": "next_plan",
-      "label": "Care Plans"
+      "label": "Care Plans",
+      "patientField": "subject"
     },
     {
       "resource": "claims",
       "icon": "request_quote",
-      "label": "Claims"
+      "label": "Claims",
+      "patientField": "patient"
     },
     {
       "resource": "communications",
       "icon": "chat",
-      "label": "Communications"
+      "label": "Communications",
+      "patientField": "subject"
     },
     {
       "resource": "compositions",
       "icon": "edit_note",
-      "label": "Compositions"
+      "label": "Compositions",
+      "patientField": "subject"
     },
     {
       "resource": "conditions",
       "icon": "list",
-      "label": "Conditions"
+      "label": "Conditions",
+      "patientField": "subject"
     },
     {
       "resource": "document_references",
       "icon": "description",
-      "label": "Documents"
+      "label": "Documents",
+      "patientField": "subject"
     },
     {
       "resource": "encounters",
       "icon": "event",
-      "label": "Encounters"
+      "label": "Encounters",
+      "patientField": "subject"
     },
     {
       "resource": "immunizations",
       "icon": "vaccines",
-      "label": "Immunizations"
+      "label": "Immunizations",
+      "patientField": "patient"
     },
     {
       "resource": "invoices",
       "icon": "receipt_long",
-      "label": "Invoices"
+      "label": "Invoices",
+      "patientField": "subject"
     },
     {
       "resource": "medication_requests",
       "icon": "medication",
-      "label": "Medication Requests"
+      "label": "Medication Requests",
+      "patientField": "subject"
     },
     {
       "resource": "medication_statements",
       "icon": "medication",
-      "label": "Medications"
+      "label": "Medications",
+      "patientField": "subject"
     },
     {
       "resource": "observations",
       "icon": "biotech",
-      "label": "Observations"
+      "label": "Observations",
+      "patientField": "subject"
     },
     {
       "resource": "patients",
       "icon": "person",
-      "label": "Patients"
+      "label": "Patients",
+      "patientField": "id"
     },
     {
       "resource": "practitioners",
       "icon": "masks",
-      "label": "Patients"
+      "label": "Patients",
+      "patientField": "none"
     },
     {
       "resource": "related_persons",
       "icon": "groups",
-      "label": "Related Persons"
+      "label": "Related Persons",
+      "patientField": "patient"
     },
     {
       "resource": "service_requests",
       "icon": "subscriptions",
-      "label": "Service Requests"
+      "label": "Service Requests",
+      "patientField": "subject"
     },
     {
       "resource": "tasks",
       "icon": "task",
-      "label": "Tasks"
+      "label": "Tasks",
+      "patientField": "for"
     },
     {
       "resource": "users",
       "icon": "group",
-      "label": "Users"
+      "label": "Users",
+      "patientField": "none"
     }
   ]
 }

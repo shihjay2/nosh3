@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.7'
 services:
   router:
     image: traefik:latest
@@ -7,6 +7,8 @@ services:
       - 80:80
       - 443:443 
     restart: always
+    depends_on:
+      - watchtower
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     command:
@@ -15,10 +17,14 @@ services:
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
+      - "com.centurylinklabs.watchtower.scope=nosh"
   couchdb:
     image: couchdb:latest
     container_name: couchdb
     restart: always
+    depends_on:
+      - router
+      - watchtower
     env_file:
       - ./.env
     environment:
@@ -33,23 +39,29 @@ services:
       - "traefik.http.routers.couchdb.rule=PathPrefix(`/couchdb`)"
       - "traefik.http.routers.couchdb.middlewares=couchdb-stripprefix"
       - "traefik.http.middlewares.couchdb-stripprefix.stripprefix.prefixes=/couchdb"
+      - "com.centurylinklabs.watchtower.scope=nosh"
   nosh:
     image: shihjay2/nosh3 
     container_name: nosh 
     links:
       - couchdb
     restart: always
+    depends_on:
+      - couchdb
+      - router
+      - watchtower
     env_file:
       - ./.env
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.nosh.loadbalancer.server.port=4000"
       - "traefik.http.routers.nosh.rule=PathPrefix(`/app`) || PathPrefix(`/fhir`) || PathPrefix(`/fetch`) || Path(`/oidc`) || PathPrefix(`/auth`) || Path(`/start`) || Path(`/ready`)"
+      - "com.centurylinklabs.watchtower.scope=nosh"
   watchtower:
     image: containrrr/watchtower
     container_name: watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: couchdb nosh
+    command: --interval 30 --scope nosh
     labels:
       - "traefik.enable=false"

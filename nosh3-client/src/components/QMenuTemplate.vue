@@ -43,10 +43,18 @@
       </q-item>
       <q-item>
         <q-item-section>
-          <q-item-label>Trustee Policies</q-item-label>
+          <q-item-label>Trustee<q-icon name="fas fa-registered" style="font-size: 0.6em; vertical-align: super;"/> Policies</q-item-label>
         </q-item-section>
         <q-item-section avatar>
           <q-icon color="primary" style="font-size: 1.5em" name="policy" />
+        </q-item-section>
+      </q-item>
+      <q-item v-if="state.patient !== ''" clickable @click="openActivity()">
+        <q-item-section>
+          <q-item-label>Activity</q-item-label>
+        </q-item-section>
+        <q-item-section avatar>
+          <q-icon color="primary" style="font-size: 1.5em" name="receipt_long" />
         </q-item-section>
       </q-item>
       <q-item clickable @click="logout()">
@@ -63,29 +71,41 @@
 
 <script>
 import { defineComponent, onMounted, reactive, watch } from 'vue'
+import { common } from '@/logic/common'
 import { useAuthStore } from '@/stores'
 
 export default defineComponent({
   name: 'QMenuTemplate',
   props: {
-    user: Object
+    user: Object,
+    online: Boolean,
+    patient: {
+      type: String,
+      default: ''
+    }
   },
-  emits: ['open-list', 'open-page', 'open-qr', 'open-schedule', 'stop-inbox-timer'],
+  emits: ['open-activities', 'open-list', 'open-page', 'open-qr', 'open-schedule', 'stop-inbox-timer'],
   setup (props, { emit }) {
     const auth = useAuthStore()
+    const { eventAdd } = common()
     const state = reactive({
-      user: {}
+      user: {},
+      patient: ''
     })
     onMounted(() => {
       state.user = props.user
+      state.patient = props.patient
     })
     watch(() => props.user, (newVal) => {
       if (newVal) {
         state.user = newVal
       }
     })
-    const logout = () => {
+    const logout = async() => {
       emit('stop-inbox-timer')
+      if (props.patient !== '') {
+        await eventAdd('Logged Out', props.online, props.patient)
+      }
       return auth.logout()
     }
     const open = (type, resource, category='all', id) => {
@@ -94,6 +114,9 @@ export default defineComponent({
       } else {
         emit('open-' + type, id, resource, category)
       }
+    }
+    const openActivity = () => {
+      emit('open-activities')
     }
     const openQR = () => {
       emit('open-qr', window.location.href)
@@ -104,6 +127,7 @@ export default defineComponent({
     return {
       logout,
       open,
+      openActivity,
       openQR,
       openSchedule,
       state

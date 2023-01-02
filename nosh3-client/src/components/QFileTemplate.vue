@@ -397,7 +397,7 @@ export default defineComponent({
       if (type == 'remove') {
         objectPath.del(state, 'fhir.' + state.category)
         state.fhir1 = JSON.stringify(state.fhir, null, "  ")
-        await sync(props.resource, props.online, props.couchdb, props.auth, props.pin, true, state.fhir)
+        await sync(props.resource, props.online, props.patient, true, state.fhir)
         var doc = await localDB.get(props.id)
         objectPath.set(state, 'fhir', doc)
         $q.notify({
@@ -537,7 +537,7 @@ export default defineComponent({
         state.image = {}
         state.data = data
         state.sending = true
-        await sync(props.resource, props.online, props.couchdb, props.auth, props.pin, true, state.fhir)
+        await sync(props.resource, props.online, props.patient, true, state.fhir)
         state.sending = false
         $q.notify({
           message: 'The image was saved with success!',

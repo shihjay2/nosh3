@@ -3,14 +3,14 @@ dotenv.config()
 import axios from 'axios'
 import Case from 'case'
 import express from 'express'
+import fastDiff from 'fast-diff'
 import moment from 'moment'
 import objectPath from 'object-path'
 import pluralize from 'pluralize'
 import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
 import { v4 as uuidv4 } from 'uuid'
-import { getKeys, gnapResourceRegistration, urlFix, verify, verifyJWT } from './core.mjs'
-
+import { eventAdd, getKeys, gnapResourceRegistration, sync, urlFix, verify, verifyJWT } from './core.mjs'
 
 const router = express.Router()
 const options = {
@@ -23,8 +23,6 @@ const options = {
 
 import PouchDBFind from 'pouchdb-find'
 PouchDB.plugin(PouchDBFind)
-import comdb from 'comdb'
-PouchDB.plugin(comdb)
 export default router
 
 // const jwksService = jose.createRemoteJWKSet(new URL(settings.jwks_uri))
@@ -46,11 +44,20 @@ router.get('/api/:type/:id/_history/:vid', verifyJWT, getSecuredResourceVersion)
 
 async function deleteSecuredResource(req, res) {
   const startTime = performance.now()
-  const db = new PouchDB(settings.couchdb_uri + '/' + Case.snake(pluralize(req.params.type)), settings.couchdb_auth)
-  await db.setPassword(process.env.COUCHDB_ENCRYPT_PIN)
+  await sync(Case.snake(pluralize(req.params.type)))
+  const db = new PouchDB(Case.snake(pluralize(req.params.type)))
+  // await db.setPassword(process.env.COUCHDB_ENCRYPT_PIN)
   try {
     const doc = await db.get(req.params.id)
-    await db.remove(doc)
+    const result = await db.remove(doc)
+    const opts = {
+      id: res.local.payload._nosh.id,
+      display: res.local.payload._nosh.display,
+      doc_db: Case.snake(pluralize(req.params.type)),
+      doc_id: result.id,
+      diff: null
+    }
+    await eventAdd('Deleted ' + pluralize.singular(req.params.type.replace('_statements', '')), opts)
     const endTime = performance.now()
     const diff = endTime - startTime
     const diagnostics = "Successfully deleted 1 resource(s) in " + diff + "ms"
@@ -71,9 +78,8 @@ async function deleteSecuredResource(req, res) {
 }
 
 async function getSecuredResource(req, res) {
+  await sync(Case.snake(pluralize(req.params.type)))
   const db = new PouchDB(Case.snake(pluralize(req.params.type)))
-  await db.setPassword(process.env.COUCHDB_ENCRYPT_PIN, {name: settings.couchdb_uri + Case.snake(pluralize(req.params.type)), opts: settings.couchdb_auth})
-  await db.loadEncrypted()
   try {
     const doc = await db.get(req.params.id, {revs_info: true})
     res.status(200).json(doc)
@@ -84,9 +90,8 @@ async function getSecuredResource(req, res) {
 }
 
 async function getSecuredResourceVersion(req, res) {
+  await sync(Case.snake(pluralize(req.params.type)))
   const db = new PouchDB(Case.snake(pluralize(req.params.type)))
-  await db.setPassword(process.env.COUCHDB_ENCRYPT_PIN, {name: settings.couchdb_uri + Case.snake(pluralize(req.params.type)), opts: settings.couchdb_auth})
-  await db.loadEncrypted()
   try {
     const doc = db.get(req.params.id, {rev: req.params.vid})
     res.status(200).json(doc)
@@ -118,10 +123,31 @@ async function getSecuredResourceVersion(req, res) {
 // }
 
 async function postSecuredResource(req, res) {
-  const db = new PouchDB(settings.couchdb_uri + '/' + Case.snake(pluralize(req.params.type)), settings.couchdb_auth)
-  await db.setPassword(process.env.COUCHDB_ENCRYPT_PIN)
+  await sync(Case.snake(pluralize(req.params.type)))
+  const db = new PouchDB(Case.snake(pluralize(req.params.type)))
   try {
+    var prev_data = ''
+    var diff = null
+    try {
+      const prev = await db.get(req.body._id)
+      prev_data = JSON.stringify(prev)
+    } catch (e) {
+      console.log('New Document')
+    }
     const body = await db.put(req.body)
+    if (prev_data !== '') {
+      var diff_result = fastDiff(JSON.stringify(req.bod), prev_data)
+      console.log(diff_result)
+      diff = diff_result.join(',')
+    }
+    const opts = {
+      id: res.local.payload._nosh.id,
+      display: res.local.payload._nosh.display,
+      doc_db: Case.snake(pluralize(req.params.type)),
+      doc_id: body.id,
+      diff: diff
+    }
+    await eventAdd('Updated ' + pluralize.singular(req.params.type.replace('_statements', '')), opts)
     res.set('ETag', 'W/"' + body._rev + '"')
     res.status(200).json(body)
   } catch(err) {
@@ -130,10 +156,31 @@ async function postSecuredResource(req, res) {
 }
 
 async function putSecuredResource(req, res) {
-  const db = new PouchDB(settings.couchdb_uri + '/' + Case.snake(pluralize(req.params.type)), settings.couchdb_auth)
-  await db.setPassword(process.env.COUCHDB_ENCRYPT_PIN)
+  await sync(Case.snake(pluralize(req.params.type)))
+  const db = new PouchDB(Case.snake(pluralize(req.params.type)))
   try {
+    var prev_data = ''
+    var diff = null
+    try {
+      const prev = await db.get(req.body._id)
+      prev_data = JSON.stringify(prev)
+    } catch (e) {
+      console.log('New Document')
+    }
     const body = await db.put(req.body)
+    if (prev_data !== '') {
+      var diff_result = fastDiff(JSON.stringify(req.bod), prev_data)
+      console.log(diff_result)
+      diff = diff_result.join(',')
+    }
+    const opts = {
+      id: res.local.payload._nosh.id,
+      display: res.local.payload._nosh.display,
+      doc_db: Case.snake(pluralize(req.params.type)),
+      doc_id: body.id,
+      diff: diff
+    }
+    await eventAdd('Updated ' + pluralize.singular(req.params.type.replace('_statements', '')), opts)
     res.set('ETag', 'W/"' + body._rev + '"')
     res.status(200).json(body)
   } catch(err) {
@@ -142,9 +189,8 @@ async function putSecuredResource(req, res) {
 }
 
 async function querySecuredResource(req, res) {
+  await sync(Case.snake(pluralize(req.params.type)))
   const db = new PouchDB(Case.snake(pluralize(req.params.type)))
-  await db.setPassword(process.env.COUCHDB_ENCRYPT_PIN, {name: settings.couchdb_uri + Case.snake(pluralize(req.params.type)), opts: settings.couchdb_auth})
-  await db.loadEncrypted()
   var entries = []
   var selector = []
   var reference_arr = ['subject','patient','encounter','asserter','requester','author']

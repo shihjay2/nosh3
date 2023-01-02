@@ -48,6 +48,7 @@ export default defineComponent({
     online: Boolean,
     couchdb: String,
     pin: String,
+    patient: String,
     data: Object,
     result: Object,
     sort: String,
@@ -95,8 +96,8 @@ export default defineComponent({
     const deleteRow = async(index) => {
       state.result[state.data.category].splice(index,1)
       state.rows.splice(index,1)
-      await sync(state.data.resource, props.online, props.couchdb, props.auth, props.pin, true, state.result)
-      syncEmailToUser(state.data.resource, state.data.category, state.result, props.couchdb, props.auth, props.pin, props.online)
+      await sync(state.data.resource, props.online, props.patient, true, state.result)
+      await syncEmailToUser(state.data.resource, state.data.category, state.result, props.patient, props.online)
     }
     const fhirMap = () => {
       for (var a in state.result[state.data.category]) {

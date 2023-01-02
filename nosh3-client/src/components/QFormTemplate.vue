@@ -514,7 +514,7 @@ export default defineComponent({
         if (objectPath.has(props, 'doc._id')) {
           var doc = props.doc
         } else {
-          await sync(props.resource, props.online, props.couchdb, props.auth, props.pin, false)
+          await sync(props.resource, props.online, props.patient, false)
           var doc = await localDB.get(props.id)
         }
         objectPath.set(state, 'fhir', doc)
@@ -1166,7 +1166,7 @@ export default defineComponent({
     }
     const saveForm = async() => {
       state.sending = true
-      await sync(props.resource, props.online, props.couchdb, props.auth, props.pin, true, state.fhir)
+      await sync(props.resource, props.online, props.patient, true, state.fhir)
       if (props.resource === 'compositions') {
         var doc0 = await localDB.get(state.fhir.id)
         emit('composition', doc0)
@@ -1194,7 +1194,7 @@ export default defineComponent({
           } else {
             objectPath.set(doc, 'activity.0.reference', Case.pascal(pluralize.singular(props.resource)) + '/' + state.fhir.id)
           }
-          await sync('care_plans', props.online, props.couchdb, props.auth, props.pin, true, doc)
+          await sync('care_plans', props.online, props.patient, true, doc)
           var doc1 = await localDB1.get(doc.id)
           emit('care-plan', doc1)
           $q.notify({
@@ -1214,7 +1214,7 @@ export default defineComponent({
           emit('set-composition-section', props.resource)
         }
       }
-      await syncEmailToUser(props.resource, props.category, state.fhir, props.couchdb, props.auth, props.pin, props.online)
+      await syncEmailToUser(props.resource, props.category, state.fhir, props.patient, props.online)
       state.formSaved = true
       state.sending = false
       emit('reload-drawer', props.resource)

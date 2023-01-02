@@ -5,15 +5,12 @@ import crypto from 'crypto'
 import express from 'express'
 import fs from 'fs'
 import * as jose from 'jose'
-
 // const Mailgun = require('mailgun.js')
-import moment from 'moment'
-
 import objectPath from 'object-path'
 import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
 import { v4 as uuidv4 } from 'uuid'
-import { createKeyPair, getKeys, getNPI, equals, urlFix, verify } from './core.mjs'
+import { createKeyPair, equals, getKeys, getNPI, sync, urlFix, verify } from './core.mjs'
 // const mailgun = new Mailgun(formData)
 // const mg = mailgun.client({username: 'api', key: process.env.MAILGUN_API_KEY})
 const router = express.Router()
@@ -26,10 +23,7 @@ const options = {
 }
 import PouchDBFind from 'pouchdb-find'
 PouchDB.plugin(PouchDBFind)
-import comdb from 'comdb'
-PouchDB.plugin(comdb)
 export default router
-
 // const jwksService = jose.createRemoteJWKSet(new URL(settings.jwks_uri))
 
 router.post('/verifyJWT', verifyJWTEndpoint)
@@ -96,9 +90,12 @@ async function authenticate(req, res) {
         "_auth": req.body,
         "_nosh": {
           "email": email,
+          "id": result_users.docs[0].id,
+          "display": result_users.docs[0].display,
           "did": '',
           "pin": process.env.COUCHDB_ENCRYPT_PIN,
-          "trustee": ''
+          "trustee": '',
+          "instance": process.env.INSTANCE
         },
         "_noshAuth": process.env.AUTH,
         "_noshAPI": {
@@ -118,11 +115,8 @@ async function authenticate(req, res) {
         objectPath.set(payload, '_nosh.trustee', urlFix(process.env.TRUSTEE_URL) )
       }
       if (process.env.NOSH_ROLE == 'patient') {
-        // const db_patients = new PouchDB(settings.couchdb_uri + '/patients', settings.couchdb_auth)
-        // const result_patients = await db_patients.find({selector: {'isEncrypted': {$eq: true}}})
+        await sync('patients')
         const db_patients = new PouchDB('patients')
-        await db_patients.setPassword(process.env.COUCHDB_ENCRYPT_PIN, {name: settings.couchdb_uri + '/patients', opts: settings.couchdb_auth})
-        await db_patients.loadEncrypted()
         const result_patients = await db_patients.find({selector: {_id: {$regex: '^nosh_*'}}})
         if (result_patients.docs.length > 0) {
           if (req.body.route === null) {
@@ -135,7 +129,7 @@ async function authenticate(req, res) {
           res.status(200).send(jwt)
         } else {
           // not installed yet
-          res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'install')
+          res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'start')
         }
       } else {
         if (req.body.route === null) {
@@ -266,7 +260,7 @@ async function gnapVerify(req, res) {
             if (objectPath.has(verify_results, 'payload._nosh')) {
               // there is an updated user object from wallet, so sync to this instance
               if (!equals(objectPath.get(verify_results, 'payload._nosh'), result_users.docs[0])) {
-                await db_users.put(bjectPath.get(verify_results, 'payload._nosh'))
+                await db_users.put(objectPath.get(verify_results, 'payload._nosh'))
               }
             } else {
               // update user as this is a new instance
@@ -275,18 +269,21 @@ async function gnapVerify(req, res) {
               objectPath.set(nosh, 'id', doc.id)
               objectPath.set(nosh, '_rev', doc._rev)
               await db_users.put(nosh)
-              objectPath.set(payload, '_nosh', nosh)
             }
+            objectPath.set(nosh, 'id', user_id)
+            objectPath.set(nosh, 'display', result_users.docs[0].display)
           } else {
             // add new user - authorization server has already granted
             var id = 'nosh_' + uuidv4()
             objectPath.set(nosh, '_id', id)
             objectPath.set(nosh, 'id', id)
             objectPath.set(nosh, 'templates', JSON.parse(fs.readFileSync('./assets/templates.json')))
+            objectPath.set(nosh, 'display', '') // grab display from authorization server - to be completed
             await db_users.put(nosh)
-            objectPath.set(payload, '_nosh', nosh)
-            objectPath.set(payload, '_noshAuth', process.env.AUTH)
+            objectPath.set(nosh, 'display', objectPath.get(nosh, 'display'))
           }
+          objectPath.set(payload, '_nosh', nosh)
+          objectPath.set(payload, '_noshAuth', process.env.AUTH)
           if (process.env.INSTANCE == 'docker') {
             objectPath.set(payload, '_noshDB', urlFix(req.protocol + '://' + req.hostname + '/couchdb'))
           } else {
@@ -300,6 +297,7 @@ async function gnapVerify(req, res) {
           }
           objectPath.set(payload, 'noshAPI', api)
           if (process.env.NOSH_ROLE == 'patient') {
+            await sync('patients')
             const db_patients = new PouchDB((settings.couchdb_uri + '/patients'), settings.couchdb_auth)
             const result_patients = await db_patients.find({selector: {'isEncrypted': {$eq: true}}})
             if (result_patients.docs.length === 1) {
@@ -311,7 +309,7 @@ async function gnapVerify(req, res) {
               objectPath.set(payload, '_noshType', 'pnosh')
             } else {
               // not installed yet
-              res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'install')
+              res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'start')
             }
           } else {
             if (result.docs[0].route === null) {

@@ -75,6 +75,7 @@ import objectPath from 'object-path'
 import PouchDB from 'pouchdb-browser'
 import PouchDBFind from 'pouchdb-find'
 import QInputWithValidation from '@/components/QInputWithValidation.vue'
+import { router } from '@/helpers'
 import { useAuthStore } from '@/stores'
 PouchDB.plugin(PouchDBFind)
 
@@ -88,7 +89,7 @@ export default defineComponent({
     const $q = useQuasar()
     const auth = useAuthStore()
     const myInput = ref(null)
-    const { syncAll, syncState } = common()
+    const { eventAdd, syncAll, syncState } = common()
     const state = reactive({
       login: true,
       complete: false,
@@ -193,10 +194,13 @@ export default defineComponent({
         selector: selector
       })
       if (result.docs.length > 0) {
+        auth.login(result.docs[0], state.payload, jwt)
+        await eventAdd('Logged in', true, state.patient)
         state.progress += '<br/>Syncing data...'
-        await syncAll(true, state.couchdb, state.auth, state.pin)
+        await syncAll(true, state.patient)
         state.progress += '<br/>Complete!'
-        return auth.login(result.docs[0], state.payload, jwt)
+        // redirect to previous url or default to home page
+        router.push(auth.returnUrl || state.payload._noshRedirect)
       } else {
        $q.notify({
           message: 'Unauthorized access!',

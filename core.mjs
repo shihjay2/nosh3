@@ -3,7 +3,9 @@ dotenv.config()
 import axios from 'axios'
 import fs from 'fs'
 import * as jose from 'jose'
+import moment from 'moment'
 import objectPath from 'object-path'
+import pluralize from 'pluralize'
 import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
 import { v4 as uuidv4 } from 'uuid'
@@ -17,6 +19,8 @@ const options = {
 }
 import PouchDBFind from 'pouchdb-find'
 PouchDB.plugin(PouchDBFind)
+import comdb from 'comdb'
+PouchDB.plugin(comdb)
 
 // const jwksService = jose.createRemoteJWKSet(new URL(settings.jwks_uri))
 
@@ -35,10 +39,15 @@ async function couchdbConfig(section, key, value) {
 
 async function couchdbDatabase() {
   const resources = JSON.parse(fs.readFileSync('./assets/resources.json'))
+  var prefix = ''
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    prefix = process.env.NOSH_PATIENT + '_'
+  }
   for (var resource of resources.rows) {
-    const db_resource = new PouchDB((settings.couchdb_uri + '/' + resource.resource), settings.couchdb_auth)
+    const db_resource = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource.resource, settings.couchdb_auth)
     await db_resource.info()
   }
+  await eventAdd('Chart Created', {id: 'system', display: 'System', doc_db: null, doc_id: null, diff: null})
 }
 
 async function couchdbInstall() {
@@ -103,26 +112,49 @@ async function createKeyPair(alg='RS256') {
   return doc
 }
 
+function equals (a, b) {
+  if (a === b) {
+    return true
+  }
+  if (a instanceof Date && b instanceof Date) {
+    return a.getTime() === b.getTime()
+  }
+  if (!a || !b || (typeof a !== 'object' && typeof b !== 'object')) {
+    return a === b
+  }
+  if (a.prototype !== b.prototype) {
+    return false
+  }
+  const keys = Object.keys(a)
+  if (keys.length !== Object.keys(b).length) {
+    return false
+  }
+  return keys.every(k => equals(a[k], b[k]))
+}
+
+async function eventAdd(event, opts) {
+  const db = new PouchDB('activities')
+  var doc = {
+    _id: 'nosh_' + uuidv4(),
+    datetime: moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
+    event: event,
+    user: opts.display,
+    user_id: opts.id,
+    doc_db: opts.doc_db,
+    doc_id: opts.doc_id,
+    diff: opts.diff
+  }
+  await db.put(doc)
+  await sync('activities')
+}
+
 async function getAllKeys() {
   var keys = []
   var publicKey = ''
-  var mojo_key = null
   var trustee_key = null
-  // MojoAuth key
-  var mojokey_opts = {headers: { 'X-API-Key': process.env.MOJOAUTH_API_KEY}}
-  try {
-    var mojo_key = await axios.get('https://api.mojoauth.com/token/jwks', mojokey_opts)
-  } catch (err) {
-    console.log(err)
-  }
-  if (mojo_key !== null && mojo_key.status === 200 && objectPath.has(mojo_key, 'data.keys')) {
-    for (var a in mojo_key.data.keys) {
-      keys.push(mojo_key.data.keys[a])
-    }
-  }
   // Trustee key
   try {
-    var trustee_key = await axios.get(urlFix(process.env.TRUSTEE_URL)+ 'jwks')
+    var trustee_key = await axios.get(urlFix(process.env.TRUSTEE_URL) + 'jwks')
   } catch (err) {
     console.log(err)
   }
@@ -167,6 +199,13 @@ function getNPI(vc) {
     }
   }
   return npi
+}
+
+async function getUser(email) {
+  await sync('users')
+  var db = new PouchDB('users')
+
+
 }
 
 async function gnapInstrospect(jwt, publicKey, location, action) {
@@ -233,32 +272,123 @@ async function gnapResourceRegistration(jwt, publicKey) {
   }
 }
 
-function equals (a, b) {
-  if (a === b) {
-    return true
-  }
-  if (a instanceof Date && b instanceof Date) {
-    return a.getTime() === b.getTime()
-  }
-  if (!a || !b || (typeof a !== 'object' && typeof b !== 'object')) {
-    return a === b
-  }
-  if (a.prototype !== b.prototype) {
-    return false
-  }
-  const keys = Object.keys(a)
-  if (keys.length !== Object.keys(b).length) {
-    return false
-  }
-  return keys.every(k => equals(a[k], b[k]))
-}
-
 async function sleep(seconds) {
   return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
 }
 
+async function sync(resource, save=false, data={}) {
+  const local = new PouchDB(resource)
+  var prefix = ''
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    prefix = process.env.NOSH_PATIENT + '_'
+  }
+  if (resource !== 'users') {
+    await local.setPassword(process.env.COUCHDB_ENCRYPT_PIN, {name: urlFix(settings.couchdb_uri) + prefix + resource, opts: settings.couchdb_auth})
+  }
+  if (save) {
+    const result = await local.put(data)
+    await eventAdd('Updated ' + pluralize.singular(resource.replace('_statements', '')), {id: 'system', display: 'System', doc_db: resource, doc_id: result.id, diff: null})
+  }
+  if (resource !== 'users') {
+    var info = await local.info()
+    if (info.doc_count > 0) {
+      await local.loadDecrypted()
+    }
+    await local.loadEncrypted()
+    console.log('PouchDB sync complete for DB: ' + resource)
+  } else {
+    var remote = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource, settings.couchdb_auth)
+    await local.sync(remote).on('complete', () => {
+      console.log('PouchDB sync complete for DB: ' + resource)
+    }).on('error', (err) => {
+      console.log(err)
+    })
+  }
+}
+
 function urlFix(url) {
   return url.replace(/\/?$/, '/')
+}
+
+async function userAdd() {
+  const db_users = new PouchDB((settings.couchdb_uri + '/users'), settings.couchdb_auth)
+  const id = 'nosh_' + uuidv4()
+  const user = {
+    display: process.env.NOSH_DISPLAY,
+    id: id,
+    _id: id,
+    email: process.env.NOSH_EMAIL,
+    role: process.env.NOSH_ROLE,
+    did: process.env.NOSH_DID
+  }
+  var id1 = 'nosh_' + uuidv4()
+  if (process.env.NOSH_PATIENT !== '') {
+    id1 = process.env.NOSH_PATIENT
+  }
+  if (user.role === 'patient') {
+    const patient = {
+      "_id": id1,
+      "resourceType": "Patient",
+      "id": id1,
+      "name": [
+        {
+          "family": process.env.NOSH_LASTNAME,
+          "given": [
+            process.env.NOSH_FIRSTNAME
+          ],
+          "use": "official",
+        }
+      ],
+      "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">" + process.env.NOSH_FIRSTNAME + ' ' + process.env.NOSH_LASTNAME + "</div>"
+      },
+      "birthDate": process.env.NOSH_BIRTHDAY,
+      "gender": process.env.NOSH_GENDER,
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race"
+        },
+        {
+          "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity"
+        },
+        {
+          "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex",
+          "valueCode": process.env.NOSH_BIRTHGENDER
+        }
+      ]
+    }
+    await sync('patients', true, patient)
+    objectPath.set(user, 'reference', 'Patient/' + id1)
+  }
+  if (user.role === 'provider') {
+    const practitioner = {
+      "_id": id1,
+      "resourceType": "Practitioner",
+      "id": id1,
+      "name": [
+        {
+          "family": process.env.NOSH_LASTNAME,
+          "use": "official",
+          "given": [
+            process.env.NOSH_FIRSTNAME
+          ],
+          "suffix": [
+            process.env.NOSH_SUFFIX
+          ]
+        }
+      ],
+      "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">" + process.env.NOSH_FIRSTNAME + ' ' + process.env.NOSH_LASTNAME + ', ' + process.env.NOSH_SUFFIX + "</div>"
+      }
+    }
+    await sync('practitioners', true, practitioner)
+    objectPath.set(user, 'reference', 'Practitioner/' + id1)
+    objectPath.set(user, 'templates', JSON.parse(fs.readFileSync('./assets/templates.json')))
+  }
+  await sync('users', true, user)
+  return 'OK'
 }
 
 async function verify(jwt) {
@@ -310,6 +440,7 @@ async function verifyJWT(req, res, next) {
         method = 'read'
       }
       if (gnapInstrospect(jwt, keys.publicKey, url, method)) {
+        res.local.payload = response.payload
         next()
       } else {
         res.status(401).send('Unauthorized')
@@ -320,4 +451,4 @@ async function verifyJWT(req, res, next) {
   }
 }
 
-export {couchdbDatabase, couchdbInstall, createKeyPair, getKeys, getNPI, gnapResourceRegistration, equals, sleep, urlFix, verify, verifyJWT}
+export { couchdbDatabase, couchdbInstall, createKeyPair, equals, eventAdd, getKeys, getNPI, getUser, gnapResourceRegistration, sleep, sync, urlFix, userAdd, verify, verifyJWT}

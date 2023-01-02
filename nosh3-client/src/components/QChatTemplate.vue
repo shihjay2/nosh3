@@ -196,7 +196,7 @@ export default defineComponent({
       var arr = []
       var chat = []
       var a = await localDB.get(props.id)
-      arr = await thread(a, props.online, props.couchdb, props.auth, props.pin)
+      arr = await thread(a, props.online, props.patient)
       for (var b in arr) {
         var chatItem = {}
         objectPath.set(chatItem, 'id', arr[b]._id)
@@ -278,7 +278,7 @@ export default defineComponent({
       if (objectPath.has(state, 'last.id')) {
         objectPath.set(fhir, 'inResponseTo.reference', 'Communication/' + props.id)
       }
-      await sync(props.resource, props.online, props.couchdb, props.auth, props.pin, true, fhir)
+      await sync(props.resource, props.online, props.patient, true, fhir)
       if (props.id == 'add') {
         emit('set-chat-id', id)
       } else {

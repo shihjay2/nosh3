@@ -368,7 +368,7 @@ export default defineComponent({
       var doc = await localDB.get(state.chosenEvent.id)
       objectPath.set(state, 'fhir', doc)
       objectPath.set(state, 'fhir.status', status)
-      await sync(props.resource, props.online, props.couchdb, props.auth, props.pin, true, state.fhir)
+      await sync(props.resource, props.online, props.patient, true, state.fhir)
       $q.notify({
         message: 'Appointment status changed to ' + Case.title(status) + '!',
         color: 'primary',

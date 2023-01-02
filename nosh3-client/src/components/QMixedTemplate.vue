@@ -68,7 +68,9 @@
 
 <script>
 import { defineComponent, reactive, ref, onMounted, watch } from 'vue'
+import { common } from '@/logic/common'
 import objectPath from 'object-path'
+import pluralize from 'pluralize'
 import PouchDB from 'pouchdb-browser'
 import PouchDBFind from 'pouchdb-find'
 PouchDB.plugin(PouchDBFind)
@@ -85,10 +87,12 @@ export default defineComponent({
     reload: Boolean,
     base: Object,
     schema: Object,
+    online: Boolean,
     options: Array
   },
   emits: ['open-form', 'open-graph', 'reload-complete'],
   setup (props, { emit }) {
+    const { eventAdd } = common()
     const state = reactive({
       base: {},
       schema: {},
@@ -216,7 +220,13 @@ export default defineComponent({
     const removeRow = async(id) => {
       state.cards[id].loading = true
       var doc = await localDB.get(state.selected[0].id)
-      await localDB.remove(doc)
+      const result = await localDB.remove(doc)
+      const opts = {
+        doc_db: props.resource,
+        doc_id: result.id,
+        diff: null
+      }
+      await eventAdd('Deleted ' + pluralize.singular(props.resource.replace('_statements', '')), props.online, props.patient, opts)
       await query()
     }
     const removeTags = (str) => {

@@ -11,18 +11,15 @@ import objectPath from 'object-path'
 import path from 'path'
 import {fileURLToPath} from 'url'
 import PouchDB from 'pouchdb'
-import { v4 as uuidv4 } from 'uuid'
-import * as PouchDBFind from 'pouchdb-find'
+import PouchDBFind from 'pouchdb-find'
 PouchDB.plugin(PouchDBFind)
-import * as comdb from 'comdb'
-PouchDB.plugin(comdb)
 
 import fhir from './fhir.mjs'
 import auth from './auth.mjs'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const client = __dirname + '/nosh3-client/dist/'
-import { couchdbDatabase, couchdbInstall, urlFix, verifyJWT } from './core.mjs'
+import { couchdbDatabase, couchdbInstall, urlFix, userAdd, verifyJWT } from './core.mjs'
 import settings from './settings.mjs'
 const app = express()
 
@@ -82,7 +79,12 @@ app.post('/oidc', async(req, res) => {
 app.get('/start', async(req, res) => {
   var opts = JSON.parse(JSON.stringify(settings.couchdb_auth))
   objectPath.set(opts, 'skip_setup', true)
-  const check = new PouchDB((settings.couchdb_uri + '/users'), opts)
+  const check = new PouchDB(settings.couchdb_uri + '/_users', opts)
+  var prefix = ''
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    prefix = process.env.NOSH_PATIENT + '_'
+  }
+  const db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
   var info = await check.info()
   if (objectPath.has(info, 'error')) {
     if (info.error == 'not_found') {
@@ -101,103 +103,26 @@ app.get('/start', async(req, res) => {
         const users = new PouchDB((settings.couchdb_uri + '/_users'), settings.couchdb_auth)
         await users.info()
         await couchdbDatabase()
-        const db_users = new PouchDB((settings.couchdb_uri + '/users'), settings.couchdb_auth)
         var result = await db_users.find({selector: {_id: {$regex: "^nosh_*"}}})
         if (result.docs.length === 0) {
-          const id = 'nosh_' + uuidv4()
-          var user = {
-            display: process.env.NOSH_DISPLAY,
-            id: id,
-            _id: id,
-            email: process.env.NOSH_EMAIL,
-            role: process.env.NOSH_ROLE,
-            did: process.env.NOSH_DID
-          }
-          const id1 = 'nosh_' + uuidv4()
-          if (user.role === 'patient') {
-            var patient = {
-              "_id": id1,
-              "resourceType": "Patient",
-              "id": id1,
-              "name": [
-                {
-                  "family": process.env.NOSH_LASTNAME,
-                  "given": [
-                    process.env.NOSH_FIRSTNAME
-                  ],
-                  "use": "official",
-                }
-              ],
-              "text": {
-                "status": "generated",
-                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">" + process.env.NOSH_FIRSTNAME + ' ' + process.env.NOSH_LASTNAME + "</div>"
-              },
-              "birthDate": process.env.NOSH_BIRTHDAY,
-              "gender": process.env.NOSH_GENDER,
-              "extension": [
-                {
-                  "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race"
-                },
-                {
-                  "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity"
-                },
-                {
-                  "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex",
-                  "valueCode": process.env.NOSH_BIRTHGENDER
-                }
-              ]
-            }
-            const db1 = new PouchDB('patients')
-            await db1.setPassword(process.env.COUCHDB_ENCRYPT_PIN, {name: settings.couchdb_uri + '/patients', opts: settings.couchdb_auth})
-            await db1.put(patient)
-            objectPath.set(user, 'reference', 'Patient/' + id1)
-          }
-          if (user.role === 'provider') {
-            var practitioner = {
-              "_id": id1,
-              "resourceType": "Practitioner",
-              "id": id1,
-              "name": [
-                {
-                  "family": process.env.NOSH_LASTNAME,
-                  "use": "official",
-                  "given": [
-                    process.env.NOSH_FIRSTNAME
-                  ],
-                  "suffix": [
-                    process.env.NOSH_SUFFIX
-                  ]
-                }
-              ],
-              "text": {
-                "status": "generated",
-                "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">" + process.env.NOSH_FIRSTNAME + ' ' + process.env.NOSH_LASTNAME + ', ' + process.env.NOSH_SUFFIX + "</div>"
-              }
-            }
-            const db2 = new PouchDB('practitioners')
-            await db2.setPassword(process.env.COUCHDB_ENCRYPT_PIN, {name: settings.couchdb_uri + '/practitioners', opts: settings.couchdb_auth})
-            await db2.put(practitioner)
-            objectPath.set(user, 'reference', 'Practitioner/' + id1)
-            objectPath.set(user, 'templates', JSON.parse(fs.readFileSync('./assets/templates.json')))
-          }
-          await db_users.put(user)
-          if (user.role === 'patient') {
-            console.log('redirect')
-            res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/chart/' + id1)
-          }
-          if (user.role === 'provider') {
-            res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/dashboard')
-          }
-        } else {
-          res.status(200).send('NOSH is already installed')
+          await userAdd()
         }
+        res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/login')
       } else {
         res.status(200).send('CouchDB is not restarting for some reason; try again')
       }
     } else {
-      console.log('something is wrong')
+      console.log('something is wrong with your CouchDB install.')
     }
   } else {
+    if (process.env.INSTANCE == 'digitalocean') {
+      var result1 = await db_users.find({selector: {_id: {$regex: "^nosh_*"}}})
+      if (result1.docs.length === 0) {
+        console.log('DigitalOcean instance, new Patient NOSH install')
+        await couchdbDatabase()
+        await userAdd()
+      }
+    }
     res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/login')
   }
 })

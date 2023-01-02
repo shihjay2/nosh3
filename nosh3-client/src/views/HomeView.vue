@@ -63,12 +63,15 @@
         <q-btn flat dense round icon="more_vert">
           <QMenuTemplate
             v-if="state.showMenu"
+            @open-activities="openActivities"
             @open-list="openList"
             @open-page="openPage"
             @open-qr="openQR"
             @open-schedule="openSchedule"
             @stop-inbox-timer="stopInboxTimer"
             :user="state.user"
+            :online="state.online"
+            :patient="state.patient"
           />
         </q-btn>
       </q-toolbar>
@@ -444,11 +447,17 @@
       :online="state.online"
     />
   </q-dialog>
+  <q-dialog v-model="state.showActivity" persistent position="top" full-width full-height seamless>
+    <ActivitiesDialog
+      v-if="state.showActivity"
+      @close-activities="closeActivities"
+    />
+  </q-dialog>
   <q-dialog v-model="state.qr">
     <q-card>
       <div class="q-pa-md q-gutter-md">
         <q-card>
-          <VueQrious :value="state.qr_value"></VueQrious>
+          <VueQrious :value="state.qr_value" size="200"></VueQrious>
         </q-card>
       </div>
     </q-card>
@@ -464,6 +473,7 @@ import { defineComponent, nextTick, onMounted, reactive, ref, watch } from 'vue'
 import { useQuasar } from 'quasar'
 import { common } from '@/logic/common'
 import Case from 'case'
+import ActivitiesDialog from '@/components/ActivitiesDialog.vue'
 import CareOpportunities from '@/components/CareOpportunities.vue'
 import Fuse from 'fuse.js'
 import ImmunizationSchedule from '@/components/ImmunizationSchedule.vue'
@@ -495,6 +505,7 @@ PouchDB.plugin(PouchDBFind)
 export default defineComponent({
   name: 'HomeView',
   components: {
+    ActivitiesDialog,
     CareOpportunities,
     ImmunizationSchedule,
     OIDC,
@@ -560,6 +571,7 @@ export default defineComponent({
       showTimeline: false,
       showTimelineParent: false,
       showCareOpportunities:false,
+      showActivity: false,
       searchResults: false,
       searchTerm: '',
       timeline_filter: [],
@@ -686,6 +698,7 @@ export default defineComponent({
       const couchdb = localStorage.getItem('couchdb')
       const api = JSON.parse(localStorage.getItem('api'))
       const pin = localStorage.getItem('pin')
+      const instance = localStorage.getItem('instance')
       const trustee = localStorage.getItem('trustee')
       const oidc_data = JSON.parse(localStorage.getItem('oidc_data'))
       window.localStorage.clear()
@@ -696,6 +709,7 @@ export default defineComponent({
       localStorage.setItem('couchdb', couchdb)
       localStorage.setItem('api', JSON.stringify(api))
       localStorage.setItem('pin', pin)
+      localStorage.setItem('instance', instance)
       localStorage.setItem('trustee', trustee)
       localStorage.setItem('oidc_data', JSON.stringify(oidc_data))
       window.location.reload()
@@ -768,7 +782,7 @@ export default defineComponent({
       }, 5000)
       syncTimer = setInterval(async() => {
         state.loading = true
-        await syncAll(state.online, state.couchdb, state.auth, state.pin)
+        await syncAll(state.online, state.patient)
         state.loading = false
       }, 1800000)
     })
@@ -799,7 +813,7 @@ export default defineComponent({
     })
     watch(() => state.user, async(newVal) => {
       if (newVal) {
-        await sync('users', state.online, state.couchdb, state.auth, state.pin, true, newVal)
+        await sync('users', state.online, state.patient, true, newVal)
       }
     })
     const addendumEncounter = async() => {
@@ -831,6 +845,9 @@ export default defineComponent({
     }
     const checkOnline = (e) => {
       state.online = e
+    }
+    const closeActivities = () => {
+      state.showActivity = false
     }
     const closeAll = () => {
       state.showBundle = false
@@ -1039,7 +1056,7 @@ export default defineComponent({
       var localDB = new PouchDB('tasks')
       var a = await localDB.get(id)
       objectPath.set(a, 'status', 'completed')
-      await sync('tasks', state.online, state.couchdb, state.auth, state.pin, true, a)
+      await sync('tasks', state.online, state.patient, true, a)
       $q.notify({
         message: 'Task marked as completed!',
         color: 'primary',
@@ -1171,19 +1188,44 @@ export default defineComponent({
           timeline.push(timelineItem)
         }
       }
+      const activitiesDb = new PouchDB('activities')
+      var activitiesResult = await activitiesDb.find({
+        selector: {event: {$eq: 'Chart Created' }, _id: {"$gte": null}}
+      })
+      const timelineIntro = {
+        id: 'intro',
+        title: 'New Chart Created',
+        subtitle: 'Timeline Starts Here',
+        icon: 'celebration',
+        date: null,
+        content: [
+          {key: 'Name', value: state.patientName},
+          {key: 'Date of Birth', value: state.patientDOB},
+          {key: 'Gender', value: state.patientGender}
+        ],
+        style: 'p'
+      }
+      if (activitiesResult.docs.length > 0) {
+        objectPath.set(timelineIntro, 'subtitle', moment(activitiesResult.docs[0].datetime).format("YYYY-MM-DD"))
+        objectPath.set(timelineIntro, 'date', new Date(activitiesResult.docs[0].datetime))
+        timeline.push(timelineIntro)
+      }
       timeline.sort((c, d) => d.date - c.date)
+      if (activitiesResult.docs.length == 0) {
+        timeline.push(timelineIntro)
+      }
       state.timeline = timeline
       state.loading = false
     }
     const lockThread = async(id) => {
       var localDB = new PouchDB('communications')
       var a = await localDB.get(id)
-      arr = await thread(a, state.online, state.couchdb, state.auth, state.pin)
+      arr = await thread(a, state.online, state.patient)
       for (var b in arr) {
         objectPath.set(arr, b + '.status', 'completed')
         await localDB.put(arr[b])
       }
-      await sync('communications', state.online, state.couchdb, state.auth, state.pin, false)
+      await sync('communications', state.online, state.patient, false)
       $q.notify({
         message: 'Message thread is now locked!',
         color: 'primary',
@@ -1195,6 +1237,9 @@ export default defineComponent({
     const newPrescription = () => {
       state.new_medication_request = true
       openForm('add', 'medication_statements', 'all')
+    }
+    const openActivities = async() => {
+      state.showActivity = true
     }
     const openBundle = async(resource, doc, history) => {
       closeAll()
@@ -1491,13 +1536,15 @@ export default defineComponent({
       state.showSchedule = true
     }
     const openTimelineEntry = async(id) => {
-      var b = state.timeline.find(a => a.id == id)
-      if (b.resource === 'encounters') {
-        if (objectPath.has(b, 'bundle')) {
-          openBundle('bundles', b.bundle, b.bundle_history)
-        } else {
-          await loadResource(b.resource, 'all')
-          openPage(id, b.resource, 'subjective')
+      if (id !== 'intro') {
+        var b = state.timeline.find(a => a.id == id)
+        if (b.resource === 'encounters') {
+          if (objectPath.has(b, 'bundle')) {
+            openBundle('bundles', b.bundle, b.bundle_history)
+          } else {
+            await loadResource(b.resource, 'all')
+            openPage(id, b.resource, 'subjective')
+          }
         }
       }
     }
@@ -1611,7 +1658,7 @@ export default defineComponent({
           doc.section.splice(g,1)
         }
         doc.section.push(section)
-        await sync('compositions', state.online, state.couchdb, state.auth, state.pin, true, doc)
+        await sync('compositions', state.online, state.patient, true, doc)
         var h = new PouchDB('compositions')
         var doc1 = await h.get(doc.id)
         state.compositionDoc = doc1
@@ -1767,7 +1814,7 @@ export default defineComponent({
           }
           var doc = results.docs[a]
           objectPath.set(doc, item.model, base.finalStatus)
-          await sync(resource1, state.online, state.couchdb, state.auth, state.pin, true, doc)
+          await sync(resource1, state.online, state.patient, true, doc)
           objectPath.set(entry, 'resource', doc)
           entries.push(entry)
         }
@@ -1778,7 +1825,7 @@ export default defineComponent({
         entries.push({resource: results1})
       }
       objectPath.set(bundleDoc, 'entry', entries)
-      await sync('bundles', state.online, state.couchdb, state.auth, state.pin, true, bundleDoc)
+      await sync('bundles', state.online, state.couchdb, state.auth, state.pin, state.patient, true, bundleDoc)
       // remove from unsigned
       var h = state.user.unsigned.map(g => g.id).indexOf(state.encounter)
       if (h !== -1) {
@@ -1813,7 +1860,7 @@ export default defineComponent({
       composition_doc.date = moment().format('YYYY-MM-DD HH:mm')
       composition_doc.confidentiality = 'N'
       composition_doc.status = 'final'
-      await sync('compositions', state.online, state.couchdb, state.auth, state.pin, true, composition_doc)
+      await sync('compositions', state.online, state.patient, true, composition_doc)
       var composition_entry = {}
       objectPath.set(composition_entry, 'resource', composition_doc)
       entries.push(composition_entry)
@@ -1851,7 +1898,7 @@ export default defineComponent({
         entries.push({resource: results1})
       }
       objectPath.set(bundleDoc, 'entry', entries)
-      await sync('bundles', state.online, state.couchdb, state.auth, state.pin, true, bundleDoc)
+      await sync('bundles', state.online, state.patient, true, bundleDoc)
       $q.notify({
         message: 'Service Request signed!',
         color: 'primary',
@@ -1918,7 +1965,7 @@ export default defineComponent({
       composition_doc.date = moment().format('YYYY-MM-DD HH:mm')
       composition_doc.confidentiality = 'N'
       composition_doc.status = 'final'
-      await sync('compositions', state.online, state.couchdb, state.auth, state.pin, true, composition_doc)
+      await sync('compositions', state.online, state.patient, true, composition_doc)
       var composition_entry = {}
       objectPath.set(composition_entry, 'resource', composition_doc)
       entries.push(composition_entry)
@@ -1956,7 +2003,7 @@ export default defineComponent({
         entries.push({resource: results1})
       }
       objectPath.set(bundleDoc, 'entry', entries)
-      await sync('bundles', state.online, state.couchdb, state.auth, state.pin, true, bundleDoc)
+      await sync('bundles', state.online, state.patient, true, bundleDoc)
       $q.notify({
         message: 'Prescription signed!',
         color: 'primary',
@@ -2048,6 +2095,7 @@ export default defineComponent({
       addPatient,
       addSchemaOptions,
       checkOnline,
+      closeActivities,
       closeAll,
       closeCareOpportunities,
       closeContainer,
@@ -2070,6 +2118,7 @@ export default defineComponent({
       loadTimeline,
       lockThread,
       newPrescription,
+      openActivities,
       openBundle,
       openCareOpportunities,
       openChart,
