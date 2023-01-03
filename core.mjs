@@ -189,7 +189,7 @@ async function getKeys() {
   const db = new PouchDB((settings.couchdb_uri + '/keys'), settings.couchdb_auth)
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     var result = await db.find({
-      selector: {patient: {"$eq": process.env.NOSH_PATIENT, _id: {"$gte": null}, privateKey: {"$gte": null}}}
+      selector: {patient: {"$eq": process.env.NOSH_PATIENT}, _id: {"$gte": null}, privateKey: {"$gte": null}}
     })
   } else {
     var result = await db.find({
