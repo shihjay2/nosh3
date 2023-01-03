@@ -402,8 +402,12 @@ async function createJWT(sub, aud, iss, payload=null) {
   } else {
     var payload_final = payload_vc
   }
+  var header = { alg: 'RS256' }
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    header = { alg: 'RS256', kid: process.env.NOSH_PATIENT}
+  }
   const jwt = await new jose.SignJWT(payload_final)
-    .setProtectedHeader({ alg: 'RS256' })
+    .setProtectedHeader(header)
     .setIssuedAt()
     .setIssuer(iss)
     .setAudience(aud)

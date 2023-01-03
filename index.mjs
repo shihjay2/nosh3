@@ -19,7 +19,7 @@ import auth from './auth.mjs'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const client = __dirname + '/nosh3-client/dist/'
-import { couchdbDatabase, couchdbInstall, urlFix, userAdd, verifyJWT } from './core.mjs'
+import { couchdbConfig, couchdbDatabase, couchdbInstall, createKeyPair, urlFix, userAdd, verifyJWT } from './core.mjs'
 import settings from './settings.mjs'
 const app = express()
 
@@ -119,6 +119,14 @@ app.get('/start', async(req, res) => {
       var result1 = await db_users.find({selector: {_id: {$regex: "^nosh_*"}}})
       if (result1.docs.length === 0) {
         console.log('DigitalOcean instance, new Patient NOSH install')
+        var keys = await getKeys()
+        if (keys.length === 0) {
+          var pair = await createKeyPair()
+          keys.push(pair)
+        }
+        const key = await jose.importJWK(keys[0].publicKey)
+        const pem = await jose.exportSPKI(key)
+        await couchdbConfig('jwt_keys', 'rsa:' + process.env.NOSH_PATIENT, pem)
         await couchdbDatabase()
         await userAdd()
       }
