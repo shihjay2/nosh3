@@ -19,7 +19,7 @@ import auth from './auth.mjs'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const client = __dirname + '/nosh3-client/dist/'
-import { couchdbConfig, couchdbDatabase, couchdbInstall, createKeyPair, urlFix, userAdd, verifyJWT } from './core.mjs'
+import { couchdbConfig, couchdbDatabase, couchdbInstall, createKeyPair, getKeys, urlFix, userAdd, verifyJWT } from './core.mjs'
 import settings from './settings.mjs'
 const app = express()
 
