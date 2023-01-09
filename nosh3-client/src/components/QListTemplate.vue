@@ -1443,14 +1443,6 @@ export default defineComponent({
         objectPath.set(user, 'role', 'proxy')
       }
       await sync('users', props.online, props.patient, true, user)
-      // if (auth.auth === 'mojoauth') {
-      //   var url = auth.returnUrl
-      //   const body = {email: email.value, route: url}
-      //   const a = await axios.post(window.location.origin + '/auth/magicAuth', body)
-      //   if (a.data) {
-      //     message += "  Magic Link has been sent to the user's email address."
-      //   }
-      // }
       $q.notify({
         message: message,
         color: 'primary',

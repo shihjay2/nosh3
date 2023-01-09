@@ -100,7 +100,6 @@ import jsqry from 'jsqry'
 import objectPath from 'object-path'
 import QDosage from './QDosage.vue'
 import QVaccine from './QVaccine.vue'
-import { UMLSJS } from 'umlsjs'
 import { useAuthStore } from '@/stores'
 
 export default defineComponent({
@@ -340,9 +339,8 @@ export default defineComponent({
       }
     }
     const getConcept = async(searchTerm) => {
-      await getST()
       var params = {
-        ticket: state.st,
+        apiKey: state.apiKey,
         string: searchTerm,
         sabs: 'SNOMEDCT_US',
         returnIdType: 'code'
@@ -521,10 +519,6 @@ export default defineComponent({
         }
         state.options.push(j)
       }
-    }
-    const getST = async() => {
-      const token = new UMLSJS.UMLSToken(state.apiKey)
-      state.st = await token.getSt()
     }
     const getVaccine = (searchTerm) => {
       const term = String(searchTerm).toLowerCase()
@@ -734,7 +728,6 @@ export default defineComponent({
       getLaboratory,
       getLOINC,
       getMedication,
-      getST,
       getVaccine,
       onLazyLoad,
       openTree,

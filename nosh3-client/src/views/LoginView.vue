@@ -50,6 +50,49 @@
             </q-card-actions>
           </Form>
         </q-card>
+        <q-card v-if="state.showPIN">
+          <q-card-section>
+            <div class="text-h6 text-center">Enter PIN</div>
+          </q-card-section>
+          <q-separator />
+          <Form @submit="onSubmitPIN">
+            <q-card-section>
+              <div v-for="field1 in state.schemaPin" :key="field1.id" class="q-pa-sm">
+                <QInputWithValidation
+                  ref="myInput"
+                  :name="field1.id"
+                  :label="field1.label"
+                  :type="field1.type"
+                  :model="state.formPin[field1.id]"
+                  @update-model="updateValue1"
+                  :placeholder="field1.placeholder"
+                  :rules="field1.rules"
+                  focus="false"
+                />
+              </div>
+            </q-card-section>
+            <q-card-section>
+              <q-list>
+                <q-item>
+                  <q-item-section avatar>
+                    <q-avatar color="red" text-color="white" icon="safety_check" />
+                  </q-item-section>
+                  <q-item-section>
+                    The database requires a 4-digit PIN (only known by the patient) for encryption/decryption.
+                  </q-item-section>
+                </q-item>
+                <q-item>
+                  <q-item-section>
+                    If you are not the patient, please come back later until the login prompt appears.
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-card-section>
+            <q-card-actions align="right">
+              <q-btn push icon="pin" color="primary" label="Enter PIN" type="submit" />
+            </q-card-actions>
+          </Form>
+        </q-card>
         <q-card v-if="state.verifying">
           <q-card-section>
             <div class="text-body1"><q-circular-progress indeterminate size="1em" color="light-blue" class="q-ma-md" />Verifying User...</div>
@@ -62,6 +105,10 @@
       </div>
     </q-page-container>
   </q-layout>
+  <q-dialog v-model="state.loading">
+    <q-spinner color="white" size="md" thickness="5"/>
+    <q-tooltip :offset="[0, 8]">Loading...</q-tooltip>
+  </q-dialog>
 </template>
 <script>
 import { defineComponent, onMounted, nextTick, reactive, ref, watchEffect } from 'vue'
@@ -91,9 +138,10 @@ export default defineComponent({
     const myInput = ref(null)
     const { eventAdd, syncAll, syncState } = common()
     const state = reactive({
-      login: true,
+      login: false,
       complete: false,
       form: {},
+      formPin: {},
       sending: false,
       verifying: false,
       count: {},
@@ -111,13 +159,25 @@ export default defineComponent({
           "rules": "required"
         }
       ],
+      schemaPin: [
+        {
+          "id": "pin",
+          "label": "4-digit PIN",
+          "model": "pin",
+          "type": "password",
+          "mask": "####",
+          "rules": "required"
+        }
+      ],
       payload: null,
       protectedHeader: null,
       patient: '',
       // db
       auth: {},
       couchdb: '',
-      pin: ''
+      pin: '',
+      showPIN: false,
+      loading: true
     })
     var auth_status = null
     var magic = null
@@ -129,6 +189,42 @@ export default defineComponent({
       state.config = config.data
       if (state.config.auth === 'magic') {
         magic = new Magic(state.config.key)
+      }
+      if (state.config.instance === 'digitalocean' && state.config.type === 'pnosh') {
+        if (auth.returnUrl !== null) {
+          state.patient = auth.returnUrl.replace('/app/chart/', '')
+          var check = await axios.post(window.location.origin + '/auth/pinCheck', {patient: state.patient})
+          if (check.data.response === 'Error') {
+            state.loading = false
+            state.showPIN = true
+          }
+          if (check.data.response === 'Forbidden') {
+            state.login = false
+            $q.notify({
+              message: 'Invalid URL',
+              color: 'red',
+              actions: [
+                { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+              ]
+            })
+          }
+          if (check.data.response === 'OK') {
+            state.loading = false
+            state.login = true
+          }
+        } else {
+          state.loading = false
+          $q.notify({
+            message: 'Invalid URL',
+            color: 'red',
+            actions: [
+              { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+            ]
+          })
+        }
+      } else {
+        state.loading = false
+        state.login = true
       }
       nextTick(() => {
         var a = myInput.value.find(b => b._.props.readonly !== true)
@@ -230,57 +326,6 @@ export default defineComponent({
       const { email } = values
       var url = auth.returnUrl
       state.timeout = 30
-      if (state.config.auth === 'mojoauth') {
-        const mojoauth_opts = {
-          headers: {'X-API-KEY': state.config.key},
-          params: {
-            language: "eng",
-            source: [{ type: "email", feature: "magiclink" }]
-          }
-        }
-        const mojoauth_body = {email: email}
-        state.sending = true
-        try {
-          var mojoauth_result = await axios.post('https://api.mojoauth.com/users/magiclink', mojoauth_body, mojoauth_opts)
-        } catch (e) {
-          state.sending = false
-          $q.notify({
-            message: 'Error connecting to Mojoauth!  Please try again later!',
-            color: 'red',
-            actions: [
-              { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
-            ]
-          })
-        }
-        const mojoauth_opts1 = {
-          headers: {'X-API-KEY': state.config.key},
-          params: {
-            state_id: mojoauth_result.data.state_id
-          }
-        }
-        auth_status = setInterval(async() => {
-          if (state.timeout < 0) {
-            clearInterval(auth_status)
-          } else {
-            state.timeout -= 1
-          }
-        }, 1000)
-        do {
-          const b = await axios.get('https://api.mojoauth.com/users/status', mojoauth_opts1)
-          if (b.data.authenticated) {
-            const mojoauth_opts2 = {
-              headers: {'X-API-KEY': state.config.key, "Authorization": 'Bearer ' + b.data.oauth.access_token}
-            }
-            const c = await axios.post('https://api.mojoauth.com/token/verify', null, mojoauth_opts2)
-            if (c.data.isValid) {
-              objectPath.set(b, 'data.auth', 'mojoauth')
-              objectPath.set(b, 'data.route', url)
-              authenticate(b.data)
-            }
-          }
-        }
-        while (state.timeout > 0 && auth_status !== null)
-      }
       if (state.config.auth === 'magic') {
         state.sending = true
         var data = {}
@@ -307,9 +352,26 @@ export default defineComponent({
           data = await magic.user.getMetadata()
           objectPath.set(data, 'auth', 'magic')
           objectPath.set(data, 'route', url)
+          objectPath.set(data, 'patient', state.patient)
           authenticate(data)
         }
         while (state.timeout > 0 && auth_status !== null)
+      }
+    }
+    const onSubmitPIN = async(values) => {
+      const { pin } = values
+      const result = await axios.post(window.location.origin + '/auth/pinSet', {pin: pin, patient: state.patient})
+      if (result.data.response === 'OK') {
+        state.showPIN = false
+        state.login = true
+      } else {
+        $q.notify({
+          message: result.data.response,
+          color: 'red',
+          actions: [
+            { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+          ]
+        })
       }
     }
     const resubmit = () => {
@@ -327,12 +389,17 @@ export default defineComponent({
     const updateValue = (val, field, type) => {
       state.form[field] = val
     }
+    const updateValue1 = (val, field, type) => {
+      state.formPin[field] = val
+    }
     return {
       authenticate,
       gnapSubmit,
       onSubmit,
+      onSubmitPIN,
       resubmit,
       updateValue,
+      updateValue1,
       myInput,
       syncState,
       state

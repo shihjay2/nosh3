@@ -6,7 +6,6 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import fs from 'fs'
 import isReachable from 'is-reachable'
-import * as jose from 'jose'
 import morgan from 'morgan'
 import objectPath from 'object-path'
 import path from 'path'
@@ -78,14 +77,12 @@ app.post('/oidc', async(req, res) => {
 })
 
 app.get('/start', async(req, res) => {
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    res.status(200).send('Invalid URL for this instance')
+  }
   var opts = JSON.parse(JSON.stringify(settings.couchdb_auth))
   objectPath.set(opts, 'skip_setup', true)
-  const check = new PouchDB(settings.couchdb_uri + '/_users', opts)
-  var prefix = ''
-  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
-    prefix = process.env.NOSH_PATIENT + '_'
-  }
-  const db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
+  const check = new PouchDB(urlFix(settings.couchdb_uri) + '_users', opts)
   var info = await check.info()
   if (objectPath.has(info, 'error')) {
     if (info.error == 'not_found') {
@@ -101,9 +98,10 @@ app.get('/start', async(req, res) => {
         }
       }
       if (b) {
-        const users = new PouchDB((settings.couchdb_uri + '/_users'), settings.couchdb_auth)
+        const users = new PouchDB(urlFix(settings.couchdb_uri) + '_users', settings.couchdb_auth)
         await users.info()
         await couchdbDatabase()
+        const db_users = new PouchDB(urlFix(settings.couchdb_uri) + 'users', settings.couchdb_auth)
         var result = await db_users.find({selector: {_id: {$regex: "^nosh_*"}}})
         if (result.docs.length === 0) {
           await userAdd()
@@ -116,22 +114,6 @@ app.get('/start', async(req, res) => {
       console.log('something is wrong with your CouchDB install.')
     }
   } else {
-    if (process.env.INSTANCE == 'digitalocean') {
-      var result1 = await db_users.find({selector: {_id: {$regex: "^nosh_*"}}})
-      if (result1.docs.length === 0) {
-        console.log('DigitalOcean instance, new Patient NOSH install')
-        var keys = await getKeys()
-        if (keys.length === 0) {
-          var pair = await createKeyPair()
-          keys.push(pair)
-        }
-        const key = await jose.importJWK(keys[0].publicKey)
-        const pem = await jose.exportSPKI(key)
-        await couchdbConfig('jwt_keys', 'rsa:' + process.env.NOSH_PATIENT, pem)
-        await couchdbDatabase()
-        await userAdd()
-      }
-    }
     res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/login')
   }
 })

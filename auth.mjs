@@ -4,13 +4,14 @@ import axios from 'axios'
 import crypto from 'crypto'
 import express from 'express'
 import fs from 'fs'
+import isReachable from 'is-reachable'
 import * as jose from 'jose'
 // const Mailgun = require('mailgun.js')
 import objectPath from 'object-path'
 import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
 import { v4 as uuidv4 } from 'uuid'
-import { createKeyPair, equals, getKeys, getNPI, sync, urlFix, verify } from './core.mjs'
+import { couchdbDatabase, couchdbInstall, createKeyPair, equals, getKeys, getNPI, getPIN, sync, urlFix, verify, verifyPIN } from './core.mjs'
 // const mailgun = new Mailgun(formData)
 // const mg = mailgun.client({username: 'api', key: process.env.MAILGUN_API_KEY})
 const router = express.Router()
@@ -29,13 +30,19 @@ export default router
 router.post('/verifyJWT', verifyJWTEndpoint)
 router.get('/jwks', jwks) // endpoint to share public key
 router.get('/config', config)
-router.post('/save', save)
+// router.post('/save', save)
 router.post('/authenticate', authenticate)
 router.get('/exportJWT', exportJWT)
+router.post('/addPatient', addPatient)
+
 router.get('/addUser', addUser)
 
 router.post('/gnapAuth', gnapAuth)
 router.get('/gnapVerify', gnapVerify)
+
+router.post('/pinCheck', pinCheck)
+router.post('/pinClear', pinClear)
+router.post('/pinSet', pinSet)
 
 router.post('/mail', mail)
 router.get('/test', test)
@@ -45,9 +52,6 @@ function config(req, res) {
     var response = {
       auth: process.env.AUTH
     }
-    if (process.env.AUTH === 'mojoauth') {
-      objectPath.set(response, 'key', process.env.MOJOAUTH_API_KEY)
-    }
     if (process.env.AUTH === 'magic') {
       objectPath.set(response, 'key', process.env.MAGIC_API_KEY)
     }
@@ -55,35 +59,41 @@ function config(req, res) {
       objectPath.set(response, 'key', process.env.GNAP_API_KEY)
       objectPath.set(response, 'url', process.env.TRUSTEE_URL)
     }
+    objectPath.set(response, 'instance', process.env.INSTANCE)
+    if (process.env.NOSH_ROLE === 'patient') {
+      objectPath.set(response, 'type', 'pnosh')
+    } else {
+      objectPath.set(response, 'type', 'mdnosh')
+    }
     res.status(200).json(response)
   } else {
     res.status(401).send('Unauthorized')
   }
 }
 
-async function save(req, res) {
-  if (req.get('referer') === req.protocol + '://' + req.hostname + '/app/login') {
-    const db = new PouchDB((settings.couchdb_uri + '/magic'), settings.couchdb_auth)
-    var doc = req.body
-    objectPath.set(doc, '_id', 'nosh_' + uuidv4())
-    await db.put(doc)
-    res.status(200).json(doc)
-  } else {
-    res.status(401).send('Unauthorized')
-  }
-}
+// async function save(req, res) {
+//   if (req.get('referer') === req.protocol + '://' + req.hostname + '/app/login') {
+//     const db = new PouchDB((settings.couchdb_uri + '/magic'), settings.couchdb_auth)
+//     var doc = req.body
+//     objectPath.set(doc, '_id', 'nosh_' + uuidv4())
+//     await db.put(doc)
+//     res.status(200).json(doc)
+//   } else {
+//     res.status(401).send('Unauthorized')
+//   }
+// }
 
 async function authenticate(req, res) {
   if (req.get('referer') === req.protocol + '://' + req.hostname + '/app/login') {
-    if (req.body.auth === 'mojoauth') {
-      var email = req.body.user.email
-    }
     if (req.body.auth === 'magic') {
       var email = req.body.email
     }
+    var pin = process.env.COUCHDB_ENCRYPT_PIN
     var prefix = ''
     if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
-      prefix = process.env.NOSH_PATIENT + '_'
+      // prefix = process.env.NOSH_PATIENT + '_'
+      prefix = req.body.patient + '_'
+      pin = await getPIN(req.body.patient)
     }
     const db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
     const result_users = await db_users.find({
@@ -119,8 +129,8 @@ async function authenticate(req, res) {
         objectPath.set(payload, '_nosh.trustee', urlFix(process.env.TRUSTEE_URL) )
       }
       if (process.env.NOSH_ROLE == 'patient') {
-        await sync('patients')
-        const db_patients = new PouchDB('patients')
+        await sync('patients', req.body.patient)
+        const db_patients = new PouchDB(prefix + 'patients')
         const result_patients = await db_patients.find({selector: {_id: {$regex: '^nosh_*'}}})
         if (result_patients.docs.length > 0) {
           if (req.body.route === null) {
@@ -129,7 +139,8 @@ async function authenticate(req, res) {
             objectPath.set(payload, '_noshRedirect', req.body.route)
           }
           objectPath.set(payload, '_noshType', 'pnosh')
-          const jwt = await createJWT('mikey', urlFix(req.protocol + '://' + req.hostname + '/'), urlFix(req.protocol + '://' + req.hostname + '/'), payload)
+          objectPath.set(payload, '_nosh.patient', result_patients.docs[0]._id)
+          const jwt = await createJWT(result_users.docs[0].id, urlFix(req.protocol + '://' + req.hostname + '/'), urlFix(req.protocol + '://' + req.hostname + '/'), payload)
           res.status(200).send(jwt)
         } else {
           // not installed yet
@@ -142,7 +153,7 @@ async function authenticate(req, res) {
           objectPath.set(payload, '_noshRedirect', req.body.route)
         }
         objectPath.set(payload, '_noshType', 'mdnosh')
-        const jwt = await createJWT('mikey', urlFix(req.protocol + '://' + req.hostname + '/'), urlFix(req.protocol + '://' + req.hostname + '/'), payload)
+        const jwt = await createJWT(result_users.docs[0].id, urlFix(req.protocol + '://' + req.hostname + '/'), urlFix(req.protocol + '://' + req.hostname + '/'), payload)
         res.status(200).send(jwt)
       }
     } else {
@@ -184,21 +195,18 @@ async function gnapAuth(req, res) {
     res.status(401).json(e)
   }
   var doc = response.data
-  var db = new PouchDB((settings.couchdb_uri + '/gnap'), settings.couchdb_auth)
+  var db = new PouchDB(urlFix(settings.couchdb_uri) + 'gnap', settings.couchdb_auth)
   objectPath.set(doc, '_id', 'nosh_' + uuidv4())
   objectPath.set(doc, 'nonce', objectPath.get(body, 'interact.finish.nonce'))
   objectPath.set(doc, 'route', req.body.route)
+  objectPath.set(doc, 'patient', req.body.patient)
   await db.put(doc)
   res.status(200).json(doc)
   // res.redirect(doc.interact.redirect)
 }
 
 async function gnapVerify(req, res) {
-  var prefix = ''
-  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
-    prefix = process.env.NOSH_PATIENT + '_'
-  }
-  var db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'gnap', settings.couchdb_auth)
+  var db = new PouchDB(urlFix(settings.couchdb_uri) + 'gnap', settings.couchdb_auth)
   var result = await db.find({
     selector: {_id: {"$gte": null}, nonce: {"$eq": req.query.state_id}}
   })
@@ -219,6 +227,11 @@ async function gnapVerify(req, res) {
     var body = {"interact_ref": req.query.interact_ref}
     try {
       var response = await axios.post(result.docs[index].continue.uri, body)
+      var prefix = ''
+      const patient_id = result.docs[index].patient
+      if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+        prefix = patient_id + '_'
+      }
       db.remove(result.docs[index])
       // subject must be in the response
       if (objectPath.has(response.data, 'subject')) {
@@ -305,8 +318,8 @@ async function gnapVerify(req, res) {
           }
           objectPath.set(payload, 'noshAPI', api)
           if (process.env.NOSH_ROLE == 'patient') {
-            await sync('patients')
-            const db_patients = new PouchDB('patients')
+            await sync('patients', patient_id)
+            const db_patients = new PouchDB(prefix + 'patients')
             const result_patients = await db_patients.find({selector: {'isEncrypted': {$eq: true}}})
             if (result_patients.docs.length === 1) {
               if (result.docs[0].route === null) {
@@ -315,6 +328,7 @@ async function gnapVerify(req, res) {
                 objectPath.set(payload, '_noshRedirect', result.docs[0].route)
               }
               objectPath.set(payload, '_noshType', 'pnosh')
+              objectPath.set(payload, '_nosh.patient', patient_id)
             } else {
               // not installed yet
               res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'start')
@@ -403,9 +417,6 @@ async function createJWT(sub, aud, iss, payload=null) {
     var payload_final = payload_vc
   }
   var header = { alg: 'RS256' }
-  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
-    header = { alg: 'RS256', kid: process.env.NOSH_PATIENT}
-  }
   const jwt = await new jose.SignJWT(payload_final)
     .setProtectedHeader(header)
     .setIssuedAt()
@@ -431,7 +442,6 @@ async function exportJWT(req, res) {
   const key = await jose.importJWK(keys[0].publicKey)
   const pem = await jose.exportSPKI(key)
   res.status(200).json(pem)
-  
 }
 
 async function jwks(req, res) {
@@ -447,7 +457,165 @@ async function jwks(req, res) {
   })
 }
 
+async function addPatient(req, res, next) {
+  var opts = JSON.parse(JSON.stringify(settings.couchdb_auth))
+  objectPath.set(opts, 'skip_setup', true)
+  const check = new PouchDB(urlFix(settings.couchdb_uri) + '_users', opts)
+  var info = await check.info()
+  if (objectPath.has(info, 'error')) {
+    if (info.error == 'not_found') {
+      await couchdbInstall()
+    }
+  }
+  var b = false
+  var c = 0
+  while (!b && c < 40) {
+    b = await isReachable(settings.couchdb_uri)
+    if (b || c === 39) {
+      break
+    } else {
+      c++
+    }
+  }
+  if (b) {
+    const id = 'nosh_' + uuidv4()
+    const user = {
+      display: req.body.user.display,
+      id: id,
+      _id: id,
+      email: req.body.user.email,
+      role: 'patient',
+      did: req.body.user.did
+    }
+    var patient_id = 'nosh_' + uuidv4()
+    const patient = {
+      "_id": patient_id,
+      "resourceType": "Patient",
+      "id": patient_id,
+      "name": [
+        {
+          "family": req.body.patient.lastname,
+          "given": [
+            req.body.patient.firstname
+          ],
+          "use": "official",
+        }
+      ],
+      "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">" + req.body.patient.firstname + ' ' + req.body.patient.lastname + "</div>"
+      },
+      "birthDate": req.body.patient.dob,
+      "gender": req.body.patient.gender,
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race"
+        },
+        {
+          "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity"
+        },
+        {
+          "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex",
+          "valueCode": req.body.patient.birthgender
+        }
+      ]
+    }
+    await sync('patients', patient_id, true, patient)
+    objectPath.set(user, 'reference', 'Patient/' + patient_id)
+    await sync('users', patient_id, true, user)
+    await couchdbDatabase(patient_id)
+    const salt = crypto.randomBytes(16).toString('hex')
+    const hash = crypto.pbkdf2Sync(req.body.pin, salt, 1000, 64, 'sha512').toString('hex')
+    const pin = {
+      _id: patient_id,
+      hash: hash,
+      salt: salt
+    }
+    const pin1 = {
+      _id: patient_id,
+      pin: req.body.pin
+    }
+    const hashpins = new PouchDB('hashpins')
+    await hashpins.put(pin)
+    const pindb = new PouchDB('pins')
+    await pindb.put(pin1)
+    const remote_hashpins = new PouchDB(urlFix(settings.couchdb_uri) + 'hashpins', settings.couchdb_auth)
+    await hashpins.sync(remote_hashpins).on('complete', () => {
+      console.log('PouchDB sync complete for DB: hashpins')
+    }).on('error', (err) => {
+      console.log(err)
+    })
+    res.status(200).json({
+      patient_id: patient_id,
+      url: urlFix(req.protocol + '://' + req.hostname + '/') + 'app/chart/' + patient_id
+    })
+  } else {
+    res.status(200).json({response: 'Error connecting to database'})
+  }
+}
 
+async function pinCheck (req, res, next) {
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    const db = new PouchDB('_pins', {skip_setup: true})
+    var info = await db.info()
+    await sync('patients', req.body.patient)
+    const db_patient = new PouchDB(req.body.patient + '_patients', {skip_setup: true})
+    var info_patient = await db_patient.info()
+    if (objectPath.has(info_patient, 'error')) {
+      res.status(200).json({ response: 'Forbidden', message: 'No patient exists'})
+    }
+    if (objectPath.has(info, 'error')) {
+      res.status(200).json({ response: 'Error', message: 'No PIN database exists'})
+    } else {
+      const result = await db.find({
+        selector: {'_id': {$eq: req.body.patient}}
+      })
+      if (result.docs.length > 0) {
+        res.status(200).json({ response: 'OK'})
+      } else {
+        res.status(200).json({ response: 'Error', message: 'PIN required' })
+      }
+    }
+  } else {
+    res.status(200).json({ response: 'OK', message: 'PIN check not required'})
+  }
+}
+
+async function pinClear (req, res, next) {
+  const db = new PouchDB('_pins', {skip_setup: true})
+  var info = await db.info()
+  if (!objectPath.has(info, 'error')) {
+    if (req.body.patient == 'all') {
+      await db.destroy()
+      res.status(200).json({ response: 'OK', message: 'Cleared PIN database'})
+    } else {
+      try {
+        const result = await db.get(req.body.patient)
+        await db.remove(result)
+        res.status(200).json({ response: 'OK', message: 'Cleared PIN entry'})
+      } catch (e) {
+        res.status(200).json({ response: 'OK', message: 'No PIN entry found'})
+      }
+    }
+  } else {
+    res.status(200).json({ response: 'OK', message: 'No PIN database exists'})
+  }
+}
+
+async function pinSet (req, res, next) {
+  const pindb = new PouchDB('_pins')
+  const test = await verifyPIN(req.body.pin, req.body.patient)
+  if (test) {
+    const pin1 = {
+      _id: req.body.patient,
+      pin: req.body.pin
+    }
+    await pindb.put(pin1)
+    res.status(200).json({ response: 'OK' })
+  } else {
+    res.status(200).json({ response: 'Incorrect PIN' })
+  }
+}
 
 async function addUser (req, res, next) {
   var name = 'elmo'

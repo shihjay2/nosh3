@@ -41,7 +41,7 @@
           <q-icon color="primary" style="font-size: 1.5em" name="qr_code_2" />
         </q-item-section>
       </q-item>
-      <q-item>
+      <q-item v-if="state.type == 'pnosh'">
         <q-item-section>
           <q-item-label>Trustee<q-icon name="fas fa-registered" style="font-size: 0.6em; vertical-align: super;"/> Policies</q-item-label>
         </q-item-section>
@@ -82,7 +82,8 @@ export default defineComponent({
     patient: {
       type: String,
       default: ''
-    }
+    },
+    type: String
   },
   emits: ['open-activities', 'open-list', 'open-page', 'open-qr', 'open-schedule', 'stop-inbox-timer'],
   setup (props, { emit }) {
@@ -95,6 +96,7 @@ export default defineComponent({
     onMounted(() => {
       state.user = props.user
       state.patient = props.patient
+      state.type = props.type
     })
     watch(() => props.user, (newVal) => {
       if (newVal) {

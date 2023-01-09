@@ -857,8 +857,7 @@ export function common() {
           await local.loadDecrypted()
         }
         await local.loadEncrypted()
-        var all = await local.allDocs()
-        console.log('PouchDB encrypted sync complete for DB: ' + resource + ' with ' + all.total_rows + 'docs')
+        console.log('PouchDB encrypted sync complete for DB: ' + resource )
       } else {
         const remote = new PouchDB(couchdb + prefix + resource, auth)
         await local.sync(remote).on('complete', () => {

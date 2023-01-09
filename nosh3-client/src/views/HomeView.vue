@@ -28,7 +28,7 @@
             </q-btn>
           </template>
         </v-offline>
-        <q-btn-dropdown v-if="state.type == 'mdnosh'" ref="patientSearchBtn" flat dense rounded no-icon-animation="false" dropdown-icon="search" @show="focusInput">
+        <q-btn-dropdown v-if="state.type == 'mdnosh' && state.user.role !== 'patient'" ref="patientSearchBtn" flat dense rounded no-icon-animation="false" dropdown-icon="search" @show="focusInput">
           <q-tooltip>Patient Search</q-tooltip>
           <q-list>
             <q-item>
@@ -72,6 +72,7 @@
             :user="state.user"
             :online="state.online"
             :patient="state.patient"
+            :type="state.type"
           />
         </q-btn>
       </q-toolbar>
@@ -275,6 +276,7 @@
         :provider="state.provider"
         :service_types="state.serviceTypes"
         :service_categories="state.serviceCategories"
+        :type="state.type"
       />
       <QBundleTemplate
         v-if="state.showBundle"

@@ -253,6 +253,7 @@
         :provider="state.provider"
         :service_types="state.serviceTypes"
         :service_categories="state.serviceCategories"
+        :type="state.type"
       />
       <QChatTemplate
         v-if="state.showChat"

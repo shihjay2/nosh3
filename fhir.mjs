@@ -43,9 +43,13 @@ router.delete('/api/:type/:id', verifyJWT, deleteSecuredResource) //delete
 router.get('/api/:type/:id/_history/:vid', verifyJWT, getSecuredResourceVersion) //vread
 
 async function deleteSecuredResource(req, res) {
+  var prefix = ''
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    prefix = res.local.payload._nosh.patient + '_'
+  }
   const startTime = performance.now()
   await sync(Case.snake(pluralize(req.params.type)))
-  const db = new PouchDB(Case.snake(pluralize(req.params.type)))
+  const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
   // await db.setPassword(process.env.COUCHDB_ENCRYPT_PIN)
   try {
     const doc = await db.get(req.params.id)
@@ -57,7 +61,7 @@ async function deleteSecuredResource(req, res) {
       doc_id: result.id,
       diff: null
     }
-    await eventAdd('Deleted ' + pluralize.singular(req.params.type.replace('_statements', '')), opts)
+    await eventAdd('Deleted ' + pluralize.singular(req.params.type.replace('_statements', '')), opts, res.local.payload._nosh.patient)
     const endTime = performance.now()
     const diff = endTime - startTime
     const diagnostics = "Successfully deleted 1 resource(s) in " + diff + "ms"
@@ -78,8 +82,12 @@ async function deleteSecuredResource(req, res) {
 }
 
 async function getSecuredResource(req, res) {
+  var prefix = ''
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    prefix = res.local.payload._nosh.patient + '_'
+  }
   await sync(Case.snake(pluralize(req.params.type)))
-  const db = new PouchDB(Case.snake(pluralize(req.params.type)))
+  const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
   try {
     const doc = await db.get(req.params.id, {revs_info: true})
     res.status(200).json(doc)
@@ -90,8 +98,12 @@ async function getSecuredResource(req, res) {
 }
 
 async function getSecuredResourceVersion(req, res) {
+  var prefix = ''
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    prefix = res.local.payload._nosh.patient + '_'
+  }
   await sync(Case.snake(pluralize(req.params.type)))
-  const db = new PouchDB(Case.snake(pluralize(req.params.type)))
+  const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
   try {
     const doc = db.get(req.params.id, {rev: req.params.vid})
     res.status(200).json(doc)
@@ -123,8 +135,12 @@ async function getSecuredResourceVersion(req, res) {
 // }
 
 async function postSecuredResource(req, res) {
+  var prefix = ''
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    prefix = res.local.payload._nosh.patient + '_'
+  }
   await sync(Case.snake(pluralize(req.params.type)))
-  const db = new PouchDB(Case.snake(pluralize(req.params.type)))
+  const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
   try {
     var prev_data = ''
     var diff = null
@@ -147,7 +163,7 @@ async function postSecuredResource(req, res) {
       doc_id: body.id,
       diff: diff
     }
-    await eventAdd('Updated ' + pluralize.singular(req.params.type.replace('_statements', '')), opts)
+    await eventAdd('Updated ' + pluralize.singular(req.params.type.replace('_statements', '')), opts, res.local.payload._nosh.patient)
     res.set('ETag', 'W/"' + body._rev + '"')
     res.status(200).json(body)
   } catch(err) {
@@ -156,8 +172,12 @@ async function postSecuredResource(req, res) {
 }
 
 async function putSecuredResource(req, res) {
+  var prefix = ''
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    prefix = res.local.payload._nosh.patient + '_'
+  }
   await sync(Case.snake(pluralize(req.params.type)))
-  const db = new PouchDB(Case.snake(pluralize(req.params.type)))
+  const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
   try {
     var prev_data = ''
     var diff = null
@@ -180,7 +200,7 @@ async function putSecuredResource(req, res) {
       doc_id: body.id,
       diff: diff
     }
-    await eventAdd('Updated ' + pluralize.singular(req.params.type.replace('_statements', '')), opts)
+    await eventAdd('Updated ' + pluralize.singular(req.params.type.replace('_statements', '')), opts, res.local.payload._nosh.patient)
     res.set('ETag', 'W/"' + body._rev + '"')
     res.status(200).json(body)
   } catch(err) {
@@ -189,8 +209,12 @@ async function putSecuredResource(req, res) {
 }
 
 async function querySecuredResource(req, res) {
+  var prefix = ''
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    prefix = res.local.payload._nosh.patient + '_'
+  }
   await sync(Case.snake(pluralize(req.params.type)))
-  const db = new PouchDB(Case.snake(pluralize(req.params.type)))
+  const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
   var entries = []
   var selector = []
   var reference_arr = ['subject','patient','encounter','asserter','requester','author']

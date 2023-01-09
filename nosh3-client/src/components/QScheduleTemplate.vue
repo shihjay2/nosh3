@@ -273,7 +273,8 @@ export default defineComponent({
     resource: String,
     provider: Boolean,
     service_types: Array,
-    service_categories: Array
+    service_categories: Array,
+    type: String
   },
   components: {
     QCalendarDay,
