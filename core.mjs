@@ -204,18 +204,14 @@ function getNPI(vc) {
 }
 
 async function getPIN(patient_id) {
-  const db = new PouchDB('_pins')
-  const result = await db.find({
-    selector: {'_id': {$eq: patient_id}}
-  })
+  const db = new PouchDB('pins')
+  const result = await db.get(patient_id)
   return result.pin
 }
 
 async function getUser(email) {
   await sync('users')
   var db = new PouchDB('users')
-
-
 }
 
 async function gnapInstrospect(jwt, publicKey, location, action) {
@@ -288,12 +284,14 @@ async function sleep(seconds) {
 
 async function sync(resource, patient_id='', save=false, data={}) {
   var prefix = ''
+  var pin = process.env.COUCHDB_ENCRYPT_PIN
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = patient_id + '_'
+    pin = await getPIN(patient_id)
   }
   const local = new PouchDB(prefix + resource)
   if (resource !== 'users') {
-    await local.setPassword(process.env.COUCHDB_ENCRYPT_PIN, {name: urlFix(settings.couchdb_uri) + prefix + resource, opts: settings.couchdb_auth})
+    await local.setPassword(pin, {name: urlFix(settings.couchdb_uri) + prefix + resource, opts: settings.couchdb_auth})
   }
   if (save) {
     const result = await local.put(data)

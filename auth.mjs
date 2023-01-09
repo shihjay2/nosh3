@@ -107,7 +107,7 @@ async function authenticate(req, res) {
           "id": result_users.docs[0].id,
           "display": result_users.docs[0].display,
           "did": '',
-          "pin": process.env.COUCHDB_ENCRYPT_PIN,
+          "pin": pin,
           "trustee": '',
           "instance": process.env.INSTANCE
         },
@@ -228,9 +228,11 @@ async function gnapVerify(req, res) {
     try {
       var response = await axios.post(result.docs[index].continue.uri, body)
       var prefix = ''
+      var pin = process.env.COUCHDB_ENCRYPT_PIN
       const patient_id = result.docs[index].patient
       if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
         prefix = patient_id + '_'
+        pin = await getPIN(patient_id)
       }
       db.remove(result.docs[index])
       // subject must be in the response
@@ -239,7 +241,7 @@ async function gnapVerify(req, res) {
         var nosh = {
           email: '',
           did: '',
-          pin: process.env.COUCHDB_ENCRYPT_PIN,
+          pin: pin,
           npi: '',
           templates: []
         }
@@ -462,20 +464,22 @@ async function addPatient(req, res, next) {
   objectPath.set(opts, 'skip_setup', true)
   const check = new PouchDB(urlFix(settings.couchdb_uri) + '_users', opts)
   var info = await check.info()
+  var b = false
   if (objectPath.has(info, 'error')) {
     if (info.error == 'not_found') {
       await couchdbInstall()
+      var c = 0
+      while (!b && c < 40) {
+        b = await isReachable(settings.couchdb_uri)
+        if (b || c === 39) {
+          break
+        } else {
+          c++
+        }
+      }
     }
-  }
-  var b = false
-  var c = 0
-  while (!b && c < 40) {
-    b = await isReachable(settings.couchdb_uri)
-    if (b || c === 39) {
-      break
-    } else {
-      c++
-    }
+  } else {
+    b = true
   }
   if (b) {
     const id = 'nosh_' + uuidv4()
@@ -520,10 +524,6 @@ async function addPatient(req, res, next) {
         }
       ]
     }
-    await sync('patients', patient_id, true, patient)
-    objectPath.set(user, 'reference', 'Patient/' + patient_id)
-    await sync('users', patient_id, true, user)
-    await couchdbDatabase(patient_id)
     const salt = crypto.randomBytes(16).toString('hex')
     const hash = crypto.pbkdf2Sync(req.body.pin, salt, 1000, 64, 'sha512').toString('hex')
     const pin = {
@@ -545,6 +545,10 @@ async function addPatient(req, res, next) {
     }).on('error', (err) => {
       console.log(err)
     })
+    await sync('patients', patient_id, true, patient)
+    objectPath.set(user, 'reference', 'Patient/' + patient_id)
+    await sync('users', patient_id, true, user)
+    await couchdbDatabase(patient_id)
     res.status(200).json({
       patient_id: patient_id,
       url: urlFix(req.protocol + '://' + req.hostname + '/') + 'app/chart/' + patient_id
@@ -556,7 +560,7 @@ async function addPatient(req, res, next) {
 
 async function pinCheck (req, res, next) {
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
-    const db = new PouchDB('_pins', {skip_setup: true})
+    const db = new PouchDB('pins', {skip_setup: true})
     var info = await db.info()
     await sync('patients', req.body.patient)
     const db_patient = new PouchDB(req.body.patient + '_patients', {skip_setup: true})
@@ -582,7 +586,7 @@ async function pinCheck (req, res, next) {
 }
 
 async function pinClear (req, res, next) {
-  const db = new PouchDB('_pins', {skip_setup: true})
+  const db = new PouchDB('pins', {skip_setup: true})
   var info = await db.info()
   if (!objectPath.has(info, 'error')) {
     if (req.body.patient == 'all') {
@@ -603,7 +607,7 @@ async function pinClear (req, res, next) {
 }
 
 async function pinSet (req, res, next) {
-  const pindb = new PouchDB('_pins')
+  const pindb = new PouchDB('pins')
   const test = await verifyPIN(req.body.pin, req.body.patient)
   if (test) {
     const pin1 = {

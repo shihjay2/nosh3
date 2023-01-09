@@ -50,7 +50,6 @@ async function deleteSecuredResource(req, res) {
   const startTime = performance.now()
   await sync(Case.snake(pluralize(req.params.type)))
   const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
-  // await db.setPassword(process.env.COUCHDB_ENCRYPT_PIN)
   try {
     const doc = await db.get(req.params.id)
     const result = await db.remove(doc)
