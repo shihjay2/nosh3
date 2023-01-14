@@ -68,7 +68,7 @@ export const useAuthStore = defineStore({
       localStorage.setItem('user', JSON.stringify(user))
       console.log('Pinia user updated')
     },
-    patient(patient) {
+    setPatient(patient) {
       this.patient = patient
     }
   }

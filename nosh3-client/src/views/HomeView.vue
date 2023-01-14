@@ -750,7 +750,7 @@ export default defineComponent({
         })
         if (result.docs.length > 0) {
           state.patient = result.docs[0].id
-          auth.patient(state.patient)
+          auth.setPatient(state.patient)
           await refreshPatient(false)
           state.showDrawer = true
           state.showMenu = true
