@@ -562,23 +562,22 @@ async function pinCheck (req, res, next) {
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     const db = new PouchDB('pins', {skip_setup: true})
     var info = await db.info()
+    if (objectPath.has(info, 'error')) {
+      res.status(200).json({ response: 'Error', message: 'No PIN database exists'})
+    }
     await sync('patients', req.body.patient)
     const db_patient = new PouchDB(req.body.patient + '_patients', {skip_setup: true})
     var info_patient = await db_patient.info()
     if (objectPath.has(info_patient, 'error')) {
       res.status(200).json({ response: 'Forbidden', message: 'No patient exists'})
     }
-    if (objectPath.has(info, 'error')) {
-      res.status(200).json({ response: 'Error', message: 'No PIN database exists'})
+    const result = await db.find({
+      selector: {'_id': {$eq: req.body.patient}}
+    })
+    if (result.docs.length > 0) {
+      res.status(200).json({ response: 'OK'})
     } else {
-      const result = await db.find({
-        selector: {'_id': {$eq: req.body.patient}}
-      })
-      if (result.docs.length > 0) {
-        res.status(200).json({ response: 'OK'})
-      } else {
-        res.status(200).json({ response: 'Error', message: 'PIN required' })
-      }
+      res.status(200).json({ response: 'Error', message: 'PIN required' })
     }
   } else {
     res.status(200).json({ response: 'OK', message: 'PIN check not required'})
