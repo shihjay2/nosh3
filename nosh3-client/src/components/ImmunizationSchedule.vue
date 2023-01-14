@@ -80,6 +80,11 @@ export default {
       table: {},
       wrap: true
     })
+    const auth = useAuthStore()
+    var prefix = ''
+    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
+      prefix = auth.patient + '_'
+    }
     onMounted(async() => {
       state.vacSched = await fetchJSON('vacSched', props.online)
       state.patientAgeMonths = '' + moment().diff(props.patientDOB, 'months')
@@ -151,7 +156,7 @@ export default {
       return ret
     }
     const query = async() => {
-      var localDB = new PouchDB('immunizations')
+      const localDB = new PouchDB(prefix + 'immunizations')
       var result = await localDB.find({selector: {'patient.reference': {$eq: 'Patient/' + props.patient }, _id: {"$gte": null}}})
       if (result.docs.length > 0) {
         for (var a in result.docs) {

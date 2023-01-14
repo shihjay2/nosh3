@@ -43,7 +43,11 @@ export function common() {
   }
   const eventAdd = async(event, online, patient_id, opts={doc_db: null, doc_id: null, diff: null}) => {
     const auth_store = useAuthStore()
-    const db = new PouchDB('activities')
+    var prefix = ''
+    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
+      prefix = patient_id + '_'
+    } 
+    const db = new PouchDB(prefix + 'activities')
     var doc = {
       _id: 'nosh_' + uuidv4(),
       datetime: moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
@@ -311,7 +315,12 @@ export function common() {
     }
   }
   const getResource = async(resource, arr) => {
-    var resourceDB = new PouchDB(resource)
+    const auth_store = useAuthStore()
+    var prefix = ''
+    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
+      prefix = auth_store.patient + '_'
+    }
+    const resourceDB = new PouchDB(prefix + resource)
     var result = await resourceDB.allDocs({
       include_docs: true,
       attachments: true,
@@ -327,14 +336,19 @@ export function common() {
     }
     return arr
   }
-  const getSignedEncounters = async(patient, yearback) => {
+  const getSignedEncounters = async(yearback="100") => {
+    const auth_store = useAuthStore()
     var ret = []
-    const encountersDB = new PouchDB('encounters')
+    var prefix = ''
+    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
+      prefix = auth_store.patient + '_'
+    }
+    const encountersDB = new PouchDB(prefix + 'encounters')
     const period = moment().subtract(yearback, 'year').format('YYYY-MM-DD')
-    const encountersResult = await encountersDB.find({selector: {'subject.reference': {$eq: 'Patient/' + patient }, 'period.start': { "$gte": period }, _id: {"$gte": null}}})
+    const encountersResult = await encountersDB.find({selector: {'subject.reference': {$eq: 'Patient/' + auth_store.patient }, 'period.start': { "$gte": period }, _id: {"$gte": null}}})
     if (encountersResult.docs.length > 0) {
       for (var a of encountersResult.docs) {
-        const bundlesDB = new PouchDB('bundles')
+        const bundlesDB = new PouchDB(prefix + 'bundles')
         const bundlesResult = await bundlesDB.find({selector: {'entry.0.resource.encounter.reference': {$eq: 'Encounter/' + a.id}, _id: {"$gte": null}}})
         if (bundlesResult.docs.length > 0) {
           bundlesResult.docs.sort((b, c) => moment(c.timestamp) - moment(b.timestamp))
@@ -358,9 +372,9 @@ export function common() {
         return groups;
     }, { })
   }
-  const historyDXMatch = async(patient, needle_arr) => {
+  const historyDXMatch = async(needle_arr) => {
     var ret = []
-    var bundles = await getSignedEncounters(patient)
+    var bundles = await getSignedEncounters()
     if (bundles.length > 0) {
       for (var bundle of bundles) {
         var a = bundle.entry.filter(d => d.resource.resourceType === 'Condition')
@@ -377,7 +391,12 @@ export function common() {
     return ret
   }
   const inbox = async(resource, user) => {
-    var localDB = new PouchDB(resource)
+    const auth_store = useAuthStore()
+    var prefix = ''
+    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
+      prefix = auth_store.patient + '_'
+    }
+    const localDB = new PouchDB(prefix + resource)
     var result = {}
     if (resource === 'communications') {
       var docs_arr = []
@@ -419,6 +438,11 @@ export function common() {
     return result
   }
   const loadSchema = async(resource, category, schema, online, options) => {
+    const auth_store = useAuthStore()
+    var prefix = ''
+    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
+      prefix = auth_store.patient + '_'
+    }
     var countries = []
     var select = {}
     var states = []
@@ -580,7 +604,7 @@ export function common() {
         doc: {},
         resource: 'conditions'
       })
-      var conditionsDB = new PouchDB('conditions')
+      const conditionsDB = new PouchDB(prefix + 'conditions')
       var result = await conditionsDB.allDocs({
         include_docs: true,
         attachments: true,
@@ -644,8 +668,13 @@ export function common() {
     return schema
   }
   const observationResult = async(code, patient) => {
+    const auth_store = useAuthStore()
+    var prefix = ''
+    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
+      prefix = auth_store.patient + '_'
+    }
     var res = ''
-    const observationDB = new PouchDB('observations')
+    const observationDB = new PouchDB(prefix + 'observations')
     const result = await observationDB.find({selector: {
       'subject.reference': {$eq: 'Patient/' + patient },
       'code.coding.0.code': {$eq: code},
@@ -659,6 +688,11 @@ export function common() {
     return res
   }
   const observationStatus = async(type, patient, boolean=false, unknown=false) => {
+    const auth_store = useAuthStore()
+    var prefix = ''
+    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
+      prefix = auth_store.patient + '_'
+    }
     var map = [
       {
         type: 'pregnancy',
@@ -682,7 +716,7 @@ export function common() {
     } else {
       var ret = 'N'
     }
-    const observationDB = new PouchDB('observations')
+    const observationDB = new PouchDB(prefix + 'observations')
     const result = await observationDB.find({selector: {
       'subject.reference': {$eq: 'Patient/' + patient },
       'code.coding.0.code': {$eq: item.search},
@@ -708,6 +742,11 @@ export function common() {
     }
   }
   const observationStatusRaw = async(type, patient) => {
+    const auth_store = useAuthStore()
+    var prefix = ''
+    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
+      prefix = auth_store.patient + '_'
+    }
     var map = [
       {
         type: 'pregnancy',
@@ -724,7 +763,7 @@ export function common() {
     ]
     var item = map.find(a => a.type === type)
     var ret = {}
-    const observationDB = new PouchDB('observations')
+    const observationDB = new PouchDB(prefix + 'observations')
     const result = await observationDB.find({selector: {
       'subject.reference': {$eq: 'Patient/' + patient },
       'code.coding.0.code': {$eq: item.search},
@@ -759,6 +798,11 @@ export function common() {
     return arr
   }
   const patientStatus = async(type, patient, boolean=false) => {
+    const auth_store = useAuthStore()
+    var prefix = ''
+    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
+      prefix = auth_store.patient + '_'
+    }
     var map = [
       {
         type: 'race',
@@ -769,7 +813,7 @@ export function common() {
     ]
     var item = map.find(a => a.type === type)
     var ret = item.default
-    const patientDB = new PouchDB('patients')
+    const patientDB = new PouchDB(prefix + 'patients')
     const result = await patientDB.find({selector: {
       'id': {$eq: patient },
       [item.field]: {"$gte": null},
@@ -819,11 +863,11 @@ export function common() {
       return PouchDB.fetch(url, opts)
     }}
     const pin = auth_store.pin
-    const local = new PouchDB(resource)
     var prefix = ''
     if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
       prefix = patient_id + '_'
     }
+    const local = new PouchDB(prefix + resource)
     if (resource !== 'users' && online) {
       await local.setPassword(pin, {name: couchdb + prefix + resource, opts: auth})
     }
@@ -879,10 +923,15 @@ export function common() {
   }
   const syncState = reactive({ total: 0, complete: 0 })
   const syncEmailToUser = async(resource, category, doc, patient_id, online) => {
+    const auth_store = useAuthStore()
+    var prefix = ''
+    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
+      prefix = auth_store.patient + '_'
+    }
     if (resource === 'patients' ||
         resource === 'practitioners' ||
         resource === 'related_persons') {
-      var db_users = new PouchDB('users')
+      const db_users = new PouchDB(prefix + 'users')
       const result_users = await db_users.find({
         selector: {'reference': {$eq: Case.pascal(pluralize.singular(resource)) + '/' + doc.id}}
       })
@@ -914,7 +963,12 @@ export function common() {
     return arr
   }
   const threadEarlier = async(doc, arr) => {
-    var localDB = new PouchDB('communications')
+    const auth_store = useAuthStore()
+    var prefix = ''
+    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
+      prefix = auth_store.patient + '_'
+    }
+    const localDB = new PouchDB(prefix + 'communications')
     if (objectPath.has(doc, 'inResponseTo')) {
       var doc1 = await localDB.get(doc.inResponseTo.reference.replace('Communication/', ''))
       arr.push(doc1)
@@ -922,8 +976,13 @@ export function common() {
     }
     return arr
   }
-  const threadLater = async(id, arr, status, online, couchdb, auth, pin, patient_id) => {
-    var localDB = new PouchDB('communications')
+  const threadLater = async(id, arr, status, online, patient_id) => {
+    const auth_store = useAuthStore()
+    var prefix = ''
+    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
+      prefix = auth_store.patient + '_'
+    }
+    const localDB = new PouchDB(prefix + 'communications')
     if (status === 'completed') {
       var selector = {"inResponseTo.reference": {$eq: 'Communication/' + id }, status: {$eq: 'completed'}, _id: {"$gte": null}}
     } else {

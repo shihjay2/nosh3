@@ -68,6 +68,7 @@
 
 <script>
 import { defineComponent, reactive, ref, onMounted, watch } from 'vue'
+import { useAuthStore } from '@/stores'
 import { common } from '@/logic/common'
 import objectPath from 'object-path'
 import pluralize from 'pluralize'
@@ -104,7 +105,12 @@ export default defineComponent({
       wrap: true,
       pagination: {rowsPerPage: 0}
     })
-    var localDB = new PouchDB(props.resource)
+    const auth = useAuthStore()
+    var prefix = ''
+    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
+      prefix = auth.patient + '_'
+    }
+    var localDB = new PouchDB(prefix + props.resource)
     onMounted(async() => {
       state.base = props.base
       state.schema = props.schema

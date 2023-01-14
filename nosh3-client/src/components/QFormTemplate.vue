@@ -119,6 +119,7 @@
 
 <script>
 import { ref, defineComponent, nextTick, onMounted, reactive } from 'vue'
+import { useAuthStore } from '@/stores'
 import { common } from '@/logic/common'
 import axios from 'axios'
 import Case from 'case'
@@ -313,8 +314,13 @@ export default defineComponent({
       encounterTypes: [],
       online: false
     })
-    var localDB = new PouchDB(props.resource)
-    var localDB1 = new PouchDB('care_plans')
+    const auth = useAuthStore()
+    var prefix = ''
+    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
+      prefix = auth.patient + '_'
+    }
+    var localDB = new PouchDB(prefix + props.resource)
+    var localDB1 = new PouchDB(prefix + 'care_plans')
     onMounted(async() => {
       emit('loading')
       state.resource = props.resource
@@ -1307,7 +1313,7 @@ export default defineComponent({
       }
       if (props.resource == 'appointments') {
         if (field == 'practitioner') {
-          var userDB = new PouchDB('users')
+          const userDB = new PouchDB(prefix + 'users')
           var result = await userDB.find({
             selector: {'reference': {$eq: val }, _id: {"$gte": null}}
           })

@@ -160,7 +160,8 @@
 </template>
 
 <script>
-import { defineComponent, nextTick, reactive, onMounted, watch } from "vue"
+import { defineComponent, nextTick, reactive, onMounted, watch } from 'vue'
+import { useAuthStore } from '@/stores'
 import { useQuasar } from 'quasar'
 import { common } from '@/logic/common'
 import jsPDF from 'jspdf'
@@ -262,7 +263,12 @@ export default defineComponent({
     })
     var video
     var img
-    var localDB = new PouchDB(props.resource)
+    const auth = useAuthStore()
+    var prefix = ''
+    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
+      prefix = auth.patient + '_'
+    }
+    var localDB = new PouchDB(prefix + props.resource)
     onMounted(async() => {
       state.auth = props.auth
       state.online = props.online

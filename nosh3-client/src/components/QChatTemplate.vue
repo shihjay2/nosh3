@@ -110,6 +110,7 @@
 
 <script>
 import { defineComponent, reactive, ref, onMounted, watch } from 'vue'
+import { useAuthStore } from '@/stores'
 import Case from 'case'
 import { common } from '@/logic/common'
 import { Form } from 'vee-validate'
@@ -160,7 +161,12 @@ export default defineComponent({
       virtual_index: 0
     })
     const virtualChatRef = ref(null)
-    var localDB = new PouchDB(props.resource)
+    const auth = useAuthStore()
+    var prefix = ''
+    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
+      prefix = auth.patient + '_'
+    }
+    var localDB = new PouchDB(prefix + props.resource)
     onMounted(async() => {
       state.base = props.base
       state.schema = props.schema
@@ -209,7 +215,7 @@ export default defineComponent({
           objectPath.set(chatItem, 'sent', false)
         }
         var name_arr = arr[b].sender.reference.split('/')
-        var namedb = new PouchDB(Case.snake(pluralize(name_arr[0])))
+        const namedb = new PouchDB(prefix + Case.snake(pluralize(name_arr[0])))
         var name_doc = await namedb.get(name_arr[1])
         objectPath.set(chatItem, 'name', removeTags(name_doc.text.div))
         objectPath.set(chatItem, 'text', arr[b].payload[0].contentString.split('\n'))

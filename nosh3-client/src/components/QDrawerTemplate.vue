@@ -100,6 +100,7 @@
 
 <script>
 import { defineComponent, reactive, onMounted, watch } from 'vue'
+import { useAuthStore } from '@/stores'
 import { common } from '@/logic/common'
 import objectPath from 'object-path'
 import PouchDB from 'pouchdb-browser'
@@ -150,6 +151,11 @@ export default defineComponent({
       smokingStatusTooltip: '',
       careplan: ''
     })
+    const auth = useAuthStore()
+    var prefix = ''
+    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
+      prefix = auth.patient + '_'
+    }
     onMounted(async() => {
       encounterCheck()
       state.patientName = props.patientName
@@ -250,7 +256,7 @@ export default defineComponent({
       emit('open-pulldown', type)
     }
     const query = async(resource, index) => {
-      var localDB = new PouchDB(resource)
+      const localDB = new PouchDB(prefix + resource)
       var selector = {[state.base[index].activeField]: {$ne: 'inactive'}, [state.base[index].patientField]: {$eq: 'Patient/' + props.patient }, _id: {"$gte": null}}
       if (resource === 'communications') {
         selector = {[state.base[index].activeField]: {$ne: 'inactive'}, [state.base[index].patientField]: {$eq: 'Patient/' + props.patient }, inResponseTo: {$exists: false}, _id: {"$gte": null}}

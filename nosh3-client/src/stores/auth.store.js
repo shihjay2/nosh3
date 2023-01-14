@@ -14,6 +14,7 @@ export const useAuthStore = defineStore({
     pin: localStorage.getItem('pin'),
     instance: localStorage.getItem('instance'),
     trustee: localStorage.getItem('trustee'),
+    patient: null,
     returnUrl: null
   }),
   actions: {
@@ -28,6 +29,7 @@ export const useAuthStore = defineStore({
       this.pin = payload._nosh.pin
       this.instance = payload._nosh.instance
       this.trustee = payload._nosh.trustee_url
+      this.patient = payload._nosh.patient
       // store user details and jwt in local storage to keep user logged in between page refreshes
       localStorage.setItem('user', JSON.stringify(user))
       localStorage.setItem('jwt', jwt)
@@ -65,6 +67,9 @@ export const useAuthStore = defineStore({
       this.user = user
       localStorage.setItem('user', JSON.stringify(user))
       console.log('Pinia user updated')
+    },
+    patient(patient) {
+      this.patient = patient
     }
   }
 })

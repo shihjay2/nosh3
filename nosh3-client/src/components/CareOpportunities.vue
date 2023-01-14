@@ -156,7 +156,7 @@ export default {
           }
         }
         if (objectPath.has(a, 'includes.dx')) {
-          dxBundles = await historyDXMatch(props.patient, objectPath.get(a, 'includes.dx'))
+          dxBundles = await historyDXMatch(objectPath.get(a, 'includes.dx'))
           if (dxBundles.length > 0) {
             includes_arr.push(true)
           } else {
@@ -173,7 +173,7 @@ export default {
           if (dxBundles.length > 0) {
             var bundles = dxBundles
           } else {
-            var bundles = await getSignedEncounters(props.patient, a.years)
+            var bundles = await getSignedEncounters(a.years)
           }
           for (var bundle of bundles) {
             if (objectPath.has(a, 'query')) {

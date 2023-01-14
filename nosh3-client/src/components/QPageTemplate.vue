@@ -286,6 +286,7 @@
 
 <script>
 import { defineComponent, nextTick, reactive, onMounted, watch } from 'vue'
+import { useAuthStore } from '@/stores'
 import { useQuasar } from 'quasar'
 import { common } from '@/logic/common'
 import convert from 'convert'
@@ -414,8 +415,13 @@ export default defineComponent({
       // service_requests
       service_request_doc: {}
     })
-    var localDB = new PouchDB(props.resource)
-    var conditionsDB = new PouchDB('conditions')
+    const auth = useAuthStore()
+    var prefix = ''
+    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
+      prefix = auth.patient + '_'
+    }
+    var localDB = new PouchDB(prefix + props.resource)
+    var conditionsDB = new PouchDB(prefix + 'conditions')
     onMounted(async() => {
       state.auth = props.auth
       state.online = props.online
@@ -505,7 +511,7 @@ export default defineComponent({
         if (state.resource == 'compositions') {
           if (id !== '') {
             if (state.user.reference === doc.author[0].reference) {
-              var encounterDB = new PouchDB('encounters')
+              const encounterDB = new PouchDB(prefix + 'encounters')
               var encounter = await encounterDB.get(doc.encounter.reference.split('/').slice(-1).join(''))
               var unsigned = {
                 name: encounter.reasonCode[0].text,
@@ -521,7 +527,7 @@ export default defineComponent({
           // BMI calc
           if (id !== '') {
             if (doc.code.coding[0].code === '29463-7' || doc.code.coding[0].code === '8302-2') {
-              var checkDB = new PouchDB(state.resource)
+              const checkDB = new PouchDB(prefix + state.resource)
               var weight = 0
               var height = 0
               if (doc.code.coding[0].code === '29463-7') {
@@ -619,7 +625,7 @@ export default defineComponent({
         if (state.resource == 'service_requests') {
           // create task
           if (id !== '') {
-            var taskDB = new PouchDB('tasks')
+            const taskDB = new PouchDB(prefix + 'tasks')
             var task = await taskDB.find({
               selector: {'basedOn.0.reference': {$eq: 'ServiceRequest/' + id}, _id: {"$gte": null}}
             })

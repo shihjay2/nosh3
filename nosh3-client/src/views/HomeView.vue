@@ -716,7 +716,11 @@ export default defineComponent({
       localStorage.setItem('oidc_data', JSON.stringify(oidc_data))
       window.location.reload()
     })
-    var patientDB = new PouchDB('patients')
+    var prefix = ''
+    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
+      prefix = route.params.id + '_'
+    }
+    var patientDB = new PouchDB(prefix + 'patients')
     var inboxTimer = null
     var syncTimer = null
     onMounted(async() => {
@@ -733,7 +737,7 @@ export default defineComponent({
       state.default_med_category = 'outpatient'
       state.couchdb = auth.couchdb
       state.pin = auth.pin
-      var userDB = new PouchDB('users')
+      const userDB = new PouchDB(prefix + 'users')
       var user = await userDB.get(auth.user.id)
       var user_arr = user.reference.split('/')
       if (user_arr[0] == 'Practitioner') {
@@ -746,6 +750,7 @@ export default defineComponent({
         })
         if (result.docs.length > 0) {
           state.patient = result.docs[0].id
+          auth.patient(state.patient)
           await refreshPatient(false)
           state.showDrawer = true
           state.showMenu = true
@@ -945,7 +950,7 @@ export default defineComponent({
           }
           if (state.resource == 'compositions') {
             if (state.user.reference === doc.author[0].reference) {
-              var encounterDB = new PouchDB('encounters')
+              const encounterDB = new PouchDB(prefix + 'encounters')
               var encounter = await encounterDB.get(doc.encounter.reference.split('/').slice(-1).join(''))
               var unsigned = {
                 name: encounter.reasonCode[0].text,
@@ -1055,7 +1060,7 @@ export default defineComponent({
       state.pulldown_form = false
     }
     const completeTask = async(id) => {
-      var localDB = new PouchDB('tasks')
+      const localDB = new PouchDB(prefix + 'tasks')
       var a = await localDB.get(id)
       objectPath.set(a, 'status', 'completed')
       await sync('tasks', state.online, state.patient, true, a)
@@ -1146,7 +1151,7 @@ export default defineComponent({
           schema = addSchemaOptions('type', state.docTypeCodes, 'Code', 'Display', schema)
           schema = addSchemaOptions('category', state.docClassCodes, 'Code', 'Display', schema)
         }
-        var db = new PouchDB(resource)
+        const db = new PouchDB(prefix + resource)
         try {
           var result = await db.find({
             selector: {[base.patientField]: {$eq: 'Patient/' + state.patient }, _id: {"$gte": null}}
@@ -1169,7 +1174,7 @@ export default defineComponent({
           objectPath.set(timelineItem, 'keys', base.fuse)
           objectPath.set(timelineItem, 'style', base.uiListContent.contentStyle)
           if (resource === 'encounters') {
-            var bundle_db = new PouchDB('bundles')
+            const bundle_db = new PouchDB(prefix + 'bundles')
             var bundle_result = await bundle_db.find({
               selector: {'entry.0.resource.encounter.reference': {$eq: 'Encounter/' + objectPath.get(result, 'docs.' + a + '.doc.id')}, _id: {"$gte": null}},
             })
@@ -1190,7 +1195,7 @@ export default defineComponent({
           timeline.push(timelineItem)
         }
       }
-      const activitiesDb = new PouchDB('activities')
+      const activitiesDb = new PouchDB(prefix + 'activities')
       var activitiesResult = await activitiesDb.find({
         selector: {event: {$eq: 'Chart Created' }, _id: {"$gte": null}}
       })
@@ -1220,7 +1225,7 @@ export default defineComponent({
       state.loading = false
     }
     const lockThread = async(id) => {
-      var localDB = new PouchDB('communications')
+      const localDB = new PouchDB(prefix + 'communications')
       var a = await localDB.get(id)
       arr = await thread(a, state.online, state.patient)
       for (var b in arr) {
@@ -1402,7 +1407,7 @@ export default defineComponent({
       state.category = category
       state.id = id
       if (state.resource == 'encounters') {
-        var a = new PouchDB('bundles')
+        const a = new PouchDB(prefix + 'bundles')
         var results = await a.find({selector: {'entry.0.resource.encounter.reference': {$eq: 'Encounter/' + id}, _id: {"$gte": null}}})
         if (results.length > 0) {
           results.docs.sort((b, c) => moment(c.timestamp) - moment(b.timestamp))
@@ -1629,7 +1634,7 @@ export default defineComponent({
         var section = {}
         var text = ''
         var sections_arr = []
-        var a = new PouchDB(resource)
+        const a = new PouchDB(prefix + resource)
         var b = await import('@/assets/fhir/' + resource + '.json')
         var result = await a.find({
           selector: {[b.activeField]: {$ne: 'inactive'}, _id: {"$gte": null}}
@@ -1661,7 +1666,7 @@ export default defineComponent({
         }
         doc.section.push(section)
         await sync('compositions', state.online, state.patient, true, doc)
-        var h = new PouchDB('compositions')
+        const h = new PouchDB(prefix + 'compositions')
         var doc1 = await h.get(doc.id)
         state.compositionDoc = doc1
         $q.notify({
@@ -1751,7 +1756,7 @@ export default defineComponent({
       var base = ''
       for (var resource of resources) {
         base = await import('@/assets/fhir/' + resource + '.json')
-        var db = new PouchDB(resource)
+        const db = new PouchDB(prefix + resource)
         var results = await db.find({
           selector: {[base.indexField]: {$eq: [base.indexRoot] + '/' + state.encounter}, _id: {"$gte": null}}
         })
@@ -1822,7 +1827,7 @@ export default defineComponent({
         }
       }
       for (var reference of references) {
-        var db1 = new PouchDB(reference.resource)
+        const db1 = new PouchDB(prefix + reference.resource)
         var results1 = await db1.get(reference.id)
         entries.push({resource: results1})
       }
@@ -1895,7 +1900,7 @@ export default defineComponent({
       objectPath.set(bundleDoc, 'sigFormat', 'application/jws')
       objectPath.set(bundleDoc, 'data', 'ewogICJhbGciOiAiUlMyNTYiLAogICJraWQiOiAiMTMzNzQ3MTQxMjU1IiwKICAiaWF0IjogMCwKICAiaXNzIjogIkM9R0IsIEw9TG9uZG9uLCBPVT1OdWFwYXkgQVBJLCBPPU51YXBheSwgQ049eWJvcXlheTkycSIsCiAgImI2NCI6IGZhbHNlLAogICJjcml0IjogWwogICAgImlhdCIsCiAgICAiaXNzIiwKICAgICJiNjQiCiAgXQp9..d_cZ46lwNiaFHAu_saC-Zz4rSzNbevWirO94EmBlbOwkB1L78vGbAnNjUsmFSU7t_HhL-cyMiQUDyRWswsEnlDljJsRi8s8ft48ipy2SMuZrjPpyYYMgink8nZZK7l-eFJcTiS9ZWezAAXF_IJFXSTO5ax9z6xty3zTNPNMV9W7aH8fEAvbUIiueOhH5xNHcsuqlOGygKdFz2rbjTGffoE_6zS4Dry-uX5mts2duLorobUimGsdlUcSM6P6vZEtcXaJCdjrT9tuFMh4CkX9nqk19Bq2z3i-SX4JCPvhD2r3ghRmX0gG08UcvyFVbrnVZJnpl4MU8V4Nr3-2M5URZOg')
       for (var reference of references) {
-        var db1 = new PouchDB(reference.resource)
+        const db1 = new PouchDB(prefix + reference.resource)
         var results1 = await db1.get(reference.id)
         entries.push({resource: results1})
       }
@@ -2000,7 +2005,7 @@ export default defineComponent({
       objectPath.set(bundleDoc, 'sigFormat', 'application/jws')
       objectPath.set(bundleDoc, 'data', 'ewogICJhbGciOiAiUlMyNTYiLAogICJraWQiOiAiMTMzNzQ3MTQxMjU1IiwKICAiaWF0IjogMCwKICAiaXNzIjogIkM9R0IsIEw9TG9uZG9uLCBPVT1OdWFwYXkgQVBJLCBPPU51YXBheSwgQ049eWJvcXlheTkycSIsCiAgImI2NCI6IGZhbHNlLAogICJjcml0IjogWwogICAgImlhdCIsCiAgICAiaXNzIiwKICAgICJiNjQiCiAgXQp9..d_cZ46lwNiaFHAu_saC-Zz4rSzNbevWirO94EmBlbOwkB1L78vGbAnNjUsmFSU7t_HhL-cyMiQUDyRWswsEnlDljJsRi8s8ft48ipy2SMuZrjPpyYYMgink8nZZK7l-eFJcTiS9ZWezAAXF_IJFXSTO5ax9z6xty3zTNPNMV9W7aH8fEAvbUIiueOhH5xNHcsuqlOGygKdFz2rbjTGffoE_6zS4Dry-uX5mts2duLorobUimGsdlUcSM6P6vZEtcXaJCdjrT9tuFMh4CkX9nqk19Bq2z3i-SX4JCPvhD2r3ghRmX0gG08UcvyFVbrnVZJnpl4MU8V4Nr3-2M5URZOg')
       for (var reference of references) {
-        var db1 = new PouchDB(reference.resource)
+        const db1 = new PouchDB(prefix + reference.resource)
         var results1 = await db1.get(reference.id)
         entries.push({resource: results1})
       }

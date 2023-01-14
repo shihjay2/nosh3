@@ -381,7 +381,6 @@ export default defineComponent({
   setup (props, { emit }) {
     const $q = useQuasar()
     const { addSchemaOptions, eventAdd, fetchJSON, fhirModel, fhirReplace, groupItems, inbox, loadSelect, removeTags, sync } = common()
-    const auth = useAuthStore()
     const state = reactive({
       auth: {},
       online: false,
@@ -428,12 +427,17 @@ export default defineComponent({
       section_divContent: '',
       section_default: {},
     })
-    var localDB = new PouchDB(props.resource)
-    var localDB1 = new PouchDB('care_plans')
-    var localDB2 = new PouchDB('compositions')
-    var localDB3 = new PouchDB('bundles')
-    var localDB4 = new PouchDB('medication_requests')
-    var localDB5 = new PouchDB('users')
+    const auth = useAuthStore()
+    var prefix = ''
+    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
+      prefix = auth.patient + '_'
+    }
+    var localDB = new PouchDB(prefix + props.resource)
+    var localDB1 = new PouchDB(prefix + 'care_plans')
+    var localDB2 = new PouchDB(prefix + 'compositions')
+    var localDB3 = new PouchDB(prefix + 'bundles')
+    var localDB4 = new PouchDB(prefix + 'medication_requests')
+    var localDB5 = new PouchDB(prefix + 'users')
     onMounted(async() => {
       state.auth = props.auth
       state.online = props.online
@@ -784,7 +788,7 @@ export default defineComponent({
         } else {
           outcome.push('')
         }
-        var db = new PouchDB(Case.snake(pluralize(resource)))
+        const db = new PouchDB(prefix + Case.snake(pluralize(resource)))
         var row = await db.get(id)
         results.push(row)
       }

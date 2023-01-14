@@ -65,6 +65,7 @@
 
 <script>
 import { reactive, onMounted, watch } from 'vue'
+import { useAuthStore } from '@/stores'
 import PouchDB from 'pouchdb-browser'
 
 export default {
@@ -82,6 +83,11 @@ export default {
       diff: [],
       expanded_text: ''
     })
+    const auth = useAuthStore()
+    var prefix = ''
+    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
+      prefix = auth.patient + '_'
+    }
     onMounted(async() => {
       await query()
       sort()
@@ -115,7 +121,7 @@ export default {
       emit('close-activities')
     }
     const query = async() => {
-      var localDB = new PouchDB('activities')
+      const localDB = new PouchDB(prefix + 'activities')
       var result = await localDB.allDocs({
         include_docs: true,
         attachments: true

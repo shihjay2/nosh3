@@ -20,6 +20,7 @@
 
 <script>
 import { defineComponent, reactive, onMounted, watch } from 'vue'
+import { useAuthStore } from '@/stores'
 import { common } from '@/logic/common'
 import { Chart } from 'highcharts-vue'
 import convert from 'convert'
@@ -65,7 +66,12 @@ export default defineComponent({
       wfl_f: [],
       wfl_m: []
     })
-    var db = new PouchDB('observations')
+    const auth = useAuthStore()
+    var prefix = ''
+    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
+      prefix = auth.patient + '_'
+    }
+    var db = new PouchDB(prefix + 'observations')
     var gcType = [
       {type: 'wfa', x_title: 'Age (days)', y_title: 'kg', selector: ['29463-7'], title: 'Weight-for-age percentiles'},
       {type: 'lhfa', x_title: 'Age (days)', y_title: 'cm', selector: ['8302-2'], title: 'Height-for-age percentiles'},

@@ -243,7 +243,8 @@
 </template>
 
 <script>
-import { defineComponent, reactive, ref, nextTick, onMounted, watch } from "vue"
+import { defineComponent, reactive, ref, nextTick, onMounted, watch } from 'vue'
+import { useAuthStore } from '@/stores'
 import { common } from '@/logic/common'
 import { addToDate, parseTimestamp, isBetweenDates, today, parsed, parseDate, parseTime } from '@quasar/quasar-ui-qcalendar/src/Timestamp.js'
 import { QCalendarDay } from '@quasar/quasar-ui-qcalendar/dist/QCalendarDay.esm.js'
@@ -323,7 +324,12 @@ export default defineComponent({
       couchdb: '',
       pin: ''
     })
-    var localDB = new PouchDB(props.resource)
+    const auth = useAuthStore()
+    var prefix = ''
+    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
+      prefix = auth.patient + '_'
+    }
+    var localDB = new PouchDB(prefix + props.resource)
     onMounted(async() => {
       state.base = await import('@/assets/fhir/' + props.resource + '.json')
       state.data = props.data
@@ -381,7 +387,7 @@ export default defineComponent({
       if (status == 'fulfilled') {
         // create encounter
         const defaults = {}
-        var userDB = new PouchDB('users')
+        var userDB = new PouchDB(prefix + 'users')
         var result = await userDB.find({
           selector: {'reference': {$eq: state.fhir.participant[1].actor[0].reference }, _id: {"$gte": null}}
         })
