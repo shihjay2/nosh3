@@ -746,7 +746,7 @@ export default defineComponent({
       state.patientList = await patientList(user)
       if (route.params.id !== 'new') {
         try {
-          const result = await patientDB.find({
+          var result = await patientDB.find({
             selector: {_id: {$eq: route.params.id}}
           })
         } catch (e) {
