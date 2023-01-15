@@ -727,6 +727,7 @@ export default defineComponent({
       try {
         await verifyJWT(state.online)
       } catch(e) {
+        auth.returnUrl = route.fullPath
         return auth.logout()
       }
       state.type = auth.type
@@ -741,6 +742,7 @@ export default defineComponent({
       try {
         var user = await userDB.get(auth.user.id)
       } catch (e) {
+        auth.returnUrl = route.fullPath
         return auth.logout()
       }
       var user_arr = user.reference.split('/')
@@ -754,6 +756,7 @@ export default defineComponent({
             selector: {_id: {$eq: route.params.id}}
           })
         } catch (e) {
+          auth.returnUrl = route.fullPath
           return auth.logout()
         }
         if (result.docs.length > 0) {

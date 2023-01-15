@@ -201,7 +201,7 @@ export default defineComponent({
           if (check.data.response === 'Forbidden') {
             state.login = false
             $q.notify({
-              message: 'Invalid URL',
+              message: 'Invalid URL - forbidden',
               color: 'red',
               actions: [
                 { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
@@ -215,7 +215,7 @@ export default defineComponent({
         } else {
           state.loading = false
           $q.notify({
-            message: 'Invalid URL',
+            message: 'Invalid URL - null',
             color: 'red',
             actions: [
               { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }

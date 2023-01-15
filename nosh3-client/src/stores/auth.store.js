@@ -51,7 +51,6 @@ export const useAuthStore = defineStore({
       this.pin = null
       this.instance = null
       this.trustee = null
-      this.returnUrl = null
       localStorage.removeItem('user')
       localStorage.removeItem('jwt')
       localStorage.removeItem('type')
