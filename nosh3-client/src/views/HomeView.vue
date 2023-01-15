@@ -738,7 +738,11 @@ export default defineComponent({
       state.couchdb = auth.couchdb
       state.pin = auth.pin
       const userDB = new PouchDB(prefix + 'users')
-      var user = await userDB.get(auth.user.id)
+      try {
+        var user = await userDB.get(auth.user.id)
+      } catch (e) {
+        return auth.logout()
+      }
       var user_arr = user.reference.split('/')
       if (user_arr[0] == 'Practitioner') {
         state.provider = true
