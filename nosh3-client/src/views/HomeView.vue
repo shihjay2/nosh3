@@ -745,9 +745,13 @@ export default defineComponent({
       }
       state.patientList = await patientList(user)
       if (route.params.id !== 'new') {
-        const result = await patientDB.find({
-          selector: {_id: {$eq: route.params.id}}
-        })
+        try {
+          const result = await patientDB.find({
+            selector: {_id: {$eq: route.params.id}}
+          })
+        } catch (e) {
+          return auth.logout()
+        }
         if (result.docs.length > 0) {
           state.patient = result.docs[0].id
           auth.setPatient(state.patient)
