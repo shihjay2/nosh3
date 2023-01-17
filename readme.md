@@ -9,11 +9,11 @@ NOSH ChartingSystem 3 is completely redesigned from the ground up.  Whereas NOSH
 ## Key Features:
 
 #### 1. Magic link authentication (no passwords!)
-#### 2. Encryption at rest in CouchDB
-#### 3. Offline mode in case network goes down
+#### 2. Encryption at rest in CouchDB with [comdb](https://github.com/garbados/comdb), which uses [TweetNaCl](https://github.com/dchest/tweetnacl-js) for cryptography.
+#### 3. [Progressive Web App](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps) design with Offline mode in case network goes down.
 #### 4. Simple user-specific text snippets and templates (dot phrases).
-#### 5. PDF document viewer/editor
-#### 6. Graphs and growth charts
+#### 5. PDF document viewer/editor with [PDFJS](https://github.com/mozilla/pdfjs-dist)
+#### 6. Graphs and growth charts with [Highcharts](https://github.com/highcharts/highcharts)
 #### 7. Care Opportunites
 &nbsp;  
 ## Preparation:
@@ -67,8 +67,7 @@ cat << EOF > .env
 COUCHDB_URL=http://couchdb:5984
 COUCHDB_USER=admin
 COUCHDB_PASSWORD=my_couchdb_password
-COUCHDB_ENCRYPT_PIN=my_couchdb_pin
-INSTANCE=local
+INSTANCE=digitalocean
 NOSH_ROLE=patient
 AUTH=magic
 MAGIC_API_KEY=my_magic_api_key
@@ -77,11 +76,6 @@ UMLS_KEY=my_umls_key
 NOSH_DISPLAY="My Name"
 NOSH_EMAIL=my@email.address
 NOSH_DID='did:my_decentralized_identifier'
-NOSH_FIRSTNAME=My
-NOSH_LASTNAME=Name
-NOSH_BIRTHDAY=2000-01-01
-NOSH_GENDER=male
-NOSH_BIRTHGENDER=M
 EOF
 ```
 
@@ -132,19 +126,13 @@ The docker-compose.yml defines the specific containers that when working togethe
 | COUCHDB_URL  | URL of CouchDB instance | If using docker-compose, default should be http://127.0.0.1:5984 - Required
 | COUCHDB_USER | Admin user of CouchDB instance | Default is 'admin' - Required
 | COUCHDB_PASSWORD | Admin user password for CouchDB | Required
-| COUCHDB_ENCRYPT_PIN | 4-digt pin for CouchDB encryption/decryption | 1234 - Required
+| COUCHDB_ENCRYPT_PIN | 4-digt pin for CouchDB encryption/decryption | 1234 - Required. except for digitalocean instance
 | INSTANCE | Type of installation | [docker, digitalocean, local] - Required
 | AUTH | Default authentication framework | [magic, trustee] - Required
 | MAGIC_API_KEY | API Key for magic.link | Used if AUTH=magic
 | NOSH_ROLE | Role of initial user | [patient, provider]
 | NOSH_DISPLAY | Display name of initial user | "My Name" (enclose in double quotes) - Required
 | NOSH_EMAIL | Email address of inital user | my@email.address - Required
-| NOSH_FIRSTNAME | First name of initial user | My
-| NOSH_LASTNAME | Last name of initial user | Name
-| NOSH_SUFFIX | Suffix of initial user | MD
-| NOSH_BIRTHDAY | Date of birth of user | YYYY-MM-DD
-| NOSH_GENDER | Gender of user | [male, female, other, unknown]
-| NOSH_BIRTHGENDER | Gender assigned at birth of user | [M, F, OTH, UNK]
 | UMLS_KEY | UMLS API Key for SNOMED, LOINC, RXNorm | See Additional API Services for how to get this
 
 

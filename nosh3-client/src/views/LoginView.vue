@@ -320,6 +320,9 @@ export default defineComponent({
       state.sending = true
       const a = await axios.post(window.location.origin + '/auth/gnapAuth', body)
       state.sending = false
+      if (objectPath.has(a, 'data.interact.redirect')) {
+        window.location.href = a.data.interact.redirect
+      }
       window.location.href = a.data.interact.redirect
     }
     const onSubmit = async(values) => {
