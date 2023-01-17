@@ -230,19 +230,22 @@ async function gnapAuth(req, res) {
   const opts = {
     headers: headers
   }
+  console.log(opts)
   try {
     var response = await axios.post(urlFix(process.env.TRUSTEE_URL) + 'api/as/tx', body, opts)
+    console.log(opts)
+    console.log(doc)
+    var doc = response.data
+    var db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'gnap', settings.couchdb_auth)
+    objectPath.set(doc, '_id', 'nosh_' + uuidv4())
+    objectPath.set(doc, 'nonce', objectPath.get(body, 'interact.finish.nonce'))
+    objectPath.set(doc, 'route', req.body.route)
+    objectPath.set(doc, 'patient', req.body.patient)
+    await db.put(doc)
+    res.status(200).json(doc)
   } catch (e) {
     res.status(401).json(e)
   }
-  var doc = response.data
-  var db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'gnap', settings.couchdb_auth)
-  objectPath.set(doc, '_id', 'nosh_' + uuidv4())
-  objectPath.set(doc, 'nonce', objectPath.get(body, 'interact.finish.nonce'))
-  objectPath.set(doc, 'route', req.body.route)
-  objectPath.set(doc, 'patient', req.body.patient)
-  await db.put(doc)
-  res.status(200).json(doc)
 }
 
 async function gnapVerify(req, res) {
