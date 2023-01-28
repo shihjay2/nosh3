@@ -35,17 +35,17 @@ export default router
 // router.get('/api/:type/:id/_history/:vid', getSecuredResourceVersion) //vread
 router.get('/test', test)
 
-router.get('/api/:type', verifyJWT, querySecuredResource) //search
-router.post('/api/:type', verifyJWT, postSecuredResource) //create
-router.get('/api/:type/:id', verifyJWT, getSecuredResource) //read
-router.put('/api/:type/:id', verifyJWT, putSecuredResource) //update
-router.delete('/api/:type/:id', verifyJWT, deleteSecuredResource) //delete
-router.get('/api/:type/:id/_history/:vid', verifyJWT, getSecuredResourceVersion) //vread
+router.get('/api/:pid/:type', verifyJWT, querySecuredResource) //search
+router.post('/api/:pid/:type', verifyJWT, postSecuredResource) //create
+router.get('/api/:pid/:type/:id', verifyJWT, getSecuredResource) //read
+router.put('/api/:pid/:type/:id', verifyJWT, putSecuredResource) //update
+router.delete('/api/:pid/:type/:id', verifyJWT, deleteSecuredResource) //delete
+router.get('/api/:pid/:type/:id/_history/:vid', verifyJWT, getSecuredResourceVersion) //vread
 
 async function deleteSecuredResource(req, res) {
   var prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
-    prefix = res.local.payload._nosh.patient + '_'
+    prefix = req.params.pid + '_'
   }
   const startTime = performance.now()
   await sync(Case.snake(pluralize(req.params.type)))
@@ -83,7 +83,7 @@ async function deleteSecuredResource(req, res) {
 async function getSecuredResource(req, res) {
   var prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
-    prefix = res.local.payload._nosh.patient + '_'
+    prefix = req.params.pid + '_'
   }
   await sync(Case.snake(pluralize(req.params.type)))
   const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
@@ -99,7 +99,7 @@ async function getSecuredResource(req, res) {
 async function getSecuredResourceVersion(req, res) {
   var prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
-    prefix = res.local.payload._nosh.patient + '_'
+    prefix = req.params.pid + '_'
   }
   await sync(Case.snake(pluralize(req.params.type)))
   const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
@@ -136,7 +136,7 @@ async function getSecuredResourceVersion(req, res) {
 async function postSecuredResource(req, res) {
   var prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
-    prefix = res.local.payload._nosh.patient + '_'
+    prefix = req.params.pid + '_'
   }
   await sync(Case.snake(pluralize(req.params.type)))
   const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
@@ -173,7 +173,7 @@ async function postSecuredResource(req, res) {
 async function putSecuredResource(req, res) {
   var prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
-    prefix = res.local.payload._nosh.patient + '_'
+    prefix = req.params.pid + '_'
   }
   await sync(Case.snake(pluralize(req.params.type)))
   const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
@@ -210,7 +210,7 @@ async function putSecuredResource(req, res) {
 async function querySecuredResource(req, res) {
   var prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
-    prefix = res.local.payload._nosh.patient + '_'
+    prefix = req.params.pid + '_'
   }
   await sync(Case.snake(pluralize(req.params.type)))
   const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))

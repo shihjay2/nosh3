@@ -93,6 +93,9 @@ async function authenticate(req, res) {
     if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
       prefix = req.body.patient + '_'
       pin = await getPIN(req.body.patient)
+      if (!pin) {
+        res.status(401).send('Unauthorized - No PIN set')
+      }
     }
     const db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
     const result_users = await db_users.find({
@@ -169,6 +172,9 @@ async function gnapAuth(req, res) {
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.body.patient + '_'
     pin = await getPIN(req.body.patient)
+    if (!pin) {
+      res.status(401).send('Unauthorized - No PIN set')
+    }
   }
   var keys = await getKeys()
   if (keys.length === 0) {
@@ -230,11 +236,8 @@ async function gnapAuth(req, res) {
   const opts = {
     headers: headers
   }
-  console.log(opts)
   try {
     var response = await axios.post(urlFix(process.env.TRUSTEE_URL) + 'api/as/tx', body, opts)
-    console.log(opts)
-    console.log(doc)
     var doc = response.data
     var db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'gnap', settings.couchdb_auth)
     objectPath.set(doc, '_id', 'nosh_' + uuidv4())
@@ -276,6 +279,9 @@ async function gnapVerify(req, res) {
       if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
         prefix = patient_id + '_'
         pin = await getPIN(patient_id)
+        if (!pin) {
+          res.status(401).send('Unauthorized - No PIN set')
+        }
       }
       db.remove(result.docs[index])
       // subject must be in the response

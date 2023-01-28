@@ -58,6 +58,8 @@ AUTH=magic
 MAGIC_API_KEY=my_magic_api_key
 USPSTF_KEY=my_uspstf_key
 UMLS_KEY=my_umls_key
+NOSH_DISPLAY="My Name"
+NOSH_EMAIL=my@email.address
 EOF
 ```
 
@@ -154,6 +156,32 @@ NOSH 3 no longer has it's own built-in authenticator as there are too many barri
 &nbsp;  
 ### [US Preventive Services Task Force](https://www.uspreventiveservicestaskforce.org/apps/api.jsp) - this provides Care Opportunties guidance based on USPSTF guidelines
 #### 1. [Visit this site for instructions](https://www.uspreventiveservicestaskforce.org/apps/api.jsp)
+&nbsp;  
+## Endpoints
+#### For all instances besides patient NOSH on DigitalOcean App Platform:
+```
+https://yourdomain.xyz/start
+https://yourdomain.xyz/fhir/api/v1/Patient
+https://yourdomain.xyz/fhir/api/v1/Condition
+https://yourdomain.xyz/fhir/api/v1/MedicationStatement
+https://yourdomain.xyz/fhir/api/v1/AllergyIntolerance
+https://yourdomain.xyz/fhir/api/v1/Immunization
+```
+#### For patient NOSH on DigitalOcean App Platform:
+```
+https://nosh-app-xxx.ondigitalocean.app/app/chart/nosh_xxx
+https://nosh-app-xxx.ondigitalocean.app/api/nosh_xxx/Patient
+https://nosh-app-xxx.ondigitalocean.app/api/nosh_xxx/Condition
+https://nosh-app-xxx.ondigitalocean.app/api/nosh_xxx/MedicationStatement
+https://nosh-app-xxx.ondigitalocean.app/api/nosh_xxx/AllergyIntolerance
+https://nosh-app-xxx.ondigitalocean.app/api/nosh_xxx/Immunization
+```
+#### where nosh_xxx refers to the patient ID.
+#### For MD NOSH, there is a dashboard endpoint
+```
+https://yourdomain.xyz/app/dashboard
+```
+
 &nbsp;  
 ## Contributing To NOSH ChartingSystem
 

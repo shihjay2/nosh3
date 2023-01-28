@@ -287,9 +287,18 @@ function getNPI(vc) {
 }
 
 async function getPIN(patient_id) {
-  const db = new PouchDB('pins')
-  const result = await db.get(patient_id)
-  return result.pin
+  const db = new PouchDB('pins', {skip_setup: true})
+  var info = await db.info()
+  if (objectPath.has(info, 'error')) {
+    return false
+  }
+  try {
+    const result = await db.get(patient_id)
+    return result.pin
+  } catch (e) {
+    return false
+  }
+  
 }
 
 async function getUser(email) {
@@ -383,15 +392,12 @@ async function signatureHeader(resource, opts) {
     }
   }).join('')
   const signatureInputString = `(${components})${params}`
-  console.log(signatureInputString)
   parts.push(`"@signature-params": ${signatureInputString}`)
   const data = parts.join('\n')
   const signer = await createSigner(opts.parameters.alg, opts.key.privateKey)
   const signature = await signer(Buffer.from(data))
   objectPath.set(headers, 'Signature-Input', 'sig1=' + signatureInputString)
   objectPath.set(headers, 'Signature', 'sig1=:' + signature.toString('base64'))
-  const verify = crypto.createVerify('sha256').update(data).verify({key: opts.key.publicKey, format: 'jwk', padding: crypto.RSA_PKCS1_PADDING}, signature.toString('base64'), 'base64')
-  console.log(verify)
   return headers
 }
 
