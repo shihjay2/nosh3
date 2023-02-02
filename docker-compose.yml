@@ -17,6 +17,11 @@ services:
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.web.acme.email=example@example.com"
+      - "--certificatesresolvers.web.acme.storage=/acme/certs.json"
+      - "--certificatesresolvers.web.acme.httpchallenge.entrypoint=web"
+    labels:
+      - "traefik.enable=false"
       - "com.centurylinklabs.watchtower.scope=nosh"
   couchdb:
     image: couchdb:latest
@@ -34,11 +39,7 @@ services:
       - ./dbdata:/opt/couchdb/data
       - ./dbconfig:/opt/couchdb/etc/local.d
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.couchdb.loadbalancer.server.port=5984"
-      - "traefik.http.routers.couchdb.rule=PathPrefix(`/couchdb`)"
-      - "traefik.http.routers.couchdb.middlewares=couchdb-stripprefix"
-      - "traefik.http.middlewares.couchdb-stripprefix.stripprefix.prefixes=/couchdb"
+      - "traefik.enable=false"
       - "com.centurylinklabs.watchtower.scope=nosh"
   nosh:
     image: shihjay2/nosh3 
@@ -54,8 +55,17 @@ services:
       - ./.env
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=traefik_default"
       - "traefik.http.services.nosh.loadbalancer.server.port=4000"
-      - "traefik.http.routers.nosh.rule=PathPrefix(`/app`) || PathPrefix(`/fhir`) || PathPrefix(`/fetch`) || Path(`/oidc`) || PathPrefix(`/auth`) || Path(`/start`) || Path(`/ready`)"
+      - "traefik.http.routers.nosh.entrypoints=web"
+      - "traefik.http.routers.nosh.rule=Host(`example.com`)"
+      - "traefik.http.middlewares.nosh-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.nosh.middlewares=nosh-https-redirect"
+      - "traefik.http.routers.nosh-secure.entrypoints=websecure"
+      - "traefik.http.routers.nosh-secure.rule=Host(`example.com`)"
+      - "traefik.http.routers.nosh-secure.tls=true"
+      - "traefik.http.routers.nosh-secure.tls.certresolver=web"
+      - "traefik.http.routers.nosh-secure.service=nosh"
       - "com.centurylinklabs.watchtower.scope=nosh"
   watchtower:
     image: containrrr/watchtower
@@ -65,3 +75,6 @@ services:
     command: --interval 30 --scope nosh
     labels:
       - "traefik.enable=false"
+networks:
+  traefik_default:
+    external: true

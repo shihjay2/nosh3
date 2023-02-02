@@ -44,7 +44,18 @@ cd nosh
 wget https://raw.githubusercontent.com/shihjay2/nosh3/master/docker-compose.yml
 ```
 
-#### 3. Create the environment configuration file (below is an example for a clinical provider instance - mdNOSH)
+#### 3. Edit the docker-compose.yml
+```
+- "--certificatesresolvers.web.acme.email=example@example.com"
+```
+#### Line 20: Replace example@example.com with your email address
+```
+- "traefik.http.routers.nosh.rule=Host(`example.com`)"
+- "traefik.http.routers.nosh-secure.rule=Host(`example.com`)"
+```
+#### Lines 61 & 65: Replace example.com with your domain name
+
+#### 4. Create the environment configuration file (below is an example for a clinical provider instance - mdNOSH)
 
 ```
 cat << EOF > .env
@@ -87,13 +98,13 @@ or copy env from the GitHub repository and edit the file
 wget https://raw.githubusercontent.com/shihjay2/nosh3/master/env
 ```
 
-#### 4. Start the multi-container application
+#### 5. Start the multi-container application
 
 ```
-docker-compose up -d
+docker compose up -d
 ```
 
-When the process completes, check that all the containers have successfully started, by running docker-compose ps. If they are all working correctly, you should see output similar to the one below:
+When the process completes, check that all the containers have successfully started, by running `docker compose ps`. If they are all working correctly, you should see output similar to the one below:
 ```
 Network nosh3_default  Created
 Container couchdb      Started
@@ -102,7 +113,7 @@ Container nosh         Started
 Container router       Started
 ```
 
-#### 5. Open your browser and enter
+#### 6. Open your browser and enter
 ```
 http://localhost/start
 ```
