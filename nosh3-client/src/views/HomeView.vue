@@ -50,6 +50,7 @@
           <q-tooltip>Add Patient</q-tooltip>
         </q-btn>
         <q-btn flat dense round icon="sync" v-if="state.type !== 'mdnosh'" @click="openOIDC('','')">
+          <q-badge color="red" floating>{{ state.oidc_count }}</q-badge>
           <q-tooltip>Sync from EPIC or CMS Bluebutton</q-tooltip>
         </q-btn>
         <q-btn flat dense round icon="chat" @click="openList('communications', 'inbox')">
@@ -666,6 +667,7 @@ export default defineComponent({
       oidc_type: '',
       oidc_name: '',
       oidc_complete: false,
+      oidc_count: 0,
       // db
       auth: {},
       couchdb: '',
@@ -2104,6 +2106,19 @@ export default defineComponent({
           objectPath.set(state, b.state, c.docs.length)
         }
       }
+      var oidc = 0
+      if (state.oidc.length > 0) {
+        for (var d of state.oidc) {
+          if (d.docs.length > 0) {
+            for (var e of d.docs) {
+              if (e.rows.length > 0) {
+                oidc = oidc + e.rows.length
+              }
+            }
+          }
+        }
+      }
+      state.oidc_count = oidc
     }
     const updateToolbar = (toolbar) => {
       state.toolbarObject = toolbar

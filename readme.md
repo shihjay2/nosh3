@@ -16,7 +16,25 @@ NOSH ChartingSystem 3 is completely redesigned from the ground up.  Whereas NOSH
 #### 6. Graphs and growth charts with [Highcharts](https://github.com/highcharts/highcharts)
 #### 7. Care Opportunites
 &nbsp;  
-## Preparation:
+## Preparation for all installation methods:
+Make sure you have a Domain Name registered.  You can easily get one through [Namecheap](https://www.namecheap.com/) for a reasonable price.  Make sure you have created a CNAME with a wildcard (*) in addition to 1 A Record.  If using Namecheap, under your domain settings, click on Advanced DNS.  Below is an example of the Host Records section:
+
+| Type | Host | Value | TTL |
+| ------------ | ----------- | ------- | ---- |
+| A Record | @ | xxx.xxx.xx.x | 30 min |
+| CNAME Record | * | example.com | Automatic |
+
+## Easy Installation:
+```
+wget https://raw.githubusercontent.com/shihjay2/nosh3/do-install.sh
+chmod +x do-install.sh
+./do-install.sh
+```
+
+
+## Detailed Installation:
+
+### Preparation:
 
 The easiest way to install NOSH is through [Docker](https://www.docker.com/).  Follow the instructions below based on your operating system for how to download and install Docker Desktop.
 
@@ -29,7 +47,6 @@ The easiest way to install NOSH is through [Docker](https://www.docker.com/).  F
 Once Docker is installed, follow the next steps.
 &nbsp;  
 
-## Installation:
 
 #### 1. Create a new project directory
 
@@ -48,12 +65,14 @@ wget https://raw.githubusercontent.com/shihjay2/nosh3/master/docker-compose.yml
 ```
 - "--certificatesresolvers.web.acme.email=example@example.com"
 ```
-#### Line 20: Replace example@example.com with your email address
+#### Replace example@example.com with your email address (example line above)
 ```
+- "traefik.http.routers.couchdb.rule=Host(`db.example.com`)"
+- "traefik.http.routers.couchdb-secure.rule=Host(`db.example.com`)"
 - "traefik.http.routers.nosh.rule=Host(`example.com`)"
 - "traefik.http.routers.nosh-secure.rule=Host(`example.com`)"
 ```
-#### Lines 61 & 65: Replace example.com with your domain name
+#### Replace example.com with your domain name (example lines above, leave db. as is)
 
 #### 4. Create the environment configuration file (below is an example for a clinical provider instance - mdNOSH)
 

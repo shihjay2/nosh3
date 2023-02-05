@@ -11,6 +11,7 @@ services:
       - watchtower
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - ./traefik-acme:/acme
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
@@ -39,7 +40,18 @@ services:
       - ./dbdata:/opt/couchdb/data
       - ./dbconfig:/opt/couchdb/etc/local.d
     labels:
-      - "traefik.enable=false"
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik_default"
+      - "traefik.http.services.couchdb.loadbalancer.server.port=5984"
+      - "traefik.http.routers.couchdb.entrypoints=web"
+      - "traefik.http.routers.couchdb.rule=Host(`db.example.com`)"
+      - "traefik.http.middlewares.couchdb-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.couchdb.middlewares=couchdb-https-redirect"
+      - "traefik.http.routers.couchdb-secure.entrypoints=websecure"
+      - "traefik.http.routers.couchdb-secure.rule=Host(`db.example.com`)"
+      - "traefik.http.routers.couchdb-secure.tls=true"
+      - "traefik.http.routers.couchdb-secure.tls.certresolver=web"
+      - "traefik.http.routers.couchdb-secure.service=couchdb"
       - "com.centurylinklabs.watchtower.scope=nosh"
   nosh:
     image: shihjay2/nosh3 

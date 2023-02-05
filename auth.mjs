@@ -122,7 +122,11 @@ async function authenticate(req, res) {
           "oidc_relay_url": process.env.OIDC_RELAY_URL
         }
       }
-      objectPath.set(payload, '_noshDB', urlFix(process.env.COUCHDB_URL))
+      if (process.env.INSTANCE == 'dev') {
+        objectPath.set(payload, '_noshDB', urlFix(req.protocol + '://' + req.hostname + '/couchdb'))
+      } else {
+        objectPath.set(payload, '_noshDB', urlFix(process.env.COUCHDB_URL))
+      }
       if (process.env.AUTH == 'trustee') {
         objectPath.set(payload, '_nosh.trustee', urlFix(process.env.TRUSTEE_URL) )
       }
@@ -352,7 +356,11 @@ async function gnapVerify(req, res) {
           }
           objectPath.set(payload, '_nosh', nosh)
           objectPath.set(payload, '_noshAuth', process.env.AUTH)
-          objectPath.set(payload, '_noshDB', urlFix(process.env.COUCHDB_URL))
+          if (process.env.INSTANCE == 'dev') {
+            objectPath.set(payload, '_noshDB', urlFix(req.protocol + '://' + req.hostname + '/couchdb'))
+          } else {
+            objectPath.set(payload, '_noshDB', urlFix(process.env.COUCHDB_URL))
+          }
           const api = {
             "uspstf_key": process.env.USPSTF_KEY,
             "umls_key": process.env.UMLS_KEY,

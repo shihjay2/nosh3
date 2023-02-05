@@ -117,15 +117,6 @@ export default defineComponent({
           objectPath.set(body, 'type', 'epic')
           objectPath.set(body, 'origin_uri', location.protocol + '//' + location.host + location.pathname + '?oidc=epic')
           objectPath.set(body, 'response_uri', location.protocol + '//' + location.host + location.pathname + '?oidc=epic')
-          var a = await axios.post(window.location.origin + '/oidc', {url: type + 'metadata'})
-          for (var b of a.data.rest[0].security.extension[0].extension) {
-            if (b.url == 'authorize') {
-              objectPath.set(body, 'fhir_auth_url', b.valueUri)
-            }
-            if (b.url == 'token') {
-              objectPath.set(body, 'fhir_token_url', b.valueUri)
-            }
-          }
         } else {
           if (type === 'cms_bluebutton') {
             state.base_url = 'https://api.bluebutton.cms.gov/'

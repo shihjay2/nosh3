@@ -8,7 +8,7 @@ WORKDIR /usr/src/app/nosh3-client
 RUN npm ci
 RUN npm run build
 
-FROM node:slim
+FROM node:alpine
 LABEL Maintainer Michael Shihjay Chen <shihjay2@gmail.com>
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/nosh3-client/dist ./nosh3-client/dist
