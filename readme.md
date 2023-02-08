@@ -26,7 +26,7 @@ Make sure you have a Domain Name registered.  You can easily get one through [Na
 
 ## Easy Installation:
 ```
-wget https://raw.githubusercontent.com/shihjay2/nosh3/do-install.sh
+wget https://raw.githubusercontent.com/shihjay2/nosh3/main/do-install.sh
 chmod +x do-install.sh
 ./do-install.sh
 ```
