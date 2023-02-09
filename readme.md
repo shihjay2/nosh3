@@ -24,18 +24,6 @@ Make sure you have a Domain Name registered.  You can easily get one through [Na
 | A Record | @ | xxx.xxx.xx.x | 30 min |
 | CNAME Record | * | example.com | Automatic |
 
-## Easy Installation:
-```
-wget https://raw.githubusercontent.com/shihjay2/nosh3/main/do-install.sh
-chmod +x do-install.sh
-./do-install.sh
-```
-
-
-## Detailed Installation:
-
-### Preparation:
-
 The easiest way to install NOSH is through [Docker](https://www.docker.com/).  Follow the instructions below based on your operating system for how to download and install Docker Desktop.
 
 #### [Mac](https://docs.docker.com/desktop/install/mac-install/)
@@ -47,6 +35,21 @@ The easiest way to install NOSH is through [Docker](https://www.docker.com/).  F
 Once Docker is installed, follow the next steps.
 &nbsp;  
 
+## Easy Installation:
+```
+wget https://raw.githubusercontent.com/shihjay2/nosh3/main/do-install.sh
+chmod +x do-install.sh
+./do-install.sh
+```
+
+or if you have curl installed
+```
+curl -O https://raw.githubusercontent.com/shihjay2/nosh3/main/do-install.sh
+chmod +x do-install.sh
+./do-install.sh
+```
+
+## Detailed Installation:
 
 #### 1. Create a new project directory
 

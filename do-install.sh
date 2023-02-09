@@ -25,8 +25,8 @@ read -e -p "Enter your USPSTF API Key for NOSH: " -i "" USPSTF_KEY
 read -e -p "Enter your UMLS API Key for NOSH: " -i "" UMLS_KEY
 mkdir nosh3
 cd nosh3
-curl -o- https://raw.githubusercontent.com/shihjay2/nosh3/main/docker-compose.yml
-curl -o- https://raw.githubusercontent.com/shihjay2/nosh3/main/.env
+curl -O https://raw.githubusercontent.com/shihjay2/nosh3/main/docker-compose.yml
+curl -O https://raw.githubusercontent.com/shihjay2/nosh3/main/.env
 sed -i "s/example@example.com/$EMAIL/" ./docker-compose.yml
 sed -i "s/example.com/$ROOT_DOMAIN/" ./docker-compose.yml
 sed -i "s/example.com/$ROOT_DOMAIN/" ./.env
