@@ -37,16 +37,12 @@ Once Docker is installed, follow the next steps.
 
 ## Easy Installation:
 ```
-wget https://raw.githubusercontent.com/shihjay2/nosh3/main/do-install.sh
-chmod +x do-install.sh
-./do-install.sh
+sudo wget -qO- https://raw.githubusercontent.com/shihjay2/nosh3/main/do-install.sh | bash
 ```
 
 or if you have curl installed
 ```
-curl -O https://raw.githubusercontent.com/shihjay2/nosh3/main/do-install.sh
-chmod +x do-install.sh
-./do-install.sh
+sudo curl -o- https://raw.githubusercontent.com/shihjay2/nosh3/main/do-install.sh | bash
 ```
 
 ## Detailed Installation:
