@@ -744,9 +744,11 @@ export default defineComponent({
     const loadDashboard = () => {
       state.user = auth.user
       state.recent_charts = state.user.charts.slice(0, 10)
-      if (state.user.unsigned.length > 0) {
-        for (var b in state.user.unsigned) {
-          objectPath.set(state, 'user.unsigned.' + b + '.date1', 'Date Started: ' + moment.unix(state.user.unsigned[b].date).format('YYYY-MM-DD HH:mm'))
+      if (objectPath.has(state, 'user.unsigned')) {
+        if (state.user.unsigned.length > 0) {
+          for (var b in state.user.unsigned) {
+            objectPath.set(state, 'user.unsigned.' + b + '.date1', 'Date Started: ' + moment.unix(state.user.unsigned[b].date).format('YYYY-MM-DD HH:mm'))
+          }
         }
       }
     }
