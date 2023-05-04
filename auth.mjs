@@ -122,6 +122,20 @@ async function authenticate(req, res) {
           "oidc_relay_url": process.env.OIDC_RELAY_URL
         }
       }
+      if (!objectPath.has(result_users, 'docs.0.defaults')) {
+        const user_doc = result_users.docs[0]
+        const defaults = {
+          "class": 'AMB',
+          "type": '14736009',
+          "serviceType": '124',
+          "serviceCategory": '17',
+          "appointmentType": 'ROUTINE',
+          "category": '34109-9',
+          "code": '34108-1'
+        }
+        objectPath.set(user_doc, 'defaults', defaults)
+        await sync('users', user_doc)
+      }
       if (process.env.INSTANCE == 'dev') {
         objectPath.set(payload, '_noshDB', urlFix(req.protocol + '://' + req.hostname + '/couchdb'))
       } else {
@@ -311,7 +325,7 @@ async function gnapVerify(req, res) {
         })
         // assume access token is JWT that contains verifiable credentials and if valid, attach to payload
         const jwt = response.data.access_token.value
-        const verify_results = verify(jwt)
+        const verify_results = await verify(jwt)
         if (verify_results.status === 'isValid') {
           if (objectPath.has(verify_results, 'payload.vc')) {
             objectPath.set(nosh, 'npi', getNPI(objectPath.get(verify_results, 'payload.vc')))
