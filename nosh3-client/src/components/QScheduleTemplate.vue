@@ -99,14 +99,8 @@
         </template>
         <template #day-container="{ scope: { days }}">
           <template v-if="hasDate(days)">
-            <div
-              class="day-view-current-time-indicator"
-              :style="style()"
-            />
-            <div
-              class="day-view-current-time-line"
-              :style="style()"
-            />
+            <div class="day-view-current-time-indicator" :style="style()"></div>
+            <div class="day-view-current-time-line" :style="style()"></div>
           </template>
         </template>
       </q-calendar-day>
@@ -154,14 +148,8 @@
         </template>
         <template #day-container="{ scope: { days }}">
           <template v-if="hasDate(days)">
-            <div
-              class="day-view-current-time-indicator"
-              :style="style()"
-            />
-            <div
-              class="day-view-current-time-line"
-              :style="style()"
-            />
+            <div class="day-view-current-time-indicator" :style="style()"></div>
+            <div class="day-view-current-time-line" :style="style()"></div>
           </template>
         </template>
       </q-calendar-day>
@@ -375,7 +363,9 @@ export default defineComponent({
       var doc = await localDB.get(state.chosenEvent.id)
       objectPath.set(state, 'fhir', doc)
       objectPath.set(state, 'fhir.status', status)
+      emit('loading')
       await sync(props.resource, props.online, props.patient, true, state.fhir)
+      emit('loading')
       $q.notify({
         message: 'Appointment status changed to ' + Case.title(status) + '!',
         color: 'primary',
@@ -501,7 +491,9 @@ export default defineComponent({
             events[1].side = 'full'
           }
         }
+        console.log(state.eventsMapped)
         state.eventsMapped = events
+        console.log(state.eventsMapped)
       }
     }
     const getTitle = (data) => {

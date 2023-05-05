@@ -409,7 +409,11 @@ export default defineComponent({
           if (props.provider) {
             state.fhir.author[0].reference = props.user.reference
             state.fhir.author[0].display = props.user.display
-            state.form.author = props.user.reference
+            if (props.category === 'section' && props.resource === 'compositions') {
+              state.form.section_author = props.user.reference
+            } else {
+              state.form.author = props.user.reference
+            }
           }
         }
         if (props.resource === 'conditions' ||

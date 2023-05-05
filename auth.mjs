@@ -128,13 +128,12 @@ async function authenticate(req, res) {
           "class": 'AMB',
           "type": '14736009',
           "serviceType": '124',
-          "serviceCategory": '17',
+          "serviceCategory": ' 17',
           "appointmentType": 'ROUTINE',
           "category": '34109-9',
           "code": '34108-1'
         }
         objectPath.set(user_doc, 'defaults', defaults)
-        console.log(user_doc)
         await db_users.put(user_doc)
       }
       if (process.env.INSTANCE == 'dev') {
@@ -343,6 +342,20 @@ async function gnapVerify(req, res) {
             "jwt": jwt
           }
           if (result_users.docs.length > 0) {
+            if (!objectPath.has(result_users, 'docs.0.defaults')) {
+              const user_doc = await db_users.get(result_users.docs[0]._id)
+              const defaults = {
+                "class": 'AMB',
+                "type": '14736009',
+                "serviceType": '124',
+                "serviceCategory": ' 17',
+                "appointmentType": 'ROUTINE',
+                "category": '34109-9',
+                "code": '34108-1'
+              }
+              objectPath.set(user_doc, 'defaults', defaults)
+              await db_users.put(user_doc)
+            }
             user_id = result_users.docs[0].id
             if (objectPath.has(verify_results, 'payload._nosh')) {
               // there is an updated user object from wallet, so sync to this instance
