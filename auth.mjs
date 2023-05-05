@@ -134,7 +134,8 @@ async function authenticate(req, res) {
           "code": '34108-1'
         }
         objectPath.set(user_doc, 'defaults', defaults)
-        await sync('users', user_doc)
+        console.log(user_doc)
+        await sync('users', '', true, user_doc)
       }
       if (process.env.INSTANCE == 'dev') {
         objectPath.set(payload, '_noshDB', urlFix(req.protocol + '://' + req.hostname + '/couchdb'))
