@@ -123,7 +123,7 @@ async function authenticate(req, res) {
         }
       }
       if (!objectPath.has(result_users, 'docs.0.defaults')) {
-        const user_doc = result_users.docs[0]
+        const user_doc = await db_users.get(result_users.docs[0]._id)
         const defaults = {
           "class": 'AMB',
           "type": '14736009',
@@ -135,7 +135,7 @@ async function authenticate(req, res) {
         }
         objectPath.set(user_doc, 'defaults', defaults)
         console.log(user_doc)
-        await sync('users', '', true, user_doc)
+        await db_users.put(user_doc)
       }
       if (process.env.INSTANCE == 'dev') {
         objectPath.set(payload, '_noshDB', urlFix(req.protocol + '://' + req.hostname + '/couchdb'))
