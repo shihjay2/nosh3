@@ -409,7 +409,10 @@ export default defineComponent({
           if (props.provider) {
             state.fhir.author[0].reference = props.user.reference
             state.fhir.author[0].display = props.user.display
+            console.log(props.category)
+            console.log(props.resource)
             if (props.category === 'section' && props.resource === 'compositions') {
+              console.log(state.form)
               state.form.section_author = props.user.reference
             } else {
               state.form.author = props.user.reference
@@ -455,6 +458,12 @@ export default defineComponent({
           if (props.provider) {
             objectPath.set(state, 'fhir.participant.0.individual.reference', props.user.reference)
             objectPath.set(state, 'form.participant', [props.user.reference])
+          }
+        }
+        if (props.resource === 'appointments') {
+          if (props.provider) {
+            objectPath.set(state, 'fhir.participant.1.actor', props.user.reference)
+            objectPath.set(state, 'form.practitioner', props.user.reference)
           }
         }
         // default status
