@@ -409,14 +409,7 @@ export default defineComponent({
           if (props.provider) {
             state.fhir.author[0].reference = props.user.reference
             state.fhir.author[0].display = props.user.display
-            console.log(props.category)
-            console.log(props.resource)
-            if (props.category === 'section' && props.resource === 'compositions') {
-              console.log(state.form)
-              state.form.section_author = props.user.reference
-            } else {
-              state.form.author = props.user.reference
-            }
+            state.form.author = props.user.reference
           }
         }
         if (props.resource === 'conditions' ||
@@ -540,6 +533,10 @@ export default defineComponent({
         state.fhir1 = JSON.stringify(state.fhir, null, "  ")
         if (state.index == 'add') {
           state.index = getIndex()
+          if (props.resource === 'compositions') {
+            console.log('add composition')
+            state.form.section_author = props.user.reference
+          }
         } else {
           getForm(state.index)
         }
