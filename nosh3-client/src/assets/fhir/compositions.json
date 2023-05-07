@@ -216,6 +216,7 @@
       {
         "id": "section_author",
         "label": "Author",
+        "modelParent": "section",
         "modelRoot": "author",
         "modelArray": true,
         "model": "reference",
