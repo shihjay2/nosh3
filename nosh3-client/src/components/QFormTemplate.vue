@@ -534,8 +534,11 @@ export default defineComponent({
         if (state.index == 'add') {
           state.index = getIndex()
           if (props.resource === 'compositions') {
-            objectPath.set(state, 'form.section_author', [props.user.reference])
+            objectPath.set(state, 'fhir.section.' + state.index + '.author.0.reference', props.user.reference)
+            objectPath.set(state, 'form.section_author', props.user.reference)
             console.log(state.form)
+            console.log(props.user)
+            console.log(props.user.reference)
           }
         } else {
           getForm(state.index)
