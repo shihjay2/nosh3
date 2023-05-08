@@ -539,6 +539,7 @@ export default defineComponent({
           }
         } else {
           getForm(state.index)
+          console.log(state.form)
         }
         // load default object
         if (JSON.stringify(props.default) !== '{}') {
