@@ -1182,7 +1182,7 @@ export default defineComponent({
         if (value !== 'other') {
           objectPath.set(state, 'section_default.section_code', value)
         }
-        objectPath.set(state, 'section_default.section_author', 'Practitioner/' + props.user.id)
+        // objectPath.set(state, 'section_default.section_author', 'Practitioner/' + props.user.id)
         await nextTick()
         // setTimeout(() => {
           state.dialogSection = true
