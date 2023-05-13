@@ -1182,11 +1182,8 @@ export default defineComponent({
         if (value !== 'other') {
           objectPath.set(state, 'section_default.section_code', value)
         }
-        // objectPath.set(state, 'section_default.section_author', 'Practitioner/' + props.user.id)
         await nextTick()
-        // setTimeout(() => {
-          state.dialogSection = true
-        // }, 200)
+        state.dialogSection = true
       }
       if (props.resource === 'service_requests') {
         console.log(value)
@@ -1309,10 +1306,12 @@ export default defineComponent({
       } else {
         objectPath.set(doc1, 'activity.0.reference', Case.pascal(pluralize.singular(props.resource)) + '/' + doc.id)
       }
+      emit('loading')
       await sync('care_plans', props.online, props.patient, true, doc1)
       var doc2 = await localDB1.get(state.careplanDoc.id)
       state.careplanDoc = doc2
       emit('care-plan', doc2)
+      emit('loading')
       $q.notify({
         message: 'The ' + pluralize.singular(props.resource) + ' is now associated with the active care plan.',
         color: 'primary',
