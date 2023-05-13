@@ -796,7 +796,7 @@ export default defineComponent({
         objectPath.set(arr, b + '.status', 'completed')
         await localDB.put(arr[b])
       }
-      await sync('communications', state.online, state.patient, false)
+      await sync('communications', false, state.patient, false)
     }
     const openChart = (id) => {
       state.patientSearch = ''

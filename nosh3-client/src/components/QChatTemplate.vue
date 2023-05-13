@@ -284,7 +284,7 @@ export default defineComponent({
       if (objectPath.has(state, 'last.id')) {
         objectPath.set(fhir, 'inResponseTo.reference', 'Communication/' + props.id)
       }
-      await sync(props.resource, props.online, props.patient, true, fhir)
+      await sync(props.resource, false, props.patient, true, fhir)
       if (props.id == 'add') {
         emit('set-chat-id', id)
       } else {

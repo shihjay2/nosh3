@@ -610,7 +610,7 @@ export default defineComponent({
                   objectPath.set(bmi_doc, 'interpretation.0.coding.0.status', 'HU')
                   objectPath.set(bmi_doc, 'interpretation.0.coding.0.display', 'Significantly High')
                 }
-                await sync(state.resource, props.online, props.patient, true, bmi_doc)
+                await sync(state.resource, false, props.patient, true, bmi_doc)
                 $q.notify({
                   message: 'BMI calculated and saved!',
                   color: 'primary',
@@ -642,7 +642,7 @@ export default defineComponent({
               objectPath.set(task_doc, 'description', 'requested')
               objectPath.set(task_doc, 'authoredOn', moment().format('YYYY-MM-DD HH:mm'))
               objectPath.set(task_doc, 'lastModified', moment().format('YYYY-MM-DD HH:mm'))
-              await sync(state.resource, props.online, props.patient, true, task_doc)
+              await sync(state.resource, false, props.patient, true, task_doc)
               $q.notify({
                 message: 'Task created.',
                 color: 'primary',

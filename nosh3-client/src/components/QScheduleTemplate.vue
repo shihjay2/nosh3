@@ -364,7 +364,7 @@ export default defineComponent({
       objectPath.set(state, 'fhir', doc)
       objectPath.set(state, 'fhir.status', status)
       emit('loading')
-      await sync(props.resource, props.online, props.patient, true, state.fhir)
+      await sync(props.resource, false, props.patient, true, state.fhir)
       emit('loading')
       $q.notify({
         message: 'Appointment status changed to ' + Case.title(status) + '!',

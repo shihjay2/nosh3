@@ -96,7 +96,7 @@ export default defineComponent({
     const deleteRow = async(index) => {
       state.result[state.data.category].splice(index,1)
       state.rows.splice(index,1)
-      await sync(state.data.resource, props.online, props.patient, true, state.result)
+      await sync(state.data.resource, false, props.patient, true, state.result)
       await syncEmailToUser(state.data.resource, state.data.category, state.result, props.patient, props.online)
     }
     const fhirMap = () => {

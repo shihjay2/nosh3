@@ -804,7 +804,7 @@ export default defineComponent({
         state.loading = true
         await syncAll(state.online, state.patient)
         state.loading = false
-      }, 1800000)
+      }, 60000)
     })
     watch(() => state.showTimeline, async(newVal) => {
       if (newVal) {
@@ -833,7 +833,7 @@ export default defineComponent({
     })
     watch(() => state.user, async(newVal) => {
       if (newVal) {
-        await sync('users', state.online, state.patient, true, newVal)
+        await sync('users', false, state.patient, true, newVal)
       }
     })
     const addendumEncounter = async() => {
@@ -1076,7 +1076,7 @@ export default defineComponent({
       const localDB = new PouchDB(prefix + 'tasks')
       var a = await localDB.get(id)
       objectPath.set(a, 'status', 'completed')
-      await sync('tasks', state.online, state.patient, true, a)
+      await sync('tasks', false, state.patient, true, a)
       $q.notify({
         message: 'Task marked as completed!',
         color: 'primary',
@@ -1245,7 +1245,7 @@ export default defineComponent({
         objectPath.set(arr, b + '.status', 'completed')
         await localDB.put(arr[b])
       }
-      await sync('communications', state.online, state.patient, false)
+      await sync('communications', false, state.patient, false)
       $q.notify({
         message: 'Message thread is now locked!',
         color: 'primary',
@@ -1678,7 +1678,7 @@ export default defineComponent({
           doc.section.splice(g,1)
         }
         doc.section.push(section)
-        await sync('compositions', state.online, state.patient, true, doc)
+        await sync('compositions', false, state.patient, true, doc)
         const h = new PouchDB(prefix + 'compositions')
         var doc1 = await h.get(doc.id)
         state.compositionDoc = doc1
@@ -1834,7 +1834,7 @@ export default defineComponent({
           }
           var doc = results.docs[a]
           objectPath.set(doc, item.model, base.finalStatus)
-          await sync(resource1, state.online, state.patient, true, doc)
+          await sync(resource1, false, state.patient, true, doc)
           objectPath.set(entry, 'resource', doc)
           entries.push(entry)
         }
@@ -1845,7 +1845,7 @@ export default defineComponent({
         entries.push({resource: results1})
       }
       objectPath.set(bundleDoc, 'entry', entries)
-      await sync('bundles', state.online, state.couchdb, state.auth, state.pin, state.patient, true, bundleDoc)
+      await sync('bundles', false, state.couchdb, state.auth, state.pin, state.patient, true, bundleDoc)
       // remove from unsigned
       var h = state.user.unsigned.map(g => g.id).indexOf(state.encounter)
       if (h !== -1) {
@@ -1880,7 +1880,7 @@ export default defineComponent({
       composition_doc.date = moment().format('YYYY-MM-DD HH:mm')
       composition_doc.confidentiality = 'N'
       composition_doc.status = 'final'
-      await sync('compositions', state.online, state.patient, true, composition_doc)
+      await sync('compositions', false, state.patient, true, composition_doc)
       var composition_entry = {}
       objectPath.set(composition_entry, 'resource', composition_doc)
       entries.push(composition_entry)
@@ -1918,7 +1918,7 @@ export default defineComponent({
         entries.push({resource: results1})
       }
       objectPath.set(bundleDoc, 'entry', entries)
-      await sync('bundles', state.online, state.patient, true, bundleDoc)
+      await sync('bundles', false, state.patient, true, bundleDoc)
       $q.notify({
         message: 'Service Request signed!',
         color: 'primary',
@@ -1985,7 +1985,7 @@ export default defineComponent({
       composition_doc.date = moment().format('YYYY-MM-DD HH:mm')
       composition_doc.confidentiality = 'N'
       composition_doc.status = 'final'
-      await sync('compositions', state.online, state.patient, true, composition_doc)
+      await sync('compositions', false, state.patient, true, composition_doc)
       var composition_entry = {}
       objectPath.set(composition_entry, 'resource', composition_doc)
       entries.push(composition_entry)
@@ -2023,7 +2023,7 @@ export default defineComponent({
         entries.push({resource: results1})
       }
       objectPath.set(bundleDoc, 'entry', entries)
-      await sync('bundles', state.online, state.patient, true, bundleDoc)
+      await sync('bundles', false, state.patient, true, bundleDoc)
       $q.notify({
         message: 'Prescription signed!',
         color: 'primary',

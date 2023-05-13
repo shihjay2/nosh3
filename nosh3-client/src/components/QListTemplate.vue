@@ -555,7 +555,7 @@ export default defineComponent({
       if (props.resource === 'medication_statements') {
         objectPath.set(doc, 'informationSource.reference', props.user.reference)
       }
-      await sync(props.resource, props.online, props.patient, true, doc)
+      await sync(props.resource, false, props.patient, true, doc)
       await reloadList()
       $q.notify({
         message: 'The ' + pluralize.singular(props.resource.replace('_statements', '')) + ' has been marked as confirmed.',
@@ -629,7 +629,7 @@ export default defineComponent({
           }
         }
       }
-      await sync(props.resource, props.online, props.patient, false)
+      await sync(props.resource, false, props.patient, false)
       await reloadList()
     }
     const importRow = async(doc, index, origin) => {
@@ -651,7 +651,7 @@ export default defineComponent({
           objectPath.set(doc, 'subject.reference', 'Patient/' + props.patient)
         }
       }
-      await sync(props.resource, props.online, props.patient, true, doc)
+      await sync(props.resource, false, props.patient, true, doc)
       emit('remove-oidc', index, props.resource, origin)
       await reloadList()
       $q.notify({
@@ -669,7 +669,7 @@ export default defineComponent({
       } else {
         objectPath.set(doc, 'status', 'stopped')
       }
-      await sync(props.resource, props.online, props.patient, true, doc)
+      await sync(props.resource, false, props.patient, true, doc)
       $q.notify({
         message: 'The ' + pluralize.singular(props.resource.replace('_statements', '')) + ' has been inactivated.',
         color: 'primary',
@@ -1246,7 +1246,7 @@ export default defineComponent({
       } else {
         objectPath.set(doc, 'status', 'active')
       }
-      await sync(props.resource, props.online, props.patient, true, doc)
+      await sync(props.resource, false, props.patient, true, doc)
       $q.notify({
         message: 'The ' + pluralize.singular(props.resource.replace('_statements', '')) + ' has been reactivated.',
         color: 'primary',
@@ -1263,7 +1263,7 @@ export default defineComponent({
     const removeActivity = async(doc, index1, index) => {
       doc.activity.splice(index1,1)
       state.rows[index].activity.splice(index1,1)
-      await sync('care_plans', props.online, props.patient, true, doc)
+      await sync('care_plans', false, props.patient, true, doc)
       var doc2 = await localDB1.get(doc.id)
       state.careplanDoc = doc2
       emit('care-plan', doc2)
@@ -1279,7 +1279,7 @@ export default defineComponent({
     const removeSection = async(doc, index1, index) => {
       doc.section.splice(index1,1)
       state.rows[index].section.splice(index1,1)
-      await sync('compositions', props.online, props.patient, true, doc)
+      await sync('compositions', false, props.patient, true, doc)
       var doc2 = await localDB2.get(doc.id)
       state.compositionDoc = doc2
       emit('composition', doc2)
@@ -1307,7 +1307,7 @@ export default defineComponent({
         objectPath.set(doc1, 'activity.0.reference', Case.pascal(pluralize.singular(props.resource)) + '/' + doc.id)
       }
       emit('loading')
-      await sync('care_plans', props.online, props.patient, true, doc1)
+      await sync('care_plans', false, props.patient, true, doc1)
       var doc2 = await localDB1.get(state.careplanDoc.id)
       state.careplanDoc = doc2
       emit('care-plan', doc2)
@@ -1338,7 +1338,7 @@ export default defineComponent({
     }
     const setEncounter = async(doc) => {
       objectPath.set(doc, 'context.encounter.0.reference', 'Encounter/' + props.encounter)
-      await sync(props.resource, props.online, props.patient, true, doc)
+      await sync(props.resource, false, props.patient, true, doc)
       $q.notify({
         message: 'The ' + pluralize.singular(props.resource) + ' is now associated with the active encounter.',
         color: 'primary',
@@ -1445,7 +1445,7 @@ export default defineComponent({
       if (doc.resourceType === 'RelatedPerson') {
         objectPath.set(user, 'role', 'proxy')
       }
-      await sync('users', props.online, props.patient, true, user)
+      await sync('users', false, props.patient, true, user)
       $q.notify({
         message: message,
         color: 'primary',

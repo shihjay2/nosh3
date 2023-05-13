@@ -59,7 +59,7 @@ export function common() {
       diff: opts.diff
     }
     await db.put(doc)
-    await sync('activities', online, patient_id)
+    await sync('activities', false, patient_id)
   }
   const fetchJSON = async(type, online) => {
     if (localStorage.getItem(type) === null) {
@@ -941,7 +941,7 @@ export function common() {
           if (a !== undefined) {
             if (result_users.docs[0].email !== a.value) {
               result_users.docs[0].email = a.value
-              await sync('users', online, patient_id, true, result_users.docs[0])
+              await sync('users', false, patient_id, true, result_users.docs[0])
             }
           }
         }
@@ -949,7 +949,7 @@ export function common() {
           var c = removeTags(doc.text.div)
           if (result_users.docs[0].display !== c) {
             result_users.docs[0].display = c
-            await sync('users', online, patient_id, true, result_users.docs[0])
+            await sync('users', false, patient_id, true, result_users.docs[0])
           }
         }
       }
@@ -992,7 +992,7 @@ export function common() {
         for (var a in pending_result.docs) {
           if (moment(pending_result.docs[a].sent).isBefore()) {
             objectPath.set(pending_result, 'docs.' + a + '.status', 'in-progress')
-            await sync('communications', online, patient_id, true, pending_result.docs[a])
+            await sync('communications', false, patient_id, true, pending_result.docs[a])
           }
         }
       }
