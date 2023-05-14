@@ -800,11 +800,12 @@ export default defineComponent({
         await updateInbox(user)
         console.log('Inbox updated')
       }, 5000)
-      syncTimer = setInterval(async() => {
-        state.loading = true
-        await syncAll(state.online, state.patient)
-        state.loading = false
-      }, 60000)
+      await syncAll(state.online, state.patient)
+      // syncTimer = setInterval(async() => {
+      //   state.loading = true
+      //   await syncAll(state.online, state.patient)
+      //   state.loading = false
+      // }, 60000)
     })
     watch(() => state.showTimeline, async(newVal) => {
       if (newVal) {
