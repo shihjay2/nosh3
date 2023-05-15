@@ -904,7 +904,7 @@ export function common() {
         console.log('PouchDB encrypted sync complete for DB: ' + resource )
       } else {
         const remote = new PouchDB(couchdb + prefix + resource, auth)
-        await local.sync(remote).on('complete', () => {
+        await local.sync(remote,{live:true, retry:true}).on('complete', () => {
           console.log('PouchDB sync complete for DB: ' + resource)
         }).on('error', (err) => {
           console.log(err)
