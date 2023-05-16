@@ -912,7 +912,7 @@ export function common() {
       }
     }
   }
-  const sync = async(resource, online, patient_id, save=false, data={}) => {
+  const sync = async(resource, online, patient_id, save=false, data={}, first=false) => {
     const auth_store = useAuthStore()
     const couchdb = auth_store.couchdb
     const auth = {fetch: (url, opts) => {
@@ -953,24 +953,37 @@ export function common() {
     }
     if (online) {
       const remote = new PouchDB(couchdb + prefix + resource, auth)
-      await local.sync(remote, {live:true, retry:true}).on('complete', async() => {
-        if (resource !== 'users') {
-          await local.loadEncrypted()
-          console.log('PouchDB encrypted sync complete for DB: ' + resource )
-        } else {
-          console.log('PouchDB sync complete for DB: ' + resource)
-        }
-      }).on('error', (err) => {
-        console.log(err)
-      })
+      if (first) {
+        await local.sync(remote).on('complete', async() => {
+          if (resource !== 'users') {
+            await local.loadEncrypted()
+            console.log('PouchDB encrypted sync complete for DB: ' + resource )
+          } else {
+            console.log('PouchDB sync complete for DB: ' + resource)
+          }
+        }).on('error', (err) => {
+          console.log(err)
+        })
+      } else {
+        local.sync(remote, {live:true, retry:true}).on('complete', async() => {
+          if (resource !== 'users') {
+            await local.loadEncrypted()
+            console.log('PouchDB encrypted sync complete for DB: ' + resource )
+          } else {
+            console.log('PouchDB sync complete for DB: ' + resource)
+          }
+        }).on('error', (err) => {
+          console.log(err)
+        })
+      }
     }
   }
-  const syncAll = async(online, patient_id) => {
+  const syncAll = async(online, patient_id, first) => {
     var resources = await fetchJSON('resources', online)
     objectPath.set(syncState, 'total', resources.rows.length)
     objectPath.set(syncState, 'complete', 0)
     for (var resource of resources.rows) {
-      await sync(resource.resource, online, patient_id, false)
+      await sync(resource.resource, online, patient_id, false, {}, first)
       objectPath.set(syncState, 'complete', objectPath.get(syncState, 'complete') + 1)
     }
   }
