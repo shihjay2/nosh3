@@ -855,7 +855,7 @@ export function common() {
       }
     ]
   }
-  const sync = async(resource, online, patient_id, save=false, data={}) => {
+  const sync_old = async(resource, online, patient_id, save=false, data={}) => {
     const auth_store = useAuthStore()
     const couchdb = auth_store.couchdb
     const auth = {fetch: (url, opts) => {
@@ -910,6 +910,59 @@ export function common() {
           console.log(err)
         })
       }
+    }
+  }
+  const sync = async(resource, online, patient_id, save=false, data={}) => {
+    const auth_store = useAuthStore()
+    const couchdb = auth_store.couchdb
+    const auth = {fetch: (url, opts) => {
+      opts.headers.set('Authorization', 'Bearer ' + auth_store.jwt)
+      return PouchDB.fetch(url, opts)
+    }}
+    const pin = auth_store.pin
+    var prefix = ''
+    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
+      prefix = patient_id + '_'
+    }
+    const local = new PouchDB(prefix + resource)
+    if (resource !== 'users') {
+      await local.setPassword(pin)
+    }
+    if (save) {
+      var prev_data = ''
+      var diff = null
+      try {
+        const prev = await local.get(data._id)
+        prev_data = JSON.stringify(prev)
+      } catch (e) {
+        console.log('New Document!')
+      }
+      const result = await local.put(data)
+      if (prev_data !== '') {
+        diff = fastDiff(prev_data, JSON.stringify(data))
+      }
+      const opts = {
+        doc_db: resource,
+        doc_id: result.id,
+        diff: diff
+      }
+      if (resource === 'users' && data.id === auth_store.user.id) {
+        auth_store.update(data)
+      }
+      await eventAdd('Updated ' + pluralize.singular(resource.replace('_statements', '')), online, patient_id, opts)
+    }
+    if (online) {
+      const remote = new PouchDB(couchdb + prefix + resource, auth)
+      await local.sync(remote, {live:true, retry:true}).on('complete', async() => {
+        if (resource !== 'users') {
+          await local.loadEncrypted()
+          console.log('PouchDB encrypted sync complete for DB: ' + resource )
+        } else {
+          console.log('PouchDB sync complete for DB: ' + resource)
+        }
+      }).on('error', (err) => {
+        console.log(err)
+      })
     }
   }
   const syncAll = async(online, patient_id) => {
@@ -1066,6 +1119,7 @@ export function common() {
     patientStatus,
     removeTags,
     setOptions,
+    sync_old,
     sync,
     syncAll,
     syncState,
