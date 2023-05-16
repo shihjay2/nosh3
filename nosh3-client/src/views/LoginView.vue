@@ -298,9 +298,9 @@ export default defineComponent({
       if (result.docs.length > 0) {
         auth.login(result.docs[0], state.payload, jwt)
         await eventAdd('Logged in', true, state.patient)
-        // state.progress += '<br/>Syncing data...'
-        // await syncAll(true, state.patient)
-        // state.progress += '<br/>Complete!'
+        state.progress += '<br/>Syncing data...'
+        await syncAll(true, state.patient, true)
+        state.progress += '<br/>Complete!'
         // redirect to previous url or default to home page
         router.push(auth.returnUrl || state.payload._noshRedirect)
       } else {
