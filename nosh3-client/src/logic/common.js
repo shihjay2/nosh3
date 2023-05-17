@@ -912,7 +912,7 @@ export function common() {
       }
     }
   }
-  const sync = async(resource, online, patient_id, save=false, data={}, first=false) => {
+  const sync = async(resource, online, patient_id, save=false, data={}, login=false) => {
     const auth_store = useAuthStore()
     const couchdb = auth_store.couchdb
     const auth = {fetch: (url, opts) => {
@@ -926,7 +926,7 @@ export function common() {
     }
     const local = new PouchDB(prefix + resource)
     if (resource !== 'users') {
-      await local.setPassword(pin)
+      await local.setPassword(pin, {name: prefix + resource + '_encrypted'})
     }
     if (save) {
       var prev_data = ''
@@ -953,37 +953,46 @@ export function common() {
     }
     if (online) {
       const remote = new PouchDB(couchdb + prefix + resource, auth)
-      if (first) {
-        await local.sync(remote).on('complete', async() => {
-          if (resource !== 'users') {
+      const local1 = new PouchDB(prefix + resource)
+      await local1.setPassword(pin, {name: couchdb + prefix + resource, opts: auth})
+      const key1 = await local1.exportComDB()
+      const local2 = new PouchDB(prefix + resource + '_encrypted')
+      await local2.importComDB(pin, key1)
+      if (login) {
+        if (resource !== 'users') {
+          await local1.sync(local2).on('complete', async() => {
             await local.loadEncrypted()
             console.log('PouchDB encrypted sync complete for DB: ' + resource )
-          } else {
+          })
+        } else {
+          await local.sync(remote).on('complete', () => {
             console.log('PouchDB sync complete for DB: ' + resource)
-          }
-        }).on('error', (err) => {
-          console.log(err)
-        })
+          }).on('error', (err) => {
+            console.log(err)
+          })
+        }
       } else {
-        local.sync(remote, {live:true, retry:true}).on('complete', async() => {
-          if (resource !== 'users') {
+        if (resource !== 'users') {
+          local1.sync(local2, {live:true, retry:true}).on('complete', async() => {
             await local.loadEncrypted()
             console.log('PouchDB encrypted sync complete for DB: ' + resource )
-          } else {
+          })
+        } else {
+          local.sync(remote, {live:true, retry:true}).on('complete', () => {
             console.log('PouchDB sync complete for DB: ' + resource)
-          }
-        }).on('error', (err) => {
-          console.log(err)
-        })
+          }).on('error', (err) => {
+            console.log(err)
+          })
+        }
       }
     }
   }
-  const syncAll = async(online, patient_id, first) => {
+  const syncAll = async(online, patient_id, login) => {
     var resources = await fetchJSON('resources', online)
     objectPath.set(syncState, 'total', resources.rows.length)
     objectPath.set(syncState, 'complete', 0)
     for (var resource of resources.rows) {
-      await sync(resource.resource, online, patient_id, false, {}, first)
+      await sync(resource.resource, online, patient_id, false, {}, login)
       objectPath.set(syncState, 'complete', objectPath.get(syncState, 'complete') + 1)
     }
   }
