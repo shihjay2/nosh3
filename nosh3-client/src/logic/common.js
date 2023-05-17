@@ -960,12 +960,27 @@ export function common() {
       await local2.importComDB(pin, key1)
       if (login) {
         if (resource !== 'users') {
-          await local1.sync(local2).on('complete', async() => {
+          local1.sync(local2).on('complete', async() => {
+            const result1 = await local1.allDocs({
+              include_docs: true,
+              attachments: true
+            })
+            console.log(result1)
+            const result2 = await local2.allDocs({
+              include_docs: true,
+              attachments: true
+            })
+            console.log(result2)
             await local.loadEncrypted()
+            const result3 = await local.allDocs({
+              include_docs: true,
+              attachments: true
+            })
+            console.log(result3)
             console.log('PouchDB encrypted sync complete for DB: ' + resource )
           })
         } else {
-          await local.sync(remote).on('complete', () => {
+          local.sync(remote).on('complete', () => {
             console.log('PouchDB sync complete for DB: ' + resource)
           }).on('error', (err) => {
             console.log(err)
@@ -973,12 +988,28 @@ export function common() {
         }
       } else {
         if (resource !== 'users') {
-          local1.sync(local2, {live:true, retry:true}).on('complete', async() => {
+          local1.sync(local2, {live:true, retry:true}).on('change', async() => {
+            const result1 = await local1.allDocs({
+              include_docs: true,
+              attachments: true
+            })
+            console.log(result1)
+            const result2 = await local2.allDocs({
+              include_docs: true,
+              attachments: true
+            })
+            console.log(result2)
+            await local.loadEncrypted()
+            const result3 = await local.allDocs({
+              include_docs: true,
+              attachments: true
+            })
+            console.log(result3)
             await local.loadEncrypted()
             console.log('PouchDB encrypted sync complete for DB: ' + resource )
           })
         } else {
-          local.sync(remote, {live:true, retry:true}).on('complete', () => {
+          local.sync(remote, {live:true, retry:true}).on('change', () => {
             console.log('PouchDB sync complete for DB: ' + resource)
           }).on('error', (err) => {
             console.log(err)
