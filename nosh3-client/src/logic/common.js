@@ -855,7 +855,7 @@ export function common() {
       }
     ]
   }
-  const sync_old = async(resource, online, patient_id, save=false, data={}) => {
+  const sync = async(resource, online, patient_id, save=false, data={}) => {
     const auth_store = useAuthStore()
     const couchdb = auth_store.couchdb
     const auth = {fetch: (url, opts) => {
@@ -912,7 +912,7 @@ export function common() {
       }
     }
   }
-  const sync = async(resource, online, patient_id, save=false, data={}, login=false) => {
+  const sync_old = async(resource, online, patient_id, save=false, data={}, login=false) => {
     const auth_store = useAuthStore()
     const couchdb = auth_store.couchdb
     const auth = {fetch: (url, opts) => {
@@ -925,10 +925,10 @@ export function common() {
       prefix = patient_id + '_'
     }
     const local = new PouchDB(prefix + resource)
-    if (resource !== 'users') {
-      await local.setPassword(pin, {name: prefix + resource + '_encrypted'})
-    }
     if (save) {
+      if (resource !== 'users') {
+        await local.setPassword(pin, {name: prefix + resource + '_encrypted'})
+      }
       var prev_data = ''
       var diff = null
       try {
@@ -957,10 +957,11 @@ export function common() {
       await local1.setPassword(pin, {name: couchdb + prefix + resource, opts: auth})
       const key1 = await local1.exportComDB()
       const local2 = new PouchDB(prefix + resource + '_encrypted')
-      await local2.importComDB(pin, key1)
+      
       if (login) {
         if (resource !== 'users') {
-          local1.sync(local2).on('complete', async() => {
+          local2.sync(remote).on('complete', async() => {
+            await local2.importComDB(pin, key1)
             const result1 = await local1.allDocs({
               include_docs: true,
               attachments: true
@@ -988,7 +989,7 @@ export function common() {
         }
       } else {
         if (resource !== 'users') {
-          local1.sync(local2, {live:true, retry:true}).on('change', async() => {
+          local.sync(remote, {live:true, retry:true}).on('change', async() => {
             const result1 = await local1.allDocs({
               include_docs: true,
               attachments: true
@@ -1018,12 +1019,12 @@ export function common() {
       }
     }
   }
-  const syncAll = async(online, patient_id, login) => {
+  const syncAll = async(online, patient_id) => {
     var resources = await fetchJSON('resources', online)
     objectPath.set(syncState, 'total', resources.rows.length)
     objectPath.set(syncState, 'complete', 0)
     for (var resource of resources.rows) {
-      await sync(resource.resource, online, patient_id, false, {}, login)
+      await sync(resource.resource, online, patient_id, false, {})
       objectPath.set(syncState, 'complete', objectPath.get(syncState, 'complete') + 1)
     }
   }

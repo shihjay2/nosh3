@@ -535,7 +535,7 @@ export default defineComponent({
         await updateInbox(user)
         console.log('boom')
       }, 5000)
-      await syncAll(state.online, state.patient, false)
+      await syncAll(state.online, state.patient)
       // syncTimer = setInterval(async() => {
       //   state.loading = true
       //   await syncAll(state.online, state.patient)
