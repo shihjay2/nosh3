@@ -855,7 +855,7 @@ export function common() {
       }
     ]
   }
-  const sync_old = async(resource, online, patient_id, save=false, data={}) => {
+  const sync = async(resource, online, patient_id, save=false, data={}) => {
     const auth_store = useAuthStore()
     const couchdb = auth_store.couchdb
     const auth = {fetch: (url, opts) => {
@@ -868,9 +868,6 @@ export function common() {
       prefix = patient_id + '_'
     }
     const local = new PouchDB(prefix + resource)
-    if (resource !== 'users' && online) {
-      await local.setPassword(pin, {name: couchdb + prefix + resource, opts: auth})
-    }
     if (save) {
       var prev_data = ''
       var diff = null
@@ -892,120 +889,62 @@ export function common() {
       if (resource === 'users' && data.id === auth_store.user.id) {
         auth_store.update(data)
       }
+      auth_store.setSyncResource(resource)
       await eventAdd('Updated ' + pluralize.singular(resource.replace('_statements', '')), online, patient_id, opts)
     }
     if (online) {
       if (resource !== 'users') {
+        await local.setPassword(pin, {name: couchdb + prefix + resource, opts: auth})
         var info = await local.info()
         if (info.doc_count > 0) {
           await local.loadDecrypted()
         }
-        await local.loadEncrypted()
-        console.log('PouchDB encrypted sync complete for DB: ' + resource )
+        try {
+          await local.loadEncrypted()
+          console.log('PouchDB encrypted sync complete for DB: ' + resource )
+          return true
+        } catch (e) {
+          return false
+        }
       } else {
         const remote = new PouchDB(couchdb + prefix + resource, auth)
-        await local.sync(remote,{live:true, retry:true}).on('complete', () => {
+        local.sync(remote).on('complete', () => {
           console.log('PouchDB sync complete for DB: ' + resource)
+          return true
         }).on('error', (err) => {
           console.log(err)
+          return false
         })
       }
     }
   }
-  const sync = async(resource, sync, patient_id, save=false, data={}, login=false) => {
-    const auth_store = useAuthStore()
-    const couchdb = auth_store.couchdb
-    const auth = {fetch: (url, opts) => {
-      opts.headers.set('Authorization', 'Bearer ' + auth_store.jwt)
-      return PouchDB.fetch(url, opts)
-    }}
-    const pin = auth_store.pin
-    var prefix = ''
-    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
-      prefix = patient_id + '_'
-    }
-    const local_db = new PouchDB(prefix + resource)
-    if (save) {
-      if (resource !== 'users') {
-        await local_db.setPassword(pin, {name: prefix + resource + '_encrypted'})
-      }
-      var prev_data = ''
-      var diff = null
-      try {
-        const prev = await local_db.get(data._id)
-        prev_data = JSON.stringify(prev)
-      } catch (e) {
-        console.log('New Document!')
-      }
-      const result = await local_db.put(data)
-      if (prev_data !== '') {
-        diff = fastDiff(prev_data, JSON.stringify(data))
-      }
-      const opts = {
-        doc_db: resource,
-        doc_id: result.id,
-        diff: diff
-      }
-      if (resource === 'users' && data.id === auth_store.user.id) {
-        auth_store.update(data)
-      }
-      await eventAdd('Updated ' + pluralize.singular(resource.replace('_statements', '')), online, patient_id, opts)
-    }
-    if (sync) {
-      const local_enc_db = new PouchDB(prefix + resource + '_encrypted')
-      const remote_enc_db = new PouchDB(couchdb + prefix + resource, auth)
-      if (resource !== 'users') {
-        if (login) {
-          local_enc_db.sync(remote_enc_db).on('complete', async() => {
-            await local_db.setPassword(pin, {name: prefix + resource + '_encrypted'})
-            const local_db_info = await local_db.info()
-            if (local_db_info.doc_count > 0) {
-              await local_db.loadDecrypted()
-            }
-            await local_db.loadEncrypted()
-            const result1 = await local_db.allDocs({
-              include_docs: true,
-              attachments: true
-            })
-            console.log(result1)
-            console.log('PouchDB encrypted sync complete for DB: ' + resource )
-          })
-        } else {
-          local_enc_db.sync(remote_enc_db, {live:true, retry:true}).on('change', async() => {
-            await local_db.setPassword(pin, {name: prefix + resource + '_encrypted'})
-            await local_db.loadEncrypted()
-            const result1 = await local_db.allDocs({
-              include_docs: true,
-              attachments: true
-            })
-            console.log(result1)
-            console.log('PouchDB encrypted sync complete for DB: ' + resource )
-          })
-        }
-      } else {
-        if (login) {
-          local.sync(remote).on('complete', () => {
-            console.log('PouchDB sync complete for DB: ' + resource)
-          }).on('error', (err) => {
-            console.log(err)
-          })
-        } else {
-          local.sync(remote, {live:true, retry:true}).on('change', () => {
-            console.log('PouchDB sync complete for DB: ' + resource)
-          }).on('error', (err) => {
-            console.log(err)
-          })
-        }
-      }
-    }
-  }
-  const syncAll = async(online, patient_id, login) => {
+  const syncAll = async(online, patient_id) => {
     var resources = await fetchJSON('resources', online)
     objectPath.set(syncState, 'total', resources.rows.length)
     objectPath.set(syncState, 'complete', 0)
     for (var resource of resources.rows) {
-      await sync(resource.resource, online, patient_id, false, {}, login)
+      await sync(resource.resource, online, patient_id, false, {})
       objectPath.set(syncState, 'complete', objectPath.get(syncState, 'complete') + 1)
+    }
+  }
+  const syncSome = async(online, patient_id) => {
+    const auth_store = useAuthStore()
+    var new_resources = []
+    if (auth_store.sync_resource !== null) {
+      if (online) {
+        for (var resource of auth_store.sync_resource) {
+          if (resource !== undefined) {
+            var res = await sync(resource, online, patient_id, false, {})
+            if (!res) {
+              new_resources.push(resource)
+            }
+          }
+        }
+        auth_store.resetSyncResource()
+        for (var resource1 of new_resources) {
+          auth_store.setSyncResource(resource1)
+        }
+      }
     }
   }
   const syncState = reactive({ total: 0, complete: 0 })
@@ -1153,9 +1092,9 @@ export function common() {
     patientStatus,
     removeTags,
     setOptions,
-    sync_old,
     sync,
     syncAll,
+    syncSome,
     syncState,
     syncEmailToUser,
     thread,

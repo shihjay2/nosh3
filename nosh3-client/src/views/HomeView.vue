@@ -13,6 +13,7 @@
         <q-toolbar-title id="logo">
           Nosh
         </q-toolbar-title>
+        <q-spinner-radio v-if="state.sync_on" color="white" size="1em"/>
         <q-btn v-if="state.updateExists" flat dense round icon="update" @click="refreshApp">
           <q-tooltip>Update available, click to refresh</q-tooltip>
         </q-btn>
@@ -529,7 +530,7 @@ export default defineComponent({
 },
   setup () {
     const $q = useQuasar()
-    const { addSchemaOptions, fetchJSON, fhirModel, fhirReplace, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, sync, syncAll, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
+    const { addSchemaOptions, fetchJSON, fhirModel, fhirReplace, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, sync, syncAll, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
     const state = reactive({
       menuVisible: false,
       showDrawer: false,
@@ -678,7 +679,9 @@ export default defineComponent({
       registration: null,
       // qr
       qr: false,
-      qr_value: ''
+      qr_value: '',
+      // sync
+      sync_on: false
     })
     const route = useRoute()
     const auth = useAuthStore()
@@ -800,12 +803,13 @@ export default defineComponent({
         await updateInbox(user)
         console.log('Inbox updated')
       }, 5000)
-      await syncAll(state.online, state.patient, false)
-      // syncTimer = setInterval(async() => {
-      //   state.loading = true
-      //   await syncAll(state.online, state.patient)
-      //   state.loading = false
-      // }, 60000)
+      syncTimer = setInterval(async() => {
+        if (state.online) {
+          state.sync_on = true
+          await syncSome(state.online, state.patient)
+          state.sync_on = false
+        }
+      }, 60000)
     })
     watch(() => state.showTimeline, async(newVal) => {
       if (newVal) {
