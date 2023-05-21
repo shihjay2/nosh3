@@ -935,12 +935,14 @@ export function common() {
         for (var resource of auth_store.sync_resource) {
           if (resource !== undefined) {
             var res = await sync(resource, online, patient_id, false, {})
+            console.log(res)
             if (!res) {
               new_resources.push(resource)
             }
           }
         }
         auth_store.resetSyncResource()
+        console.log(new_resources)
         for (var resource1 of new_resources) {
           auth_store.setSyncResource(resource1)
         }
