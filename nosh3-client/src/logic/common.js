@@ -902,18 +902,23 @@ export function common() {
         try {
           await local.loadEncrypted()
           console.log('PouchDB encrypted sync complete for DB: ' + resource )
-          return true
+          const resources = auth_store.sync_resource
+          const index = resources.indexOf(resource)
+          resources.splice(index, 1)
+          auth_store.setSyncResource(resources)
         } catch (e) {
-          return false
+          console.log(e)
         }
       } else {
         const remote = new PouchDB(couchdb + prefix + resource, auth)
         local.sync(remote).on('complete', () => {
           console.log('PouchDB sync complete for DB: ' + resource)
-          return true
+          const resources = auth_store.sync_resource
+          const index = resources.indexOf(resource)
+          resources.splice(index, 1)
+          auth_store.setSyncResource(resources)
         }).on('error', (err) => {
           console.log(err)
-          return false
         })
       }
     }
@@ -929,22 +934,13 @@ export function common() {
   }
   const syncSome = async(online, patient_id) => {
     const auth_store = useAuthStore()
-    var new_resources = []
-    if (auth_store.sync_resource !== null) {
+    const resources = auth_store.sync_resource
+    if (resources.length > 0) {
       if (online) {
-        for (var resource of auth_store.sync_resource) {
+        for (var resource of resources) {
           if (resource !== undefined) {
-            var res = await sync(resource, online, patient_id, false, {})
-            console.log(res)
-            if (!res) {
-              new_resources.push(resource)
-            }
+            await sync(resource, online, patient_id, false, {})
           }
-        }
-        auth_store.resetSyncResource()
-        console.log(new_resources)
-        for (var resource1 of new_resources) {
-          auth_store.setSyncResource(resource1)
         }
       }
     }

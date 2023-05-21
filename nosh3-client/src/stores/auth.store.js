@@ -15,7 +15,7 @@ export const useAuthStore = defineStore({
     instance: localStorage.getItem('instance'),
     trustee: localStorage.getItem('trustee'),
     patient: null,
-    sync_resource: null,
+    sync_resource: [],
     returnUrl: null
   }),
   actions: {
@@ -72,13 +72,11 @@ export const useAuthStore = defineStore({
       this.patient = patient
     },
     setSyncResource(resource) {
-      if (this.sync_resource === null) {
-        this.sync_resource = []
+      if (Array.isArray(resource)) {
+        this.sync_resource = resource
+      } else {
+        this.sync_resource.push(resource)
       }
-      this.sync_resource.push(resource)
-    },
-    resetSyncResource() {
-      this.sync_resource = null
     }
   }
 })
