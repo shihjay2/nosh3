@@ -760,12 +760,10 @@ export default defineComponent({
                 }
                 g1++
               }
-              console.log(state.rows)
             }
           }
         }
       }
-      console.log(state.rows)
     }
     const getActivity = async(a, activity) => {
       var progress = []

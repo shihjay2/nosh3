@@ -66,7 +66,6 @@ export const useAuthStore = defineStore({
     update(user) {
       this.user = user
       localStorage.setItem('user', JSON.stringify(user))
-      console.log('Pinia user updated')
     },
     setPatient(patient) {
       this.patient = patient
@@ -75,7 +74,9 @@ export const useAuthStore = defineStore({
       if (Array.isArray(resource)) {
         this.sync_resource = resource
       } else {
-        this.sync_resource.push(resource)
+        if (!this.sync_resource.includes(resource)) {
+          this.sync_resource.push(resource)
+        }
       }
     }
   }

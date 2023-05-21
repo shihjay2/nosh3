@@ -768,7 +768,6 @@ export default defineComponent({
                     obj['value'] = value
                   } else {
                     var i = uiSchema[b].options.find(({ value }) => value === obj['value'])
-                    console.log(obj['value'])
                     obj['value'] = i.label
                   }
                 }

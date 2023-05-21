@@ -971,9 +971,7 @@ export default defineComponent({
       } else {
         var a = objectPath.get(state, 'schema.0.modelParent')
       }
-      console.log(a)
       var b = objectPath.get(state, 'fhir.' + a)
-      console.log(b)
       if (b == undefined) {
         return 0
       } else {

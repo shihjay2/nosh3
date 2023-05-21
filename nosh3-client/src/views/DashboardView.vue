@@ -535,12 +535,15 @@ export default defineComponent({
         await updateInbox(user)
         console.log('boom')
       }, 5000)
-      await syncAll(state.online, state.patient, false)
-      // syncTimer = setInterval(async() => {
-      //   state.loading = true
-      //   await syncAll(state.online, state.patient)
-      //   state.loading = false
-      // }, 1800000)
+      syncTimer = setInterval(async() => {
+        if (state.online) {
+          if (!state.sync) {
+            state.sync_on = true
+            await syncSome(state.online, state.patient)
+            state.sync_on = false
+          }
+        }
+      }, 15000)
     })
     watch(() => state.patientsearch, (newVal) => {
       if (newVal !== '') {

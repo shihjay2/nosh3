@@ -805,11 +805,13 @@ export default defineComponent({
       }, 5000)
       syncTimer = setInterval(async() => {
         if (state.online) {
-          state.sync_on = true
-          await syncSome(state.online, state.patient)
-          state.sync_on = false
+          if (!state.sync) {
+            state.sync_on = true
+            await syncSome(state.online, state.patient)
+            state.sync_on = false
+          }
         }
-      }, 60000)
+      }, 15000)
     })
     watch(() => state.showTimeline, async(newVal) => {
       if (newVal) {
