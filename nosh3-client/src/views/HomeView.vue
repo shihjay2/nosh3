@@ -521,6 +521,7 @@
 import { defineComponent, nextTick, onMounted, reactive, ref, watch } from 'vue'
 import { useQuasar } from 'quasar'
 import { common } from '@/logic/common'
+import axios from 'axios'
 import Case from 'case'
 import ActivitiesDialog from '@/components/ActivitiesDialog.vue'
 import CareOpportunities from '@/components/CareOpportunities.vue'
