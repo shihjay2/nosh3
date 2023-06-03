@@ -54,8 +54,8 @@ async function deleteSecuredResource(req, res) {
     const doc = await db.get(req.params.id)
     const result = await db.remove(doc)
     const opts = {
-      id: res.local.payload._nosh.id,
-      display: res.local.payload._nosh.display,
+      id: res.locals.payload._nosh.id,
+      display: res.locals.payload._nosh.display,
       doc_db: Case.snake(pluralize(req.params.type)),
       doc_id: result.id,
       diff: null
@@ -156,8 +156,8 @@ async function postSecuredResource(req, res) {
       diff = diff_result.join(',')
     }
     const opts = {
-      id: res.local.payload._nosh.id,
-      display: res.local.payload._nosh.display,
+      id: res.locals.payload._nosh.id,
+      display: res.locals.payload._nosh.display,
       doc_db: Case.snake(pluralize(req.params.type)),
       doc_id: body.id,
       diff: diff
@@ -193,13 +193,13 @@ async function putSecuredResource(req, res) {
       diff = diff_result.join(',')
     }
     const opts = {
-      id: res.local.payload._nosh.id,
-      display: res.local.payload._nosh.display,
+      id: res.locals.payload._nosh.id,
+      display: res.locals.payload._nosh.display,
       doc_db: Case.snake(pluralize(req.params.type)),
       doc_id: body.id,
       diff: diff
     }
-    await eventAdd('Updated ' + pluralize.singular(req.params.type.replace('_statements', '')), opts, res.local.payload._nosh.patient)
+    await eventAdd('Updated ' + pluralize.singular(req.params.type.replace('_statements', '')), opts, res.locals.payload._nosh.patient)
     res.set('ETag', 'W/"' + body._rev + '"')
     res.status(200).json(body)
   } catch(err) {

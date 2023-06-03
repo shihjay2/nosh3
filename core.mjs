@@ -573,7 +573,7 @@ async function verifyJWT(req, res, next) {
       }
       var keys = await getKeys()
       if (gnapInstrospect(jwt, keys[0].publicKey, url, method)) {
-        res.local.payload = response.payload
+        res.locals.payload = response.payload
         next()
       } else {
         res.status(401).send('Unauthorized')
