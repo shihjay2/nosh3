@@ -1334,6 +1334,22 @@ export default defineComponent({
       state.new_medication_request = true
       openForm('add', 'medication_statements', 'all')
     }
+    const onSubmitPIN = async(values) => {
+      const { pin } = values
+      const result = await axios.post(window.location.origin + '/auth/pinSet', {pin: pin, patient: state.patient})
+      if (result.data.response === 'OK') {
+        state.showPIN = false
+        state.login = true
+      } else {
+        $q.notify({
+          message: result.data.response,
+          color: 'red',
+          actions: [
+            { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+          ]
+        })
+      }
+    }
     const openActivities = async() => {
       state.showActivity = true
     }
@@ -2248,6 +2264,7 @@ export default defineComponent({
       loadTimeline,
       lockThread,
       newPrescription,
+      onSubmitPIN,
       openActivities,
       openBundle,
       openCareOpportunities,
