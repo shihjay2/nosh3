@@ -732,7 +732,17 @@ export default defineComponent({
       qr_value: '',
       // sync
       sync_on: false,
-      showPIN: false
+      showPIN: false,
+      schemaPin: [
+        {
+          "id": "pin",
+          "label": "4-digit PIN",
+          "model": "pin",
+          "type": "password",
+          "mask": "####",
+          "rules": "required"
+        }
+      ]
     })
     const route = useRoute()
     const auth = useAuthStore()
