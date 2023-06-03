@@ -485,7 +485,7 @@
               :label="field1.label"
               :type="field1.type"
               :model="state.formPin[field1.id]"
-              @update-model="updateValue1"
+              @update-model="updateValue"
               :placeholder="field1.placeholder"
               :rules="field1.rules"
               focus="false"
@@ -733,6 +733,7 @@ export default defineComponent({
       // sync
       sync_on: false,
       showPIN: false,
+      formPin: {},
       schemaPin: [
         {
           "id": "pin",
@@ -2216,6 +2217,9 @@ export default defineComponent({
     const updateToolbar = (toolbar) => {
       state.toolbarObject = toolbar
     }
+    const updateValue = (val, field, type) => {
+      state.formPin[field] = val
+    }
     return {
       addendumEncounter,
       addPatient,
@@ -2298,6 +2302,7 @@ export default defineComponent({
       updateInbox,
       updateToolbar,
       updateUser,
+      updateValue,
       verifyJWT,
       state
     }
