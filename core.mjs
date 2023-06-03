@@ -571,7 +571,8 @@ async function verifyJWT(req, res, next) {
       if (req.method === 'GET') {
         method = 'read'
       }
-      if (gnapInstrospect(jwt, keys.publicKey, url, method)) {
+      var keys = await getKeys()
+      if (gnapInstrospect(jwt, keys[0].publicKey, url, method)) {
         res.local.payload = response.payload
         next()
       } else {
