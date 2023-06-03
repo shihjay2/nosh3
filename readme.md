@@ -187,31 +187,53 @@ NOSH 3 no longer has it's own built-in authenticator as there are too many barri
 #### 1. [Visit this site for instructions](https://www.uspreventiveservicestaskforce.org/apps/api.jsp)
 &nbsp;  
 ## Endpoints
-#### For all instances besides patient NOSH on DigitalOcean App Platform:
+### For all instances besides patient NOSH on DigitalOcean App Platform:
+Browser:
 ```
 https://yourdomain.xyz/start
+```
+API:
+```
 https://yourdomain.xyz/fhir/api/v1/Patient
 https://yourdomain.xyz/fhir/api/v1/Condition
 https://yourdomain.xyz/fhir/api/v1/MedicationStatement
 https://yourdomain.xyz/fhir/api/v1/AllergyIntolerance
 https://yourdomain.xyz/fhir/api/v1/Immunization
 ```
-#### For patient NOSH on DigitalOcean App Platform:
+
+&nbsp; 
+### For patient NOSH on DigitalOcean App Platform:
+Browser:
 ```
 https://nosh-app-xxx.ondigitalocean.app/app/chart/nosh_xxx
-https://nosh-app-xxx.ondigitalocean.app/api/nosh_xxx/Patient
-https://nosh-app-xxx.ondigitalocean.app/api/nosh_xxx/Condition
-https://nosh-app-xxx.ondigitalocean.app/api/nosh_xxx/MedicationStatement
-https://nosh-app-xxx.ondigitalocean.app/api/nosh_xxx/AllergyIntolerance
-https://nosh-app-xxx.ondigitalocean.app/api/nosh_xxx/Immunization
+```
+API:
+```
+https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_xxx/Patient
+https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_xxx/Condition
+https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_xxx/MedicationStatement
+https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_xxx/AllergyIntolerance
+https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_xxx/Immunization
 ```
 #### where nosh_xxx refers to the patient ID.
-#### For MD NOSH, there is a dashboard endpoint
+
+&nbsp; 
+### For MD NOSH, there is a dashboard endpoint
 ```
 https://yourdomain.xyz/app/dashboard
 ```
 
 &nbsp;  
+## API
+To access API endpoints as listed above, client will need to present a valid Bearer Token (JWT) in the Authentication header that has been passed during successful authentication for the user.
+
+If the JWT presented is expired, the response will be:
+```
+{"code":"ERR_JWT_EXPIRED","name":"JWTExpired","claim":"exp","reason":"check_failed"}
+```
+and the client should redirect to the authentication workflow to present a new JWT.
+&nbsp;
+
 ## Contributing To NOSH ChartingSystem
 
 **All issues and pull requests should be filed on the [shihjay2/nosh3](http://github.com/shihjay2/nosh3) repository.**

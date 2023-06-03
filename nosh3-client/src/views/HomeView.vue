@@ -470,6 +470,51 @@
     <q-spinner color="white" size="md" thickness="5"/>
     <q-tooltip :offset="[0, 8]">Loading...</q-tooltip>
   </q-dialog>
+  <q-dialog v-model="state.showPIN">
+    <q-card>
+      <q-card-section>
+        <div class="text-h6 text-center">Enter PIN</div>
+      </q-card-section>
+      <q-separator />
+      <Form @submit="onSubmitPIN">
+        <q-card-section>
+          <div v-for="field1 in state.schemaPin" :key="field1.id" class="q-pa-sm">
+            <QInputWithValidation
+              ref="myInput"
+              :name="field1.id"
+              :label="field1.label"
+              :type="field1.type"
+              :model="state.formPin[field1.id]"
+              @update-model="updateValue1"
+              :placeholder="field1.placeholder"
+              :rules="field1.rules"
+              focus="false"
+            />
+          </div>
+        </q-card-section>
+        <q-card-section>
+          <q-list>
+            <q-item>
+              <q-item-section avatar>
+                <q-avatar color="red" text-color="white" icon="safety_check" />
+              </q-item-section>
+              <q-item-section>
+                The database requires a 4-digit PIN (only known by the patient) for encryption/decryption.
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section>
+                If you are not the patient, please come back later until the login prompt appears.
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn push icon="pin" color="primary" label="Enter PIN" type="submit" />
+        </q-card-actions>
+      </Form>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script>
@@ -479,6 +524,7 @@ import { common } from '@/logic/common'
 import Case from 'case'
 import ActivitiesDialog from '@/components/ActivitiesDialog.vue'
 import CareOpportunities from '@/components/CareOpportunities.vue'
+import { Form } from 'vee-validate'
 import Fuse from 'fuse.js'
 import ImmunizationSchedule from '@/components/ImmunizationSchedule.vue'
 import moment from 'moment'
@@ -493,6 +539,7 @@ import QFileTemplate from '@/components/QFileTemplate.vue'
 import QFormTemplate from '@/components/QFormTemplate.vue'
 import QGraphTemplate from '@/components/QGraphTemplate.vue'
 import QInfoTemplate from '@/components/QInfoTemplate.vue'
+import QInputWithValidation from '@/components/QInputWithValidation.vue'
 import QListTemplate from '@/components/QListTemplate.vue'
 import QMenuTemplate from '@/components/QMenuTemplate.vue'
 import QPageTemplate from '@/components/QPageTemplate.vue'
@@ -511,6 +558,7 @@ export default defineComponent({
   components: {
     ActivitiesDialog,
     CareOpportunities,
+    Form,
     ImmunizationSchedule,
     OIDC,
     QBundleTemplate,
@@ -520,6 +568,7 @@ export default defineComponent({
     QFileTemplate,
     QGraphTemplate,
     QInfoTemplate,
+    QInputWithValidation,
     QListTemplate,
     QMenuTemplate,
     QPageTemplate,
@@ -681,13 +730,14 @@ export default defineComponent({
       qr: false,
       qr_value: '',
       // sync
-      sync_on: false
+      sync_on: false,
+      showPIN: false
     })
     const route = useRoute()
     const auth = useAuthStore()
     const patientSearch = ref(null)
     const patientSearchBtn = ref(null)
-    const qTimeline =ref(null)
+    const qTimeline = ref(null)
     // autoupdate pwa
     window.addEventListener('swUpdated', (event) => {
       state.registration = event.detail
@@ -728,6 +778,7 @@ export default defineComponent({
     var patientDB = new PouchDB(prefix + 'patients')
     var inboxTimer = null
     var syncTimer = null
+    var pinTimer = null
     onMounted(async() => {
       try {
         await verifyJWT(state.online)
@@ -812,6 +863,12 @@ export default defineComponent({
           }
         }
       }, 15000)
+      if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
+        pinTimer = setInterval(async() => {
+          await pinCheck()
+          console.log('PIN Checked')
+        }, 10000)
+      }
     })
     watch(() => state.showTimeline, async(newVal) => {
       if (newVal) {
@@ -1575,6 +1632,23 @@ export default defineComponent({
         }
       }
     }
+    const pinCheck = async() => {
+      var check = await axios.post(window.location.origin + '/auth/pinCheck', {patient: state.patient})
+      if (check.data.response === 'Error') {
+        state.loading = false
+        state.showPIN = true
+      }
+      if (check.data.response === 'Forbidden') {
+        state.login = false
+        $q.notify({
+          message: 'Invalid URL - forbidden',
+          color: 'red',
+          actions: [
+            { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+          ]
+        })
+      }
+    }
     const refreshApp = () => {
       state.updateExists = false
       // Make sure we only send a 'skip waiting' message if the SW is waiting
@@ -2073,6 +2147,7 @@ export default defineComponent({
     const stopInboxTimer = () => {
       clearInterval(inboxTimer)
       clearInterval(syncTimer)
+      clearInterval(pinTimer)
     }
     const unset = (type) => {
       if (type == 'encounters') {
@@ -2182,6 +2257,7 @@ export default defineComponent({
       patientList,
       patientSearch,
       patientSearchBtn,
+      pinCheck,
       qTimeline,
       refreshApp,
       refreshPatient,
