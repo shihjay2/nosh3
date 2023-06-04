@@ -177,10 +177,10 @@ async function putSecuredResource(req, res) {
   }
   await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
   const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
+  console.log('ID:' + req.params.id)
   try {
     var prev_data = ''
     var diff = null
-    console.log(req.params.id)
     if (req.params.id === undefined) {
       console.log('no ID found, new document')
       var id = 'nosh_' + uuidv4()
