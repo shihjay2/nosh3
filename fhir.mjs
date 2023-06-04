@@ -180,7 +180,8 @@ async function putSecuredResource(req, res) {
   try {
     var prev_data = ''
     var diff = null
-    if (req.params.id !== undefined) {
+    console.log(req.params.id)
+    if (req.params.id === undefined) {
       console.log('no ID found, new document')
       var id = 'nosh_' + uuidv4()
       objectPath.set(req, 'body.id', id)
