@@ -38,7 +38,7 @@ router.get('/test', test)
 router.get('/api/:pid/:type', verifyJWT, querySecuredResource) //search
 router.post('/api/:pid/:type', verifyJWT, postSecuredResource) //create
 router.get('/api/:pid/:type/:id', verifyJWT, getSecuredResource) //read
-router.put('/api/:pid/:type/:id', verifyJWT, putSecuredResource) //update
+router.put('/api/:pid/:type/:id?', verifyJWT, putSecuredResource) //update
 router.delete('/api/:pid/:type/:id', verifyJWT, deleteSecuredResource) //delete
 router.get('/api/:pid/:type/:id/_history/:vid', verifyJWT, getSecuredResourceVersion) //vread
 
@@ -180,6 +180,11 @@ async function putSecuredResource(req, res) {
   try {
     var prev_data = ''
     var diff = null
+    if (req.params.id !== undefined) {
+      var id = 'nosh_' + uuidv4()
+      objectPath.set(req, 'body.id', id)
+      objectPath.set(req, 'body._id', id)
+    }
     try {
       const prev = await db.get(req.body._id)
       prev_data = JSON.stringify(prev)
@@ -188,7 +193,7 @@ async function putSecuredResource(req, res) {
     }
     const body = await db.put(req.body)
     if (prev_data !== '') {
-      var diff_result = fastDiff(JSON.stringify(req.bod), prev_data)
+      var diff_result = fastDiff(JSON.stringify(req.body), prev_data)
       console.log(diff_result)
       diff = diff_result.join(',')
     }
