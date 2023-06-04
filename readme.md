@@ -232,7 +232,31 @@ If the JWT presented is expired, the response will be:
 {"code":"ERR_JWT_EXPIRED","name":"JWTExpired","claim":"exp","reason":"check_failed"}
 ```
 and the client should redirect to the authentication workflow to present a new JWT.
+
 &nbsp;
+### Read
+```
+GET https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_xxx/Condition/yyy
+```
+where yyy is the ID of the resource
+### Read all
+```
+GET https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_xxx/Condition
+```
+### Create
+```
+POST https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_xxx/Condition
+```
+### Update
+```
+PUT https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_xxx/Condition/yyy
+```
+where yyy is the ID of the resource
+### Delete
+```
+DELETE https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_xxx/Condition/yyy
+```
+where yyy is the ID of the resource
 
 ## Contributing To NOSH ChartingSystem
 
