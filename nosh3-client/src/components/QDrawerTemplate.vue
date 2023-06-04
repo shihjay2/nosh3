@@ -165,16 +165,17 @@ export default defineComponent({
       state.patientNickname = props.patientNickname
       state.patient = props.patient
       state.encounter = props.encounter
-      var resources = await import('@/assets/ui/drawer.json')
-      state.ui = resources.rows
-      for (var a in state.ui) {
-        if (typeof state.ui[a].resource !== 'undefined') {
-          state.base[a] = await import('@/assets/fhir/' + state.ui[a].resource + '.json')
-          state.resources.push(state.ui[a].resource)
-          var count = await query(state.ui[a].resource, a)
-          state.results.push(count)
-        }
-      }
+      await reload()
+      // var resources = await import('@/assets/ui/drawer.json')
+      // state.ui = resources.rows
+      // for (var a in state.ui) {
+      //   if (typeof state.ui[a].resource !== 'undefined') {
+      //     state.base[a] = await import('@/assets/fhir/' + state.ui[a].resource + '.json')
+      //     state.resources.push(state.ui[a].resource)
+      //     var count = await query(state.ui[a].resource, a)
+      //     state.results.push(count)
+      //   }
+      // }
     })
     watch(() => props.drawerReload, async(newVal) => {
       if (newVal) {
@@ -186,14 +187,16 @@ export default defineComponent({
         state.patientNickname = props.patientNickname
         state.patient = props.patient
         state.patientDoc = props.patientDoc
-        var a = state.resources.indexOf(props.drawerResource)
-        if (props.drawerResource !== 'patients' && a !== -1) {
-          state.base[a] = await import('@/assets/fhir/' + props.drawerResource + '.json')
-          state.results[a] = await query(props.drawerResource, a)
-          emit('reload-drawer-complete')
-        } else {
-          emit('reload-drawer-complete')
-        }
+        await reload()
+        emit('reload-drawer-complete')
+        // var a = state.resources.indexOf(props.drawerResource)
+        // if (props.drawerResource !== 'patients' && a !== -1) {
+        //   state.base[a] = await import('@/assets/fhir/' + props.drawerResource + '.json')
+        //   state.results[a] = await query(props.drawerResource, a)
+        //   emit('reload-drawer-complete')
+        // } else {
+        //   emit('reload-drawer-complete')
+        // }
       }
     })
     watch(() => props.encounter, (newVal) => {
@@ -266,6 +269,18 @@ export default defineComponent({
       })
       return result.docs.length.toString()
     }
+    const reload = async() => {
+      var resources = await import('@/assets/ui/drawer.json')
+      state.ui = resources.rows
+      for (var a in state.ui) {
+        if (typeof state.ui[a].resource !== 'undefined') {
+          state.base[a] = await import('@/assets/fhir/' + state.ui[a].resource + '.json')
+          state.resources.push(state.ui[a].resource)
+          var count = await query(state.ui[a].resource, a)
+          state.results.push(count)
+        }
+      }
+    }
     const unset = (type) => {
       emit('unset', type)
     }
@@ -276,6 +291,7 @@ export default defineComponent({
       openCareOpportunities,
       openPulldown,
       query,
+      reload,
       unset,
       state
     }

@@ -539,7 +539,9 @@ export default defineComponent({
         if (state.online) {
           if (!state.sync) {
             state.sync_on = true
-            await syncSome(state.online, state.patient)
+            await syncAll(true, state.patient, true)
+            state.drawerReload = true
+            // await syncSome(state.online, state.patient)
             state.sync_on = false
           }
         }
