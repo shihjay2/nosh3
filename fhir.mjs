@@ -186,15 +186,18 @@ async function putSecuredResource(req, res) {
       var id = 'nosh_' + uuidv4()
       objectPath.set(req, 'body.id', id)
       objectPath.set(req, 'body._id', id)
-    }
-    try {
-      const prev = await db.get(req.body._id)
-      prev_data = JSON.stringify(prev)
-    } catch (e) {
-      console.log('New Document')
+      objectPath.set(req, 'body.subject.reference', 'Patient/' + req.params.pid)
+    } else {
+      try {
+        const prev = await db.get(req.body._id)
+        prev_data = JSON.stringify(prev)
+      } catch (e) {
+        console.log('New Document')
+      }
     }
     console.log(req.body)
     const body = await db.put(req.body)
+    await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
     if (prev_data !== '') {
       var diff_result = fastDiff(JSON.stringify(req.body), prev_data)
       console.log(diff_result)
