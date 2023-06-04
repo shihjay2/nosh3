@@ -181,6 +181,7 @@ async function putSecuredResource(req, res) {
     var prev_data = ''
     var diff = null
     if (req.params.id !== undefined) {
+      console.log('no ID found, new document')
       var id = 'nosh_' + uuidv4()
       objectPath.set(req, 'body.id', id)
       objectPath.set(req, 'body._id', id)
@@ -191,6 +192,7 @@ async function putSecuredResource(req, res) {
     } catch (e) {
       console.log('New Document')
     }
+    console.log(req.body)
     const body = await db.put(req.body)
     if (prev_data !== '') {
       var diff_result = fastDiff(JSON.stringify(req.body), prev_data)
