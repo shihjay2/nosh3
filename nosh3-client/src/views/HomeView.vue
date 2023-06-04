@@ -868,7 +868,7 @@ export default defineComponent({
       }, 5000)
       syncTimer = setInterval(async() => {
         if (state.online) {
-          if (!state.sync) {
+          if (!state.sync_on) {
             state.sync_on = true
             await syncAll(true, state.patient, true)
             state.drawerReload = true
