@@ -343,7 +343,6 @@ import { useAuthStore } from '@/stores'
 import { useQuasar } from 'quasar'
 import {v4 as uuidv4} from 'uuid'
 import PouchDBFind from 'pouchdb-find'
-import axios from 'axios'
 PouchDB.plugin(PouchDBFind)
 
 export default defineComponent({
@@ -629,7 +628,8 @@ export default defineComponent({
           }
         }
       }
-      await sync(props.resource, false, props.patient, false)
+      auth.setSyncResource(props.resource)
+      // await sync(props.resource, false, props.patient, false)
       await reloadList()
     }
     const importRow = async(doc, index, origin) => {

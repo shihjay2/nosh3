@@ -177,12 +177,10 @@ async function putSecuredResource(req, res) {
   }
   await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
   const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
-  console.log('ID:' + req.params.id)
   try {
     var prev_data = ''
     var diff = null
     if (req.params.id === undefined) {
-      console.log('no ID found, new document')
       var id = 'nosh_' + uuidv4()
       objectPath.set(req, 'body.id', id)
       objectPath.set(req, 'body._id', id)
@@ -195,8 +193,8 @@ async function putSecuredResource(req, res) {
         console.log('New Document')
       }
     }
-    console.log(req.body)
     const body = await db.put(req.body)
+    console.log(body)
     await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
     if (prev_data !== '') {
       var diff_result = fastDiff(JSON.stringify(req.body), prev_data)

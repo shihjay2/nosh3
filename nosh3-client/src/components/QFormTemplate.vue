@@ -526,7 +526,7 @@ export default defineComponent({
         if (objectPath.has(props, 'doc._id')) {
           var doc = props.doc
         } else {
-          await sync(props.resource, false, props.patient, false)
+          await sync(props.resource, props.online, props.patient, false)
           var doc = await localDB.get(props.id)
         }
         objectPath.set(state, 'fhir', doc)
