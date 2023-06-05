@@ -79,7 +79,7 @@
           <q-tooltip>{{ state.smokingStatusTooltip }}</q-tooltip>
         </q-chip>
       </q-item>
-      <div v-for="item in state.ui" :key="index">
+      <div v-for="item in state.ui" :key="item.resource">
         <q-item clickable @click="open(item.type, item.resource, item.category, '')" v-ripple>
           <q-item-section avatar>
             <q-icon color="primary" :name="item.icon" />
