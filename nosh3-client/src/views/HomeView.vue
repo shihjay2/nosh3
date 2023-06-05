@@ -993,6 +993,8 @@ export default defineComponent({
           openList(state.resource, 'all')
         } else if (state.resource == 'patients') {
           await refreshPatient()
+          state.showTimelineParent = true
+          state.showTimeline = true
         } else {
           state.showTimelineParent = true
           state.showTimeline = true

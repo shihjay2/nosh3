@@ -178,12 +178,9 @@ export default defineComponent({
     })
     watch(() => props.drawerReload, async(newVal) => {
       if (newVal) {
-        console.log(props.drawerResource + ' recount')
         for (var a in state.ui) {
-          // if (state.ui[a].resource === props.drawerResource) {
-            var count = await query(state.ui[a].resource, a)
-            objectPath.set(state, 'ui.' + a + '.count', count)
-          // }
+          var count = await query(state.ui[a].resource, a)
+          objectPath.set(state, 'ui.' + a + '.count', count)
         }
         emit('reload-drawer-complete')
       }
