@@ -76,10 +76,10 @@
           @click="openPulldown('tobacco')"
         >
           {{ state.smokingStatus }}
-          <q-tooltip>{{  state.smokingStatusTooltip }}</q-tooltip>
+          <q-tooltip>{{ state.smokingStatusTooltip }}</q-tooltip>
         </q-chip>
       </q-item>
-      <div v-for="(item, index) in state.ui" :key="index">
+      <div v-for="item in state.ui" :key="index">
         <q-item clickable @click="open(item.type, item.resource, item.category, '')" v-ripple>
           <q-item-section avatar>
             <q-icon color="primary" :name="item.icon" />
@@ -89,7 +89,7 @@
           </q-item-section>
           <q-item-section avatar>
             <div class="q-pa-sm q-gutter-sm">
-              <q-badge rounded color="primary" :label="state.results[index]" />
+              <q-badge rounded color="primary" :label="item.count" />
             </div>
           </q-item-section>
         </q-item>
@@ -165,47 +165,31 @@ export default defineComponent({
       state.patientNickname = props.patientNickname
       state.patient = props.patient
       state.encounter = props.encounter
-      await reload()
-      // var resources = await import('@/assets/ui/drawer.json')
-      // state.ui = resources.rows
-      // for (var a in state.ui) {
-      //   if (typeof state.ui[a].resource !== 'undefined') {
-      //     state.base[a] = await import('@/assets/fhir/' + state.ui[a].resource + '.json')
-      //     state.resources.push(state.ui[a].resource)
-      //     var count = await query(state.ui[a].resource, a)
-      //     state.results.push(count)
-      //   }
-      // }
+      var resources = await import('@/assets/ui/drawer.json')
+      state.ui = resources.rows
+      for (var a in state.ui) {
+        if (typeof state.ui[a].resource !== 'undefined') {
+          state.base[a] = await import('@/assets/fhir/' + state.ui[a].resource + '.json')
+          state.resources.push(state.ui[a].resource)
+          var count = await query(state.ui[a].resource, a)
+          objectPath.set(state, 'ui.' + a + '.count', count)
+        }
+      }
     })
     watch(() => props.drawerReload, async(newVal) => {
       if (newVal) {
-        encounterCheck()
-        state.patientName = props.patientName
-        state.patientAge = props.patientAge
-        state.patientGender = props.patientGender
-        state.patientPhoto = props.patientPhoto
-        state.patientNickname = props.patientNickname
-        state.patient = props.patient
-        state.patientDoc = props.patientDoc
-        await reload()
+        console.log(props.drawerResource + ' recount')
+        for (var a in state.ui) {
+          // if (state.ui[a].resource === props.drawerResource) {
+            var count = await query(state.ui[a].resource, a)
+            objectPath.set(state, 'ui.' + a + '.count', count)
+          // }
+        }
         emit('reload-drawer-complete')
-        // var a = state.resources.indexOf(props.drawerResource)
-        // if (props.drawerResource !== 'patients' && a !== -1) {
-        //   state.base[a] = await import('@/assets/fhir/' + props.drawerResource + '.json')
-        //   state.results[a] = await query(props.drawerResource, a)
-        //   emit('reload-drawer-complete')
-        // } else {
-        //   emit('reload-drawer-complete')
-        // }
       }
     })
-    watch(() => props.encounter, (newVal) => {
-      if (newVal !== '') {
-        state.encounterCheck = true
-      } else {
-        state.encounterCheck = false
-      }
-      state.encounter = props.encounter
+    watch(() => props.encounter, async(newVal) => {
+      await encounterCheck()
     })
     watch(() => props.care_plan_doc, (newVal) => {
       if (objectPath.has(newVal.id)) {
@@ -214,6 +198,33 @@ export default defineComponent({
         state.careplanCheck = false
       }
       state.careplan = objectPath.get(props, 'care_plan_doc.contained.0.code.coding.0.display')
+    })
+    watch(() => props.patientName, (newVal) => {
+      state.patientName = newVal
+    })
+    watch(() => props.patientAge, (newVal) => {
+      state.patientAge = newVal
+    })
+    watch(() => props.patientGender, (newVal) => {
+      state.patientGender = newVal
+    })
+    watch(() => props.patientPhoto, (newVal) => {
+      state.patientPhoto = newVal
+    })
+    watch(() => props.patientNickname, (newVal) => {
+      state.patientNickname = newVal
+    })
+    watch(() => props.patientNickname, (newVal) => {
+      state.patientNickname = newVal
+    })
+    watch(() => props.patient, (newVal) => {
+      state.patient = newVal
+    })
+    watch(() => props.patientDoc, (newVal) => {
+      state.patientDoc = newVal
+    })
+    watch(() => props.encounter, (newVal) => {
+      state.patientNickname = newVal
     })
     const encounterCheck = async() => {
       if (props.encounter !== '') {
@@ -269,18 +280,6 @@ export default defineComponent({
       })
       return result.docs.length.toString()
     }
-    const reload = async() => {
-      var resources = await import('@/assets/ui/drawer.json')
-      state.ui = resources.rows
-      for (var a in state.ui) {
-        if (typeof state.ui[a].resource !== 'undefined') {
-          state.base[a] = await import('@/assets/fhir/' + state.ui[a].resource + '.json')
-          state.resources.push(state.ui[a].resource)
-          var count = await query(state.ui[a].resource, a)
-          state.results.push(count)
-        }
-      }
-    }
     const unset = (type) => {
       emit('unset', type)
     }
@@ -291,7 +290,6 @@ export default defineComponent({
       openCareOpportunities,
       openPulldown,
       query,
-      reload,
       unset,
       state
     }

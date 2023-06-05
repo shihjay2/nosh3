@@ -790,6 +790,7 @@ export default defineComponent({
     var patientDB = new PouchDB(prefix + 'patients')
     var inboxTimer = null
     var syncTimer = null
+    var syncallTimer = null
     var pinTimer = null
     onMounted(async() => {
       try {
@@ -870,13 +871,22 @@ export default defineComponent({
         if (state.online) {
           if (!state.sync_on) {
             state.sync_on = true
-            await syncAll(true, state.patient, true)
+            await syncSome(state.online, state.patient)
             state.drawerReload = true
-            // await syncSome(state.online, state.patient)
             state.sync_on = false
           }
         }
       }, 15000)
+      syncallTimer = setInterval(async() => {
+        if (state.online) {
+          if (!state.sync_on) {
+            state.sync_on = true
+            await syncAll(true, state.patient, true)
+            state.drawerReload = true
+            state.sync_on = false
+          }
+        }
+      }, 600000)
       if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
         pinTimer = setInterval(async() => {
           await pinCheck()
@@ -2178,6 +2188,7 @@ export default defineComponent({
       clearInterval(inboxTimer)
       clearInterval(syncTimer)
       clearInterval(pinTimer)
+      clearInterval(syncallTimer)
     }
     const unset = (type) => {
       if (type == 'encounters') {
