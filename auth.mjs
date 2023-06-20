@@ -173,10 +173,10 @@ async function authenticate(req, res) {
         res.status(200).send(jwt)
       }
     } else {
-      res.status(401).send('Unauthorized1')
+      res.status(401).send('Unauthorized - User not found')
     }
   } else {
-    res.status(401).send('Unauthorized')
+    res.status(401).send('Unauthorized - URL does not match')
   }
 }
 

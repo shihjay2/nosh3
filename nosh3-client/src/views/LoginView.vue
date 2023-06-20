@@ -226,10 +226,12 @@ export default defineComponent({
         state.loading = false
         state.login = true
       }
-      nextTick(() => {
-        var a = myInput.value.find(b => b._.props.readonly !== true)
-        a._.props.focus = true
-      })
+      if (state.login) {
+        nextTick(() => {
+          var a = myInput.value.find(b => b._.props.readonly !== true)
+          a._.props.focus = true
+        })
+      }
     })
     watchEffect(() => {
       if (syncState.total > 0) {
@@ -248,7 +250,9 @@ export default defineComponent({
       try {
         var jwt_result = await axios.post(window.location.origin + '/auth/authenticate', body)
         var jwt = jwt_result.data
+        state.progress = 'Token received and being processed...'
       } catch (e) {
+        console.log(e)
         $q.notify({
           message: 'Unauthorized access!',
           color: 'red',
@@ -258,60 +262,62 @@ export default defineComponent({
         })
         resubmit()
       }
-      state.progress = 'Token received and being processed...'
-      const keys = await axios.get(window.location.origin + '/auth/jwks')
-      const jwk = await jose.importJWK(keys.data.keys[0])
-      try {
-        const { payload, protectedHeader } = await jose.jwtVerify(jwt_result.data, jwk)
-        objectPath.set(state, 'payload', payload)
-        objectPath.set(state, 'protectedHeader', protectedHeader)
-        state.progress += '<br/>Token successfully read...'
-      } catch (e) {
+      if (state.progress !== '') {
+        const keys = await axios.get(window.location.origin + '/auth/jwks')
+        const jwk = await jose.importJWK(keys.data.keys[0])
+        try {
+          const { payload, protectedHeader } = await jose.jwtVerify(jwt_result.data, jwk)
+          objectPath.set(state, 'payload', payload)
+          objectPath.set(state, 'protectedHeader', protectedHeader)
+          state.progress += '<br/>Token successfully read...'
+        } catch (e) {
+          console.log(e)
+          $q.notify({
+            message: 'Unauthorized access!',
+            color: 'red',
+            actions: [
+              { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+            ]
+          })
+          resubmit()
+        }
+        state.auth = {fetch: (url, opts) => {
+          opts.headers.set('Authorization', 'Bearer ' + jwt)
+          return PouchDB.fetch(url, opts)
+        }}
+        state.couchdb = state.payload._noshDB
+        state.pin = state.payload._nosh.pin
+        state.patient = state.payload._noshRedirect.replace('/app/chart/', '')
+        state.progress += '<br/>Setting user...'
+        var prefix = ''
+        if (state.payload._nosh.instance === 'digitalocean' && state.payload._noshType === 'pnosh') {
+          prefix = state.patient + '_'
+        }
+        var users = new PouchDB(state.couchdb +  prefix + 'users', state.auth)
+        var selector = {'email': {$eq: state.payload._nosh.email}, _id: {"$gte": null}}
+          // {'did': {$eq: state.payload._nosh.did}, _id: {"$gte": null}}
+        var result = await users.find({
+          // selector: {$or: selector}
+          selector: selector
+        })
+        if (result.docs.length > 0) {
+          auth.login(result.docs[0], state.payload, jwt)
+          await eventAdd('Logged in', true, state.patient)
+          state.progress += '<br/>Syncing data...'
+          await syncAll(true, state.patient, true)
+          state.progress += '<br/>Complete!'
+          // redirect to previous url or default to home page
+          router.push(auth.returnUrl || state.payload._noshRedirect)
+        } else {
         $q.notify({
-          message: 'Unauthorized access!',
-          color: 'red',
-          actions: [
-            { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
-          ]
-        })
-        resubmit()
-      }
-      state.auth = {fetch: (url, opts) => {
-        opts.headers.set('Authorization', 'Bearer ' + jwt)
-        return PouchDB.fetch(url, opts)
-      }}
-      state.couchdb = state.payload._noshDB
-      state.pin = state.payload._nosh.pin
-      state.patient = state.payload._noshRedirect.replace('/app/chart/', '')
-      state.progress += '<br/>Setting user...'
-      var prefix = ''
-      if (state.payload._nosh.instance === 'digitalocean' && state.payload._noshType === 'pnosh') {
-        prefix = state.patient + '_'
-      }
-      var users = new PouchDB(state.couchdb +  prefix + 'users', state.auth)
-      var selector = {'email': {$eq: state.payload._nosh.email}, _id: {"$gte": null}}
-        // {'did': {$eq: state.payload._nosh.did}, _id: {"$gte": null}}
-      var result = await users.find({
-        // selector: {$or: selector}
-        selector: selector
-      })
-      if (result.docs.length > 0) {
-        auth.login(result.docs[0], state.payload, jwt)
-        await eventAdd('Logged in', true, state.patient)
-        state.progress += '<br/>Syncing data...'
-        await syncAll(true, state.patient, true)
-        state.progress += '<br/>Complete!'
-        // redirect to previous url or default to home page
-        router.push(auth.returnUrl || state.payload._noshRedirect)
-      } else {
-       $q.notify({
-          message: 'Unauthorized access!',
-          color: 'red',
-          actions: [
-            { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
-          ]
-        })
-        resubmit()
+            message: 'Unauthorized access!',
+            color: 'red',
+            actions: [
+              { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+            ]
+          })
+          resubmit()
+        }
       }
     }
     const gnapSubmit = async() => {
