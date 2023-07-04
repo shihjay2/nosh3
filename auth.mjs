@@ -228,7 +228,6 @@ async function gnapAuth(req, res) {
       url: urlFix(process.env.TRUSTEE_URL) + 'api/as/tx',
       headers: {
         "content-digest": "sha-256=:" + crypto.createHash('sha256').update(JSON.stringify(body)).digest('hex') + "=:",
-        "content-length": JSON.stringify(body).length,
         "content-type": "application/json",
       },
       body: body
@@ -237,7 +236,6 @@ async function gnapAuth(req, res) {
         '@method',
         '@target-uri',
         'content-digest',
-        'content-length',
         'content-type'
       ],
       parameters: {
