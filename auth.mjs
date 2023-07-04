@@ -12,7 +12,7 @@ import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
 import { v4 as uuidv4 } from 'uuid'
 import { createSigner, sign } from "http-message-signatures";
-import { couchdbDatabase, couchdbInstall, createKeyPair, createSigner, equals, extractComponent, extractHeader, getKeys, getNPI, getPIN, signatureHeader, sync, urlFix, verify, verifyPIN } from './core.mjs'
+import { couchdbDatabase, couchdbInstall, createKeyPair, equals, getKeys, getNPI, getPIN, sync, urlFix, verify, verifyPIN } from './core.mjs'
 // const mailgun = new Mailgun(formData)
 // const mg = mailgun.client({username: 'api', key: process.env.MAILGUN_API_KEY})
 const router = express.Router()
@@ -720,85 +720,6 @@ async function addUser (req, res, next) {
 }
 
 async function test (req, res, next) {
-  const key = {
-    "_id": "nosh_e886ceff-48a1-49a3-8629-3e8235756320",
-    "_rev": "1-ecb8b5fd1e37897e3ca6b5a740724cd6",
-    "publicKey": {
-      "kty": "RSA",
-      "n": "nuxVvE1XvrFmKd49JYBqjsS4n315GLaXySB2CHv16lMtAUeyPWpdXStpznl0SM0DVuJN_LgZ3LFlKGyNrbsKK-YobG5gdmIKB-RuF-Dq_Go3-NGb_EcnGxMJ_PpcoUEmkZJKm1HsYYifv19NT4D2f0Lb0Z-AfWfSIrYj_WST4nRni-KLvCj35J1IOviWIrOsBgx2GnbKCe0YyHgu-AphYPDM4gPPiYym1SErOgVL9RFhFBYT2zZQiEfOR4pvsUqHYQwtxluKHlTTcGGZfZlNP3uFQNC3K69MKBcvfe6U7gyUJj5vsuHdvyoWCQdF0idIvsdH1DvYuwqdMEgKQabRDQ",
-      "e": "AQAB",
-      "kid": "c5fb7d75-846d-4757-9728-5af0528a8e57",
-      "alg": "RS256"
-    },
-    "privateKey": {
-      "kty": "RSA",
-      "n": "nuxVvE1XvrFmKd49JYBqjsS4n315GLaXySB2CHv16lMtAUeyPWpdXStpznl0SM0DVuJN_LgZ3LFlKGyNrbsKK-YobG5gdmIKB-RuF-Dq_Go3-NGb_EcnGxMJ_PpcoUEmkZJKm1HsYYifv19NT4D2f0Lb0Z-AfWfSIrYj_WST4nRni-KLvCj35J1IOviWIrOsBgx2GnbKCe0YyHgu-AphYPDM4gPPiYym1SErOgVL9RFhFBYT2zZQiEfOR4pvsUqHYQwtxluKHlTTcGGZfZlNP3uFQNC3K69MKBcvfe6U7gyUJj5vsuHdvyoWCQdF0idIvsdH1DvYuwqdMEgKQabRDQ",
-      "e": "AQAB",
-      "d": "EjQ6IeauHV7OuA8H7ArIqe_owgQqYeVQf65jNteUNLIwXowq45QSe8CkTw1kf45USpiDnGYuODRtxPKiS_s30A1-JeWC0Syrv3mwDrYp1J4KKUtBVeWEmjpVE5BOGf6Pf29FcoMw039F5TLydR_tnGg5K8rcegDxdh5tAvKJahAC9HhU5oKBN1KdRljV903ZGac8s2bJBwUe9dJ7W_WxlSfrXwxv6BCzVcBD9uwVnj2_gYjwvfQIVBiE_TUsCPz69NwAjFbiBWnHiagLiFRS90oVgP94fVLwd8M1kNHp_yT7feViMzIw5uwXx1nCA-QidjDLs-g6hW6DDB1HivCKYQ",
-      "p": "tghFub2DcI4_rfqAXEQyzRI81Oh80uMOTBqsUv_SZiPoXNBlJrXHYguvAUWYCZEICKnVbBC5i6VEEy_lkHVOrZscTBibFXmS6qw1ToLF9P-MIyVM9PpGjt800dFh51KNpb1y6vNoSdbVHU25v7OyazvQGrCzq1oRsgoFtcDmySU",
-      "q": "34AolvhtIlWnwMD12Gb75TXAef2l7Lkx3xh8H64dQuzGZjbu75rVn6-lDZNwwNy1kQxJphbqonCb9QGKb2A7sMnk68uTbepdjNkOr7Pu9PWXlDMl3EmkA9EYvyKXsv5SnJqfHXgE2E-xmfuIIcUsdKwmwGYz5dhtxKCjZQjhZ8k",
-      "dp": "hS2QNdBddd_c3yDDAL40nKyXLP3bNT9BmpR5N1BLUsc6nY0qNCQSd70skLWmAnnFcvEuYB3sYirLn24Pep0YrxMopNPrws5rmp3bclFjG1hL4vrLTwA81xKexlN2WZOgZn4wsYzb5An1abcQCx0hkCr2mlBlYxxGjgefHdbAArE",
-      "dq": "hLYx4-thykh4UvGBSd1k56ayQv3Ff7o8DdAZLCqUP4AfEuS9nlMfVDHU3SnWgv7LZXSZauEitBAP2zzt-dJ3vzMzFnyMb3EB2beti9FZK-WE-0Af1B16IbYQbrZYw7VWUp1RrArvPY6c0-VS4VKWYjUy0X4ehPWtwFruivjp91k",
-      "qi": "Pb_EO841raB7k3kSmMgoDgDW49-UGrzIF1y5WsCEnb0LLUNmZ70VHU2D32gMNNOFL95Sq3i7xOfpIlIquAVe2pJQJ01jebE4u2JMY_PSwKi8nPBkKeS76iXSOMb1nABYhaAO4WamV8uRpX3Md4Gpn12CD47O8XSA29MN92Hv4yo",
-      "kid": "c5fb7d75-846d-4757-9728-5af0528a8e57",
-      "alg": "RS256"
-    }
-  }
-  const body = {
-    "access_token": {
-      "access": ["app"],
-      "actions": ["read", "write"],
-      "locations": [req.protocol + "://" + req.hostname + "/app/chart/1234"]
-    },
-    "client": {
-      "display": {
-        "name": "NOSH",
-        "uri": req.protocol + "://" + req.hostname
-      },
-      "key": {
-        "proof": "httpsig",
-        "jwk": key.publicKey
-      }
-    },
-    "interact": {
-      "start": ["redirect"],
-      "finish": {
-        "method": "redirect",
-        "uri": req.protocol + "://" + req.hostname + "/auth/gnapVerify",
-        "nonce": crypto.randomBytes(16).toString('base64url')
-      }
-    }
-  }
-  const pre_headers = {
-    "content-digest": "sha-256=:" + crypto.createHash('sha256').update(JSON.stringify(body)).digest('hex') + "=:",
-    "content-length": JSON.stringify(body).length,
-    "content-type": "application/json"
-  }
-  const headers = await signatureHeader({
-    method: 'POST',
-    url: urlFix(process.env.TRUSTEE_URL) + 'api/as/tx',
-    headers: pre_headers,
-    body: body
-  },{
-    components: [
-      '@method',
-      '@target-uri',
-      'content-digest',
-      'content-length',
-      'content-type'
-    ],
-    parameters: {
-      created: Math.floor(Date.now() / 1000),
-      nonce: crypto.randomBytes(16).toString('base64url'),
-      tag: "gnap",
-      keyid: key.publicKey.kid,
-      alg: 'rsa-v1_5-sha256'
-    },
-    key: key
-  })
-  const opts = {
-    headers: headers
-  }
-  res.status(200).json(opts)
+  res.status(200).json({status: 'test'})
 }
 

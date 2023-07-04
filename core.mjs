@@ -114,35 +114,6 @@ async function createKeyPair(alg='RS256') {
   return doc
 }
 
-async function createSigner(alg, key) {
-  let signer
-  switch (alg) {
-    case 'hmac-sha256':
-      signer = async (data) => crypto.createHmac('sha256', key).update(data).digest()
-      break
-    case 'rsa-pss-sha512':
-      signer = async (data) => crypto.createSign('sha512').update(data).sign({
-        key: key,
-        format: 'jwk',
-        padding: crypto.constants.RSA_PKCS1_PSS_PADDING
-      })
-      break
-    case 'rsa-v1_5-sha256':
-      signer = async (data) => crypto.createSign('sha256').update(data).sign({
-        key: key,
-        format: 'jwk',
-        padding: crypto.constants.RSA_PKCS1_PADDING
-      })
-      break
-    case 'ecdsa-p256-sha256':
-      signer = async (data) => crypto.createSign('sha256').update(data).sign(key)
-      break
-    default:
-      throw new Error(`Unsupported signing algorithm ${alg}`)
-  }
-  return Object.assign(signer, { alg })
-}
-
 function equals (a, b) {
   if (a === b) {
     return true
@@ -161,60 +132,6 @@ function equals (a, b) {
     return false
   }
   return keys.every(k => equals(a[k], b[k]))
-}
-
-function extractComponent(message, component) {
-  switch (component) {
-    case '@method':
-      return message.method.toUpperCase();
-    case '@target-uri':
-      return message.url;
-    case '@authority': {
-      const url = new URL(message.url);
-      const port = url.port ? parseInt(url.port, 10) : null;
-      return `${url.host}${port && ![80, 443].includes(port) ? `:${port}` : ''}`;
-    }
-    case '@scheme': {
-      const { protocol } = new URL(message.url);
-      return protocol.slice(0, -1);
-    }
-    case '@request-target': {
-      const { pathname, search } = new URL(message.url);
-      return `${pathname}${search}`;
-    }
-    case '@path': {
-      const { pathname } = new URL(message.url);
-      return pathname;
-    }
-    case '@query': {
-      const { search } = new URL(message.url);
-      return search;
-    }
-    case '@status':
-      if (!(message).status) {
-        throw new Error(`${component} is only valid for responses`);
-      }
-      return (message).status.toString();
-    case '@query-params':
-    case '@request-response':
-      throw new Error(`${component} is not implemented yet`);
-    default:
-      throw new Error(`Unknown specialty component ${component}`);
-  }
-}
-
-function extractHeader({ headers }, header, opts) {
-  const lcHeader = header.toLowerCase();
-  const key = Object.keys(headers).find((name) => name.toLowerCase() === lcHeader);
-  const allowMissing = opts?.allowMissing ?? true;
-  if (!allowMissing && !key) {
-    throw new Error(`Unable to extract header "${header}" from message`);
-  }
-  let val = key ? headers[key] ?? '' : '';
-  if (Array.isArray(val)) {
-      val = val.join(', ');
-  }
-  return val.toString().replace(/\s+/g, ' ');
 }
 
 async function eventAdd(event, opts, patient_id='') {
@@ -368,37 +285,6 @@ async function gnapResourceRegistration(jwt, publicKey) {
   } else {
     return false
   }
-}
-
-async function signatureHeader(resource, opts) {
-  var headers = resource.headers
-  const parts = opts.components.map((component) => {
-    let value
-    if (component.startsWith('@')) {
-      value = extractComponent(resource, component)
-    } else {
-      value = extractHeader(resource, component)
-    }
-    return`"${component.toLowerCase()}": ${value}`
-  })
-  const components = opts.components.map((name) => `"${name.toLowerCase()}"`).join(' ');
-  const params = Object.entries(opts.parameters).map(([parameter, value]) => {
-    if (typeof value === 'number') {
-      return `;${parameter}=${value}`
-    } else if (value instanceof Date) {
-      return `;${parameter}=${Math.floor(value.getTime() / 1000)}`
-    } else {
-      return `;${parameter}="${value.toString()}"`
-    }
-  }).join('')
-  const signatureInputString = `(${components})${params}`
-  parts.push(`"@signature-params": ${signatureInputString}`)
-  const data = parts.join('\n')
-  const signer = await createSigner(opts.parameters.alg, opts.key.privateKey)
-  const signature = await signer(Buffer.from(data))
-  objectPath.set(headers, 'Signature-Input', 'sig1=' + signatureInputString)
-  objectPath.set(headers, 'Signature', 'sig1=:' + signature.toString('base64'))
-  return headers
 }
 
 async function sleep(seconds) {
@@ -609,4 +495,4 @@ async function verifyPIN(pin, patient_id) {
   }
 }
 
-export { couchdbConfig, couchdbDatabase, couchdbInstall, createKeyPair, createSigner, equals, extractComponent, extractHeader, eventAdd, getKeys, getNPI, getPIN, getUser, gnapResourceRegistration, signatureHeader, sleep, sync, urlFix, userAdd, verify, verifyJWT, verifyPIN }
+export { couchdbConfig, couchdbDatabase, couchdbInstall, createKeyPair, equals, eventAdd, getKeys, getNPI, getPIN, getUser, gnapResourceRegistration, sleep, sync, urlFix, userAdd, verify, verifyJWT, verifyPIN }
