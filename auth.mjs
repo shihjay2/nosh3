@@ -11,7 +11,7 @@ import objectPath from 'object-path'
 import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
 import { v4 as uuidv4 } from 'uuid'
-import { createSigner, sign } from "http-message-signatures";
+import { createSigner, httpis } from "http-message-signatures";
 import { couchdbDatabase, couchdbInstall, createKeyPair, equals, getKeys, getNPI, getPIN, sync, urlFix, verify, verifyPIN } from './core.mjs'
 // const mailgun = new Mailgun(formData)
 // const mg = mailgun.client({username: 'api', key: process.env.MAILGUN_API_KEY})
@@ -223,7 +223,7 @@ async function gnapAuth(req, res) {
     }
   }
   try {
-    const signedRequest = await sign({
+    const signedRequest = await httpis.sign({
       method: 'POST',
       url: urlFix(process.env.TRUSTEE_URL) + 'api/as/tx',
       headers: {
@@ -231,7 +231,7 @@ async function gnapAuth(req, res) {
         "content-length": JSON.stringify(body).length,
         "content-type": "application/json",
       },
-      body: body,
+      body: body
     }, {
       components: [
         '@method',
@@ -246,7 +246,7 @@ async function gnapAuth(req, res) {
         tag: "gnap"
       },
       keyId: keys[0].publicKey.kid,
-      signer: createSigner('rsa-v1_5-sha256',key),
+      signer: createSigner('rsa-v1_5-sha256',key)
     })
     const opts = {
       headers: signedRequest.headers
