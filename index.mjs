@@ -139,6 +139,22 @@ app.post('/syncCheck', async(req, res) => {
   }
 })
 
+app.get('/useraddtest', async(req, res) => {
+  const db_users = new PouchDB(urlFix(settings.couchdb_uri) + 'users', settings.couchdb_auth)
+  const result = await db_users.find({selector: {_id: {$regex: "^nosh_*"}}})
+  if (result.docs.length === 0) {
+    const user = await userAdd()
+    const result1 = await db_users.find({selector: {_id: {$regex: "^nosh_*"}}})
+    res.status(200).json({
+      'db_users_query_result_first': result,
+      'user': user,
+      'db_users_query_result_first': result1
+    })
+  } else {
+    res.status(200).json({'db_users_query_result_first': result})
+  }
+})
+
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
     console.log(`listening on ${port}`)

@@ -405,8 +405,7 @@ async function userAdd() {
     objectPath.set(user, 'templates', JSON.parse(fs.readFileSync('./assets/templates.json')))
     await sync('users', '', true, user)
   }
-  
-  return 'OK'
+  return user
 }
 
 async function verify(jwt) {
