@@ -11,6 +11,7 @@ import objectPath from 'object-path'
 import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
 import { v4 as uuidv4 } from 'uuid'
+import { createSigner, sign } from "http-message-signatures";
 import { couchdbDatabase, couchdbInstall, createKeyPair, createSigner, equals, extractComponent, extractHeader, getKeys, getNPI, getPIN, signatureHeader, sync, urlFix, verify, verifyPIN } from './core.mjs'
 // const mailgun = new Mailgun(formData)
 // const mg = mailgun.client({username: 'api', key: process.env.MAILGUN_API_KEY})
@@ -195,6 +196,7 @@ async function gnapAuth(req, res) {
     var pair = await createKeyPair()
     keys.push(pair)
   }
+  const key = await jose.importJWK(keys[0].privateKey, keys[0].privateKey.alg)
   const body = {
     "access_token": {
       "access": ["app"],
@@ -220,46 +222,48 @@ async function gnapAuth(req, res) {
       }
     }
   }
-  const pre_headers = {
-    "content-digest": "sha-256=:" + crypto.createHash('sha256').update(JSON.stringify(body)).digest('hex') + "=:",
-    "content-length": JSON.stringify(body).length,
-    "content-type": "application/json"
-  }
-  const headers = await signatureHeader({
-    method: 'POST',
-    url: urlFix(process.env.TRUSTEE_URL) + 'api/as/tx',
-    headers: pre_headers,
-    body: body
-  },{
-    components: [
-      '@method',
-      '@target-uri',
-      'content-digest',
-      'content-length',
-      'content-type'
-    ],
-    parameters: {
-      created: Math.floor(Date.now() / 1000),
-      nonce: crypto.randomBytes(16).toString('base64url'),
-      tag: "gnap",
-      keyid: keys[0].publicKey.kid,
-      alg: 'rsa-v1_5-sha256'
-    },
-    key: keys[0]
-  })
-  const opts = {
-    headers: headers
-  }
   try {
-    var response = await axios.post(urlFix(process.env.TRUSTEE_URL) + 'api/as/tx', body, opts)
-    var doc = response.data
-    var db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'gnap', settings.couchdb_auth)
-    objectPath.set(doc, '_id', 'nosh_' + uuidv4())
-    objectPath.set(doc, 'nonce', objectPath.get(body, 'interact.finish.nonce'))
-    objectPath.set(doc, 'route', req.body.route)
-    objectPath.set(doc, 'patient', req.body.patient)
-    await db.put(doc)
-    res.status(200).json(doc)
+    const signedRequest = await sign({
+      method: 'POST',
+      url: urlFix(process.env.TRUSTEE_URL) + 'api/as/tx',
+      headers: {
+        "content-digest": "sha-256=:" + crypto.createHash('sha256').update(JSON.stringify(body)).digest('hex') + "=:",
+        "content-length": JSON.stringify(body).length,
+        "content-type": "application/json",
+      },
+      body: body,
+    }, {
+      components: [
+        '@method',
+        '@target-uri',
+        'content-digest',
+        'content-length',
+        'content-type'
+      ],
+      parameters: {
+        created: Math.floor(Date.now() / 1000),
+        nonce: crypto.randomBytes(16).toString('base64url'),
+        tag: "gnap"
+      },
+      keyId: keys[0].publicKey.kid,
+      signer: createSigner('rsa-v1_5-sha256',key),
+    })
+    const opts = {
+      headers: signedRequest.headers
+    }
+    try {
+      var response = await axios.post(urlFix(process.env.TRUSTEE_URL) + 'api/as/tx', body, opts)
+      var doc = response.data
+      var db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'gnap', settings.couchdb_auth)
+      objectPath.set(doc, '_id', 'nosh_' + uuidv4())
+      objectPath.set(doc, 'nonce', objectPath.get(body, 'interact.finish.nonce'))
+      objectPath.set(doc, 'route', req.body.route)
+      objectPath.set(doc, 'patient', req.body.patient)
+      await db.put(doc)
+      res.status(200).json(doc)
+    } catch (e) {
+      res.status(401).json(e)
+    }
   } catch (e) {
     res.status(401).json(e)
   }
