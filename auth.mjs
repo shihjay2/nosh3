@@ -225,7 +225,7 @@ async function gnapAuth(req, res) {
   try {
     const signedRequest = await httpis.sign({
       method: 'POST',
-      url: urlFix(process.env.TRUSTEE_URL) + 'api/as/tx',
+      url: '/api/as/tx',
       headers: {
         "content-digest": "sha-256=:" + crypto.createHash('sha256').update(JSON.stringify(body)).digest('hex') + "=:",
         "content-type": "application/json",
