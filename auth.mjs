@@ -230,7 +230,7 @@ async function gnapAuth(req, res) {
         "content-digest": "sha-256=:" + crypto.createHash('sha256').update(JSON.stringify(body)).digest('hex') + "=:",
         "content-type": "application/json",
       },
-      body: body
+      body: JSON.stringify(body)
     }, {
       components: [
         '@method',
@@ -244,14 +244,16 @@ async function gnapAuth(req, res) {
         tag: "gnap"
       },
       keyId: keys[0].publicKey.kid,
-      signer: createSigner('rsa-v1_5-sha256',key)
+      signer: createSigner('rsa-v1_5-sha256', key)
     })
     const opts = {
       headers: signedRequest.headers
     }
     try {
-      var response = await axios.post(urlFix(process.env.TRUSTEE_URL) + 'api/as/tx', body, opts)
-      var doc = response.data
+      const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/tx', signedRequest)
+      .then((res) => res.json());
+      // var response = await axios.post(urlFix(process.env.TRUSTEE_URL) + 'api/as/tx', body, opts)
+      // var doc = response.data
       var db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'gnap', settings.couchdb_auth)
       objectPath.set(doc, '_id', 'nosh_' + uuidv4())
       objectPath.set(doc, 'nonce', objectPath.get(body, 'interact.finish.nonce'))
