@@ -222,33 +222,63 @@ async function gnapAuth(req, res) {
       }
     }
   }
-  try {
-    const signedRequest = await httpis.sign({
-      method: 'POST',
-      url: '/api/as/tx',
-      headers: {
-        "content-digest": "sha-256=:" + crypto.createHash('sha256').update(JSON.stringify(body)).digest('hex') + "=:",
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(body)
-    }, {
-      components: [
-        '@method',
-        '@target-uri',
-        'content-digest',
-        'content-type'
-      ],
-      parameters: {
-        created: Math.floor(Date.now() / 1000),
-        nonce: crypto.randomBytes(16).toString('base64url'),
-        tag: "gnap"
-      },
-      keyId: keys[0].publicKey.kid,
-      signer: createSigner('rsa-v1_5-sha256', key)
-    })
-    const opts = {
-      headers: signedRequest.headers
-    }
+  const signingComponents = [
+    '@method',
+    '@target-uri',
+    'content-digest',
+    'content-type'
+  ]
+  const signingParams = {
+      created: new Date(),
+      nonce: crypto.randomBytes(16).toString('base64url'),
+      tag: "gnap",
+      keyid: opts.keyId,
+      alg: opts.signer.alg,
+  }
+  const signatureInputString = httpis.buildSignatureInputString(signingComponents, signingParams);
+  const dataToSign = httpis.buildSignedData(request, signingComponents, signatureInputString);
+  const signer = createSigner('rsa-v1_5-sha256', key)
+  console.log(dataToSign)
+  const signature = await signer(Buffer.from(dataToSign));
+  const signedRequest = {
+    method: 'POST',
+    url: '/api/as/tx',
+    headers: {
+      "content-digest": "sha-256=:" + crypto.createHash('sha256').update(JSON.stringify(body)).digest('hex') + "=:",
+      "content-type": "application/json",
+      'Signature': `sig1=:${signature.toString('base64')}:`,
+      'Signature-Input': `sig1=${signatureInputString}`,
+    },
+    body: JSON.stringify(body),
+  }
+  
+  // try {
+    // const signedRequest = await httpis.sign({
+    //   method: 'POST',
+    //   url: '/api/as/tx',
+    //   headers: {
+    //     "content-digest": "sha-256=:" + crypto.createHash('sha256').update(JSON.stringify(body)).digest('hex') + "=:",
+    //     "content-type": "application/json",
+    //   },
+    //   body: JSON.stringify(body)
+    // }, {
+    //   components: [
+    //     '@method',
+    //     '@target-uri',
+    //     'content-digest',
+    //     'content-type'
+    //   ],
+    //   parameters: {
+    //     // created: Math.floor(Date.now() / 1000),
+    //     nonce: crypto.randomBytes(16).toString('base64url'),
+    //     tag: "gnap"
+    //   },
+    //   keyId: keys[0].publicKey.kid,
+    //   signer: createSigner('rsa-v1_5-sha256', key)
+    // })
+    // const opts = {
+    //   headers: signedRequest.headers
+    // }
     try {
       const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/tx', signedRequest)
       .then((res) => res.json());
@@ -264,9 +294,9 @@ async function gnapAuth(req, res) {
     } catch (e) {
       res.status(401).json(e)
     }
-  } catch (e) {
-    res.status(401).json(e)
-  }
+  // } catch (e) {
+  //   res.status(401).json(e)
+  // }
 }
 
 async function gnapVerify(req, res) {
