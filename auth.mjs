@@ -228,16 +228,16 @@ async function gnapAuth(req, res) {
     'content-digest',
     'content-type'
   ]
+  const signer = createSigner('rsa-v1_5-sha256', key)
   const signingParams = {
       created: new Date(),
       nonce: crypto.randomBytes(16).toString('base64url'),
       tag: "gnap",
-      keyid: opts.keyId,
-      alg: opts.signer.alg,
+      keyid: keys[0].publicKey.kid,
+      alg: signer.alg,
   }
   const signatureInputString = httpis.buildSignatureInputString(signingComponents, signingParams);
   const dataToSign = httpis.buildSignedData(request, signingComponents, signatureInputString);
-  const signer = createSigner('rsa-v1_5-sha256', key)
   console.log(dataToSign)
   const signature = await signer(Buffer.from(dataToSign));
   const signedRequest = {
