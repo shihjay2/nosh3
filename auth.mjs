@@ -236,21 +236,23 @@ async function gnapAuth(req, res) {
       keyid: keys[0].publicKey.kid,
       alg: signer.alg,
   }
-  const signatureInputString = httpis.buildSignatureInputString(signingComponents, signingParams);
-  const dataToSign = httpis.buildSignedData(request, signingComponents, signatureInputString);
-  console.log(dataToSign)
-  const signature = await signer(Buffer.from(dataToSign));
   const signedRequest = {
     method: 'POST',
     url: '/api/as/tx',
     headers: {
       "content-digest": "sha-256=:" + crypto.createHash('sha256').update(JSON.stringify(body)).digest('hex') + "=:",
       "content-type": "application/json",
-      'Signature': `sig1=:${signature.toString('base64')}:`,
-      'Signature-Input': `sig1=${signatureInputString}`,
     },
     body: JSON.stringify(body),
   }
+  const signatureInputString = httpis.buildSignatureInputString(signingComponents, signingParams);
+  const dataToSign = httpis.buildSignedData(signedRequest, signingComponents, signatureInputString);
+  console.log(dataToSign)
+  const signature = await signer(Buffer.from(dataToSign));
+  Object.assign(signedRequest.headers, {
+    'Signature': `sig1=:${signature.toString('base64')}:`,
+    'Signature-Input': `sig1=${signatureInputString}`,
+});
   
   // try {
     // const signedRequest = await httpis.sign({
