@@ -338,9 +338,6 @@ async function userAdd() {
     did: process.env.NOSH_DID
   }
   var id1 = 'nosh_' + uuidv4()
-  if (process.env.NOSH_PATIENT !== '') {
-    id1 = process.env.NOSH_PATIENT
-  }
   if (user.role === 'patient') {
     const patient = {
       "_id": id1,
