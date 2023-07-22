@@ -1,8 +1,10 @@
 import dotenv from 'dotenv'
 dotenv.config()
 import axios from 'axios'
+import Case from 'case'
 import crypto from 'crypto'
 import fs from 'fs'
+import { createSigner, httpis } from "http-message-signatures";
 import * as jose from 'jose'
 import moment from 'moment'
 import objectPath from 'object-path'
@@ -11,13 +13,6 @@ import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
 import { v4 as uuidv4 } from 'uuid'
 
-const options = {
-  // scope: ['read', 'write']
-  claims: [
-    // {name: 'sub'},
-    {name: 'aud', value: 'urn:example:audience'}
-  ]
-}
 import PouchDBFind from 'pouchdb-find'
 PouchDB.plugin(PouchDBFind)
 import comdb from 'comdb'
@@ -38,15 +33,64 @@ async function couchdbConfig(section, key, value) {
   }
 }
 
-async function couchdbDatabase(patient_id='') {
+async function couchdbDatabase(patient_id='', protocol='', hostname='', email='') {
   const resources = JSON.parse(fs.readFileSync('./assets/resources.json'))
   var prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = patient_id + '_'
+    var base_url = urlFix(protocol + '://' + hostname + '/')
+    var gnap_resources = [
+      {
+        "type": "App",
+        "actions": ["read", "write", "delete"],
+        "datatypes": ["json", "html"],
+        "identifier": patient_id,
+        "locations": [base_url + 'app/chart' + patient_id],
+        "privileges": [email, "npi", "offline"],
+        "ro": email
+      }
+    ]
   }
   for (var resource of resources.rows) {
     const db_resource = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource.resource, settings.couchdb_auth)
     await db_resource.info()
+    if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+      if (resource.gnap) {
+        const gnap_resource_all = {
+          "type": Case.title(resource),
+          "actions": ["read", "write", "delete"],
+          "datatypes": ["json"],
+          "identifier": patient_id,
+          "locations": [base_url + "fhir/api/v1/" + Case.pascal(pluralize.singular(resource))],
+          "privileges": [email],
+          "ro": email
+        }
+        const gnap_resource_read = {
+          "type": Case.title(resource) + " - Read Only",
+          "actions": ["read"],
+          "datatypes": ["json"],
+          "identifier": patient_id,
+          "locations": [base_url + "fhir/api/v1/" + Case.pascal(pluralize.singular(resource))],
+          "privileges": [email],
+          "ro": email
+        }
+        gnap_resources.push(gnap_resource_all)
+        gnap_resources.push(gnap_resource_read)
+      }
+    }
+  }
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    const body = {
+      "resources": gnap_resources,
+    }
+    const signedRequest = await signRequest(body, '/api/as/resource', 'POST', req)
+    try {
+      const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', signedRequest)
+        .then((res) => res.json());
+      return doc
+    } catch (e) {
+      console.log(e)
+    }
   }
   await eventAdd('Chart Created', {id: 'system', display: 'System', doc_db: null, doc_id: null, diff: null}, patient_id)
 }
@@ -156,7 +200,7 @@ async function getAllKeys() {
   var trustee_key = null
   // Trustee key
   try {
-    var trustee_key = await axios.get(urlFix(process.env.TRUSTEE_URL) + 'jwks')
+    var trustee_key = await axios.get(urlFix(process.env.TRUSTEE_URL) + 'api/as/jwks')
   } catch (err) {
     console.log(err)
   }
@@ -189,18 +233,26 @@ async function getKeys() {
 
 function getNPI(vc) {
   var npi = ''
-  if (objectPath.has(vc, 'credentialSubject.fhirBundle.entry')) {
-    var a = objectPath.get(vc, 'credentialSubject.fhirBundle.entry').find(b => b.resource.resourceType == 'Practitioner')
-    if (a !== undefined) {
-      if (objectPath.has(a.identifier)) {
-        var c = objectPath.get(a, 'identifier').find(d => d.system == 'http://hl7.org/fhir/sid/us-npi')
-        if (c !== undefined) {
-          npi = c.value
-        }
+  for (var a of vc) {
+    if (npi === '') {
+      if (objectPath.has(a, 'npi')) {
+        npi = a.npi
       }
     }
   }
   return npi
+  // if (objectPath.has(vc, 'credentialSubject.fhirBundle.entry')) {
+  //   var a = objectPath.get(vc, 'credentialSubject.fhirBundle.entry').find(b => b.resource.resourceType == 'Practitioner')
+  //   if (a !== undefined) {
+  //     if (objectPath.has(a.identifier)) {
+  //       var c = objectPath.get(a, 'identifier').find(d => d.system == 'http://hl7.org/fhir/sid/us-npi')
+  //       if (c !== undefined) {
+  //         npi = c.value
+  //       }
+  //     }
+  //   }
+  // }
+  // return npi
 }
 
 async function getPIN(patient_id) {
@@ -216,11 +268,6 @@ async function getPIN(patient_id) {
     return false
   }
   
-}
-
-async function getUser(email) {
-  await sync('users')
-  var db = new PouchDB('users')
 }
 
 async function gnapInstrospect(jwt, publicKey, location, action) {
@@ -287,6 +334,115 @@ async function gnapResourceRegistration(jwt, publicKey) {
   }
 }
 
+async function registerResources(patient_id='', protocol='', hostname='', email='') {
+  const resources = JSON.parse(fs.readFileSync('./assets/resources.json'))
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    var base_url = urlFix(protocol + '://' + hostname + '/')
+    var gnap_resources = [
+      {
+        "type": "App",
+        "actions": ["read", "write", "delete"],
+        "datatypes": ["json", "html"],
+        "identifier": patient_id,
+        "locations": [base_url + 'app/chart' + patient_id],
+        "privileges": [email, "npi", "offline"],
+        "ro": email
+      }
+    ]
+  }
+  for (var resource of resources.rows) {
+    const db_resource = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource.resource, settings.couchdb_auth)
+    await db_resource.info()
+    if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+      if (resource.gnap) {
+        const gnap_resource_all = {
+          "type": Case.title(resource),
+          "actions": ["read", "write", "delete"],
+          "datatypes": ["json"],
+          "identifier": patient_id,
+          "locations": [base_url + "fhir/api/v1/" + Case.capital(resource)],
+          "privileges": [email],
+          "ro": email
+        }
+        const gnap_resource_read = {
+          "type": Case.title(resource) + " - Read Only",
+          "actions": ["read"],
+          "datatypes": ["json"],
+          "identifier": patient_id,
+          "locations": [base_url + "fhir/api/v1/" + Case.capital(resource)],
+          "privileges": [email],
+          "ro": email
+        }
+        gnap_resources.push(gnap_resource_all)
+        gnap_resources.push(gnap_resource_read)
+      }
+    }
+  }
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    const body = {
+      "resources": gnap_resources,
+    }
+    const signedRequest = await signRequest(body, '/api/as/resource', 'POST', req)
+    try {
+      const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', signedRequest)
+        .then((res) => res.json());
+      return body
+    } catch (e) {
+      return false
+    }
+  }
+}
+
+async function signRequest(doc, urlinput, method, req) {
+  const keys = await getKeys()
+  if (keys.length === 0) {
+    var pair = await createKeyPair()
+    keys.push(pair)
+  }
+  const key = await jose.importJWK(keys[0].privateKey, keys[0].privateKey.alg)
+  const body = {
+    ...doc,
+    "client": {
+      "display": {
+        "name": "NOSH",
+        "uri": req.protocol + "://" + req.hostname
+      },
+      "key": {
+        "proof": "httpsig",
+        "jwk": keys[0].publicKey
+      }
+    }
+  }
+  try {
+    const signedRequest = await httpis.sign({
+      method: method,
+      url: urlinput,
+      headers: {
+        "content-digest": "sha-256=:" + crypto.createHash('sha256').update(JSON.stringify(body)).digest('hex') + "=:",
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(body)
+    }, {
+      components: [
+        '@method',
+        '@target-uri',
+        'content-digest',
+        'content-type'
+      ],
+      parameters: {
+        nonce: crypto.randomBytes(16).toString('base64url'),
+        tag: "gnap"
+      },
+      keyId: keys[0].publicKey.kid,
+      signer: createSigner('rsa-v1_5-sha256', key),
+      format: "httpbis"
+    })
+    return signedRequest;
+  } catch (e) {
+    return false;
+  }
+}
+
 async function sleep(seconds) {
   return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
 }
@@ -337,7 +493,7 @@ async function userAdd() {
     role: process.env.NOSH_ROLE,
     did: process.env.NOSH_DID
   }
-  var id1 = 'nosh_' + uuidv4()
+  const id1 = 'nosh_' + uuidv4()
   if (user.role === 'patient') {
     const patient = {
       "_id": id1,
@@ -491,4 +647,4 @@ async function verifyPIN(pin, patient_id) {
   }
 }
 
-export { couchdbConfig, couchdbDatabase, couchdbInstall, createKeyPair, equals, eventAdd, getKeys, getNPI, getPIN, getUser, gnapResourceRegistration, sleep, sync, urlFix, userAdd, verify, verifyJWT, verifyPIN }
+export { couchdbConfig, couchdbDatabase, couchdbInstall, createKeyPair, equals, eventAdd, getKeys, getNPI, getPIN, gnapResourceRegistration, registerResources, signRequest, sleep, sync, urlFix, userAdd, verify, verifyJWT, verifyPIN }

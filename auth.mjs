@@ -12,17 +12,10 @@ import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
 import { v4 as uuidv4 } from 'uuid'
 import { createSigner, httpis } from "http-message-signatures";
-import { couchdbDatabase, couchdbInstall, createKeyPair, equals, getKeys, getNPI, getPIN, sync, urlFix, verify, verifyPIN } from './core.mjs'
+import { couchdbDatabase, couchdbInstall, createKeyPair, equals, getKeys, getNPI, getPIN, registerResources, signRequest, sync, urlFix, verify, verifyPIN } from './core.mjs'
 // const mailgun = new Mailgun(formData)
 // const mg = mailgun.client({username: 'api', key: process.env.MAILGUN_API_KEY})
 const router = express.Router()
-const options = {
-  // scope: ['read', 'write']
-  claims: [
-    // {name: 'sub'},
-    {name: 'aud', value: 'urn:example:audience'}
-  ]
-}
 import PouchDBFind from 'pouchdb-find'
 PouchDB.plugin(PouchDBFind)
 export default router
@@ -35,8 +28,7 @@ router.get('/config', config)
 router.post('/authenticate', authenticate)
 router.get('/exportJWT', exportJWT)
 router.post('/addPatient', addPatient)
-
-router.get('/addUser', addUser)
+router.post('/addResources', addResources)
 
 router.post('/gnapAuth', gnapAuth)
 router.get('/gnapVerify', gnapVerify)
@@ -191,27 +183,18 @@ async function gnapAuth(req, res) {
       res.status(401).send('Unauthorized - No PIN set')
     }
   }
-  var keys = await getKeys()
-  if (keys.length === 0) {
-    var pair = await createKeyPair()
-    keys.push(pair)
-  }
-  const key = await jose.importJWK(keys[0].privateKey, keys[0].privateKey.alg)
   const body = {
     "access_token": {
-      "access": ["app"],
-      "actions": ["read", "write"],
-      "locations": [req.protocol + "://" + req.hostname + "/app/chart/" + req.body.patient]
-    },
-    "client": {
-      "display": {
-        "name": "NOSH",
-        "uri": req.protocol + "://" + req.hostname
-      },
-      "key": {
-        "proof": "httpsig",
-        "jwk": keys[0].publicKey
-      }
+      "access": [
+        {
+          "type": "app",
+          "actions": ["read", "write"],
+          "locations": [req.protocol + "://" + req.hostname + "/app/chart/" + req.body.patient],
+          // additional key called purpose
+          // ["Clinical - Routine", "Clinical - Emergency", "Research", "Customer Support", "Other"]
+          "purpose": "Clinical - Routine"
+        }
+      ]
     },
     "interact": {
       "start": ["redirect"],
@@ -222,211 +205,236 @@ async function gnapAuth(req, res) {
       }
     }
   }
+  const signedRequest = await signRequest(body, '/api/as/tx', 'POST', req)
   try {
-    const signedRequest = await httpis.sign({
-      method: 'POST',
-      url: '/api/as/tx',
-      headers: {
-        "content-digest": "sha-256=:" + crypto.createHash('sha256').update(JSON.stringify(body)).digest('hex') + "=:",
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(body)
-    }, {
-      components: [
-        '@method',
-        '@target-uri',
-        'content-digest',
-        'content-type'
-      ],
-      parameters: {
-        nonce: crypto.randomBytes(16).toString('base64url'),
-        tag: "gnap"
-      },
-      keyId: keys[0].publicKey.kid,
-      signer: createSigner('rsa-v1_5-sha256', key)
-    })
-    try {
-      const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/tx', signedRequest)
-        .then((res) => res.json());
-      var db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'gnap', settings.couchdb_auth)
-      objectPath.set(doc, '_id', 'nosh_' + uuidv4())
-      objectPath.set(doc, 'nonce', objectPath.get(body, 'interact.finish.nonce'))
-      objectPath.set(doc, 'route', req.body.route)
-      objectPath.set(doc, 'patient', req.body.patient)
-      await db.put(doc)
-      res.status(200).json(doc)
-    } catch (e) {
-      res.status(401).json(e)
-    }
+    const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/tx', signedRequest)
+      .then((res) => res.json());
+    var db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'gnap', settings.couchdb_auth)
+    objectPath.set(doc, '_id', doc.interact.redirect.substring(doc.interact.redirect.lastIndexOf('/') + 1))
+    objectPath.set(doc, 'nonce', objectPath.get(body, 'interact.finish.nonce'))
+    objectPath.set(doc, 'route', req.body.route)
+    objectPath.set(doc, 'patient', req.body.patient)
+    await db.put(doc)
+    res.status(200).json(doc)
   } catch (e) {
     res.status(401).json(e)
   }
 }
 
 async function gnapVerify(req, res) {
+  var keys = await getKeys()
+  if (keys.length === 0) {
+    var pair = await createKeyPair()
+    keys.push(pair)
+  }
+  const key = await jose.importJWK(keys[0].privateKey, keys[0].privateKey.alg)
   var db = new PouchDB(urlFix(settings.couchdb_uri) + 'gnap', settings.couchdb_auth)
-  var result = await db.find({
-    selector: {_id: {"$gte": null}, nonce: {"$eq": req.query.state_id}}
-  })
-  var index = null
-  for (var a in result.docs) {
-    // calculate hash and confirm match
+  try {
+    var result = await db.get(req.query.interact_ref)
     const hash = crypto.createHash('sha3-512')
-    hash.update(result.docs[a].nonce + '\n')
-    hash.update(result.docs[a].interact.finish + '\n')
+    hash.update(result.nonce + '\n')
+    hash.update(result.interact.finish + '\n')
     hash.update(req.query.interact_ref + '\n')
     hash.update(urlFix(process.env.TRUSTEE_URL) + 'api/as/tx')
     const hash_result = hash.digest('base64url')
-    if (hash_result === req.query.hash) {
-      index = a
-    }
-  }
-  if (index !== null) {
-    var body = {"interact_ref": req.query.interact_ref}
-    try {
-      var response = await axios.post(result.docs[index].continue.uri, body)
-      var prefix = ''
-      var pin = process.env.COUCHDB_ENCRYPT_PIN
-      const patient_id = result.docs[index].patient
-      if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
-        prefix = patient_id + '_'
-        pin = await getPIN(patient_id)
-        if (!pin) {
-          res.status(401).send('Unauthorized - No PIN set')
-        }
-      }
-      db.remove(result.docs[index])
-      // subject must be in the response
-      if (objectPath.has(response.data, 'subject')) {
-        var selector = []
-        var nosh = {
-          email: '',
-          did: '',
-          pin: pin,
-          npi: '',
-          templates: []
-        }
-        var user_id = ''
-        var email_id = response.data.subject.sub_ids.find(b => b.format === 'email')
-        if (email_id !== undefined) {
-          selector.push({'email': {$eq: email_id.email}, _id: {"$gte": null}})
-          objectPath.set(nosh, 'email', email_id.email)
-        }
-        var did_id = response.data.subject.sub_ids.find(b => b.format === 'did')
-        if (did_id !== undefined) {
-          selector.push({'did': {$eq: did_id.url}, _id: {"$gte": null}})
-          objectPath.set(nosh, 'did', did_id.url)
-        }
-        var db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
-        var result_users = await db_users.find({
-          selector: {$or: selector}
+    if (hash_result !== req.query.hash) {
+      res.status(401).send('Interaction hash does not match')
+    } else {
+      const body = {"interact_ref": req.query.interact_ref}
+      try {
+        const signedRequest = await httpis.sign({
+          method: 'POST',
+          url: '/api/as/continue',
+          headers: {
+            "content-digest": "sha-256=:" + crypto.createHash('sha256').update(JSON.stringify(body)).digest('hex') + "=:",
+            "content-type": "application/json",
+            "authorization": "GNAP " + result.continue.access_token.value
+          },
+          body: JSON.stringify(body)
+        }, {
+          components: [
+            '@method',
+            '@target-uri',
+            'content-digest',
+            'content-type'
+          ],
+          parameters: {
+            nonce: crypto.randomBytes(16).toString('base64url'),
+            tag: "gnap"
+          },
+          keyId: keys[0].publicKey.kid,
+          signer: createSigner('rsa-v1_5-sha256', key)
         })
-        // assume access token is JWT that contains verifiable credentials and if valid, attach to payload
-        const jwt = response.data.access_token.value
-        const verify_results = await verify(jwt)
-        if (verify_results.status === 'isValid') {
-          if (objectPath.has(verify_results, 'payload.vc')) {
-            objectPath.set(nosh, 'npi', getNPI(objectPath.get(verify_results, 'payload.vc')))
-          }
-          if (objectPath.has(verify_results, 'payload.vp') && npi !== '') {
-            for (var b in objectPath.get(verify_results, 'payload.vp.verifiableCredential')) {
-              if (npi !== '') {
-                objectPath.set(nosh, 'npi', getNPI(objectPath.get(verify_results, 'payload.vp.verifiableCredential.' + b )))
-              }
+        try {
+          const doc = await fetch(result.docs[index].continue.uri, signedRequest)
+            .then((res) => res.json());
+          var pin = process.env.COUCHDB_ENCRYPT_PIN
+          var prefix = ''
+          if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+            prefix = req.body.patient + '_'
+            pin = await getPIN(req.body.patient)
+            if (!pin) {
+              res.status(401).send('Unauthorized - No PIN set')
             }
           }
-          var payload = {
-            "_gnap": response.data,
-            "jwt": jwt
-          }
-          if (result_users.docs.length > 0) {
-            if (!objectPath.has(result_users, 'docs.0.defaults')) {
-              const user_doc = await db_users.get(result_users.docs[0]._id)
-              const defaults = {
-                "class": 'AMB',
-                "type": '14736009',
-                "serviceType": '124',
-                "serviceCategory": ' 17',
-                "appointmentType": 'ROUTINE',
-                "category": '34109-9',
-                "code": '34108-1'
-              }
-              objectPath.set(user_doc, 'defaults', defaults)
-              await db_users.put(user_doc)
+          await db.remove(result)
+          if (objectPath.has(doc, 'subject')) {
+            var selector = []
+            var nosh = {
+              email: '',
+              did: '',
+              pin: pin,
+              npi: '',
+              templates: []
             }
-            user_id = result_users.docs[0].id
-            if (objectPath.has(verify_results, 'payload._nosh')) {
-              // there is an updated user object from wallet, so sync to this instance
-              if (!equals(objectPath.get(verify_results, 'payload._nosh'), result_users.docs[0])) {
-                await db_users.put(objectPath.get(verify_results, 'payload._nosh'))
-              }
-            } else {
-              // update user as this is a new instance
-              var doc = result_users.docs[0]
-              objectPath.set(nosh, '_id', doc._id)
-              objectPath.set(nosh, 'id', doc.id)
-              objectPath.set(nosh, '_rev', doc._rev)
-              await db_users.put(nosh)
+            var user_id = ''
+            var email_id = doc.subject.sub_ids.find(b => b.format === 'email')
+            if (email_id !== undefined) {
+              selector.push({'email': {$eq: email_id.email}, _id: {"$gte": null}})
+              objectPath.set(nosh, 'email', email_id.email)
             }
-            objectPath.set(nosh, 'id', user_id)
-            objectPath.set(nosh, 'display', result_users.docs[0].display)
-          } else {
-            // add new user - authorization server has already granted
-            var id = 'nosh_' + uuidv4()
-            objectPath.set(nosh, '_id', id)
-            objectPath.set(nosh, 'id', id)
-            objectPath.set(nosh, 'templates', JSON.parse(fs.readFileSync('./assets/templates.json')))
-            objectPath.set(nosh, 'display', '') // grab display from authorization server - to be completed
-            await db_users.put(nosh)
-            objectPath.set(nosh, 'display', objectPath.get(nosh, 'display'))
-          }
-          objectPath.set(payload, '_nosh', nosh)
-          objectPath.set(payload, '_noshAuth', process.env.AUTH)
-          if (process.env.INSTANCE == 'dev') {
-            objectPath.set(payload, '_noshDB', urlFix(req.protocol + '://' + req.hostname + '/couchdb'))
-          } else {
-            objectPath.set(payload, '_noshDB', urlFix(process.env.COUCHDB_URL))
-          }
-          const api = {
-            "uspstf_key": process.env.USPSTF_KEY,
-            "umls_key": process.env.UMLS_KEY,
-            "mailgun_key": process.env.MAILGUN_API_KEY,
-            "mailgun_domain": process.env.MAILGUN_DOMAIN
-          }
-          objectPath.set(payload, 'noshAPI', api)
-          if (process.env.NOSH_ROLE == 'patient') {
-            await sync('patients', patient_id)
-            const db_patients = new PouchDB(prefix + 'patients')
-            const result_patients = await db_patients.find({selector: {'isEncrypted': {$eq: true}}})
-            if (result_patients.docs.length === 1) {
-              if (result.docs[0].route === null) {
-                objectPath.set(payload, '_noshRedirect','/app/chart/' + result_patients.docs[0]._id)
+            var did_id = doc.subject.sub_ids.find(b => b.format === 'did')
+            if (did_id !== undefined) {
+              selector.push({'did': {$eq: did_id.url}, _id: {"$gte": null}})
+              objectPath.set(nosh, 'did', did_id.url)
+            }
+            var db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
+            var result_users = await db_users.find({
+              selector: {$or: selector}
+            })
+            // assume access token is JWT that contains verifiable credentials and if valid, attach to payload
+            const jwt = doc.access_token.value
+            const verify_results = await verify(jwt)
+            if (verify_results.status === 'isValid') {
+              if (objectPath.has(verify_results, 'payload.vc')) {
+                objectPath.set(nosh, 'npi', getNPI(objectPath.get(verify_results, 'payload.vc')))
+              }
+              if (objectPath.has(verify_results, 'payload.vp') && npi !== '') {
+                for (var b in objectPath.get(verify_results, 'payload.vp.verifiableCredential')) {
+                  if (npi !== '') {
+                    objectPath.set(nosh, 'npi', getNPI(objectPath.get(verify_results, 'payload.vp.verifiableCredential.' + b )))
+                  }
+                }
+              }
+              var payload = {
+                "_gnap": response,
+                "jwt": jwt
+              }
+              if (result_users.docs.length > 0) {
+                if (!objectPath.has(result_users, 'docs.0.defaults')) {
+                  const user_doc = await db_users.get(result_users.docs[0]._id)
+                  const defaults = {
+                    "class": 'AMB',
+                    "type": '14736009',
+                    "serviceType": '124',
+                    "serviceCategory": ' 17',
+                    "appointmentType": 'ROUTINE',
+                    "category": '34109-9',
+                    "code": '34108-1'
+                  }
+                  objectPath.set(user_doc, 'defaults', defaults)
+                  await db_users.put(user_doc)
+                }
+                user_id = result_users.docs[0].id
+                if (objectPath.has(verify_results, 'payload._nosh')) {
+                  // there is an updated user object from wallet, so sync to this instance
+                  if (!equals(objectPath.get(verify_results, 'payload._nosh'), result_users.docs[0])) {
+                    await db_users.put(objectPath.get(verify_results, 'payload._nosh'))
+                  }
+                } else {
+                  // update user as this is a new instance
+                  var doc = result_users.docs[0]
+                  objectPath.set(nosh, '_id', doc._id)
+                  objectPath.set(nosh, 'id', doc.id)
+                  objectPath.set(nosh, '_rev', doc._rev)
+                  await db_users.put(nosh)
+                }
+                objectPath.set(nosh, 'id', user_id)
+                objectPath.set(nosh, 'display', result_users.docs[0].display)
               } else {
-                objectPath.set(payload, '_noshRedirect', result.docs[0].route)
+                // add new user - authorization server has already granted
+                var id = 'nosh_' + uuidv4()
+                objectPath.set(nosh, '_id', id)
+                objectPath.set(nosh, 'id', id)
+                objectPath.set(nosh, 'templates', JSON.parse(fs.readFileSync('./assets/templates.json')))
+                objectPath.set(nosh, 'display', '') // grab display from authorization server - to be completed
+                await db_users.put(nosh)
+                objectPath.set(nosh, 'display', objectPath.get(nosh, 'display'))
               }
-              objectPath.set(payload, '_noshType', 'pnosh')
-              objectPath.set(payload, '_nosh.patient', patient_id)
+              objectPath.set(payload, '_nosh', nosh)
+              objectPath.set(payload, '_noshAuth', process.env.AUTH)
+              if (process.env.INSTANCE == 'dev') {
+                objectPath.set(payload, '_noshDB', urlFix(req.protocol + '://' + req.hostname + '/couchdb'))
+              } else {
+                objectPath.set(payload, '_noshDB', urlFix(process.env.COUCHDB_URL))
+              }
+              const api = {
+                "uspstf_key": process.env.USPSTF_KEY,
+                "umls_key": process.env.UMLS_KEY,
+                "mailgun_key": process.env.MAILGUN_API_KEY,
+                "mailgun_domain": process.env.MAILGUN_DOMAIN
+              }
+              objectPath.set(payload, 'noshAPI', api)
+              if (process.env.NOSH_ROLE == 'patient') {
+                await sync('patients', patient_id)
+                const db_patients = new PouchDB(prefix + 'patients')
+                const result_patients = await db_patients.find({selector: {'isEncrypted': {$eq: true}}})
+                if (result_patients.docs.length === 1) {
+                  if (result.docs[0].route === null) {
+                    objectPath.set(payload, '_noshRedirect','/app/chart/' + result_patients.docs[0]._id)
+                  } else {
+                    objectPath.set(payload, '_noshRedirect', result.docs[0].route)
+                  }
+                  objectPath.set(payload, '_noshType', 'pnosh')
+                  objectPath.set(payload, '_nosh.patient', patient_id)
+                } else {
+                  // not installed yet
+                  res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'start')
+                }
+              } else {
+                if (result.docs[0].route === null) {
+                  objectPath.set(payload, '_noshRedirect', '/app/dashboard/')
+                } else {
+                  objectPath.set(payload, '_noshRedirect', result.docs[0].route)
+                }
+                objectPath.set(payload, '_noshType', 'mdnosh')
+              }
+              const jwt = await createJWT(user_id, urlFix(req.protocol + '://' + req.hostname + '/'), urlFix(req.protocol + '://' + req.hostname + '/'), payload)
+              res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/verifyUser?token=' + jwt)
             } else {
-              // not installed yet
-              res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'start')
+              res.status(401).send('Unauthorized')
             }
-          } else {
-            if (result.docs[0].route === null) {
-              objectPath.set(payload, '_noshRedirect', '/app/dashboard/')
-            } else {
-              objectPath.set(payload, '_noshRedirect', result.docs[0].route)
-            }
-            objectPath.set(payload, '_noshType', 'mdnosh')
           }
-          const jwt = await createJWT(user_id, urlFix(req.protocol + '://' + req.hostname + '/'), urlFix(req.protocol + '://' + req.hostname + '/'), payload)
-          res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/verifyUser?token=' + jwt)
-        } else {
-          res.status(401).send('Unauthorized')
+          
+          res.status(200).json(doc)
+        } catch (e) {
+          res.status(401).json(e)
         }
+      } catch (e) {
+        res.status(401).json(e)
       }
-    } catch (e) {
-      res.status(401).json(e)
     }
+  } catch (e) {
+    res.status(401).json(e)
+  }
+       
+  try {
+    var response = await axios.post(result.docs[index].continue.uri, body)
+    var prefix = ''
+    var pin = process.env.COUCHDB_ENCRYPT_PIN
+    const patient_id = result.docs[index].patient
+    if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+      prefix = patient_id + '_'
+      pin = await getPIN(patient_id)
+      if (!pin) {
+        res.status(401).send('Unauthorized - No PIN set')
+      }
+    }
+    db.remove(result.docs[index])
+    // subject must be in the response
+    
+  } catch (e) {
+    res.status(401).json(e)
   }
 }
 
@@ -623,7 +631,7 @@ async function addPatient(req, res, next) {
     await sync('patients', patient_id, true, patient)
     objectPath.set(user, 'reference', 'Patient/' + patient_id)
     await sync('users', patient_id, true, user)
-    await couchdbDatabase(patient_id)
+    await couchdbDatabase(patient_id, req.protocol, req.hostname, req.body.user.email)
     res.status(200).json({
       patient_id: patient_id,
       url: urlFix(req.protocol + '://' + req.hostname + '/') + 'app/chart/' + patient_id
@@ -631,6 +639,11 @@ async function addPatient(req, res, next) {
   } else {
     res.status(200).json({response: 'Error connecting to database'})
   }
+}
+
+async function addResources(req, res, next) {
+  const result = await registerResources(req.body.id, req.protocol, req.hostname, req.body.email)
+  res.status(200).json(result)
 }
 
 async function pinCheck (req, res, next) {
@@ -687,30 +700,6 @@ async function pinSet (req, res, next) {
   } else {
     res.status(200).json({ response: 'Incorrect PIN' })
   }
-}
-
-async function addUser (req, res, next) {
-  var name = 'elmo'
-  var opts = {headers: { Authorization: `Bearer eyJhbGciOiJSUzI1NiJ9.eyJ2YyI6eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvMjAxOC9jcmVkZW50aWFscy92MSIsImh0dHBzOi8vd3d3LnczLm9yZy8yMDE4L2NyZWRlbnRpYWxzL2V4YW1wbGVzL3YxIl0sImlkIjoiaHR0cDovL2V4YW1wbGUuZWR1L2NyZWRlbnRpYWxzLzM3MzIiLCJ0eXBlIjpbIlZlcmlmaWFibGVDcmVkZW50aWFsIiwiVW5pdmVyc2l0eURlZ3JlZUNyZWRlbnRpYWwiXSwiaXNzdWVyIjoiaHR0cHM6Ly9leGFtcGxlLmVkdS9pc3N1ZXJzLzU2NTA0OSIsImlzc3VhbmNlRGF0ZSI6IjIwMTAtMDEtMDFUMDA6MDA6MDBaIiwiY3JlZGVudGlhbFN1YmplY3QiOnsiaWQiOiJkaWQ6ZXhhbXBsZTplYmZlYjFmNzEyZWJjNmYxYzI3NmUxMmVjMjEiLCJkZWdyZWUiOnsidHlwZSI6IkJhY2hlbG9yRGVncmVlIiwibmFtZSI6IkJhY2hlbG9yIG9mIFNjaWVuY2UgYW5kIEFydHMifX19LCJpYXQiOjE2NjA1Njc2MTIsImlzcyI6InVybjpleGFtcGxlOmlzc3VlciIsImF1ZCI6InVybjpleGFtcGxlOmF1ZGllbmNlIiwiZXhwIjoxNjYwNTc0ODEyLCJzdWIiOiJhZG1pbiJ9.GuAZkqMV3yctGivbp1FlMxPY3pI4SAfmVEnLT20iDvW3VsW-_ZoEm4RuU8s9Vh01tBekRs_wwtlGznE0v3XDs_Tg0tRgIcoy2m8lGU21_KOrWcwHPdZi8PmC3oM7gqpkZot-FFE6S6F78hlblhUiTOGrNuVSJaRKDKmcTTkAKsUTAA_8rywTgeYiIoiokNOHq7JE_YoPl_jddiEFxklHm2PWAI-qM21KX5gfH6gMGAWE_ksJuTzU2XQ32bya_jULVYyLyBmJdq6FBWjUupfHn72VBnWbQUu07a2T8t-9jDvl71CAmgfQGt9Ta3KwCIPoy1shT_C6A_3yoeh0k_VRew`}}
-  var body = {
-    "name": name,
-    "password": "lalo37",
-    "roles": ['write'],
-    "type": "user"
-    // "selector": {
-    //     "_id": {"$gte": null}
-    // },
-    // // "fields": ["_id"],
-    // "execution_stats": true
-  }
-  try {
-    var result = await axios.put(settings.couchdb_uri + '/_users/org.couchdb.user:' + name, body, opts)
-    console.log(result.status)
-    res.status(200).json(result.data)
-  } catch (e) {
-    res.status(200).json(e)
-  }
-  // res.status(200).json(req.protocol + '://' + req.hostname + req.baseUrl + req.path)
 }
 
 async function test (req, res, next) {
