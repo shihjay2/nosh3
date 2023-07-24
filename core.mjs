@@ -335,6 +335,10 @@ async function gnapResourceRegistration(jwt, publicKey) {
 }
 
 async function registerResources(patient_id='', protocol='', hostname='', email='') {
+  var prefix = ''
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    prefix = patient_id + '_'
+  }
   const resources = JSON.parse(fs.readFileSync('./assets/resources.json'))
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     var base_url = urlFix(protocol + '://' + hostname + '/')
