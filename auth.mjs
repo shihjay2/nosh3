@@ -343,10 +343,9 @@ async function gnapVerify(req, res) {
                   }
                 } else {
                   // update user as this is a new instance
-                  var doc = result_users.docs[0]
-                  objectPath.set(nosh, '_id', doc._id)
-                  objectPath.set(nosh, 'id', doc.id)
-                  objectPath.set(nosh, '_rev', doc._rev)
+                  objectPath.set(nosh, '_id', result_users.docs[0]._id)
+                  objectPath.set(nosh, 'id', result_users.docs[0].id)
+                  objectPath.set(nosh, '_rev', result_users.docs[0]._rev)
                   await db_users.put(nosh)
                 }
                 objectPath.set(nosh, 'id', user_id)
