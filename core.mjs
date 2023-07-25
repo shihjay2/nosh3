@@ -45,7 +45,7 @@ async function couchdbDatabase(patient_id='', protocol='', hostname='', email=''
         "actions": ["read", "write", "delete"],
         "datatypes": ["json", "html"],
         "identifier": patient_id,
-        "locations": [base_url + 'app/chart' + patient_id],
+        "locations": [base_url + 'app/chart/' + patient_id],
         "privileges": [email, "npi", "offline"],
         "ro": email
       }
@@ -61,7 +61,7 @@ async function couchdbDatabase(patient_id='', protocol='', hostname='', email=''
           "actions": ["read", "write", "delete"],
           "datatypes": ["json"],
           "identifier": patient_id,
-          "locations": [base_url + "fhir/api/v1/" + Case.pascal(pluralize.singular(resource.resource))],
+          "locations": [base_url + "fhir/api/v1/" + Case.pascal(pluralize.singular(resource.resource)) + "?patient.identifier=" + patient_id],
           "privileges": [email],
           "ro": email
         }
@@ -70,7 +70,7 @@ async function couchdbDatabase(patient_id='', protocol='', hostname='', email=''
           "actions": ["read"],
           "datatypes": ["json"],
           "identifier": patient_id,
-          "locations": [base_url + "fhir/api/v1/" + Case.pascal(pluralize.singular(resource.resource))],
+          "locations": [base_url + "fhir/api/v1/" + Case.pascal(pluralize.singular(resource.resource)) + "?patient.identifier=" + patient_id],
           "privileges": [email],
           "ro": email
         }
@@ -352,7 +352,7 @@ async function registerResources(patient_id='', protocol='', hostname='', email=
         "actions": ["read", "write", "delete"],
         "datatypes": ["json", "html"],
         "identifier": patient_id,
-        "locations": [base_url + 'app/chart' + patient_id],
+        "locations": [base_url + 'app/chart/' + patient_id],
         "privileges": [email, "npi", "offline"],
         "ro": email
       }
@@ -368,7 +368,7 @@ async function registerResources(patient_id='', protocol='', hostname='', email=
           "actions": ["read", "write", "delete"],
           "datatypes": ["json"],
           "identifier": patient_id,
-          "locations": [base_url + "fhir/api/v1/" + Case.pascal(pluralize.singular(resource.resource))],
+          "locations": [base_url + "fhir/api/v1/" + Case.pascal(pluralize.singular(resource.resource)) + "?patient.identifier=" + patient_id],
           "privileges": [email],
           "ro": email
         }
@@ -377,7 +377,7 @@ async function registerResources(patient_id='', protocol='', hostname='', email=
           "actions": ["read"],
           "datatypes": ["json"],
           "identifier": patient_id,
-          "locations": [base_url + "fhir/api/v1/" + Case.pascal(pluralize.singular(resource.resource))],
+          "locations": [base_url + "fhir/api/v1/" + Case.pascal(pluralize.singular(resource.resource)) + "?patient.identifier=" + patient_id],
           "privileges": [email],
           "ro": email
         }
