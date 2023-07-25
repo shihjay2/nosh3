@@ -57,20 +57,20 @@ async function couchdbDatabase(patient_id='', protocol='', hostname='', email=''
     if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
       if (resource.gnap) {
         const gnap_resource_all = {
-          "type": Case.title(resource),
+          "type": Case.title(resource.resource),
           "actions": ["read", "write", "delete"],
           "datatypes": ["json"],
           "identifier": patient_id,
-          "locations": [base_url + "fhir/api/v1/" + Case.pascal(pluralize.singular(resource))],
+          "locations": [base_url + "fhir/api/v1/" + Case.pascal(pluralize.singular(resource.resource))],
           "privileges": [email],
           "ro": email
         }
         const gnap_resource_read = {
-          "type": Case.title(resource) + " - Read Only",
+          "type": Case.title(resource.resource) + " - Read Only",
           "actions": ["read"],
           "datatypes": ["json"],
           "identifier": patient_id,
-          "locations": [base_url + "fhir/api/v1/" + Case.pascal(pluralize.singular(resource))],
+          "locations": [base_url + "fhir/api/v1/" + Case.pascal(pluralize.singular(resource.resource))],
           "privileges": [email],
           "ro": email
         }
@@ -364,20 +364,20 @@ async function registerResources(patient_id='', protocol='', hostname='', email=
     if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
       if (resource.gnap) {
         const gnap_resource_all = {
-          "type": Case.title(resource),
+          "type": Case.title(resource.resource),
           "actions": ["read", "write", "delete"],
           "datatypes": ["json"],
           "identifier": patient_id,
-          "locations": [base_url + "fhir/api/v1/" + Case.capital(resource)],
+          "locations": [base_url + "fhir/api/v1/" + Case.pascal(pluralize.singular(resource.resource))],
           "privileges": [email],
           "ro": email
         }
         const gnap_resource_read = {
-          "type": Case.title(resource) + " - Read Only",
+          "type": Case.title(resource.resource) + " - Read Only",
           "actions": ["read"],
           "datatypes": ["json"],
           "identifier": patient_id,
-          "locations": [base_url + "fhir/api/v1/" + Case.capital(resource)],
+          "locations": [base_url + "fhir/api/v1/" + Case.pascal(pluralize.singular(resource.resource))],
           "privileges": [email],
           "ro": email
         }
