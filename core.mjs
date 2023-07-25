@@ -83,6 +83,10 @@ async function couchdbDatabase(patient_id='', protocol='', hostname='', email=''
     const body = {
       "resources": gnap_resources,
     }
+    const req = {
+      hostname: hostname,
+      protocol: protocol
+    }
     const signedRequest = await signRequest(body, '/api/as/resource', 'POST', req)
     try {
       const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', signedRequest)
@@ -385,6 +389,10 @@ async function registerResources(patient_id='', protocol='', hostname='', email=
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     const body = {
       "resources": gnap_resources,
+    }
+    const req = {
+      hostname: hostname,
+      protocol: protocol
     }
     const signedRequest = await signRequest(body, '/api/as/resource', 'POST', req)
     try {
