@@ -327,9 +327,17 @@ export default defineComponent({
       const a = await axios.post(window.location.origin + '/auth/gnapAuth', body)
       state.sending = false
       if (objectPath.has(a, 'data.interact.redirect')) {
-        window.location.href = a.data.interact.redirect
+        window.open(a.data.interact.redirect, '_blank')
+        // window.location.href = a.data.interact.redirect
+      } else {
+        $q.notify({
+          message: 'Error connecting to Trustee!  Please try again later!',
+          color: 'red',
+          actions: [
+            { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+          ]
+        })
       }
-      window.location.href = a.data.interact.redirect
     }
     const onSubmit = async(values) => {
       const { email } = values
