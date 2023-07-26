@@ -47,6 +47,7 @@
             <q-card-actions align="right">
               <q-btn v-if="!state.sending" push icon="login" color="primary" label="Sign in without password" type="submit" />
               <q-btn v-if="state.sending" push icon="replay" color="primary" label="Request another Magic Link" @click="resubmit" />
+              <q-btn push icon="vpn_key" color="primary" label="Trustee Authorization" @click="gnapSubmit" />
             </q-card-actions>
           </Form>
         </q-card>
@@ -327,8 +328,8 @@ export default defineComponent({
       const a = await axios.post(window.location.origin + '/auth/gnapAuth', body)
       state.sending = false
       if (objectPath.has(a, 'data.interact.redirect')) {
-        window.open(a.data.interact.redirect, '_blank')
-        // window.location.href = a.data.interact.redirect
+        // window.open(a.data.interact.redirect, '_blank')
+        window.location.href = a.data.interact.redirect
       } else {
         $q.notify({
           message: 'Error connecting to Trustee!  Please try again later!',

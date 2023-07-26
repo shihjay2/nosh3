@@ -18,6 +18,49 @@
             <div class="text-caption text-primary"><div v-html="state.progressNum"></div></div>
           </q-card-section>
         </q-card>
+        <q-card v-if="state.showPIN">
+          <q-card-section>
+            <div class="text-h6 text-center">Enter PIN</div>
+          </q-card-section>
+          <q-separator />
+          <Form @submit="onSubmitPIN">
+            <q-card-section>
+              <div v-for="field1 in state.schemaPin" :key="field1.id" class="q-pa-sm">
+                <QInputWithValidation
+                  ref="myInput"
+                  :name="field1.id"
+                  :label="field1.label"
+                  :type="field1.type"
+                  :model="state.formPin[field1.id]"
+                  @update-model="updateValue1"
+                  :placeholder="field1.placeholder"
+                  :rules="field1.rules"
+                  focus="false"
+                />
+              </div>
+            </q-card-section>
+            <q-card-section>
+              <q-list>
+                <q-item>
+                  <q-item-section avatar>
+                    <q-avatar color="red" text-color="white" icon="safety_check" />
+                  </q-item-section>
+                  <q-item-section>
+                    The database requires a 4-digit PIN (only known by the patient) for encryption/decryption.
+                  </q-item-section>
+                </q-item>
+                <q-item>
+                  <q-item-section>
+                    If you are not the patient, please come back later until the login prompt appears.
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-card-section>
+            <q-card-actions align="right">
+              <q-btn push icon="pin" color="primary" label="Enter PIN" type="submit" />
+            </q-card-actions>
+          </Form>
+        </q-card>
       </div>
     </q-page-container>
   </q-layout>
@@ -67,7 +110,8 @@ export default defineComponent({
       ],
       showPIN: false,
       login: false,
-      loading: true
+      loading: true,
+      formPin: {},
     })
     onMounted(async() => {
       if (auth.user !== null) {
@@ -173,10 +217,31 @@ export default defineComponent({
         state.progressNum = syncState.complete + ' out of ' + syncState.total + ' resources completed.'
       }
     })
+    const onSubmitPIN = async(values) => {
+      const { pin } = values
+      const result = await axios.post(window.location.origin + '/auth/pinSet', {pin: pin, patient: state.patient})
+      if (result.data.response === 'OK') {
+        state.showPIN = false
+        state.login = true
+      } else {
+        $q.notify({
+          message: result.data.response,
+          color: 'red',
+          actions: [
+            { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+          ]
+        })
+      }
+    }
+    const updateValue1 = (val, field, type) => {
+      state.formPin[field] = val
+    }
     return {
       syncAll,
       syncState,
-      state
+      state,
+      onSubmitPIN,
+      updateValue1
     }
   }
 })
