@@ -323,7 +323,7 @@ export default defineComponent({
     }
     const gnapSubmit = async() => {
       var url = auth.returnUrl
-      const body = {route: url}
+      const body = {route: url, patient: state.patient}
       state.sending = true
       const a = await axios.post(window.location.origin + '/auth/gnapAuth', body)
       state.sending = false
