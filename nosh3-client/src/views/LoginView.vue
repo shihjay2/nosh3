@@ -47,7 +47,7 @@
             <q-card-actions align="right">
               <q-btn v-if="!state.sending" push icon="login" color="primary" label="Sign in without password" type="submit" />
               <q-btn v-if="state.sending" push icon="replay" color="primary" label="Request another Magic Link" @click="resubmit" />
-              <q-btn push icon="vpn_key" color="primary" label="Trustee Authorization" @click="gnapSubmit" />
+              <q-btn class="full-width" push icon="vpn_key" color="primary" label="Trustee Authorization Server" @click="gnapSubmit" />
             </q-card-actions>
           </Form>
         </q-card>
@@ -324,6 +324,7 @@ export default defineComponent({
     const gnapSubmit = async() => {
       var url = auth.returnUrl
       state.sending = false
+      state.loading = true
       const body = {route: url, patient: state.patient}
       const a = await axios.post(window.location.origin + '/auth/gnapAuth', body)
       if (objectPath.has(a, 'data.interact.redirect')) {
