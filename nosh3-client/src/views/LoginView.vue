@@ -323,10 +323,9 @@ export default defineComponent({
     }
     const gnapSubmit = async() => {
       var url = auth.returnUrl
-      const body = {route: url, patient: state.patient}
-      state.sending = true
-      const a = await axios.post(window.location.origin + '/auth/gnapAuth', body)
       state.sending = false
+      const body = {route: url, patient: state.patient}
+      const a = await axios.post(window.location.origin + '/auth/gnapAuth', body)
       if (objectPath.has(a, 'data.interact.redirect')) {
         // window.open(a.data.interact.redirect, '_blank')
         window.location.href = a.data.interact.redirect

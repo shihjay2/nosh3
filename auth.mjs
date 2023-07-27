@@ -206,11 +206,9 @@ async function gnapAuth(req, res) {
     }
   }
   const signedRequest = await signRequest(body, '/api/as/tx', 'POST', req)
-  console.log(signedRequest)
   try {
     const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/tx', signedRequest)
       .then((res) => res.json());
-    console.log(doc)
     var db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'gnap', settings.couchdb_auth)
     objectPath.set(doc, '_id', doc.interact.redirect.substring(doc.interact.redirect.lastIndexOf('/') + 1))
     objectPath.set(doc, 'nonce', objectPath.get(body, 'interact.finish.nonce'))
@@ -219,7 +217,6 @@ async function gnapAuth(req, res) {
     await db.put(doc)
     res.status(200).json(doc)
   } catch (e) {
-    console.log(e)
     res.status(401).json(e)
   }
 }
