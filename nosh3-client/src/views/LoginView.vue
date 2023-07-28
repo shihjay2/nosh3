@@ -45,9 +45,9 @@
               <div class="text-subtitle2">Check your email for your Magic Link for entry into NOSH ChartingSystem and come back here once verified</div>
             </q-card-section>
             <q-card-actions align="right">
-              <q-btn v-if="!state.sending" push icon="login" color="primary" label="Sign in without password" type="submit" />
-              <q-btn v-if="state.sending" push icon="replay" color="primary" label="Request another Magic Link" @click="resubmit" />
-              <q-btn class="full-width" push icon="vpn_key" color="primary" label="Trustee Authorization Server" @click="gnapSubmit" />
+              <q-btn v-if="!state.sending" class="full-width q-pa-md" push icon="login" color="primary" label="Sign in without password" type="submit" />
+              <q-btn v-if="state.sending" class="full-width q-pa-md" push icon="replay" color="primary" label="Request another Magic Link" @click="resubmit" />
+              <q-btn class="full-width q-pa-md" push icon="vpn_key" color="primary" label="Trustee Authorization Server" @click="gnapSubmit" />
             </q-card-actions>
           </Form>
         </q-card>
