@@ -409,13 +409,16 @@ async function gnapVerify(req, res) {
               res.status(200).json(doc)
             }
           } catch (e) {
+            console.log('#3 continue')
             res.status(401).json(e)
           }
         } catch (e) {
+          console.log('#2 singned request')
           res.status(401).json(e)
         }
       }
     } catch (e) {
+      console.log('#1 db not found')
       res.status(401).json(e)
     }
   }
