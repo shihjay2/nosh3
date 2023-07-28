@@ -31,7 +31,7 @@ router.post('/addPatient', addPatient)
 router.post('/addResources', addResources)
 
 router.post('/gnapAuth', gnapAuth)
-router.get('/gnapVerify', gnapVerify)
+router.get('/gnapVerify/:patient', gnapVerify)
 
 router.post('/pinCheck', pinCheck)
 router.post('/pinClear', pinClear)
@@ -201,7 +201,7 @@ async function gnapAuth(req, res) {
         "start": ["redirect"],
         "finish": {
           "method": "redirect",
-          "uri": req.protocol + "://" + req.hostname + "/auth/gnapVerify",
+          "uri": req.protocol + "://" + req.hostname + "/auth/gnapVerify/" + req.body.patient,
           "nonce": crypto.randomBytes(16).toString('base64url')
         }
       }
@@ -227,8 +227,8 @@ async function gnapVerify(req, res) {
   var pin = process.env.COUCHDB_ENCRYPT_PIN
   var prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
-    prefix = req.body.patient + '_'
-    pin = await getPIN(req.body.patient)
+    prefix = req.params.patient + '_'
+    pin = await getPIN(req.params.patient)
   }
   if (!pin) {
     res.status(401).send('Unauthorized - No PIN set')
@@ -279,17 +279,8 @@ async function gnapVerify(req, res) {
           try {
             const doc = await fetch(result.docs[index].continue.uri, signedRequest)
               .then((res) => res.json());
-            var pin = process.env.COUCHDB_ENCRYPT_PIN
-            var prefix = ''
-            if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
-              prefix = req.body.patient + '_'
-              pin = await getPIN(req.body.patient)
-              if (!pin) {
-                res.status(401).send('Unauthorized - No PIN set')
-              }
-            }
             await db.remove(result)
-            if (objectPath.has(doc, 'subject')) {
+            if (objectPath.has(doc, 'access_token.subject')) {
               var selector = []
               var nosh = {
                 email: '',
@@ -299,12 +290,12 @@ async function gnapVerify(req, res) {
                 templates: []
               }
               var user_id = ''
-              var email_id = doc.subject.sub_ids.find(b => b.format === 'email')
+              var email_id = doc.access_token.subject.sub_ids.find(b => b.format === 'email')
               if (email_id !== undefined) {
                 selector.push({'email': {$eq: email_id.email}, _id: {"$gte": null}})
                 objectPath.set(nosh, 'email', email_id.email)
               }
-              var did_id = doc.subject.sub_ids.find(b => b.format === 'did')
+              var did_id = doc.access_token.subject.sub_ids.find(b => b.format === 'did')
               if (did_id !== undefined) {
                 selector.push({'did': {$eq: did_id.url}, _id: {"$gte": null}})
                 objectPath.set(nosh, 'did', did_id.url)
@@ -414,9 +405,9 @@ async function gnapVerify(req, res) {
               } else {
                 res.status(401).send('Unauthorized')
               }
+            } else {
+              res.status(200).json(doc)
             }
-            
-            res.status(200).json(doc)
           } catch (e) {
             res.status(401).json(e)
           }
