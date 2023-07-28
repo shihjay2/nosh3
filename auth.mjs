@@ -278,7 +278,7 @@ async function gnapVerify(req, res) {
             signer: createSigner('rsa-v1_5-sha256', key)
           })
           try {
-            const doc = await fetch(result.docs[index].continue.uri, signedRequest)
+            const doc = await fetch(result.continue.uri, signedRequest)
               .then((res) => res.json());
             await db.remove(result)
             if (objectPath.has(doc, 'access_token.subject')) {
