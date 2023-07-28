@@ -254,29 +254,7 @@ async function gnapVerify(req, res) {
       } else {
         const body = {"interact_ref": req.query.interact_ref}
         try {
-          const signedRequest = await httpis.sign({
-            method: 'POST',
-            url: '/api/as/continue',
-            headers: {
-              "content-digest": "sha-256=:" + crypto.createHash('sha256').update(JSON.stringify(body)).digest('hex') + "=:",
-              "content-type": "application/json",
-              "authorization": "GNAP " + result.continue.access_token.value
-            },
-            body: JSON.stringify(body)
-          }, {
-            components: [
-              '@method',
-              '@target-uri',
-              'content-digest',
-              'content-type'
-            ],
-            parameters: {
-              nonce: crypto.randomBytes(16).toString('base64url'),
-              tag: "gnap"
-            },
-            keyId: keys[0].publicKey.kid,
-            signer: createSigner('rsa-v1_5-sha256', key)
-          })
+          const signedRequest = await signRequest(body, '/api/as/continue', 'POST', req, result.continue.access_token.value)
           try {
             const doc = await fetch(result.continue.uri, signedRequest)
               .then((res) => res.json());

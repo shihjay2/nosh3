@@ -405,7 +405,7 @@ async function registerResources(patient_id='', protocol='', hostname='', email=
   }
 }
 
-async function signRequest(doc, urlinput, method, req) {
+async function signRequest(doc, urlinput, method, req, auth='') {
   const keys = await getKeys()
   if (keys.length === 0) {
     var pair = await createKeyPair()
@@ -425,16 +425,20 @@ async function signRequest(doc, urlinput, method, req) {
       }
     }
   }
+  const opt = {
+    method: method,
+    url: urlinput,
+    headers: {
+      "content-digest": "sha-256=:" + crypto.createHash('sha256').update(JSON.stringify(body)).digest('hex') + "=:",
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(body)
+  };
+  if (auth !== '') {
+    objectPath.set(opt, "headers.authorization", "GNAP " + auth)
+  }
   try {
-    const signedRequest = await httpis.sign({
-      method: method,
-      url: urlinput,
-      headers: {
-        "content-digest": "sha-256=:" + crypto.createHash('sha256').update(JSON.stringify(body)).digest('hex') + "=:",
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(body)
-    }, {
+    const signedRequest = await httpis.sign(opt, {
       components: [
         '@method',
         '@target-uri',
