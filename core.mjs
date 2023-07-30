@@ -210,9 +210,7 @@ async function getAllKeys() {
   }
   console.log(trustee_key)
   if (trustee_key !== null && trustee_key.status === 200 && objectPath.has(trustee_key, 'data.keys')) {
-    for (var b in trustee_key.data.keys) {
-      keys.push(trustee_key.data.keys[b])
-    }
+    keys.push(trustee_key.data.keys)
   }
   // Local key
   const db = new PouchDB((settings.couchdb_uri + '/keys'), settings.couchdb_auth)
