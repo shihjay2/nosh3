@@ -264,6 +264,7 @@ async function gnapVerify(req, res) {
                 templates: []
               }
               var user_id = ''
+              console.log(doc.access_token.subject.sub_ids)
               var email_id = doc.access_token.subject.sub_ids.find(b => b.format === 'email')
               if (email_id !== undefined) {
                 selector.push({'email': {$eq: email_id.email}, _id: {"$gte": null}})
