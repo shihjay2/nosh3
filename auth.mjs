@@ -255,6 +255,7 @@ async function gnapVerify(req, res) {
             console.log(doc)
             await db.remove(result)
             if (objectPath.has(doc, 'access_token.subject')) {
+              console.log('subject exists')
               var selector = []
               var nosh = {
                 email: '',
@@ -280,6 +281,7 @@ async function gnapVerify(req, res) {
               })
               // assume access token is JWT that contains verifiable credentials and if valid, attach to payload
               const jwt = doc.access_token.value
+              console.log(jwt)
               try {
                 const verify_results = await verify(jwt)
                 if (verify_results.status === 'isValid') {
