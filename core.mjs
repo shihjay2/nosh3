@@ -208,6 +208,7 @@ async function getAllKeys() {
   } catch (err) {
     console.log(err)
   }
+  console.log(trustee_key)
   if (trustee_key !== null && trustee_key.status === 200 && objectPath.has(trustee_key, 'data.keys')) {
     for (var b in trustee_key.data.keys) {
       keys.push(trustee_key.data.keys[b])
@@ -224,6 +225,7 @@ async function getAllKeys() {
       publicKey = result.docs[a].publicKey
     }
   }
+  console.log(keys)
   return {keys: keys, publicKey: publicKey}
 }
 
