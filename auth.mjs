@@ -278,6 +278,7 @@ async function gnapVerify(req, res) {
               var result_users = await db_users.find({
                 selector: {$or: selector}
               })
+              console.log(result_users)
               // assume access token is JWT that contains verifiable credentials and if valid, attach to payload
               const jwt = doc.access_token.value
               const verify_results = await verify(jwt)
@@ -300,7 +301,6 @@ async function gnapVerify(req, res) {
                 }
                 if (result_users.docs.length > 0) {
                   console.log('user found')
-                  console.log(result_users)
                   if (!objectPath.has(result_users, 'docs.0.defaults')) {
                     const user_doc = await db_users.get(result_users.docs[0]._id)
                     const defaults = {
