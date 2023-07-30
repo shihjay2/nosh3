@@ -280,10 +280,10 @@ async function gnapVerify(req, res) {
               })
               // assume access token is JWT that contains verifiable credentials and if valid, attach to payload
               const jwt = doc.access_token.value
-              console.log(jwt)
               const verify_results = await verify(jwt)
               console.log(verify_results)
               if (verify_results.status === 'isValid') {
+                console.log('valid jwt')
                 if (objectPath.has(verify_results, 'payload.vc')) {
                   objectPath.set(nosh, 'npi', getNPI(objectPath.get(verify_results, 'payload.vc')))
                 }
@@ -299,6 +299,8 @@ async function gnapVerify(req, res) {
                   "jwt": jwt
                 }
                 if (result_users.docs.length > 0) {
+                  console.log('user found')
+                  console.log(result_users)
                   if (!objectPath.has(result_users, 'docs.0.defaults')) {
                     const user_doc = await db_users.get(result_users.docs[0]._id)
                     const defaults = {
