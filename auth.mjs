@@ -280,6 +280,7 @@ async function gnapVerify(req, res) {
               })
               // assume access token is JWT that contains verifiable credentials and if valid, attach to payload
               const jwt = doc.access_token.value
+              console.log(jwt)
               const verify_results = await verify(jwt)
               console.log(verify_results)
               if (verify_results.status === 'isValid') {

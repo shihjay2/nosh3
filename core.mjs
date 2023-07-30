@@ -582,10 +582,13 @@ async function verify(jwt) {
   var response = {}
   var found = false
   if (keys.keys.length > 0) {
+    console.log(keys.keys)
     for (var a in keys.keys) {
       const jwk = await jose.importJWK(keys.keys[a])
       try {
         const { payload, protectedHeader } = await jose.jwtVerify(jwt, jwk)
+        console.log(payload)
+        console.log(protectedHeader)
         objectPath.set(response, 'status', 'isValid')
         objectPath.set(response, 'payload', payload)
         objectPath.set(response, 'protectedHeader', protectedHeader)
