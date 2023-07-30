@@ -591,6 +591,8 @@ async function verify(jwt) {
         objectPath.set(response, 'protectedHeader', protectedHeader)
         found = true
       } catch (err) {
+        console.log(jwk)
+        console.log(err)
         if (found !== true) {
           objectPath.set(response, 'status', 'notValid')
           objectPath.set(response, 'error', err)
@@ -598,7 +600,7 @@ async function verify(jwt) {
       }
     }
   } else {
-    objectPath.set(repsonse, 'status', 'noKeys')
+    objectPath.set(response, 'status', 'noKeys')
   }
   return response
 }
