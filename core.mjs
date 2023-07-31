@@ -205,26 +205,25 @@ async function getAllKeys() {
   // Trustee key
   try {
     var trustee_key = await axios.get(urlFix(process.env.TRUSTEE_URL) + 'api/as/jwks')
+    if (trustee_key !== null && trustee_key.status === 200 && objectPath.has(trustee_key, 'data.keys')) {
+      keys.push(trustee_key.data.key)
+    }
+    // Local key
+    const db = new PouchDB((settings.couchdb_uri + '/keys'), settings.couchdb_auth)
+    const result = await db.find({
+      selector: {_id: {"$gte": null}}
+    })
+    for (var a in result.docs) {
+      keys.push(result.docs[a].publicKey)
+      if (objectPath.has(result, 'docs.' + a + '.privateKey')) {
+        publicKey = result.docs[a].publicKey
+      }
+    }
+    console.log(keys)
+    return {keys: keys, publicKey: publicKey}
   } catch (err) {
     console.log(err)
   }
-  console.log(trustee_key)
-  if (trustee_key !== null && trustee_key.status === 200 && objectPath.has(trustee_key, 'data.keys')) {
-    keys.push(trustee_key.data.keys)
-  }
-  // Local key
-  const db = new PouchDB((settings.couchdb_uri + '/keys'), settings.couchdb_auth)
-  const result = await db.find({
-    selector: {_id: {"$gte": null}}
-  })
-  for (var a in result.docs) {
-    keys.push(result.docs[a].publicKey)
-    if (objectPath.has(result, 'docs.' + a + '.privateKey')) {
-      publicKey = result.docs[a].publicKey
-    }
-  }
-  console.log(keys)
-  return {keys: keys, publicKey: publicKey}
 }
 
 async function getKeys() {
