@@ -267,13 +267,14 @@ async function gnapVerify(req, res) {
               console.log(doc.access_token.subject.sub_ids)
               var email_id = doc.access_token.subject.sub_ids.find(b => b.format === 'email')
               if (email_id !== undefined) {
-                selector.push({'email': {$eq: email_id.email}, _id: {"$gte": null}})
-                objectPath.set(nosh, 'email', email_id.email)
+                console.log(email_id)
+                selector.push({'email': {$eq: email_id.email_id.email}, _id: {"$gte": null}})
+                objectPath.set(nosh, 'email', email_id.email_id.email)
               }
               var did_id = doc.access_token.subject.sub_ids.find(b => b.format === 'did')
               if (did_id !== undefined) {
-                selector.push({'did': {$eq: did_id.url}, _id: {"$gte": null}})
-                objectPath.set(nosh, 'did', did_id.url)
+                selector.push({'did': {$eq: did_id.did_id.url}, _id: {"$gte": null}})
+                objectPath.set(nosh, 'did', did_id.did_id.url)
               }
               var db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
               var result_users = await db_users.find({
