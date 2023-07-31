@@ -205,7 +205,7 @@ async function getAllKeys() {
   // Trustee key
   try {
     var trustee_key = await axios.get(urlFix(process.env.TRUSTEE_URL) + 'api/as/jwks')
-    if (trustee_key !== null && trustee_key.status === 200 && objectPath.has(trustee_key, 'data.keys')) {
+    if (trustee_key !== null && trustee_key.status === 200 && objectPath.has(trustee_key, 'data.key')) {
       keys.push(trustee_key.data.key)
     }
     // Local key
