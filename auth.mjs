@@ -261,7 +261,9 @@ async function gnapVerify(req, res) {
                 did: '',
                 pin: pin,
                 npi: '',
-                templates: []
+                templates: [],
+                trustee: '',
+                instance: process.env.INSTANCE
               }
               var user_id = ''
               const email_id = doc.access_token.subject.sub_ids.find(b => b.format === 'email')
@@ -319,26 +321,24 @@ async function gnapVerify(req, res) {
                     if (objectPath.has(verify_results, 'payload._nosh')) {
                       // there is an updated user object from wallet, so sync to this instance
                       if (!equals(objectPath.get(verify_results, 'payload._nosh'), result_users.docs[0])) {
-                        await db_users.put(objectPath.get(verify_results, 'payload._nosh'))
+                        const new_user = await db_users.put(objectPath.get(verify_results, 'payload._nosh'))
+                        objectPath.set(nosh, '_id', new_user.id)
+                        objectPath.set(nosh, 'id', new_user.id)
+                        objectPath.set(nosh, '_rev', new_user.rev)
+                        const user_doc1 = await db_users.get(result_users.docs[0]._id)
+                        await db_users.delete(user_doc1)
                       }
-                    } else {
-                      // update user as this is a new instance
-                      objectPath.set(nosh, '_id', result_users.docs[0]._id)
-                      objectPath.set(nosh, 'id', result_users.docs[0].id)
-                      objectPath.set(nosh, '_rev', result_users.docs[0]._rev)
-                      await db_users.put(nosh)
                     }
                     objectPath.set(nosh, 'id', user_id)
                     objectPath.set(nosh, 'display', result_users.docs[0].display)
                   } else {
                     // add new user - authorization server has already granted
-                    var id = 'nosh_' + uuidv4()
-                    objectPath.set(nosh, '_id', id)
-                    objectPath.set(nosh, 'id', id)
+                    user_id = 'nosh_' + uuidv4()
+                    objectPath.set(nosh, '_id', user_id)
+                    objectPath.set(nosh, 'id', user_id)
                     objectPath.set(nosh, 'templates', JSON.parse(fs.readFileSync('./assets/templates.json')))
                     objectPath.set(nosh, 'display', '') // grab display from authorization server - to be completed
                     await db_users.put(nosh)
-                    objectPath.set(nosh, 'display', objectPath.get(nosh, 'display'))
                   }
                   objectPath.set(payload, '_nosh', nosh)
                   objectPath.set(payload, '_noshAuth', process.env.AUTH)
