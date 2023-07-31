@@ -300,9 +300,7 @@ async function gnapVerify(req, res) {
                     "_gnap": doc,
                     "jwt": jwt
                   }
-                  console.log(result_users.docs.length)
                   if (result_users.docs.length > 0) {
-                    console.log('user found')
                     if (!objectPath.has(result_users, 'docs.0.defaults')) {
                       const user_doc = await db_users.get(result_users.docs[0]._id)
                       const defaults = {
@@ -357,7 +355,7 @@ async function gnapVerify(req, res) {
                   }
                   objectPath.set(payload, 'noshAPI', api)
                   if (process.env.NOSH_ROLE == 'patient') {
-                    await sync('patients', patient_id)
+                    await sync('patients', req.params.patient)
                     const db_patients = new PouchDB(prefix + 'patients')
                     const result_patients = await db_patients.find({selector: {'isEncrypted': {$eq: true}}})
                     if (result_patients.docs.length === 1) {
@@ -367,7 +365,7 @@ async function gnapVerify(req, res) {
                         objectPath.set(payload, '_noshRedirect', result.docs[0].route)
                       }
                       objectPath.set(payload, '_noshType', 'pnosh')
-                      objectPath.set(payload, '_nosh.patient', patient_id)
+                      objectPath.set(payload, '_nosh.patient', req.params.patient)
                     } else {
                       // not installed yet
                       res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'start')
