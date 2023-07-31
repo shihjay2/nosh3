@@ -283,110 +283,115 @@ async function gnapVerify(req, res) {
               console.log(result_users)
               // assume access token is JWT that contains verifiable credentials and if valid, attach to payload
               const jwt = doc.access_token.value
-              const verify_results = await verify(jwt)
-              console.log(verify_results)
-              if (verify_results.status === 'isValid') {
-                console.log('valid jwt')
-                if (objectPath.has(verify_results, 'payload.vc')) {
-                  objectPath.set(nosh, 'npi', getNPI(objectPath.get(verify_results, 'payload.vc')))
-                }
-                if (objectPath.has(verify_results, 'payload.vp') && npi !== '') {
-                  for (var b in objectPath.get(verify_results, 'payload.vp.verifiableCredential')) {
-                    if (npi !== '') {
-                      objectPath.set(nosh, 'npi', getNPI(objectPath.get(verify_results, 'payload.vp.verifiableCredential.' + b )))
+              try {
+                const verify_results = await verify(jwt)
+                console.log(verify_results)
+                if (verify_results.status === 'isValid') {
+                  console.log('valid jwt')
+                  if (objectPath.has(verify_results, 'payload.vc')) {
+                    objectPath.set(nosh, 'npi', getNPI(objectPath.get(verify_results, 'payload.vc')))
+                  }
+                  if (objectPath.has(verify_results, 'payload.vp') && npi !== '') {
+                    for (var b in objectPath.get(verify_results, 'payload.vp.verifiableCredential')) {
+                      if (npi !== '') {
+                        objectPath.set(nosh, 'npi', getNPI(objectPath.get(verify_results, 'payload.vp.verifiableCredential.' + b )))
+                      }
                     }
                   }
-                }
-                const payload = {
-                  "_gnap": response,
-                  "jwt": jwt
-                }
-                console.log(result_users.docs.length)
-                if (result_users.docs.length > 0) {
-                  console.log('user found')
-                  if (!objectPath.has(result_users, 'docs.0.defaults')) {
-                    const user_doc = await db_users.get(result_users.docs[0]._id)
-                    const defaults = {
-                      "class": 'AMB',
-                      "type": '14736009',
-                      "serviceType": '124',
-                      "serviceCategory": ' 17',
-                      "appointmentType": 'ROUTINE',
-                      "category": '34109-9',
-                      "code": '34108-1'
-                    }
-                    objectPath.set(user_doc, 'defaults', defaults)
-                    await db_users.put(user_doc)
+                  const payload = {
+                    "_gnap": response,
+                    "jwt": jwt
                   }
-                  user_id = result_users.docs[0].id
-                  if (objectPath.has(verify_results, 'payload._nosh')) {
-                    // there is an updated user object from wallet, so sync to this instance
-                    if (!equals(objectPath.get(verify_results, 'payload._nosh'), result_users.docs[0])) {
-                      await db_users.put(objectPath.get(verify_results, 'payload._nosh'))
+                  console.log(result_users.docs.length)
+                  if (result_users.docs.length > 0) {
+                    console.log('user found')
+                    if (!objectPath.has(result_users, 'docs.0.defaults')) {
+                      const user_doc = await db_users.get(result_users.docs[0]._id)
+                      const defaults = {
+                        "class": 'AMB',
+                        "type": '14736009',
+                        "serviceType": '124',
+                        "serviceCategory": ' 17',
+                        "appointmentType": 'ROUTINE',
+                        "category": '34109-9',
+                        "code": '34108-1'
+                      }
+                      objectPath.set(user_doc, 'defaults', defaults)
+                      await db_users.put(user_doc)
+                    }
+                    user_id = result_users.docs[0].id
+                    if (objectPath.has(verify_results, 'payload._nosh')) {
+                      // there is an updated user object from wallet, so sync to this instance
+                      if (!equals(objectPath.get(verify_results, 'payload._nosh'), result_users.docs[0])) {
+                        await db_users.put(objectPath.get(verify_results, 'payload._nosh'))
+                      }
+                    } else {
+                      // update user as this is a new instance
+                      objectPath.set(nosh, '_id', result_users.docs[0]._id)
+                      objectPath.set(nosh, 'id', result_users.docs[0].id)
+                      objectPath.set(nosh, '_rev', result_users.docs[0]._rev)
+                      await db_users.put(nosh)
+                    }
+                    objectPath.set(nosh, 'id', user_id)
+                    objectPath.set(nosh, 'display', result_users.docs[0].display)
+                  } else {
+                    // add new user - authorization server has already granted
+                    var id = 'nosh_' + uuidv4()
+                    objectPath.set(nosh, '_id', id)
+                    objectPath.set(nosh, 'id', id)
+                    objectPath.set(nosh, 'templates', JSON.parse(fs.readFileSync('./assets/templates.json')))
+                    objectPath.set(nosh, 'display', '') // grab display from authorization server - to be completed
+                    await db_users.put(nosh)
+                    objectPath.set(nosh, 'display', objectPath.get(nosh, 'display'))
+                  }
+                  objectPath.set(payload, '_nosh', nosh)
+                  objectPath.set(payload, '_noshAuth', process.env.AUTH)
+                  if (process.env.INSTANCE == 'dev') {
+                    objectPath.set(payload, '_noshDB', urlFix(req.protocol + '://' + req.hostname + '/couchdb'))
+                  } else {
+                    objectPath.set(payload, '_noshDB', urlFix(process.env.COUCHDB_URL))
+                  }
+                  const api = {
+                    "uspstf_key": process.env.USPSTF_KEY,
+                    "umls_key": process.env.UMLS_KEY,
+                    "mailgun_key": process.env.MAILGUN_API_KEY,
+                    "mailgun_domain": process.env.MAILGUN_DOMAIN
+                  }
+                  objectPath.set(payload, 'noshAPI', api)
+                  if (process.env.NOSH_ROLE == 'patient') {
+                    await sync('patients', patient_id)
+                    const db_patients = new PouchDB(prefix + 'patients')
+                    const result_patients = await db_patients.find({selector: {'isEncrypted': {$eq: true}}})
+                    if (result_patients.docs.length === 1) {
+                      if (result.docs[0].route === null) {
+                        objectPath.set(payload, '_noshRedirect','/app/chart/' + result_patients.docs[0]._id)
+                      } else {
+                        objectPath.set(payload, '_noshRedirect', result.docs[0].route)
+                      }
+                      objectPath.set(payload, '_noshType', 'pnosh')
+                      objectPath.set(payload, '_nosh.patient', patient_id)
+                    } else {
+                      // not installed yet
+                      res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'start')
                     }
                   } else {
-                    // update user as this is a new instance
-                    objectPath.set(nosh, '_id', result_users.docs[0]._id)
-                    objectPath.set(nosh, 'id', result_users.docs[0].id)
-                    objectPath.set(nosh, '_rev', result_users.docs[0]._rev)
-                    await db_users.put(nosh)
-                  }
-                  objectPath.set(nosh, 'id', user_id)
-                  objectPath.set(nosh, 'display', result_users.docs[0].display)
-                } else {
-                  // add new user - authorization server has already granted
-                  var id = 'nosh_' + uuidv4()
-                  objectPath.set(nosh, '_id', id)
-                  objectPath.set(nosh, 'id', id)
-                  objectPath.set(nosh, 'templates', JSON.parse(fs.readFileSync('./assets/templates.json')))
-                  objectPath.set(nosh, 'display', '') // grab display from authorization server - to be completed
-                  await db_users.put(nosh)
-                  objectPath.set(nosh, 'display', objectPath.get(nosh, 'display'))
-                }
-                objectPath.set(payload, '_nosh', nosh)
-                objectPath.set(payload, '_noshAuth', process.env.AUTH)
-                if (process.env.INSTANCE == 'dev') {
-                  objectPath.set(payload, '_noshDB', urlFix(req.protocol + '://' + req.hostname + '/couchdb'))
-                } else {
-                  objectPath.set(payload, '_noshDB', urlFix(process.env.COUCHDB_URL))
-                }
-                const api = {
-                  "uspstf_key": process.env.USPSTF_KEY,
-                  "umls_key": process.env.UMLS_KEY,
-                  "mailgun_key": process.env.MAILGUN_API_KEY,
-                  "mailgun_domain": process.env.MAILGUN_DOMAIN
-                }
-                objectPath.set(payload, 'noshAPI', api)
-                if (process.env.NOSH_ROLE == 'patient') {
-                  await sync('patients', patient_id)
-                  const db_patients = new PouchDB(prefix + 'patients')
-                  const result_patients = await db_patients.find({selector: {'isEncrypted': {$eq: true}}})
-                  if (result_patients.docs.length === 1) {
                     if (result.docs[0].route === null) {
-                      objectPath.set(payload, '_noshRedirect','/app/chart/' + result_patients.docs[0]._id)
+                      objectPath.set(payload, '_noshRedirect', '/app/dashboard/')
                     } else {
                       objectPath.set(payload, '_noshRedirect', result.docs[0].route)
                     }
-                    objectPath.set(payload, '_noshType', 'pnosh')
-                    objectPath.set(payload, '_nosh.patient', patient_id)
-                  } else {
-                    // not installed yet
-                    res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'start')
+                    objectPath.set(payload, '_noshType', 'mdnosh')
                   }
+                  console.log(payload)
+                  const jwt_nosh = await createJWT(user_id, urlFix(req.protocol + '://' + req.hostname + '/'), urlFix(req.protocol + '://' + req.hostname + '/'), payload)
+                  console.log(jwt_nosh)
+                  res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/verify?token=' + jwt_nosh)
                 } else {
-                  if (result.docs[0].route === null) {
-                    objectPath.set(payload, '_noshRedirect', '/app/dashboard/')
-                  } else {
-                    objectPath.set(payload, '_noshRedirect', result.docs[0].route)
-                  }
-                  objectPath.set(payload, '_noshType', 'mdnosh')
+                  res.status(401).send('Unauthorized')
                 }
-                console.log(payload)
-                const jwt_nosh = await createJWT(user_id, urlFix(req.protocol + '://' + req.hostname + '/'), urlFix(req.protocol + '://' + req.hostname + '/'), payload)
-                console.log(jwt_nosh)
-                res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/verify?token=' + jwt_nosh)
-              } else {
-                res.status(401).send('Unauthorized')
+              } catch (e) {
+                console.log(e)
+                res.status(401).json(e)
               }
             } else {
               res.status(200).json(doc)
