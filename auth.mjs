@@ -264,7 +264,6 @@ async function gnapVerify(req, res) {
                 templates: []
               }
               var user_id = ''
-              console.log(doc.access_token.subject.sub_ids)
               const email_id = doc.access_token.subject.sub_ids.find(b => b.format === 'email')
               if (email_id !== undefined) {
                 console.log(email_id)
@@ -280,7 +279,6 @@ async function gnapVerify(req, res) {
               const result_users = await db_users.find({
                 selector: {$or: selector}
               })
-              console.log(result_users)
               // assume access token is JWT that contains verifiable credentials and if valid, attach to payload
               const jwt = doc.access_token.value
               try {
@@ -299,7 +297,7 @@ async function gnapVerify(req, res) {
                     }
                   }
                   const payload = {
-                    "_gnap": response,
+                    "_gnap": doc,
                     "jwt": jwt
                   }
                   console.log(result_users.docs.length)
