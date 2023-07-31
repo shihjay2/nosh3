@@ -265,19 +265,19 @@ async function gnapVerify(req, res) {
               }
               var user_id = ''
               console.log(doc.access_token.subject.sub_ids)
-              var email_id = doc.access_token.subject.sub_ids.find(b => b.format === 'email')
+              const email_id = doc.access_token.subject.sub_ids.find(b => b.format === 'email')
               if (email_id !== undefined) {
                 console.log(email_id)
                 selector.push({'email': {$eq: email_id.email_id.email}, _id: {"$gte": null}})
                 objectPath.set(nosh, 'email', email_id.email_id.email)
               }
-              var did_id = doc.access_token.subject.sub_ids.find(b => b.format === 'did')
+              const did_id = doc.access_token.subject.sub_ids.find(b => b.format === 'did')
               if (did_id !== undefined) {
                 selector.push({'did': {$eq: did_id.did_id.url}, _id: {"$gte": null}})
                 objectPath.set(nosh, 'did', did_id.did_id.url)
               }
-              var db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
-              var result_users = await db_users.find({
+              const db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
+              const result_users = await db_users.find({
                 selector: {$or: selector}
               })
               console.log(result_users)
@@ -297,10 +297,11 @@ async function gnapVerify(req, res) {
                     }
                   }
                 }
-                var payload = {
+                const payload = {
                   "_gnap": response,
                   "jwt": jwt
                 }
+                console.log(result_users.docs.length)
                 if (result_users.docs.length > 0) {
                   console.log('user found')
                   if (!objectPath.has(result_users, 'docs.0.defaults')) {
