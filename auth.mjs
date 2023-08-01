@@ -40,6 +40,7 @@ router.get('/test', test)
 
 function config(req, res) {
   console.log(req.get('referer'))
+  console.log(req.protocol + '://' + req.hostname)
   if (req.get('referer') === req.protocol + '://' + req.hostname + '/app/login' ||
     req.get('referer') === req.protocol + '://' + req.hostname ) {
     const response = {
