@@ -1,6 +1,5 @@
 import dotenv from 'dotenv'
 dotenv.config()
-import axios from 'axios'
 import crypto from 'crypto'
 import express from 'express'
 import fs from 'fs'
@@ -11,7 +10,6 @@ import objectPath from 'object-path'
 import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
 import { v4 as uuidv4 } from 'uuid'
-import { createSigner, httpis } from "http-message-signatures";
 import { couchdbDatabase, couchdbInstall, createKeyPair, equals, getKeys, getNPI, getPIN, registerResources, signRequest, sync, urlFix, verify, verifyPIN } from './core.mjs'
 // const mailgun = new Mailgun(formData)
 // const mg = mailgun.client({username: 'api', key: process.env.MAILGUN_API_KEY})
@@ -43,7 +41,7 @@ router.get('/test', test)
 function config(req, res) {
   console.log(req.get('referer'))
   if (req.get('referer') === req.protocol + '://' + req.hostname + '/app/login' ||
-    req.get('referer') === req.protocol + '://' + req.hostname + '/app/verify' ) {
+    req.get('referer') === req.protocol + '://' + req.hostname ) {
     const response = {
       auth: process.env.AUTH
     }
