@@ -39,30 +39,23 @@ router.post('/mail', mail)
 router.get('/test', test)
 
 function config(req, res) {
-  console.log(req.get('referer'))
-  console.log(req.protocol + '://' + req.hostname)
-  if (req.get('referer') === req.protocol + '://' + req.hostname + '/app/login' ||
-    req.get('referer') === req.protocol + '://' + req.hostname ) {
-    const response = {
-      auth: process.env.AUTH
-    }
-    if (process.env.AUTH === 'magic') {
-      objectPath.set(response, 'key', process.env.MAGIC_API_KEY)
-    }
-    if (process.env.AUTH === 'trustee') {
-      objectPath.set(response, 'key', process.env.GNAP_API_KEY)
-      objectPath.set(response, 'url', process.env.TRUSTEE_URL)
-    }
-    objectPath.set(response, 'instance', process.env.INSTANCE)
-    if (process.env.NOSH_ROLE === 'patient') {
-      objectPath.set(response, 'type', 'pnosh')
-    } else {
-      objectPath.set(response, 'type', 'mdnosh')
-    }
-    res.status(200).json(response)
-  } else {
-    res.status(401).send('Unauthorized')
+  const response = {
+    auth: process.env.AUTH
   }
+  if (process.env.AUTH === 'magic') {
+    objectPath.set(response, 'key', process.env.MAGIC_API_KEY)
+  }
+  if (process.env.AUTH === 'trustee') {
+    objectPath.set(response, 'key', process.env.GNAP_API_KEY)
+    objectPath.set(response, 'url', process.env.TRUSTEE_URL)
+  }
+  objectPath.set(response, 'instance', process.env.INSTANCE)
+  if (process.env.NOSH_ROLE === 'patient') {
+    objectPath.set(response, 'type', 'pnosh')
+  } else {
+    objectPath.set(response, 'type', 'mdnosh')
+  }
+  res.status(200).json(response)
 }
 
 // async function save(req, res) {
