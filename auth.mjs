@@ -359,10 +359,10 @@ async function gnapVerify(req, res) {
                     const db_patients = new PouchDB(prefix + 'patients')
                     const result_patients = await db_patients.find({selector: {_id: {$regex: '^nosh_*'}}})
                     if (result_patients.docs.length > 0) {
-                      if (result.docs[0].route === null) {
+                      if (result.route === null) {
                         objectPath.set(payload, '_noshRedirect','/app/chart/' + result_patients.docs[0]._id)
                       } else {
-                        objectPath.set(payload, '_noshRedirect', result.docs[0].route)
+                        objectPath.set(payload, '_noshRedirect', result.route)
                       }
                       objectPath.set(payload, '_noshType', 'pnosh')
                       objectPath.set(payload, '_nosh.patient', req.params.patient)
@@ -371,10 +371,10 @@ async function gnapVerify(req, res) {
                       res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'start')
                     }
                   } else {
-                    if (result.docs[0].route === null) {
+                    if (result.route === null) {
                       objectPath.set(payload, '_noshRedirect', '/app/dashboard/')
                     } else {
-                      objectPath.set(payload, '_noshRedirect', result.docs[0].route)
+                      objectPath.set(payload, '_noshRedirect', result.route)
                     }
                     objectPath.set(payload, '_noshType', 'mdnosh')
                   }
