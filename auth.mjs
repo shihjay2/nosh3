@@ -375,7 +375,7 @@ async function gnapVerify(req, res) {
                   console.log(payload)
                   const jwt_nosh = await createJWT(user_id, urlFix(req.protocol + '://' + req.hostname + '/'), urlFix(req.protocol + '://' + req.hostname + '/'), payload)
                   console.log(jwt_nosh)
-                  res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/verify?token=' + jwt_nosh)
+                  res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/verify?token=' + jwt_nosh + '&patient=' + req.params.patient)
                 } else {
                   res.status(401).send('Unauthorized')
                 }

@@ -120,8 +120,9 @@ export default defineComponent({
       var config = await axios.get(window.location.origin + '/auth/config')
       state.config = config.data
       if (state.config.instance === 'digitalocean' && state.config.type === 'pnosh') {
-        if (auth.returnUrl !== null) {
-          state.patient = auth.returnUrl.replace('/app/chart/', '')
+        if (route.query.patient !== null) {
+          state.patient = route.query.patient
+          // state.patient = auth.returnUrl.replace('/app/chart/', '')
           var check = await axios.post(window.location.origin + '/auth/pinCheck', {patient: state.patient})
           if (check.data.response === 'Error') {
             state.loading = false
@@ -199,7 +200,7 @@ export default defineComponent({
           state.progress += '<br/>Syncing data...'
           await syncAll(true, state.patient, true)
           state.progress += '<br/>Complete!'
-          router.push(auth.returnUrl || state.payload._noshRedirect)
+          router.push(state.payload._noshRedirect)
         } else {
           // not authorized - user not set up
           $q.notify({
