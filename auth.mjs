@@ -294,7 +294,14 @@ async function gnapVerify(req, res) {
                   }
                   const payload = {
                     "_gnap": doc,
-                    "jwt": jwt
+                    "jwt": jwt,
+                    "_noshAPI": {
+                      "uspstf_key": process.env.USPSTF_KEY,
+                      "umls_key": process.env.UMLS_KEY,
+                      "mailgun_key": process.env.MAILGUN_API_KEY,
+                      "mailgun_domain": process.env.MAILGUN_DOMAIN,
+                      "oidc_relay_url": process.env.OIDC_RELAY_URL
+                    }
                   }
                   if (result_users.docs.length > 0) {
                     if (!objectPath.has(result_users, 'docs.0.defaults')) {
@@ -341,13 +348,6 @@ async function gnapVerify(req, res) {
                   } else {
                     objectPath.set(payload, '_noshDB', urlFix(process.env.COUCHDB_URL))
                   }
-                  const api = {
-                    "uspstf_key": process.env.USPSTF_KEY,
-                    "umls_key": process.env.UMLS_KEY,
-                    "mailgun_key": process.env.MAILGUN_API_KEY,
-                    "mailgun_domain": process.env.MAILGUN_DOMAIN
-                  }
-                  objectPath.set(payload, 'noshAPI', api)
                   if (process.env.NOSH_ROLE == 'patient') {
                     await sync('patients', req.params.patient)
                     const db_patients = new PouchDB(prefix + 'patients')
