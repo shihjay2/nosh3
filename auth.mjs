@@ -41,9 +41,10 @@ router.post('/mail', mail)
 router.get('/test', test)
 
 function config(req, res) {
+  console.log(req.get('referer'))
   if (req.get('referer') === req.protocol + '://' + req.hostname + '/app/login' ||
     req.get('referer') === req.protocol + '://' + req.hostname + '/app/verify' ) {
-    var response = {
+    const response = {
       auth: process.env.AUTH
     }
     if (process.env.AUTH === 'magic') {
