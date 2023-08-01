@@ -357,7 +357,7 @@ async function gnapVerify(req, res) {
                   if (process.env.NOSH_ROLE == 'patient') {
                     await sync('patients', req.params.patient)
                     const db_patients = new PouchDB(prefix + 'patients')
-                    const result_patients = await db_patients.find({selector: {'isEncrypted': {$eq: true}}})
+                    const result_patients = await db_patients.find({selector: {_id: {$regex: '^nosh_*'}}})
                     if (result_patients.docs.length > 0) {
                       if (result.docs[0].route === null) {
                         objectPath.set(payload, '_noshRedirect','/app/chart/' + result_patients.docs[0]._id)
