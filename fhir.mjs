@@ -8,9 +8,8 @@ import moment from 'moment'
 import objectPath from 'object-path'
 import pluralize from 'pluralize'
 import PouchDB from 'pouchdb'
-import settings from './settings.mjs'
 import { v4 as uuidv4 } from 'uuid'
-import { eventAdd, getKeys, gnapResourceRegistration, sync, urlFix, verify, verifyJWT } from './core.mjs'
+import { eventAdd,  sync,  verifyJWT } from './core.mjs'
 
 const router = express.Router()
 const options = {
@@ -110,28 +109,6 @@ async function getSecuredResourceVersion(req, res) {
     res.status(200).json(err)
   }
 }
-
-// function gnapResourceRegistration(jwt, publicKey) {
-//   const params = {
-//     "access_token": jwt,
-//     "proof": "httpsig",
-//     "resource_server": {
-//       "key": {
-//         "proof": "httpsig",
-//         "jwk": publicKey
-//       }
-//     }
-//   }
-//   axios.get(settings.as_uri + '/.well-known/gnap-as-rs').then((a) => {
-//     axios.post(a.resource_registration_endpoint, params).then((b) => {
-//       if (b.active === true) {
-//         return true
-//       } else {
-//         return false
-//       }
-//     })
-//   })
-// }
 
 async function postSecuredResource(req, res) {
   var prefix = ''

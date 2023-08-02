@@ -317,26 +317,6 @@ async function gnapInstrospect(jwt, publicKey, location, action) {
   }
 }
 
-async function gnapResourceRegistration(jwt, publicKey) {
-  const params = {
-    "access_token": jwt,
-    "proof": "httpsig",
-    "resource_server": {
-      "key": {
-        "proof": "httpsig",
-        "jwk": publicKey
-      }
-    }
-  }
-  const a = await axios.get(urlFix(process.env.TRUSTEE_URL) + '.well-known/gnap-as-rs')
-  const b = await axios.post(a.resource_registration_endpoint, params)
-  if (b.active === true) {
-    return true
-  } else {
-    return false
-  }
-}
-
 async function registerResources(patient_id='', protocol='', hostname='', email='') {
   var prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
@@ -663,4 +643,4 @@ async function verifyPIN(pin, patient_id) {
   }
 }
 
-export { couchdbConfig, couchdbDatabase, couchdbInstall, createKeyPair, equals, eventAdd, getKeys, getNPI, getPIN, gnapResourceRegistration, registerResources, signRequest, sleep, sync, urlFix, userAdd, verify, verifyJWT, verifyPIN }
+export { couchdbConfig, couchdbDatabase, couchdbInstall, createKeyPair, equals, eventAdd, getKeys, getNPI, getPIN, registerResources, signRequest, sleep, sync, urlFix, userAdd, verify, verifyJWT, verifyPIN }

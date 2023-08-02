@@ -185,8 +185,6 @@ async function gnapAuth(req, res) {
             "type": "app",
             "actions": ["read", "write"],
             "locations": [req.protocol + "://" + req.hostname + "/app/chart/" + req.body.patient],
-            // additional key called purpose
-            // ["Clinical - Routine", "Clinical - Emergency", "Research", "Customer Support", "Other"]
             "purpose": "Clinical - Routine"
           }
         ]
@@ -230,7 +228,6 @@ async function gnapVerify(req, res) {
     var db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'gnap', settings.couchdb_auth)
     try {
       var result = await db.get(req.query.interact_ref)
-      console.log(result)
       const hash = crypto.createHash('sha3-512')
       hash.update(result.nonce + '\n')
       hash.update(result.interact.finish + '\n')
@@ -246,7 +243,6 @@ async function gnapVerify(req, res) {
           try {
             const doc = await fetch(result.continue.uri, signedRequest)
               .then((res) => res.json());
-            console.log(doc)
             await db.remove(result)
             if (objectPath.has(doc, 'access_token.subject')) {
               var selector = []
@@ -262,7 +258,6 @@ async function gnapVerify(req, res) {
               var user_id = ''
               const email_id = doc.access_token.subject.sub_ids.find(b => b.format === 'email')
               if (email_id !== undefined) {
-                console.log(email_id)
                 selector.push({'email': {$eq: email_id.email_id.email}, _id: {"$gte": null}})
                 objectPath.set(nosh, 'email', email_id.email_id.email)
               }
@@ -284,11 +279,13 @@ async function gnapVerify(req, res) {
                   console.log('valid jwt')
                   if (objectPath.has(verify_results, 'payload.vc')) {
                     objectPath.set(nosh, 'npi', getNPI(objectPath.get(verify_results, 'payload.vc')))
+                    objectPath.set(nosh, 'role', 'provider')
                   }
                   if (objectPath.has(verify_results, 'payload.vp') && npi !== '') {
                     for (var b in objectPath.get(verify_results, 'payload.vp.verifiableCredential')) {
                       if (npi !== '') {
                         objectPath.set(nosh, 'npi', getNPI(objectPath.get(verify_results, 'payload.vp.verifiableCredential.' + b )))
+                        objectPath.set(nosh, 'role', 'provider')
                       }
                     }
                   }
@@ -338,6 +335,9 @@ async function gnapVerify(req, res) {
                     objectPath.set(nosh, '_id', user_id)
                     objectPath.set(nosh, 'id', user_id)
                     objectPath.set(nosh, 'templates', JSON.parse(fs.readFileSync('./assets/templates.json')))
+                    if (!objectPath.has(nosh, 'role')) {
+                      objectPath.set(nosh, 'role', 'proxy')
+                    }
                     objectPath.set(nosh, 'display', '') // grab display from authorization server - to be completed
                     await db_users.put(nosh)
                   }
@@ -372,31 +372,25 @@ async function gnapVerify(req, res) {
                     }
                     objectPath.set(payload, '_noshType', 'mdnosh')
                   }
-                  console.log(payload)
                   const jwt_nosh = await createJWT(user_id, urlFix(req.protocol + '://' + req.hostname + '/'), urlFix(req.protocol + '://' + req.hostname + '/'), payload)
-                  console.log(jwt_nosh)
                   res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/verify?token=' + jwt_nosh + '&patient=' + req.params.patient)
                 } else {
                   res.status(401).send('Unauthorized')
                 }
               } catch (e) {
-                console.log(e)
                 res.status(401).json(e)
               }
             } else {
               res.status(200).json(doc)
             }
           } catch (e) {
-            console.log('#3 continue')
             res.status(401).json(e)
           }
         } catch (e) {
-          console.log('#2 singned request')
           res.status(401).json(e)
         }
       }
     } catch (e) {
-      console.log('#1 db not found')
       res.status(401).json(e)
     }
   }
