@@ -65,7 +65,13 @@ export const useAuthStore = defineStore({
       localStorage.removeItem('pin')
       localStorage.removeItem('instance')
       localStorage.removeItem('trustee')
-      router.push(route)
+      console.log(window.location.href)
+      console.log(route)
+      if (route === window.location.href) {
+        location.reload()
+      } else {
+        router.push(route)
+      }
     },
     update(user) {
       this.user = user
