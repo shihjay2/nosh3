@@ -67,7 +67,7 @@ export const useAuthStore = defineStore({
       localStorage.removeItem('trustee')
       console.log(window.location.href)
       console.log(route)
-      if (route === window.location.href) {
+      if (route !== '/app/login') {
         location.reload()
       } else {
         router.push(route)
