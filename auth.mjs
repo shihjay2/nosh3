@@ -245,8 +245,7 @@ async function gnapVerify(req, res) {
               .then((res) => res.json());
             await db.remove(result)
             if (objectPath.has(doc, 'access_token.subject')) {
-              var selector = []
-              var nosh = {
+              const nosh = {
                 email: '',
                 did: '',
                 pin: pin,
@@ -256,20 +255,6 @@ async function gnapVerify(req, res) {
                 instance: process.env.INSTANCE
               }
               var user_id = ''
-              const email_id = doc.access_token.subject.sub_ids.find(b => b.format === 'email')
-              if (email_id !== undefined) {
-                selector.push({'email': {$eq: email_id.email_id.email}, _id: {"$gte": null}})
-                objectPath.set(nosh, 'email', email_id.email_id.email)
-              }
-              const did_id = doc.access_token.subject.sub_ids.find(b => b.format === 'did')
-              if (did_id !== undefined) {
-                selector.push({'did': {$eq: did_id.did_id.url}, _id: {"$gte": null}})
-                objectPath.set(nosh, 'did', did_id.did_id.url)
-              }
-              const db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
-              const result_users = await db_users.find({
-                selector: {$or: selector}
-              })
               // assume access token is JWT that contains verifiable credentials and if valid, attach to payload
               const jwt = doc.access_token.value
               try {
@@ -289,6 +274,13 @@ async function gnapVerify(req, res) {
                       }
                     }
                   }
+                  const db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
+                  const result_users = await db_users.find({
+                    selector: {
+                      'email': {"$eq": objectPath.get(verify_results, 'payload.sub')}
+                    }
+                  })
+                  objectPath.set(nosh, 'email', objectPath.get(verify_results, 'payload.sub'))
                   const payload = {
                     "_gnap": doc,
                     "jwt": jwt,
