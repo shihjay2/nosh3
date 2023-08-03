@@ -216,7 +216,7 @@ export default defineComponent({
         } else {
           state.loading = false
           $q.notify({
-            message: 'Invalid URL - null',
+            message: 'Invalid URL - no patient specified',
             color: 'red',
             actions: [
               { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }

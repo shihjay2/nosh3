@@ -43,6 +43,10 @@ export const useAuthStore = defineStore({
       localStorage.setItem('trustee', payload._nosh.trustee)
     },
     logout() {
+      var route = '/app/login'
+      if (this.instance === 'digitalocean' && this.type === 'pnosh') {
+        route = '/app/chart/' + this.patient
+      }
       this.user = null
       this.jwt = null
       this.type = null
@@ -61,7 +65,7 @@ export const useAuthStore = defineStore({
       localStorage.removeItem('pin')
       localStorage.removeItem('instance')
       localStorage.removeItem('trustee')
-      router.push('/app/login')
+      router.push(route)
     },
     update(user) {
       this.user = user
