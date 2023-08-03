@@ -238,8 +238,8 @@ function getNPI(vc) {
   var npi = ''
   for (var a of vc) {
     if (npi === '') {
-      if (objectPath.has(a, 'npi')) {
-        npi = a.npi
+      if (objectPath.has(a, 'vc.credentialSubject.npi')) {
+        npi = a.vc.credentialSubject.npi
       }
     }
   }
