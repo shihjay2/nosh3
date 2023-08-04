@@ -388,6 +388,7 @@ async function gnapVerify(req, res) {
                           "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">" + name_obj.display + "</div>"
                         }
                       }
+                      console.log(practitioner)
                       await sync('practitioners', '', true, practitioner)
                       objectPath.set(nosh, 'reference', 'Practitioner/' + practitioner_id)
                     }
