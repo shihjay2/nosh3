@@ -361,7 +361,7 @@ async function gnapVerify(req, res) {
                           "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">" + name_obj.display + "</div>"
                         }
                       }
-                      await sync('related_persons', '', true, related_person)
+                      await sync('related_persons', req.params.patient, true, related_person)
                       objectPath.set(nosh, 'reference', 'RelatedPerson/' + related_person_id)
                     } else {
                       // this is a provider
@@ -390,7 +390,7 @@ async function gnapVerify(req, res) {
                         }
                       }
                       console.log(practitioner)
-                      await sync('practitioners', '', true, practitioner)
+                      await sync('practitioners', req.params.patient, true, practitioner)
                       objectPath.set(nosh, 'reference', 'Practitioner/' + practitioner_id)
                     }
                     await db_users.put(nosh)
