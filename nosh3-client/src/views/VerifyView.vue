@@ -177,10 +177,12 @@ export default defineComponent({
           })
         }
         const jwt = route.query.token
+        console.log(jwt)
         state.auth = {fetch: (url, opts) => {
           opts.headers.set('Authorization', 'Bearer ' + jwt)
           return PouchDB.fetch(url, opts)
         }}
+        console.log(state.auth)
         state.couchdb = state.payload._noshDB
         state.pin = state.payload._nosh.pin
         state.patient = state.payload._noshRedirect.replace('/app/chart/', '')
