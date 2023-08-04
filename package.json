@@ -29,6 +29,7 @@
     "moment": "^2.29.4",
     "morgan": "^1.10.0",
     "object-path": "^0.11.8",
+    "parse-full-name-esm": "^1.2.6",
     "pluralize": "^8.0.0",
     "pouchdb": "^7.3.0",
     "pouchdb-find": "^7.3.0",

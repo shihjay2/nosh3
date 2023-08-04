@@ -4,7 +4,8 @@ import axios from 'axios'
 import Case from 'case'
 import crypto from 'crypto'
 import fs from 'fs'
-import { createSigner, httpis } from "http-message-signatures";
+import { createSigner, httpis } from 'http-message-signatures';
+import { parseFullName } from 'parse-full-name-esm'
 import * as jose from 'jose'
 import moment from 'moment'
 import objectPath from 'object-path'
@@ -232,6 +233,30 @@ async function getKeys() {
     selector: {_id: {"$gte": null}, privateKey: {"$gte": null}}
   })
   return result.docs
+}
+
+function getName(vc) {
+  const name = {display: ''}
+  var ret = {}
+  for (var a of vc) {
+    if (objectPath.has(a, 'vc.credentialSubject.name')) {
+      objectPath.set(name, 'display', objectPath.get(a, 'vc.credentialSubject.name'))
+      const parsed = parseFullName(objectPath.get(a, 'vc.credentialSubject.name'))
+      ret = {...name, parsed}
+    }
+    if (objectPath.has(a, 'vc.credentialSubject.firstName') && objectPath.has(a, 'vc.credentialSubject.lastName')) {
+      objectPath.set(name, 'display', objectPath.get(a, 'vc.credentialSubject.firstName') + ' ' + objectPath.get(a, 'vc.credentialSubject.lastName'))
+      ret = {...name, name: {
+        title: '',
+        first: objectPath.get(a, 'vc.credentialSubject.firstName'),
+        middle: '',
+        last: objectPath.get(a, 'vc.credentialSubject.lastName'),
+        nick: '',
+        suffix: ''
+      }}
+    }
+  }
+  return ret
 }
 
 function getNPI(vc) {
@@ -643,4 +668,4 @@ async function verifyPIN(pin, patient_id) {
   }
 }
 
-export { couchdbConfig, couchdbDatabase, couchdbInstall, createKeyPair, equals, eventAdd, getKeys, getNPI, getPIN, registerResources, signRequest, sleep, sync, urlFix, userAdd, verify, verifyJWT, verifyPIN }
+export { couchdbConfig, couchdbDatabase, couchdbInstall, createKeyPair, equals, eventAdd, getKeys, getName, getNPI, getPIN, registerResources, signRequest, sleep, sync, urlFix, userAdd, verify, verifyJWT, verifyPIN }

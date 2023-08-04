@@ -7,10 +7,11 @@ import isReachable from 'is-reachable'
 import * as jose from 'jose'
 // const Mailgun = require('mailgun.js')
 import objectPath from 'object-path'
+import { parseFullName } from "parse-full-name-esm"
 import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
 import { v4 as uuidv4 } from 'uuid'
-import { couchdbDatabase, couchdbInstall, createKeyPair, equals, getKeys, getNPI, getPIN, registerResources, signRequest, sync, urlFix, verify, verifyPIN } from './core.mjs'
+import { couchdbDatabase, couchdbInstall, createKeyPair, equals, getKeys, getName, getNPI, getPIN, registerResources, signRequest, sync, urlFix, verify, verifyPIN } from './core.mjs'
 // const mailgun = new Mailgun(formData)
 // const mg = mailgun.client({username: 'api', key: process.env.MAILGUN_API_KEY})
 const router = express.Router()
@@ -255,6 +256,7 @@ async function gnapVerify(req, res) {
                 instance: process.env.INSTANCE
               }
               var user_id = ''
+              var name_obj = null
               // assume access token is JWT that contains verifiable credentials and if valid, attach to payload
               const jwt = doc.access_token.value
               try {
@@ -263,17 +265,22 @@ async function gnapVerify(req, res) {
                 if (verify_results.status === 'isValid') {
                   console.log('valid jwt')
                   if (objectPath.has(verify_results, 'payload.vc')) {
-                    objectPath.set(nosh, 'npi', getNPI(objectPath.get(verify_results, 'payload.vc')))
-                    objectPath.set(nosh, 'role', 'provider')
-                  }
-                  if (objectPath.has(verify_results, 'payload.vp') && npi !== '') {
-                    for (var b in objectPath.get(verify_results, 'payload.vp.verifiableCredential')) {
-                      if (npi !== '') {
-                        objectPath.set(nosh, 'npi', getNPI(objectPath.get(verify_results, 'payload.vp.verifiableCredential.' + b )))
-                        objectPath.set(nosh, 'role', 'provider')
-                      }
+                    name_obj = getName(objectPath.get(verify_results, 'payload.vc'))
+                    objectPath.set(nosh, 'display', name_obj.display)
+                    const npi = getNPI(objectPath.get(verify_results, 'payload.vc'))
+                    if (npi !== '') {
+                      objectPath.set(nosh, 'npi', getNPI(objectPath.get(verify_results, 'payload.vc')))
+                      objectPath.set(nosh, 'role', 'provider')
                     }
                   }
+                  // if (objectPath.has(verify_results, 'payload.vp') && npi !== '') {
+                  //   for (var b in objectPath.get(verify_results, 'payload.vp.verifiableCredential')) {
+                  //     if (npi !== '') {
+                  //       objectPath.set(nosh, 'npi', getNPI(objectPath.get(verify_results, 'payload.vp.verifiableCredential.' + b )))
+                  //       objectPath.set(nosh, 'role', 'provider')
+                  //     }
+                  //   }
+                  // }
                   const db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
                   const result_users = await db_users.find({
                     selector: {
@@ -329,8 +336,58 @@ async function gnapVerify(req, res) {
                     objectPath.set(nosh, 'templates', JSON.parse(fs.readFileSync('./assets/templates.json')))
                     if (!objectPath.has(nosh, 'role')) {
                       objectPath.set(nosh, 'role', 'proxy')
+                      const related_person_id = 'nosh_' + uuidv4()
+                      objectPath.set(nosh, 'reference', 'RelatedPerson/' + related_person_id)
+                      const related_person = {
+                        "_id": related_person_id,
+                        "resourceType": "RelatedPerson",
+                        "id": practitioner_id,
+                        "name": [
+                          {
+                            "family": name_obj.name.last,
+                            "use": "official",
+                            "given": [
+                              name_obj.name.first
+                            ],
+                            "suffix": [
+                              name_obj.name.suffix
+                            ]
+                          }
+                        ],
+                        "text": {
+                          "status": "generated",
+                          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">" + name_obj.display + "</div>"
+                        }
+                      }
+                      await sync('related_persons', '', true, related_person)
+                      objectPath.set(nosh, 'reference', 'RelatedPerson/' + related_person_id)
+                    } else {
+                      // this is a provider
+                      const practitioner_id = 'nosh_' + uuidv4()
+                      const practitioner = {
+                        "_id": practitioner_id,
+                        "resourceType": "Practitioner",
+                        "id": practitioner_id,
+                        "name": [
+                          {
+                            "family": name_obj.name.last,
+                            "use": "official",
+                            "given": [
+                              name_obj.name.first
+                            ],
+                            "suffix": [
+                              name_obj.name.suffix
+                            ]
+                          }
+                        ],
+                        "text": {
+                          "status": "generated",
+                          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">" + name_obj.display + "</div>"
+                        }
+                      }
+                      await sync('practitioners', '', true, practitioner)
+                      objectPath.set(nosh, 'reference', 'Practitioner/' + practitioner_id)
                     }
-                    objectPath.set(nosh, 'display', '') // grab display from authorization server - to be completed
                     await db_users.put(nosh)
                   }
                   objectPath.set(payload, '_nosh', nosh)
