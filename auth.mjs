@@ -7,7 +7,6 @@ import isReachable from 'is-reachable'
 import * as jose from 'jose'
 // const Mailgun = require('mailgun.js')
 import objectPath from 'object-path'
-import { parseFullName } from "parse-full-name-esm"
 import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
 import { v4 as uuidv4 } from 'uuid'
