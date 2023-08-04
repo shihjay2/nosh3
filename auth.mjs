@@ -393,6 +393,7 @@ async function gnapVerify(req, res) {
                       await sync('practitioners', req.params.patient, true, practitioner)
                       objectPath.set(nosh, 'reference', 'Practitioner/' + practitioner_id)
                     }
+                    console.log(nosh)
                     await db_users.put(nosh)
                   }
                   objectPath.set(payload, '_nosh', nosh)

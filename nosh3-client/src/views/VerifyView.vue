@@ -189,7 +189,7 @@ export default defineComponent({
         if (state.payload._nosh.instance === 'digitalocean' && state.payload._noshType === 'pnosh') {
           prefix = state.patient + '_'
         }
-        var users = new PouchDB(state.couchdb +  prefix + 'users', state.auth)
+        var users = new PouchDB(state.couchdb + prefix + 'users', state.auth)
         var selector = {'email': {$eq: state.payload._nosh.email}, _id: {"$gte": null}}
         // var selector = [
         //   {'email': {$eq: state.payload._nosh.email}, _id: {"$gte": null}},
@@ -199,6 +199,8 @@ export default defineComponent({
           // selector: {$or: selector}
           selector: selector
         })
+        console.log(state.payload._nosh)
+        console.log(result)
         if (result.docs.length > 0) {
           auth.login(result.docs[0], state.payload, jwt)
           await eventAdd('Logged in', true, state.patient)

@@ -294,7 +294,7 @@ export default defineComponent({
         if (state.payload._nosh.instance === 'digitalocean' && state.payload._noshType === 'pnosh') {
           prefix = state.patient + '_'
         }
-        var users = new PouchDB(state.couchdb +  prefix + 'users', state.auth)
+        var users = new PouchDB(state.couchdb + prefix + 'users', state.auth)
         var selector = {'email': {$eq: state.payload._nosh.email}, _id: {"$gte": null}}
           // {'did': {$eq: state.payload._nosh.did}, _id: {"$gte": null}}
         var result = await users.find({
