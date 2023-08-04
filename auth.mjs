@@ -250,8 +250,8 @@ async function gnapVerify(req, res) {
                 did: '',
                 pin: pin,
                 npi: '',
-                templates: [],
-                trustee: '',
+                display: '',
+                trustee: urlFix(process.env.TRUSTEE_URL),
                 instance: process.env.INSTANCE
               }
               var user_id = ''
@@ -331,15 +331,15 @@ async function gnapVerify(req, res) {
                   } else {
                     console.log('new user')
                     // add new user - authorization server has already granted
+                    const new_user = JSON.parse(JSON.stringify(nosh))
                     user_id = 'nosh_' + uuidv4()
-                    objectPath.set(nosh, '_id', user_id)
-                    objectPath.set(nosh, 'id', user_id)
-                    objectPath.set(nosh, 'templates', JSON.parse(fs.readFileSync('./assets/templates.json')))
-                    if (!objectPath.has(nosh, 'role')) {
+                    objectPath.set(new_user, '_id', user_id)
+                    objectPath.set(new_user, 'id', user_id)
+                    objectPath.set(new_user, 'templates', JSON.parse(fs.readFileSync('./assets/templates.json')))
+                    if (!objectPath.has(new_user, 'role')) {
                       console.log('add new proxy')
-                      objectPath.set(nosh, 'role', 'proxy')
+                      objectPath.set(new_user, 'role', 'proxy')
                       const related_person_id = 'nosh_' + uuidv4()
-                      objectPath.set(nosh, 'reference', 'RelatedPerson/' + related_person_id)
                       const related_person = {
                         "_id": related_person_id,
                         "resourceType": "RelatedPerson",
@@ -362,7 +362,7 @@ async function gnapVerify(req, res) {
                         }
                       }
                       await sync('related_persons', req.params.patient, true, related_person)
-                      objectPath.set(nosh, 'reference', 'RelatedPerson/' + related_person_id)
+                      objectPath.set(new_user, 'reference', 'RelatedPerson/' + related_person_id)
                     } else {
                       // this is a provider
                       console.log('add new provider')
@@ -391,13 +391,13 @@ async function gnapVerify(req, res) {
                       }
                       console.log(practitioner)
                       await sync('practitioners', req.params.patient, true, practitioner)
-                      objectPath.set(nosh, 'reference', 'Practitioner/' + practitioner_id)
+                      objectPath.set(new_user, 'reference', 'Practitioner/' + practitioner_id)
                     }
-                    console.log(nosh)
-                    await db_users.put(nosh)
+                    console.log(new_user)
+                    await db_users.put(new_user)
                   }
                   objectPath.set(payload, '_nosh', nosh)
-                  objectPath.set(payload, '_noshAuth', process.env.AUTH)
+                  objectPath.set(payload, '_noshAuth', 'trustee')
                   if (process.env.INSTANCE == 'dev') {
                     objectPath.set(payload, '_noshDB', urlFix(req.protocol + '://' + req.hostname + '/couchdb'))
                   } else {
@@ -481,26 +481,6 @@ async function createJWT(sub, aud, iss, payload=null) {
   }
   const rsaPrivateKey = await jose.importJWK(keys[0].privateKey, 'RS256')
   const payload_vc = {
-    "vc": {
-      "@context": [
-        "https://www.w3.org/2018/credentials/v1",
-        "https://www.w3.org/2018/credentials/examples/v1"
-      ],
-      "id": "http://example.edu/credentials/3732",
-      "type": [
-        "VerifiableCredential",
-        "UniversityDegreeCredential"
-      ],
-      "issuer": "https://example.edu/issuers/565049",
-      "issuanceDate": "2010-01-01T00:00:00Z",
-      "credentialSubject": {
-        "id": "did:example:ebfeb1f712ebc6f1c276e12ec21",
-        "degree": {
-          "type": "BachelorDegree",
-          "name": "Bachelor of Science and Arts"
-        }
-      }
-    },
     // app specific payload
     "_couchdb.roles": ["_admin"],
     "_nosh": {
