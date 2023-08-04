@@ -255,7 +255,6 @@ async function gnapVerify(req, res) {
                 instance: process.env.INSTANCE
               }
               var user_id = ''
-              var name_obj = null
               // assume access token is JWT that contains verifiable credentials and if valid, attach to payload
               const jwt = doc.access_token.value
               try {
@@ -264,7 +263,8 @@ async function gnapVerify(req, res) {
                 if (verify_results.status === 'isValid') {
                   console.log('valid jwt')
                   if (objectPath.has(verify_results, 'payload.vc')) {
-                    name_obj = getName(objectPath.get(verify_results, 'payload.vc'))
+                    const name_obj = getName(objectPath.get(verify_results, 'payload.vc'))
+                    console.log(name_obj)
                     objectPath.set(nosh, 'display', name_obj.display)
                     const npi = getNPI(objectPath.get(verify_results, 'payload.vc'))
                     if (npi !== '') {
@@ -366,6 +366,7 @@ async function gnapVerify(req, res) {
                     } else {
                       // this is a provider
                       console.log('add new provider')
+                      console.log(name_obj)
                       const practitioner_id = 'nosh_' + uuidv4()
                       const practitioner = {
                         "_id": practitioner_id,
