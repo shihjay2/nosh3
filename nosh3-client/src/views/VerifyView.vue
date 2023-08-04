@@ -177,12 +177,10 @@ export default defineComponent({
           })
         }
         const jwt = route.query.token
-        console.log(jwt)
         state.auth = {fetch: (url, opts) => {
           opts.headers.set('Authorization', 'Bearer ' + jwt)
           return PouchDB.fetch(url, opts)
         }}
-        console.log(state.auth)
         state.couchdb = state.payload._noshDB
         state.pin = state.payload._nosh.pin
         state.patient = state.payload._noshRedirect.replace('/app/chart/', '')
@@ -213,7 +211,7 @@ export default defineComponent({
         } else {
           // not authorized - user not set up
           $q.notify({
-            message: 'Your email address is ' + result.docs[0].email + ', but you do not have an account',
+            message: 'Your email address is ' + state.payload._nosh.email + ', but you do not have an account',
             color: 'red',
             actions: [
               { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }

@@ -259,9 +259,7 @@ async function gnapVerify(req, res) {
               const jwt = doc.access_token.value
               try {
                 const verify_results = await verify(jwt)
-                console.log(verify_results)
                 if (verify_results.status === 'isValid') {
-                  console.log('valid jwt')
                   if (objectPath.has(verify_results, 'payload.vc')) {
                     var name_obj = getName(objectPath.get(verify_results, 'payload.vc'))
                     console.log(name_obj)
@@ -286,7 +284,6 @@ async function gnapVerify(req, res) {
                       'email': {"$eq": objectPath.get(verify_results, 'payload.sub')}
                     }
                   })
-                  console.log(result_users)
                   objectPath.set(nosh, 'email', objectPath.get(verify_results, 'payload.sub'))
                   const payload = {
                     "_gnap": doc,
@@ -329,7 +326,6 @@ async function gnapVerify(req, res) {
                     objectPath.set(nosh, 'id', user_id)
                     objectPath.set(nosh, 'display', result_users.docs[0].display)
                   } else {
-                    console.log('new user')
                     // add new user - authorization server has already granted
                     const new_user = JSON.parse(JSON.stringify(nosh))
                     user_id = 'nosh_' + uuidv4()
@@ -337,7 +333,6 @@ async function gnapVerify(req, res) {
                     objectPath.set(new_user, 'id', user_id)
                     objectPath.set(new_user, 'templates', JSON.parse(fs.readFileSync('./assets/templates.json')))
                     if (!objectPath.has(new_user, 'role')) {
-                      console.log('add new proxy')
                       objectPath.set(new_user, 'role', 'proxy')
                       const related_person_id = 'nosh_' + uuidv4()
                       const related_person = {
@@ -365,8 +360,6 @@ async function gnapVerify(req, res) {
                       objectPath.set(new_user, 'reference', 'RelatedPerson/' + related_person_id)
                     } else {
                       // this is a provider
-                      console.log('add new provider')
-                      console.log(name_obj)
                       const practitioner_id = 'nosh_' + uuidv4()
                       const practitioner = {
                         "_id": practitioner_id,
@@ -389,11 +382,9 @@ async function gnapVerify(req, res) {
                           "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">" + name_obj.display + "</div>"
                         }
                       }
-                      console.log(practitioner)
                       await sync('practitioners', req.params.patient, true, practitioner)
                       objectPath.set(new_user, 'reference', 'Practitioner/' + practitioner_id)
                     }
-                    console.log(new_user)
                     await db_users.put(new_user)
                   }
                   objectPath.set(payload, '_nosh', nosh)
@@ -428,7 +419,6 @@ async function gnapVerify(req, res) {
                     objectPath.set(payload, '_noshType', 'mdnosh')
                   }
                   const jwt_nosh = await createJWT(user_id, urlFix(req.protocol + '://' + req.hostname + '/'), urlFix(req.protocol + '://' + req.hostname + '/'), payload)
-                  console.log(jwt_nosh)
                   res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/verify?token=' + jwt_nosh + '&patient=' + req.params.patient)
                 } else {
                   res.status(401).send('Unauthorized')
