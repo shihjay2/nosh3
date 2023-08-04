@@ -346,13 +346,13 @@ async function gnapVerify(req, res) {
                         "id": practitioner_id,
                         "name": [
                           {
-                            "family": name_obj.name.last,
+                            "family": name_obj.parsed.last,
                             "use": "official",
                             "given": [
-                              name_obj.name.first
+                              name_obj.parse.first
                             ],
                             "suffix": [
-                              name_obj.name.suffix
+                              name_obj.parsed.suffix
                             ]
                           }
                         ],
@@ -374,13 +374,13 @@ async function gnapVerify(req, res) {
                         "id": practitioner_id,
                         "name": [
                           {
-                            "family": name_obj.name.last,
+                            "family": name_obj.parsed.last,
                             "use": "official",
                             "given": [
-                              name_obj.name.first
+                              name_obj.parsed.first
                             ],
                             "suffix": [
-                              name_obj.name.suffix
+                              name_obj.parsed.suffix
                             ]
                           }
                         ],
