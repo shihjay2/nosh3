@@ -220,7 +220,6 @@ async function getAllKeys() {
         publicKey = result.docs[a].publicKey
       }
     }
-    console.log(keys)
     return {keys: keys, publicKey: publicKey}
   } catch (err) {
     console.log(err)
