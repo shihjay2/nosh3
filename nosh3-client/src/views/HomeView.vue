@@ -801,9 +801,8 @@ export default defineComponent({
       try {
         await verifyJWT(state.online)
       } catch(e) {
-        console.log(e)
-        // auth.returnUrl = route.fullPath
-        // return auth.logout()
+        auth.returnUrl = route.fullPath
+        return auth.logout()
       }
       state.type = auth.type
       state.auth = {fetch: (url, opts) => {

@@ -855,6 +855,9 @@ export function common() {
       }
     ]
   }
+  const sleep = async(seconds) => {
+    return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+  }
   const sync = async(resource, online, patient_id, save=false, data={}) => {
     const auth_store = useAuthStore()
     const couchdb = auth_store.couchdb
@@ -931,6 +934,7 @@ export function common() {
       await sync(resource.resource, online, patient_id, false, {})
       objectPath.set(syncState, 'complete', objectPath.get(syncState, 'complete') + 1)
     }
+    await sleep(5)
   }
   const syncSome = async(online, patient_id) => {
     const auth_store = useAuthStore()
