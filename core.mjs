@@ -5,7 +5,7 @@ import Case from 'case'
 import crypto from 'crypto'
 import fs from 'fs'
 import { createSigner, httpis } from 'http-message-signatures';
-import parseFullName from 'parse-full-name-esm'
+import { parseFullName } from 'parse-full-name'
 import * as jose from 'jose'
 import moment from 'moment'
 import objectPath from 'object-path'
