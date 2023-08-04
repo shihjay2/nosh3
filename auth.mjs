@@ -286,6 +286,7 @@ async function gnapVerify(req, res) {
                       'email': {"$eq": objectPath.get(verify_results, 'payload.sub')}
                     }
                   })
+                  console.log(result_users)
                   objectPath.set(nosh, 'email', objectPath.get(verify_results, 'payload.sub'))
                   const payload = {
                     "_gnap": doc,
@@ -328,12 +329,14 @@ async function gnapVerify(req, res) {
                     objectPath.set(nosh, 'id', user_id)
                     objectPath.set(nosh, 'display', result_users.docs[0].display)
                   } else {
+                    console.log('new user')
                     // add new user - authorization server has already granted
                     user_id = 'nosh_' + uuidv4()
                     objectPath.set(nosh, '_id', user_id)
                     objectPath.set(nosh, 'id', user_id)
                     objectPath.set(nosh, 'templates', JSON.parse(fs.readFileSync('./assets/templates.json')))
                     if (!objectPath.has(nosh, 'role')) {
+                      console.log('add new proxy')
                       objectPath.set(nosh, 'role', 'proxy')
                       const related_person_id = 'nosh_' + uuidv4()
                       objectPath.set(nosh, 'reference', 'RelatedPerson/' + related_person_id)
@@ -362,6 +365,7 @@ async function gnapVerify(req, res) {
                       objectPath.set(nosh, 'reference', 'RelatedPerson/' + related_person_id)
                     } else {
                       // this is a provider
+                      console.log('add new provider')
                       const practitioner_id = 'nosh_' + uuidv4()
                       const practitioner = {
                         "_id": practitioner_id,
@@ -421,6 +425,7 @@ async function gnapVerify(req, res) {
                     objectPath.set(payload, '_noshType', 'mdnosh')
                   }
                   const jwt_nosh = await createJWT(user_id, urlFix(req.protocol + '://' + req.hostname + '/'), urlFix(req.protocol + '://' + req.hostname + '/'), payload)
+                  console.log(jwt_nosh)
                   res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/verify?token=' + jwt_nosh + '&patient=' + req.params.patient)
                 } else {
                   res.status(401).send('Unauthorized')
