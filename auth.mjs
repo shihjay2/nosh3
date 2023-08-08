@@ -261,6 +261,7 @@ async function gnapVerify(req, res) {
                 const verify_results = await verify(jwt)
                 if (verify_results.status === 'isValid') {
                   if (objectPath.has(verify_results, 'payload.vc')) {
+                    console.log(verify_results.payload.vc)
                     var name_obj = getName(objectPath.get(verify_results, 'payload.vc'))
                     objectPath.set(nosh, 'display', name_obj.display)
                     const npi = getNPI(objectPath.get(verify_results, 'payload.vc'))
