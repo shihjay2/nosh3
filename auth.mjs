@@ -334,6 +334,7 @@ async function gnapVerify(req, res) {
                     console.log(new_user)
                     if (!objectPath.has(new_user, 'role')) {
                       console.log('new user proxy')
+                      console.log(name_obj)
                       objectPath.set(new_user, 'role', 'proxy')
                       const related_person_id = 'nosh_' + uuidv4()
                       const related_person = {

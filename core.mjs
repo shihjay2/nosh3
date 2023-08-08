@@ -250,6 +250,8 @@ function getName(vc) {
       ret = {...name, parsed}
     }
     if (objectPath.has(a, 'vc.credentialSubject.firstName') && objectPath.has(a, 'vc.credentialSubject.lastName')) {
+      console.log('proxy name')
+      console.log(a)
       objectPath.set(name, 'display', objectPath.get(a, 'vc.credentialSubject.firstName') + ' ' + objectPath.get(a, 'vc.credentialSubject.lastName'))
       ret = {...name, name: {
         title: '',
