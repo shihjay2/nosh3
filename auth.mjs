@@ -331,7 +331,9 @@ async function gnapVerify(req, res) {
                     objectPath.set(new_user, '_id', user_id)
                     objectPath.set(new_user, 'id', user_id)
                     objectPath.set(new_user, 'templates', JSON.parse(fs.readFileSync('./assets/templates.json')))
+                    console.log(new_user)
                     if (!objectPath.has(new_user, 'role')) {
+                      console.log('new user proxy')
                       objectPath.set(new_user, 'role', 'proxy')
                       const related_person_id = 'nosh_' + uuidv4()
                       const related_person = {
@@ -355,6 +357,7 @@ async function gnapVerify(req, res) {
                           "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">" + name_obj.display + "</div>"
                         }
                       }
+                      console.log(related_person)
                       await sync('related_persons', req.params.patient, true, related_person)
                       objectPath.set(new_user, 'reference', 'RelatedPerson/' + related_person_id)
                     } else {
