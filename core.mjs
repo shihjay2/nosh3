@@ -91,7 +91,13 @@ async function couchdbDatabase(patient_id='', protocol='', hostname='', email=''
     const signedRequest = await signRequest(body, '/api/as/resource', 'POST', req)
     try {
       const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', signedRequest)
-        .then((res) => res.json());
+        .then((res) => {
+          if (res.status > 400 && res.status < 600) { 
+            return {error: res};
+          } else {
+            return res.json();
+          }
+        });
       return doc
     } catch (e) {
       console.log(e)
@@ -400,7 +406,13 @@ async function registerResources(patient_id='', protocol='', hostname='', email=
     const signedRequest = await signRequest(body, '/api/as/resource', 'POST', req)
     try {
       const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', signedRequest)
-        .then((res) => res.json());
+        .then((res) => {
+          if (res.status > 400 && res.status < 600) { 
+            return {error: res};
+          } else {
+            return res.json();
+          }
+        });
       return body
     } catch (e) {
       return false

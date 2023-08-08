@@ -337,7 +337,7 @@ async function gnapVerify(req, res) {
                       const related_person = {
                         "_id": related_person_id,
                         "resourceType": "RelatedPerson",
-                        "id": practitioner_id,
+                        "id": related_person_id,
                         "name": [
                           {
                             "family": name_obj.parsed.last,
