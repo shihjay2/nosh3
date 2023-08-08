@@ -260,7 +260,6 @@ async function gnapVerify(req, res) {
               try {
                 const verify_results = await verify(jwt)
                 if (verify_results.status === 'isValid') {
-                  console.log(verify_results.payload)
                   if (objectPath.has(verify_results, 'payload.vc')) {
                     var name_obj = getName(objectPath.get(verify_results, 'payload.vc'))
                     objectPath.set(nosh, 'display', name_obj.display)
@@ -334,8 +333,6 @@ async function gnapVerify(req, res) {
                     objectPath.set(new_user, 'templates', JSON.parse(fs.readFileSync('./assets/templates.json')))
                     console.log(new_user)
                     if (!objectPath.has(new_user, 'role')) {
-                      console.log('new user proxy')
-                      console.log(name_obj)
                       objectPath.set(new_user, 'role', 'proxy')
                       const related_person_id = 'nosh_' + uuidv4()
                       const related_person = {
@@ -347,7 +344,7 @@ async function gnapVerify(req, res) {
                             "family": name_obj.parsed.last,
                             "use": "official",
                             "given": [
-                              name_obj.parse.first
+                              name_obj.parsed.first
                             ],
                             "suffix": [
                               name_obj.parsed.suffix
