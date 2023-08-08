@@ -259,6 +259,7 @@ async function gnapVerify(req, res) {
               const jwt = doc.access_token.value
               try {
                 const verify_results = await verify(jwt)
+                console.log(verify_results)
                 if (verify_results.status === 'isValid') {
                   if (objectPath.has(verify_results, 'payload.vc')) {
                     var name_obj = getName(objectPath.get(verify_results, 'payload.vc'))
@@ -332,6 +333,7 @@ async function gnapVerify(req, res) {
                     objectPath.set(new_user, 'id', user_id)
                     objectPath.set(new_user, 'templates', JSON.parse(fs.readFileSync('./assets/templates.json')))
                     console.log(new_user)
+                    console.log(name_obj)
                     if (!objectPath.has(new_user, 'role')) {
                       objectPath.set(new_user, 'role', 'proxy')
                       const related_person_id = 'nosh_' + uuidv4()
