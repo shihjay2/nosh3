@@ -222,9 +222,9 @@ async function gnapResource(req, res) {
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     const body = {resource: req.body.resource}
     try {
-      const signedRequest = await signRequest(body, '/api/as/resources', req.body.method, req)
+      const signedRequest = await signRequest(body, '/api/as/resource', req.body.method, req)
       try {
-        const update = await fetch(result.continue.uri, signedRequest)
+        const update = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', signedRequest)
           .then((res) => {
             if (res.status > 400 && res.status < 600) { 
               return {error: res};
@@ -250,7 +250,7 @@ async function gnapResources(req, res) {
     try {
       const signedRequest = await signRequest(body, '/api/as/resources', 'POST', req)
       try {
-        const resources = await fetch(result.continue.uri, signedRequest)
+        const resources = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/resources', signedRequest)
           .then((res) => res.json())
         sortArray(resources, {by: 'type', order: 'asc'})
         res.status(200).json(resources)
