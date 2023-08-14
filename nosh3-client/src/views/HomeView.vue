@@ -75,6 +75,7 @@
             @open-page="openPage"
             @open-qr="openQR"
             @open-schedule="openSchedule"
+            @open-trustee="openTrustee"
             @stop-inbox-timer="stopInboxTimer"
             :user="state.user"
             :online="state.online"
@@ -520,6 +521,11 @@
       </Form>
     </q-card>
   </q-dialog>
+  <q-dialog v-model="state.showTrustee">
+    <QTrusteeTemplate 
+      :user="state.user"
+    />
+  </q-dialog>
 </template>
 
 <script>
@@ -550,6 +556,7 @@ import QListTemplate from '@/components/QListTemplate.vue'
 import QMenuTemplate from '@/components/QMenuTemplate.vue'
 import QPageTemplate from '@/components/QPageTemplate.vue'
 import QScheduleTemplate from '@/components/QScheduleTemplate.vue'
+import QTrusteeTemplate from '@/components/QTrusteeTemplate.vue'
 import QToolbarTemplate from '@/components/QToolbarTemplate.vue'
 import { useAuthStore } from '@/stores'
 import { useRoute } from 'vue-router'
@@ -580,6 +587,7 @@ export default defineComponent({
     QPageTemplate,
     QScheduleTemplate,
     QToolbarTemplate,
+    QTrusteeTemplate,
     VOffline,
     VueQrious
 },
@@ -629,6 +637,7 @@ export default defineComponent({
       showGraph: false,
       showTimeline: false,
       showTimelineParent: false,
+      showTrustee: false,
       showCareOpportunities:false,
       showActivity: false,
       searchResults: false,
@@ -1679,6 +1688,9 @@ export default defineComponent({
         }
       }
     }
+    const openTrustee = async() => {
+      state.showTrustee = true
+    }
     const pinCheck = async() => {
       var check = await axios.post(window.location.origin + '/auth/pinCheck', {patient: state.patient})
       if (check.data.response === 'Error') {
@@ -2306,6 +2318,7 @@ export default defineComponent({
       openQR,
       openSchedule,
       openTimelineEntry,
+      openTrustee,
       patientList,
       patientSearch,
       patientSearchBtn,

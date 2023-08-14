@@ -9,6 +9,7 @@ import * as jose from 'jose'
 import objectPath from 'object-path'
 import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
+import sortArray from "sort-array"
 import { v4 as uuidv4 } from 'uuid'
 import { couchdbDatabase, couchdbInstall, createKeyPair, equals, getKeys, getName, getNPI, getPIN, registerResources, signRequest, sync, urlFix, verify, verifyPIN } from './core.mjs'
 // const mailgun = new Mailgun(formData)
@@ -29,6 +30,8 @@ router.post('/addPatient', addPatient)
 router.post('/addResources', addResources)
 
 router.post('/gnapAuth', gnapAuth)
+router.post('/gnapResource', gnapResource)
+router.post('/gnapResources', gnapResources)
 router.get('/gnapVerify/:patient', gnapVerify)
 
 router.post('/pinCheck', pinCheck)
@@ -215,6 +218,53 @@ async function gnapAuth(req, res) {
   }
 }
 
+async function gnapResource(req, res) {
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    const body = {resource: req.body.resource}
+    try {
+      const signedRequest = await signRequest(body, '/api/as/resources', req.body.method, req)
+      try {
+        const update = await fetch(result.continue.uri, signedRequest)
+          .then((res) => {
+            if (res.status > 400 && res.status < 600) { 
+              return {error: res};
+            } else {
+              return res.json();
+            }
+          })
+        res.status(200).json(update)
+      } catch (e) {
+        console.log(e)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  } else {
+    res.status(401).send('Unauthorized - feature not available')
+  }
+}
+
+async function gnapResources(req, res) {
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    const body = {email: req.body.email, filter: req.body.filter}
+    try {
+      const signedRequest = await signRequest(body, '/api/as/resources', 'POST', req)
+      try {
+        const resources = await fetch(result.continue.uri, signedRequest)
+          .then((res) => res.json())
+        sortArray(resources, {by: 'type', order: 'asc'})
+        res.status(200).json(resources)
+      } catch (e) {
+        console.log(e)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  } else {
+    res.status(401).send('Unauthorized - feature not available')
+  }
+}
+
 async function gnapVerify(req, res) {
   var pin = process.env.COUCHDB_ENCRYPT_PIN
   var prefix = ''
@@ -242,7 +292,7 @@ async function gnapVerify(req, res) {
           const signedRequest = await signRequest(body, '/api/as/continue', 'POST', req, result.continue.access_token.value)
           try {
             const doc = await fetch(result.continue.uri, signedRequest)
-              .then((res) => res.json());
+              .then((res) => res.json())
             await db.remove(result)
             if (objectPath.has(doc, 'access_token.subject')) {
               const nosh = {

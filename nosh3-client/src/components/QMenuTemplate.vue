@@ -41,7 +41,7 @@
           <q-icon color="primary" style="font-size: 1.5em" name="qr_code_2" />
         </q-item-section>
       </q-item>
-      <q-item v-if="state.type == 'pnosh'">
+      <q-item v-if="state.type == 'pnosh' && state.user.role == 'patient'">
         <q-item-section>
           <q-item-label>Trustee<q-icon name="fas fa-registered" style="font-size: 0.6em; vertical-align: super;"/> Policies</q-item-label>
         </q-item-section>
@@ -126,12 +126,16 @@ export default defineComponent({
     const openSchedule = () => {
       emit('open-schedule')
     }
+    const openTrustee = () => {
+      emit('open-trustee')
+    }
     return {
       logout,
       open,
       openActivity,
       openQR,
       openSchedule,
+      openTrustee,
       state
     }
   }
