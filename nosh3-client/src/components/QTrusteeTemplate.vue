@@ -58,8 +58,8 @@ import { defineComponent, reactive, nextTick, onMounted } from 'vue'
 import axios from 'axios'
 import objectPath from 'object-path'
 import PouchDB from 'pouchdb-browser'
-import { useAuthStore } from '@/stores'
 import PouchDBFind from 'pouchdb-find'
+import { useQuasar } from 'quasar'
 PouchDB.plugin(PouchDBFind)
 
 export default defineComponent({
@@ -71,17 +71,13 @@ export default defineComponent({
   },
   emits: [],
   setup (props, { emit }) {
+    const $q = useQuasar()
     const state = reactive({
       user: {},
       rows: [],
       email_show: false,
       email_show_index: 0
     })
-    const auth = useAuthStore()
-    var prefix = ''
-    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
-      prefix = auth.patient + '_'
-    }
     onMounted(async() => {
       state.user = props.user
       const body = {email: state.user.email, filter: ''}
@@ -104,6 +100,13 @@ export default defineComponent({
           const a = await axios.post(window.location.origin + '/auth/gnapResource', body)
           if (objectPath.has(a, 'data')) {
             console.log('success')
+            $q.notify({
+              message: 'Privilege ' + value + 'added.',
+              color: 'primary',
+              actions: [
+                { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+              ]
+            })
           }
         } else {
           console.log('error')
@@ -117,19 +120,27 @@ export default defineComponent({
     const clickPrivilege = async(row_index, value) => {
       const privileges = objectPath.get(state, 'rows.' + row_index + '.privileges')
       privileges.push(value)
-      objectPath.set(state, 'rows.' + index + '.privileges', privileges)
+      objectPath.set(state, 'rows.' + row_index + '.privileges', privileges)
       const body = {
-        resource: objectPath.get(state, 'rows.' + index),
+        resource: objectPath.get(state, 'rows.' + row_index),
         method: 'PUT',
       }
       const a = await axios.post(window.location.origin + '/auth/gnapResource', body)
       if (objectPath.has(a, 'data')) {
         console.log('success')
+        $q.notify({
+          message: 'Privilege ' + value + 'added.',
+          color: 'primary',
+          actions: [
+            { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+          ]
+        })
       }
     }
 
     const removePrivilege = async(row_index, privilege_index) => {
       const privileges = objectPath.get(state, 'rows.' + row_index + '.privileges')
+      const value = privileges[privilege_index]
       privileges.splice(privilege_index, 1)
       objectPath.set(state, 'rows.' + row_index + '.privileges', privileges)
       const body = {
@@ -139,6 +150,24 @@ export default defineComponent({
       const a = await axios.post(window.location.origin + '/auth/gnapResource', body)
       if (objectPath.has(a, 'data')) {
         console.log('success')
+        $q.notify({
+          message: 'Privilege ' + value + 'added.',
+          color: 'primary',
+          actions: [
+            { label: 'Undo', color: 'white', handler: async() => {
+              privileges.push(value)
+              objectPath.set(state, 'rows.' + row_index + '.privileges', privileges)
+              const body = {
+                resource: objectPath.get(state, 'rows.' + row_index),
+                method: 'PUT',
+              }
+              const b = await axios.post(window.location.origin + '/auth/gnapResource', body)
+              if (objectPath.has(b, 'data')) {
+                console.log('success')
+              }
+            } }
+          ]
+        })
       }
     }
 
