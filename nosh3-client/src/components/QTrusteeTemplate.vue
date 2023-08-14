@@ -45,7 +45,7 @@
         </q-input>
         <q-btn round icon="add" color="accent" @click="addPrivilege(index)"></q-btn>
       </div>
-      <div v-if="state.email_show" class="row justify-end q-pb-md q-pr-md">
+      <div v-if="state.email_show && state.email_show_index === index" class="row justify-end q-pb-md q-pr-md">
         <q-chip v-if="!row.privileges.includes('npi')" clickable @click="clickPrivilege(index, 'npi')">npi<q-icon name="add" class="q-pl-sm" /></q-chip>
         <q-chip v-if="!row.privileges.includes('offline')" clickable @click="clickPrivilege(index, 'offline')">offline<q-icon name="add" class="q-pl-sm" /></q-chip>
       </div>
@@ -60,6 +60,7 @@ import objectPath from 'object-path'
 import PouchDB from 'pouchdb-browser'
 import PouchDBFind from 'pouchdb-find'
 import { useQuasar } from 'quasar'
+import { useAuthStore } from '@/stores'
 PouchDB.plugin(PouchDBFind)
 
 export default defineComponent({
@@ -72,6 +73,7 @@ export default defineComponent({
   emits: [],
   setup (props, { emit }) {
     const $q = useQuasar()
+    const auth = useAuthStore()
     const state = reactive({
       user: {},
       rows: [],
@@ -96,12 +98,13 @@ export default defineComponent({
           const body = {
             resource: objectPath.get(state, 'rows.' + index),
             method: 'PUT',
+            jwt: auth.gnap_jwt
           }
           const a = await axios.post(window.location.origin + '/auth/gnapResource', body)
           if (objectPath.has(a, 'data')) {
             console.log('success')
             $q.notify({
-              message: 'Privilege ' + value + 'added.',
+              message: 'Privilege ' + value + ' added.',
               color: 'primary',
               actions: [
                 { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
@@ -124,12 +127,13 @@ export default defineComponent({
       const body = {
         resource: objectPath.get(state, 'rows.' + row_index),
         method: 'PUT',
+        jwt: auth.gnap_jwt
       }
       const a = await axios.post(window.location.origin + '/auth/gnapResource', body)
       if (objectPath.has(a, 'data')) {
         console.log('success')
         $q.notify({
-          message: 'Privilege ' + value + 'added.',
+          message: 'Privilege ' + value + ' added.',
           color: 'primary',
           actions: [
             { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
@@ -146,12 +150,13 @@ export default defineComponent({
       const body = {
         resource: objectPath.get(state, 'rows.' + row_index),
         method: 'PUT',
+        jwt: auth.gnap_jwt
       }
       const a = await axios.post(window.location.origin + '/auth/gnapResource', body)
       if (objectPath.has(a, 'data')) {
         console.log('success')
         $q.notify({
-          message: 'Privilege ' + value + 'added.',
+          message: 'Privilege ' + value + ' removed.',
           color: 'primary',
           actions: [
             { label: 'Undo', color: 'white', handler: async() => {
@@ -160,6 +165,7 @@ export default defineComponent({
               const body = {
                 resource: objectPath.get(state, 'rows.' + row_index),
                 method: 'PUT',
+                jwt: auth.gnap_jwt
               }
               const b = await axios.post(window.location.origin + '/auth/gnapResource', body)
               if (objectPath.has(b, 'data')) {

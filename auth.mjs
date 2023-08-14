@@ -110,7 +110,8 @@ async function authenticate(req, res) {
             "mailgun_key": process.env.MAILGUN_API_KEY,
             "mailgun_domain": process.env.MAILGUN_DOMAIN,
             "oidc_relay_url": process.env.OIDC_RELAY_URL
-          }
+          },
+          "jwt": ""
         }
         if (!objectPath.has(result_users, 'docs.0.defaults')) {
           const user_doc = await db_users.get(result_users.docs[0]._id)
@@ -222,7 +223,7 @@ async function gnapResource(req, res) {
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     const body = {resource: req.body.resource}
     try {
-      const signedRequest = await signRequest(body, '/api/as/resource', req.body.method, req)
+      const signedRequest = await signRequest(body, '/api/as/resource', req.body.method, req, req.body.jwt)
       try {
         const update = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', signedRequest)
           .then((res) => {

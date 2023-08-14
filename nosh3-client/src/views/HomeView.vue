@@ -784,6 +784,7 @@ export default defineComponent({
       const instance = localStorage.getItem('instance')
       const trustee = localStorage.getItem('trustee')
       const oidc_data = JSON.parse(localStorage.getItem('oidc_data'))
+      const gnap_jwt = localStorage.getItem('gnap_jwt')
       window.localStorage.clear()
       localStorage.setItem('user', JSON.stringify(user1))
       localStorage.setItem('jwt', jwt)
@@ -795,6 +796,7 @@ export default defineComponent({
       localStorage.setItem('instance', instance)
       localStorage.setItem('trustee', trustee)
       localStorage.setItem('oidc_data', JSON.stringify(oidc_data))
+      localStorage.setItem('gnap_jwt', gnap_jwt)
       window.location.reload()
     })
     var prefix = ''

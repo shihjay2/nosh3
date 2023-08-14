@@ -489,6 +489,7 @@ export default defineComponent({
       const api = JSON.parse(localStorage.getItem('api'))
       const pin = localStorage.getItem('pin')
       const trustee = localStorage.getItem('trustee')
+      const gnap_jwt = localStorage.getItem('gnap_jwt')
       window.localStorage.clear()
       localStorage.setItem('user', JSON.stringify(user1))
       localStorage.setItem('jwt', jwt)
@@ -498,6 +499,7 @@ export default defineComponent({
       localStorage.setItem('api', JSON.stringify(api))
       localStorage.setItem('pin', pin)
       localStorage.setItem('trustee', trustee)
+      localStorage.setItem('gnap_jwt', gnap_jwt)
       window.location.reload()
     })
     // state.couchdb = window.location.origin + ':5984/'

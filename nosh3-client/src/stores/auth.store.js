@@ -14,6 +14,7 @@ export const useAuthStore = defineStore({
     pin: localStorage.getItem('pin'),
     instance: localStorage.getItem('instance'),
     trustee: localStorage.getItem('trustee'),
+    gnap_jwt: localStorage.getItem('gnap_jwt'),
     patient: null,
     sync_resource: [],
     returnUrl: null
@@ -30,6 +31,7 @@ export const useAuthStore = defineStore({
       this.pin = payload._nosh.pin
       this.instance = payload._nosh.instance
       this.trustee = payload._nosh.trustee_url
+      this.gnap_jwt = payload.jwt
       this.patient = payload._nosh.patient
       // store user details and jwt in local storage to keep user logged in between page refreshes
       localStorage.setItem('user', JSON.stringify(user))
@@ -41,6 +43,7 @@ export const useAuthStore = defineStore({
       localStorage.setItem('pin', payload._nosh.pin)
       localStorage.setItem('instance', payload._nosh.instance)
       localStorage.setItem('trustee', payload._nosh.trustee)
+      localStorage.setItem('gnap_jwt', payload.jwt)
     },
     logout() {
       var route = '/app/login'
@@ -56,6 +59,7 @@ export const useAuthStore = defineStore({
       this.pin = null
       this.instance = null
       this.trustee = null
+      this.gnap_jwt = null
       localStorage.removeItem('user')
       localStorage.removeItem('jwt')
       localStorage.removeItem('type')
@@ -65,6 +69,7 @@ export const useAuthStore = defineStore({
       localStorage.removeItem('pin')
       localStorage.removeItem('instance')
       localStorage.removeItem('trustee')
+      localStorage.removeItem('gnap_jwt')
       console.log(window.location.href)
       console.log(route)
       if (route !== '/app/login') {
