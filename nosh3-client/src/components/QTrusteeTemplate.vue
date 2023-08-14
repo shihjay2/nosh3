@@ -55,6 +55,7 @@
 
 <script>
 import { defineComponent, reactive, nextTick, onMounted } from 'vue'
+import axios from 'axios'
 import objectPath from 'object-path'
 import PouchDB from 'pouchdb-browser'
 import { useAuthStore } from '@/stores'
