@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="q-pa-md q-gutter-md">
     <q-card v-for="(row, index) in state.rows" :key="index">
       <q-card-section>
         <div class="text-h6 text-primary">{{ row.type }}</div>
@@ -45,7 +45,7 @@
         </q-input>
         <q-btn round icon="add" color="accent" @click="addPrivilege(index)"></q-btn>
       </div>
-      <div class="row justify-end q-pb-md q-pr-md">
+      <div v-if="state.email_show" class="row justify-end q-pb-md q-pr-md">
         <q-chip v-if="!row.privileges.includes('npi')" clickable @click="clickPrivilege(index, 'npi')">npi<q-icon name="add" class="q-pl-sm" /></q-chip>
         <q-chip v-if="!row.privileges.includes('offline')" clickable @click="clickPrivilege(index, 'offline')">offline<q-icon name="add" class="q-pl-sm" /></q-chip>
       </div>
