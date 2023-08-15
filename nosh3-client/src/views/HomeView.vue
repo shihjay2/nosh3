@@ -523,6 +523,7 @@
   </q-dialog>
   <q-dialog v-model="state.showTrustee">
     <QTrusteeTemplate 
+      @loading="loading"
       :user="state.user"
     />
   </q-dialog>

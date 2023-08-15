@@ -70,7 +70,7 @@ export default defineComponent({
   props: {
     user: Object,
   },
-  emits: [],
+  emits: ['loading'],
   setup (props, { emit }) {
     const $q = useQuasar()
     const auth = useAuthStore()
@@ -81,11 +81,13 @@ export default defineComponent({
       email_show_index: 0
     })
     onMounted(async() => {
+      emit('loading')
       state.user = props.user
       const body = {email: state.user.email, filter: ''}
       const a = await axios.post(window.location.origin + '/auth/gnapResources', body)
       if (objectPath.has(a, 'data.0.ro')) {
         state.rows = objectPath.get(a, 'data')
+        emit('loading')
       }
     })
 
