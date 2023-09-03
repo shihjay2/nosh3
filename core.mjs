@@ -62,7 +62,7 @@ async function couchdbDatabase(patient_id='', protocol='', hostname='', email=''
           "actions": ["read", "write", "delete"],
           "datatypes": ["json"],
           "identifier": patient_id,
-          "locations": [base_url + "fhir/api/v1/" + Case.pascal(pluralize.singular(resource.resource)) + "?patient.identifier=" + patient_id],
+          "locations": [base_url + "fhir/api/" + patient_id + "/" + Case.pascal(pluralize.singular(resource.resource))],
           "privileges": [email],
           "ro": email
         }
@@ -71,7 +71,7 @@ async function couchdbDatabase(patient_id='', protocol='', hostname='', email=''
           "actions": ["read"],
           "datatypes": ["json"],
           "identifier": patient_id,
-          "locations": [base_url + "fhir/api/v1/" + Case.pascal(pluralize.singular(resource.resource)) + "?patient.identifier=" + patient_id],
+          "locations": [base_url + "fhir/api/" + patient_id + "/" + Case.pascal(pluralize.singular(resource.resource))],
           "privileges": [email],
           "ro": email
         }
@@ -98,7 +98,7 @@ async function couchdbDatabase(patient_id='', protocol='', hostname='', email=''
             return res.json();
           }
         });
-      return doc
+      console.log(doc)
     } catch (e) {
       console.log(e)
     }
@@ -144,6 +144,85 @@ async function couchdbRestart() {
     console.log(e.response.data)
     return e
   }
+}
+
+async function couchdbUpdate(patient_id='', protocol='', hostname='') {
+  const resources = JSON.parse(fs.readFileSync('./assets/resources.json'))
+  var prefix = ''
+  var email = ''
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    prefix = patient_id + '_'
+    var base_url = urlFix(protocol + '://' + hostname + '/')
+    var gnap_resources = []
+    const db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
+    const result_users = await db_users.find({
+      selector: {
+        'reference': {"$eq": 'Patient/' + patient_id}
+      }
+    })
+    email = result_users.docs[0].email
+  }
+  for (var resource of resources.rows) {
+    var opts = JSON.parse(JSON.stringify(settings.couchdb_auth))
+    objectPath.set(opts, 'skip_setup', true)
+    const check = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource.resource, opts)
+    var info = await check.info()
+    if (objectPath.has(info, 'error')) {
+      const db_resource = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource.resource, settings.couchdb_auth)
+      await db_resource.info()
+      if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+        if (resource.gnap) {
+          const gnap_resource_all = {
+            "type": Case.title(resource.resource),
+            "actions": ["read", "write", "delete"],
+            "datatypes": ["json"],
+            "identifier": patient_id,
+            "locations": [base_url + "fhir/api/" + patient_id + "/" + Case.pascal(pluralize.singular(resource.resource))],
+            "privileges": [email],
+            "ro": email
+          }
+          const gnap_resource_read = {
+            "type": Case.title(resource.resource) + " - Read Only",
+            "actions": ["read"],
+            "datatypes": ["json"],
+            "identifier": patient_id,
+            "locations": [base_url + "fhir/api/" + patient_id + "/" + Case.pascal(pluralize.singular(resource.resource))],
+            "privileges": [email],
+            "ro": email
+          }
+          gnap_resources.push(gnap_resource_all)
+          gnap_resources.push(gnap_resource_read)
+        }
+      }
+    }
+  }
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    if (gnap_resources.length > 0) {
+      const body = {
+        "resources": gnap_resources,
+      }
+      const req = {
+        hostname: hostname,
+        protocol: protocol
+      }
+      const signedRequest = await signRequest(body, '/api/as/resource', 'POST', req)
+      try {
+        const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', signedRequest)
+          .then((res) => {
+            if (res.status > 400 && res.status < 600) { 
+              return {error: res};
+            } else {
+              return res.json();
+            }
+          });
+        console.log(doc)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+  }
+  console.log('# records updated: ' + gnap_resources.length)
+  return true;
 }
 
 async function createKeyPair(alg='RS256') {
@@ -377,7 +456,7 @@ async function registerResources(patient_id='', protocol='', hostname='', email=
           "actions": ["read", "write", "delete"],
           "datatypes": ["json"],
           "identifier": patient_id,
-          "locations": [base_url + "fhir/api/v1/" + Case.pascal(pluralize.singular(resource.resource)) + "?patient.identifier=" + patient_id],
+          "locations": [base_url + "fhir/api/" + patient_id + "/" + Case.pascal(pluralize.singular(resource.resource))],
           "privileges": [email],
           "ro": email
         }
@@ -386,7 +465,7 @@ async function registerResources(patient_id='', protocol='', hostname='', email=
           "actions": ["read"],
           "datatypes": ["json"],
           "identifier": patient_id,
-          "locations": [base_url + "fhir/api/v1/" + Case.pascal(pluralize.singular(resource.resource)) + "?patient.identifier=" + patient_id],
+          "locations": [base_url + "fhir/api/" + patient_id + "/" + Case.pascal(pluralize.singular(resource.resource))],
           "privileges": [email],
           "ro": email
         }
@@ -679,4 +758,4 @@ async function verifyPIN(pin, patient_id) {
   }
 }
 
-export { couchdbConfig, couchdbDatabase, couchdbInstall, createKeyPair, equals, eventAdd, getKeys, getName, getNPI, getPIN, registerResources, signRequest, sleep, sync, urlFix, userAdd, verify, verifyJWT, verifyPIN }
+export { couchdbConfig, couchdbDatabase, couchdbInstall, couchdbUpdate, createKeyPair, equals, eventAdd, getKeys, getName, getNPI, getPIN, registerResources, signRequest, sleep, sync, urlFix, userAdd, verify, verifyJWT, verifyPIN }

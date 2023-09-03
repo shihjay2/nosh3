@@ -122,8 +122,15 @@
     {
       "resource": "practitioners",
       "icon": "masks",
-      "label": "Patients",
+      "label": "Practitioners",
       "patientField": "none",
+      "gnap": true
+    },
+    {
+      "resource": "provenances",
+      "icon": "brush",
+      "label": "Provenances",
+      "patientField": "patient",
       "gnap": true
     },
     {

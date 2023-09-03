@@ -16,7 +16,7 @@
         </q-chip>
       </q-card-section>
       <q-separator inset />
-      <q-card-section avatar>
+      <q-card-section avatar style="white-space: normal">
         <q-avatar color="red" text-color="white" icon="link" />
         <b class="q-pl-sm">Locations</b>
         <q-list v-for="(location, index2) in row.locations" :key="index2">

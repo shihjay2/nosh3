@@ -19,7 +19,7 @@ import auth from './auth.mjs'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const client = __dirname + '/nosh3-client/dist/'
-import { couchdbConfig, couchdbDatabase, couchdbInstall, createKeyPair, getKeys, signRequest, urlFix, userAdd, verifyJWT } from './core.mjs'
+import { couchdbDatabase, couchdbInstall, couchdbUpdate, urlFix, userAdd } from './core.mjs'
 import settings from './settings.mjs'
 const app = express()
 
@@ -114,6 +114,7 @@ app.get('/start', async(req, res) => {
       console.log('something is wrong with your CouchDB install.')
     }
   } else {
+    await couchdbUpdate('', req.protocol, req.hostname)
     res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/login')
   }
 })

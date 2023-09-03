@@ -11,7 +11,7 @@ import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
 import sortArray from "sort-array"
 import { v4 as uuidv4 } from 'uuid'
-import { couchdbDatabase, couchdbInstall, createKeyPair, equals, getKeys, getName, getNPI, getPIN, registerResources, signRequest, sync, urlFix, verify, verifyPIN } from './core.mjs'
+import { couchdbDatabase, couchdbInstall, couchdbUpdate, createKeyPair, equals, getKeys, getName, getNPI, getPIN, registerResources, signRequest, sync, urlFix, verify, verifyPIN } from './core.mjs'
 // const mailgun = new Mailgun(formData)
 // const mg = mailgun.client({username: 'api', key: process.env.MAILGUN_API_KEY})
 const router = express.Router()
@@ -30,6 +30,7 @@ router.post('/addPatient', addPatient)
 router.post('/addResources', addResources)
 
 router.post('/gnapAuth', gnapAuth)
+router.post('gnapProxy', gnapProxy)
 router.post('/gnapResource', gnapResource)
 router.post('/gnapResources', gnapResources)
 router.get('/gnapVerify/:patient', gnapVerify)
@@ -182,11 +183,12 @@ async function gnapAuth(req, res) {
   if (!pin) {
     res.status(401).send('Unauthorized - No PIN set')
   } else {
+    await couchdbUpdate(patient_id, req.protocol, req.hostname)
     const body = {
       "access_token": {
         "access": [
           {
-            "type": "app",
+            "type": "App",
             "actions": ["read", "write"],
             "locations": [req.protocol + "://" + req.hostname + "/app/chart/" + req.body.patient],
             "purpose": "Clinical - Routine"
@@ -205,6 +207,46 @@ async function gnapAuth(req, res) {
     const signedRequest = await signRequest(body, '/api/as/tx', 'POST', req)
     try {
       const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/tx', signedRequest)
+        .then((res) => res.json());
+      var db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'gnap', settings.couchdb_auth)
+      objectPath.set(doc, '_id', doc.interact.redirect.substring(doc.interact.redirect.lastIndexOf('/') + 1))
+      objectPath.set(doc, 'nonce', objectPath.get(body, 'interact.finish.nonce'))
+      objectPath.set(doc, 'route', req.body.route)
+      objectPath.set(doc, 'patient', req.body.patient)
+      await db.put(doc)
+      res.status(200).json(doc)
+    } catch (e) {
+      res.status(401).json(e)
+    }
+  }
+}
+
+async function gnapProxy(req, res) {
+  var pin = process.env.COUCHDB_ENCRYPT_PIN
+  var prefix = ''
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    prefix = req.body.patient + '_'
+    pin = await getPIN(req.body.patient)
+  }
+  if (!pin) {
+    res.status(401).send('Unauthorized - No PIN set')
+  } else {
+    const body = {
+      "access_token": {
+        "access": [
+          {
+            "type": req.body.type,
+            "actions": ["read", "write"],
+            "locations": [req.body.location],
+            "purpose": "Clinical - Routine"
+          }
+        ]
+      },
+      "token": req.body.token
+    }
+    const signedRequest = await signRequest(body, '/api/as/proxy', 'POST', req)
+    try {
+      const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/proxy', signedRequest)
         .then((res) => res.json());
       var db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'gnap', settings.couchdb_auth)
       objectPath.set(doc, '_id', doc.interact.redirect.substring(doc.interact.redirect.lastIndexOf('/') + 1))
