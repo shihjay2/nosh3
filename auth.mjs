@@ -183,7 +183,7 @@ async function gnapAuth(req, res) {
   if (!pin) {
     res.status(401).send('Unauthorized - No PIN set')
   } else {
-    await couchdbUpdate(patient_id, req.protocol, req.hostname)
+    await couchdbUpdate(req.body.patient, req.protocol, req.hostname)
     const body = {
       "access_token": {
         "access": [
