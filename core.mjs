@@ -150,10 +150,10 @@ async function couchdbUpdate(patient_id='', protocol='', hostname='') {
   const resources = JSON.parse(fs.readFileSync('./assets/resources.json'))
   var prefix = ''
   var email = ''
+  var gnap_resources = []
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = patient_id + '_'
     var base_url = urlFix(protocol + '://' + hostname + '/')
-    var gnap_resources = []
     const db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
     const result_users = await db_users.find({
       selector: {
