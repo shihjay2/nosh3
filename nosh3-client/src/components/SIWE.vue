@@ -16,31 +16,52 @@ import pluralize from 'pluralize'
 import {v4 as uuidv4} from 'uuid'
 
 import { useAuthStore } from '@/stores'
-import { BrowserProvider } from 'ethers'
-import { SiweMessage } from 'siwe'
+import { SSX, SiweMessage } from '@spruceid/ssx';
 
 export default defineComponent({
   name: 'SIWE',
   props: {
+    resource: String,
     fhir_url: String
   },
   emits: ['loading', 'save-oidc'],
   setup(props, { emit }) {
-    const domain = window.location.host
-    const origin = window.location.origin
-    const provider = new BrowserProvider(window.ethereum)
-
-
     const { fetchJSON } = common()
     const state = reactive({
-
-
-
       
     })
     const auth = useAuthStore()
     onMounted(async() => {
-      
+      const ssx = new SSX();
+      await ssx.signIn();
+      const address = ssx.userAuthorization.address();
+      const chainId = ssx.userAuthorization.chainId();
+      const domain = window.location.host;
+      const origin = window.location.origin;
+      const statement = 'Sign this ' + Case.pascal(pluralize.singular(props.resource));
+      const resource_url = origin + '/review/' + objectPath.get(doc, 'interact_nonce.value')
+      const resource_arr = [];
+      resource_arr.push(resource_url);
+      for (var a of pending) {
+        for (var b of objectPath.get(a, 'locations')) {
+          resource_arr.push(b);
+        }
+      }
+      const siwemessage = new SiweMessage({
+        domain,
+        address,
+        statement,
+        uri: origin,
+        version: '1',
+        chainId,
+        resources: resource_arr
+      });
+      const siwemessage_prep = siwemessage.prepareMessage();
+      const sig = await ssx.userAuthorization.signMessage(siwemessage_prep);
+      const message = siwemessage_prep.replace(/(?:\r\n|\r|\n)/g, '\n');
+      objectPath.set(doc, 'siwe', {sig, message});
+      objectPath.set(doc, 'pending_resources', pending);
+      objectPath.set(doc, 'request_date', moment().format());
     })
 
     const connectWallet = () => {

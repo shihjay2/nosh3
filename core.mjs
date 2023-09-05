@@ -157,7 +157,8 @@ async function couchdbUpdate(patient_id='', protocol='', hostname='') {
     const db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
     const result_users = await db_users.find({
       selector: {
-        'reference': {"$eq": 'Patient/' + patient_id}
+        'role': {"$eq": 'patient'}
+        // 'reference': {"$eq": 'Patient/' + patient_id}
       }
     })
     email = result_users.docs[0].email
