@@ -199,6 +199,7 @@ async function couchdbUpdate(patient_id='', protocol='', hostname='') {
   }
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     if (gnap_resources.length > 0) {
+      console.log('registering resources')
       const body = {
         "resources": gnap_resources,
       }
@@ -207,9 +208,11 @@ async function couchdbUpdate(patient_id='', protocol='', hostname='') {
         protocol: protocol
       }
       const signedRequest = await signRequest(body, '/api/as/resource', 'POST', req)
+      console.log(signedRequest)
       try {
         const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', signedRequest)
           .then((res) => {
+            console.log(res)
             if (res.status > 400 && res.status < 600) { 
               return {error: res};
             } else {
