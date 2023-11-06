@@ -247,13 +247,7 @@ async function gnapProxy(req, res) {
     const signedRequest = await signRequest(body, '/api/as/proxy', 'POST', req)
     try {
       const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/proxy', signedRequest)
-        .then((res) => res.json());
-      var db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'gnap', settings.couchdb_auth)
-      objectPath.set(doc, '_id', doc.interact.redirect.substring(doc.interact.redirect.lastIndexOf('/') + 1))
-      objectPath.set(doc, 'nonce', objectPath.get(body, 'interact.finish.nonce'))
-      objectPath.set(doc, 'route', req.body.route)
-      objectPath.set(doc, 'patient', req.body.patient)
-      await db.put(doc)
+        .then((res) => res.json())
       res.status(200).json(doc)
     } catch (e) {
       res.status(401).json(e)
@@ -645,6 +639,8 @@ async function addPatient(req, res, next) {
     b = true
   }
   if (b) {
+    const users = new PouchDB(urlFix(settings.couchdb_uri) + '_users', settings.couchdb_auth)
+    await users.info()
     const id = 'nosh_' + uuidv4()
     const user = {
       display: req.body.user.display,
