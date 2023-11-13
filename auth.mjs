@@ -634,13 +634,13 @@ async function addPatient(req, res, next) {
           c++
         }
       }
+      const users = new PouchDB(urlFix(settings.couchdb_uri) + '_users', settings.couchdb_auth)
+      await users.info()
     }
   } else {
     b = true
   }
   if (b) {
-    const users = new PouchDB(urlFix(settings.couchdb_uri) + '_users', settings.couchdb_auth)
-    await users.info()
     const id = 'nosh_' + uuidv4()
     const user = {
       display: req.body.user.display,
