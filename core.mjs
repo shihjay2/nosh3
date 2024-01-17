@@ -299,7 +299,7 @@ async function getAllKeys() {
       keys.push(trustee_key.data.key)
     }
     // Local key
-    const db = new PouchDB((settings.couchdb_uri + '/keys'), settings.couchdb_auth)
+    const db = new PouchDB(urlFix(settings.couchdb_uri) + 'keys', settings.couchdb_auth)
     const result = await db.find({
       selector: {_id: {"$gte": null}}
     })
