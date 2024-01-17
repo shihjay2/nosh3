@@ -620,25 +620,23 @@ async function addPatient(req, res, next) {
   var opts = JSON.parse(JSON.stringify(settings.couchdb_auth))
   objectPath.set(opts, 'skip_setup', true)
   const check = new PouchDB(urlFix(settings.couchdb_uri) + '_users', opts)
-  var info = await check.info()
   var b = false
-  if (objectPath.has(info, 'error')) {
-    if (info.error == 'not_found') {
-      await couchdbInstall()
-      var c = 0
-      while (!b && c < 40) {
-        b = await isReachable(settings.couchdb_uri)
-        if (b || c === 39) {
-          break
-        } else {
-          c++
-        }
-      }
-      const users = new PouchDB(urlFix(settings.couchdb_uri) + '_users', settings.couchdb_auth)
-      await users.info()
-    }
-  } else {
+  try {
+    await check.info()
     b = true
+  } catch (e) {
+    await couchdbInstall()
+    var c = 0
+    while (!b && c < 40) {
+      b = await isReachable(settings.couchdb_uri)
+      if (b || c === 39) {
+        break
+      } else {
+        c++
+      }
+    }
+    const users = new PouchDB(urlFix(settings.couchdb_uri) + '_users', settings.couchdb_auth)
+    await users.info()
   }
   if (b) {
     const id = 'nosh_' + uuidv4()
@@ -725,17 +723,18 @@ async function addResources(req, res, next) {
 async function pinCheck (req, res, next) {
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     const db = new PouchDB('pins', {skip_setup: true})
-    var info = await db.info()
-    if (objectPath.has(info, 'error')) {
+    try {
+      await db.info()
+      const result = await db.find({
+        selector: {'_id': {$eq: req.body.patient}}
+      })
+      if (result.docs.length > 0) {
+        res.status(200).json({ response: 'OK'})
+      } else {
+        res.status(200).json({ response: 'Error', message: 'PIN required' })
+      }
+    } catch (e) {
       res.status(200).json({ response: 'Error', message: 'No PIN database exists'})
-    }
-    const result = await db.find({
-      selector: {'_id': {$eq: req.body.patient}}
-    })
-    if (result.docs.length > 0) {
-      res.status(200).json({ response: 'OK'})
-    } else {
-      res.status(200).json({ response: 'Error', message: 'PIN required' })
     }
   } else {
     res.status(200).json({ response: 'OK', message: 'PIN check not required'})
@@ -744,8 +743,8 @@ async function pinCheck (req, res, next) {
 
 async function pinClear (req, res, next) {
   const db = new PouchDB('pins', {skip_setup: true})
-  var info = await db.info()
-  if (!objectPath.has(info, 'error')) {
+  try {
+    await db.info()
     if (req.body.patient == 'all') {
       await db.destroy()
       res.status(200).json({ response: 'OK', message: 'Cleared PIN database'})
@@ -758,7 +757,7 @@ async function pinClear (req, res, next) {
         res.status(200).json({ response: 'OK', message: 'No PIN entry found'})
       }
     }
-  } else {
+  } catch (e) {
     res.status(200).json({ response: 'OK', message: 'No PIN database exists'})
   }
 }

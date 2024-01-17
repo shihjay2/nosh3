@@ -76,46 +76,18 @@ app.post('/oidc', async(req, res) => {
   res.status(200).json(result.data)
 })
 
-app.get('/start', async(req, res) => {
+app.get('/presentation/:pid/:id', async(req, res) => {
+  var prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
-    res.status(200).send('Invalid URL for this instance')
+    prefix = req.params.pid + '_'
   }
-  var opts = JSON.parse(JSON.stringify(settings.couchdb_auth))
-  objectPath.set(opts, 'skip_setup', true)
-  const check = new PouchDB(urlFix(settings.couchdb_uri) + '_users', opts)
-  var info = await check.info()
-  if (objectPath.has(info, 'error')) {
-    if (info.error == 'not_found') {
-      await couchdbInstall()
-      var b = false
-      var c = 0
-      while (!b && c < 40) {
-        b = await isReachable(settings.couchdb_uri)
-        if (b || c === 39) {
-          break
-        } else {
-          c++
-        }
-      }
-      if (b) {
-        const users = new PouchDB(urlFix(settings.couchdb_uri) + '_users', settings.couchdb_auth)
-        await users.info()
-        await couchdbDatabase()
-        const db_users = new PouchDB(urlFix(settings.couchdb_uri) + 'users', settings.couchdb_auth)
-        var result = await db_users.find({selector: {_id: {$regex: "^nosh_*"}}})
-        if (result.docs.length === 0) {
-          await userAdd()
-        }
-        res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/login')
-      } else {
-        res.status(200).send('CouchDB is not restarting for some reason; try again')
-      }
-    } else {
-      console.log('something is wrong with your CouchDB install.')
-    }
-  } else {
-    await couchdbUpdate('', req.protocol, req.hostname)
-    res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/login')
+  await sync('presentations', req.params.pid)
+  const db = new PouchDB(prefix + 'presentations')
+  try {
+    const doc = await db.get(req.params.id, {revs_info: true})
+    res.status(200).json(doc)
+  } catch(err) {
+    res.status(200).json(err)
   }
 })
 
@@ -129,6 +101,45 @@ app.get('/ready', async(req, res) => {
   res.status(200).send('OK')
 })
 
+app.get('/start', async(req, res) => {
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    res.status(200).send('Invalid URL for this instance')
+  }
+  var opts = JSON.parse(JSON.stringify(settings.couchdb_auth))
+  objectPath.set(opts, 'skip_setup', true)
+  const check = new PouchDB(urlFix(settings.couchdb_uri) + '_users', opts)
+  try {
+    await check.info()
+    await couchdbUpdate('', req.protocol, req.hostname)
+    res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/login')
+  } catch (e) {
+    await couchdbInstall()
+    var b = false
+    var c = 0
+    while (!b && c < 40) {
+      b = await isReachable(settings.couchdb_uri)
+      if (b || c === 39) {
+        break
+      } else {
+        c++
+      }
+    }
+    if (b) {
+      const users = new PouchDB(urlFix(settings.couchdb_uri) + '_users', settings.couchdb_auth)
+      await users.info()
+      await couchdbDatabase()
+      const db_users = new PouchDB(urlFix(settings.couchdb_uri) + 'users', settings.couchdb_auth)
+      var result = await db_users.find({selector: {_id: {$regex: "^nosh_*"}}})
+      if (result.docs.length === 0) {
+        await userAdd()
+      }
+      res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/login')
+    } else {
+      res.status(200).send('CouchDB is not restarting for some reason; try again')
+    }
+  }
+})
+
 app.post('/syncCheck', async(req, res) => {
   const db = new PouchDB('sync')
   await db.info()
@@ -139,22 +150,6 @@ app.post('/syncCheck', async(req, res) => {
     res.status(200).json({ response: 'Error', message: 'No Sync Needed' })
   }
 })
-
-// app.get('/useraddtest', async(req, res) => {
-//   const db_users = new PouchDB(urlFix(settings.couchdb_uri) + 'users', settings.couchdb_auth)
-//   const result = await db_users.find({selector: {_id: {$regex: "^nosh_*"}}})
-//   if (result.docs.length === 0) {
-//     const user = await userAdd()
-//     const result1 = await db_users.find({selector: {_id: {$regex: "^nosh_*"}}})
-//     res.status(200).json({
-//       'db_users_query_result_first': result,
-//       'user': user,
-//       'db_users_query_result_first': result1
-//     })
-//   } else {
-//     res.status(200).json({'db_users_query_result_first': result})
-//   }
-// })
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
