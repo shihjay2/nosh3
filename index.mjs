@@ -109,34 +109,40 @@ app.get('/start', async(req, res) => {
   objectPath.set(opts, 'skip_setup', true)
   const check = new PouchDB(urlFix(settings.couchdb_uri) + '_users', opts)
   try {
-    await check.info()
-    await couchdbUpdate('', req.protocol, req.hostname)
-    res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/login')
-  } catch (e) {
-    await couchdbInstall()
-    var b = false
-    var c = 0
-    while (!b && c < 40) {
-      b = await isReachable(settings.couchdb_uri)
-      if (b || c === 39) {
-        break
-      } else {
-        c++
+    const info = await check.info()
+    if (objectPath.has(info, 'error')) {
+      if (info.error == 'not_found') {
+        await couchdbInstall()
+        var b = false
+        var c = 0
+        while (!b && c < 40) {
+          b = await isReachable(settings.couchdb_uri)
+          if (b || c === 39) {
+            break
+          } else {
+            c++
+          }
+        }
+        if (b) {
+          const users = new PouchDB(urlFix(settings.couchdb_uri) + '_users', settings.couchdb_auth)
+          await users.info()
+          await couchdbDatabase()
+          const db_users = new PouchDB(urlFix(settings.couchdb_uri) + 'users', settings.couchdb_auth)
+          var result = await db_users.find({selector: {_id: {$regex: "^nosh_*"}}})
+          if (result.docs.length === 0) {
+            await userAdd()
+          }
+          res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/login')
+        } else {
+          res.status(200).send('CouchDB is not restarting for some reason; try again')
+        }
       }
-    }
-    if (b) {
-      const users = new PouchDB(urlFix(settings.couchdb_uri) + '_users', settings.couchdb_auth)
-      await users.info()
-      await couchdbDatabase()
-      const db_users = new PouchDB(urlFix(settings.couchdb_uri) + 'users', settings.couchdb_auth)
-      var result = await db_users.find({selector: {_id: {$regex: "^nosh_*"}}})
-      if (result.docs.length === 0) {
-        await userAdd()
-      }
-      res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/login')
     } else {
-      res.status(200).send('CouchDB is not restarting for some reason; try again')
+      await couchdbUpdate('', req.protocol, req.hostname)
+      res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/login')
     }
+  } catch (e) {
+    res.status(200).send('error with info call')
   }
 })
 

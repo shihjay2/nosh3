@@ -622,21 +622,25 @@ async function addPatient(req, res, next) {
   const check = new PouchDB(urlFix(settings.couchdb_uri) + '_users', opts)
   var b = false
   try {
-    await check.info()
-    b = true
-  } catch (e) {
-    await couchdbInstall()
-    var c = 0
-    while (!b && c < 40) {
-      b = await isReachable(settings.couchdb_uri)
-      if (b || c === 39) {
-        break
-      } else {
-        c++
+    const info = await check.info()
+    if (objectPath.has(info, 'error')) {
+      await couchdbInstall()
+      var c = 0
+      while (!b && c < 40) {
+        b = await isReachable(settings.couchdb_uri)
+        if (b || c === 39) {
+          break
+        } else {
+          c++
+        }
       }
+      const users = new PouchDB(urlFix(settings.couchdb_uri) + '_users', settings.couchdb_auth)
+      await users.info()
+    } else {
+      b = true
     }
-    const users = new PouchDB(urlFix(settings.couchdb_uri) + '_users', settings.couchdb_auth)
-    await users.info()
+  } catch (e) {
+    console.log(e)
   }
   if (b) {
     const id = 'nosh_' + uuidv4()
@@ -744,17 +748,21 @@ async function pinCheck (req, res, next) {
 async function pinClear (req, res, next) {
   const db = new PouchDB('pins', {skip_setup: true})
   try {
-    await db.info()
-    if (req.body.patient == 'all') {
-      await db.destroy()
-      res.status(200).json({ response: 'OK', message: 'Cleared PIN database'})
+    const info = await db.info()
+    if (objectPath.has(info, 'error')) {
+      res.status(200).json({ response: 'OK', message: 'No PIN database exists'})
     } else {
-      try {
-        const result = await db.get(req.body.patient)
-        await db.remove(result)
-        res.status(200).json({ response: 'OK', message: 'Cleared PIN entry'})
-      } catch (e) {
-        res.status(200).json({ response: 'OK', message: 'No PIN entry found'})
+      if (req.body.patient == 'all') {
+        await db.destroy()
+        res.status(200).json({ response: 'OK', message: 'Cleared PIN database'})
+      } else {
+        try {
+          const result = await db.get(req.body.patient)
+          await db.remove(result)
+          res.status(200).json({ response: 'OK', message: 'Cleared PIN entry'})
+        } catch (e) {
+          res.status(200).json({ response: 'OK', message: 'No PIN entry found'})
+        }
       }
     }
   } catch (e) {
