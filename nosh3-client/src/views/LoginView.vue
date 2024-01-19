@@ -359,6 +359,7 @@ export default defineComponent({
             await magic.auth.loginWithMagicLink({email: email, showUI: false})
           } catch (e) {
             state.sending = false
+            console.log(e)
             $q.notify({
               message: 'Error connecting to Magic!  Please try again later!',
               color: 'red',
