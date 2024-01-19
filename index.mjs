@@ -107,13 +107,13 @@ app.get('/start', async(req, res) => {
   }
   var opts = JSON.parse(JSON.stringify(settings.couchdb_auth))
   objectPath.set(opts, 'skip_setup', true)
-  const check = new PouchDB(urlFix(settings.couchdb_uri) + '_users', opts)
+  const check = new PouchDB(urlFix(settings.couchdb_uri) + 'users', opts)
   try {
     const info = await check.info()
     if (objectPath.has(info, 'error')) {
+      var b = false
       if (info.error == 'not_found') {
         await couchdbInstall()
-        var b = false
         var c = 0
         while (!b && c < 40) {
           b = await isReachable(settings.couchdb_uri)
@@ -123,19 +123,19 @@ app.get('/start', async(req, res) => {
             c++
           }
         }
-        if (b) {
-          const users = new PouchDB(urlFix(settings.couchdb_uri) + '_users', settings.couchdb_auth)
-          await users.info()
-          await couchdbDatabase()
-          const db_users = new PouchDB(urlFix(settings.couchdb_uri) + 'users', settings.couchdb_auth)
-          var result = await db_users.find({selector: {_id: {$regex: "^nosh_*"}}})
-          if (result.docs.length === 0) {
-            await userAdd()
-          }
-          res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/login')
-        } else {
-          res.status(200).send('CouchDB is not restarting for some reason; try again')
+      } else {
+        b = true
+      }
+      if (b) {
+        await couchdbDatabase()
+        const db_users = new PouchDB(urlFix(settings.couchdb_uri) + 'users', settings.couchdb_auth)
+        var result = await db_users.find({selector: {_id: {$regex: "^nosh_*"}}})
+        if (result.docs.length === 0) {
+          await userAdd()
         }
+        res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/login')
+      } else {
+        res.status(200).send('CouchDB is not restarting for some reason; try again')
       }
     } else {
       await couchdbUpdate('', req.protocol, req.hostname)

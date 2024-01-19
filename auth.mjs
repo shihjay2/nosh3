@@ -619,7 +619,7 @@ async function jwks(req, res) {
 async function addPatient(req, res, next) {
   var opts = JSON.parse(JSON.stringify(settings.couchdb_auth))
   objectPath.set(opts, 'skip_setup', true)
-  const check = new PouchDB(urlFix(settings.couchdb_uri) + '_users', opts)
+  const check = new PouchDB(urlFix(settings.couchdb_uri) + 'users', opts)
   var b = false
   try {
     const info = await check.info()
@@ -634,8 +634,6 @@ async function addPatient(req, res, next) {
           c++
         }
       }
-      const users = new PouchDB(urlFix(settings.couchdb_uri) + '_users', settings.couchdb_auth)
-      await users.info()
     } else {
       b = true
     }
