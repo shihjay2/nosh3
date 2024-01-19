@@ -142,7 +142,11 @@ app.get('/start', async(req, res) => {
       res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/login')
     }
   } catch (e) {
-    res.status(200).send('error with info call')
+    const err = {
+      message: 'error with info call',
+      error: e
+    }
+    res.status(200).json(err)
   }
 })
 
