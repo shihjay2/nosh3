@@ -116,12 +116,12 @@ async function couchdbInstall() {
   const pem = await jose.exportSPKI(key)
   var result = []
   const commands = [
-    {section: 'httpd', key: 'enable_cors', value: 'true'},
-    {section: 'cors', key: 'credentials', value: 'true'},
-    {section: 'cors', key: 'headers', value: 'accept, authorization, content-type, origin, referer'},
-    {section: 'cors', key: 'methods', value: 'GET, PUT, POST, HEAD, DELETE'},
-    {section: 'cors', key: 'origins', value: '*'},
-    {section: 'chttpd', key: 'authentication_handlers', value: '{chttpd_auth, cookie_authentication_handler}, {chttpd_auth, jwt_authentication_handler}, {chttpd_auth, default_authentication_handler}'},
+    // {section: 'httpd', key: 'enable_cors', value: 'true'},
+    // {section: 'cors', key: 'credentials', value: 'true'},
+    // {section: 'cors', key: 'headers', value: 'accept, authorization, content-type, origin, referer'},
+    // {section: 'cors', key: 'methods', value: 'GET, PUT, POST, HEAD, DELETE'},
+    // {section: 'cors', key: 'origins', value: '*'},
+    // {section: 'chttpd', key: 'authentication_handlers', value: '{chttpd_auth, cookie_authentication_handler}, {chttpd_auth, jwt_authentication_handler}, {chttpd_auth, default_authentication_handler}'},
     {section: 'jwt_keys', key: 'rsa:_default', value: pem}
   ]
   for (var command of commands) {
