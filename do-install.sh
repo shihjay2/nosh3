@@ -41,6 +41,7 @@ sed -i '/^NOSH_ROLE=/s/=.*/='"provider"'/' ./.env
 sed -i '/^NOSH_EMAIL=/s/=.*/='"$EMAIL"'/' ./.env
 sed -i '/^NOSH_DISPLAY=/s/=.*/='"$NAME"'/' ./.env
 mkdir dbconfig
+cd dbconfig
 curl -O https://raw.githubusercontent.com/shihjay2/nosh3/main/docker.ini
 cd ..
 # start docker
