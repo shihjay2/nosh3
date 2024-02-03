@@ -41,6 +41,30 @@
           <q-icon color="primary" style="font-size: 1.5em" name="qr_code_2" />
         </q-item-section>
       </q-item>
+      <q-item clickable @click="openQRReader()">
+        <q-item-section>
+          <q-item-label>QR Code Reader for Prescriptions and Orders</q-item-label>
+        </q-item-section>
+        <q-item-section avatar>
+          <q-icon color="primary" style="font-size: 1.5em" name="qr_code_scanner" />
+        </q-item-section>
+      </q-item>
+      <q-item v-if="state.type == 'pnosh' && state.user.role == 'patient'" clickable @click="open('list', 'bundles', 'MedicationRequest', '')">
+        <q-item-section>
+          <q-item-label>Prescriptions to Share</q-item-label>
+        </q-item-section>
+        <q-item-section avatar>
+          <q-icon color="primary" style="font-size: 1.5em" name="prescriptions" />
+        </q-item-section>
+      </q-item>
+      <q-item v-if="state.type == 'pnosh' && state.user.role == 'patient'" clickable @click="open('list', 'bundles', 'ServiceRequest', '')">
+        <q-item-section>
+          <q-item-label>Orders to Share</q-item-label>
+        </q-item-section>
+        <q-item-section avatar>
+          <q-icon color="primary" style="font-size: 1.5em" name="medical_services" />
+        </q-item-section>
+      </q-item>
       <q-item v-if="state.type == 'pnosh' && state.user.role == 'patient'" clickable @click="openTrustee()">
         <q-item-section>
           <q-item-label>Trustee<q-icon name="fas fa-registered" style="font-size: 0.6em; vertical-align: super;"/> Policies</q-item-label>
@@ -123,6 +147,9 @@ export default defineComponent({
     const openQR = () => {
       emit('open-qr', window.location.href)
     }
+    const openQRReader = () => {
+      emit('open-qr-reader')
+    }
     const openSchedule = () => {
       emit('open-schedule')
     }
@@ -134,6 +161,7 @@ export default defineComponent({
       open,
       openActivity,
       openQR,
+      openQRReader,
       openSchedule,
       openTrustee,
       state

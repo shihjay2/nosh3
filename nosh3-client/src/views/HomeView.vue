@@ -74,6 +74,7 @@
             @open-list="openList"
             @open-page="openPage"
             @open-qr="openQR"
+            @open-qr-reader="openQRReader"
             @open-schedule="openSchedule"
             @open-trustee="openTrustee"
             @stop-inbox-timer="stopInboxTimer"
@@ -183,6 +184,7 @@
         @loading="loading"
         @lock-thread="lockThread"
         @open-bundle="openBundle"
+        @open-bundle-qr="openBundleQR"
         @open-chat="openChat"
         @open-form="openForm"
         @open-file="openFile"
@@ -527,6 +529,10 @@
       :user="state.user"
     />
   </q-dialog>
+  <q-dialog v-model="state.showQRReader">
+    <QRReader
+    />
+  </q-dialog>
 </template>
 
 <script>
@@ -556,6 +562,7 @@ import QInputWithValidation from '@/components/QInputWithValidation.vue'
 import QListTemplate from '@/components/QListTemplate.vue'
 import QMenuTemplate from '@/components/QMenuTemplate.vue'
 import QPageTemplate from '@/components/QPageTemplate.vue'
+import QRReader from '@/components/QRReader.vue'
 import QScheduleTemplate from '@/components/QScheduleTemplate.vue'
 import QTrusteeTemplate from '@/components/QTrusteeTemplate.vue'
 import QToolbarTemplate from '@/components/QToolbarTemplate.vue'
@@ -586,6 +593,7 @@ export default defineComponent({
     QListTemplate,
     QMenuTemplate,
     QPageTemplate,
+    QRReader,
     QScheduleTemplate,
     QToolbarTemplate,
     QTrusteeTemplate,
@@ -594,7 +602,7 @@ export default defineComponent({
 },
   setup () {
     const $q = useQuasar()
-    const { addSchemaOptions, fetchJSON, fhirModel, fhirReplace, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, sync, syncAll, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
+    const { addSchemaOptions, bundleBuild, fetchJSON, fhirModel, fhirReplace, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, sync, syncAll, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
     const state = reactive({
       menuVisible: false,
       showDrawer: false,
@@ -745,6 +753,7 @@ export default defineComponent({
       // qr
       qr: false,
       qr_value: '',
+      showQRReader: false,
       // sync
       sync_on: false,
       showPIN: false,
@@ -1296,7 +1305,8 @@ export default defineComponent({
           if (resource === 'encounters') {
             const bundle_db = new PouchDB(prefix + 'bundles')
             var bundle_result = await bundle_db.find({
-              selector: {'entry.0.resource.encounter.reference': {$eq: 'Encounter/' + objectPath.get(result, 'docs.' + a + '.doc.id')}, _id: {"$gte": null}},
+              // selector: {'entry.0.resource.encounter.reference': {$eq: 'Encounter/' + objectPath.get(result, 'docs.' + a + '.doc.id')}, _id: {"$gte": null}},
+              selector: {'entry': {"$elemMatch": {"resource.encounter.reference": 'Encounter/' + objectPath.get(result, 'docs.' + a + '.doc.id')}}, _id: {"$gte": null}}
             })
             if (bundle_result.docs.length > 0) {
               bundle_result.docs.sort((a1, b1) => moment(b1.timestamp) - moment(a1.timestamp))
@@ -1405,6 +1415,21 @@ export default defineComponent({
       state.toolbar = true
       state.showBundle = true
     }
+    const openBundleQR = async(id) => {
+      const location = window.location.origin + '/fhir/api/' + state.patient + '/Bundle/' + id
+      const body = {type: 'Bundles', location: location, patient: state.patient, token: auth.gnap_jwt}
+      const doc_id = 'nosh_' + uuidv4()
+      try {
+        const token = await axios.post(window.location.origin + '/auth/gnapProxy', body)
+        const doc = {token, location, _id: doc_id}
+        await sync('presentations', false, state.patient, true, doc)
+        const value = window.location.origin + '/presentation/' + state.patient + '/' + doc_id
+        state.qr_value = value
+        state.qr = true
+      } catch (e) {
+        console.log(e)
+      }
+    }
     const openCareOpportunities = () => {
       state.showCareOpportunities = true
     }
@@ -1420,7 +1445,6 @@ export default defineComponent({
       state.id = id
       state.category = category
       await loadResource(state.resource, state.category)
-      console.log(status)
       updateToolbar({type: 'chat', resource: state.resource, status: status})
       state.toolbar = true
       state.showChat = true
@@ -1670,6 +1694,9 @@ export default defineComponent({
       state.qr_value = value
       state.qr = true
     }
+    const openQRReader = () => {
+      state.showQRReader = true
+    }
     const openSchedule = async() => {
       closeAll()
       state.serviceTypes = await fetchJSON('serviceTypes', state.online)
@@ -1779,7 +1806,6 @@ export default defineComponent({
       var c = state.oidc[a].docs.indexOf(d => d.resource == resource)
       objectPath.del(state, 'oidc.' + a + '.docs.' + c + '.rows')
       localStorage.setItem('oidc_data', JSON.stringify(state.oidc))
-      console.log(state.oidc)
     }
     const setActiveComposition = (doc) => {
       state.compositionDoc = doc
@@ -1858,7 +1884,6 @@ export default defineComponent({
               arr1.push(arr[b])
             }
           }
-          console.log(keys)
           const fuse = new Fuse(arr1, {keys: keys, includeScore: true})
           const result = fuse.search(searchTerm)
           const shortresult = result.slice(0,20)
@@ -2005,201 +2030,6 @@ export default defineComponent({
       })
       openList('encounters', 'new')
     }
-    const signOrder = async(service_request_doc) => {
-      var entries = []
-      var references = []
-      var composition = await import('@/assets/fhir/compositions.json')
-      var composition_doc = composition.fhir
-      var composition_id = 'nosh_' + uuidv4()
-      objectPath.set(composition_doc, 'id', composition_id)
-      objectPath.set(composition_doc, '_id', composition_id)
-      objectPath.set(composition_doc, 'category.0.coding.0.code', service_request_doc.category[0].coding.code)
-      objectPath.set(composition_doc, 'category.0.coding.0.display', service_request_doc.category[0].coding.display)
-      objectPath.set(composition_doc, 'title', service_request_doc.category[0].coding.display)
-      composition_doc.subject.reference = 'Patient/' + state.patient
-      composition_doc.author[0].reference = state.user.reference
-      composition_doc.author[0].display = state.user.display
-      objectPath.del(composition_doc, 'encounter.reference')
-      composition_doc.date = moment().format('YYYY-MM-DD HH:mm')
-      composition_doc.confidentiality = 'N'
-      composition_doc.status = 'final'
-      await sync('compositions', false, state.patient, true, composition_doc)
-      var composition_entry = {}
-      objectPath.set(composition_entry, 'resource', composition_doc)
-      entries.push(composition_entry)
-      var subject = {}
-      objectPath.set(subject, 'resource', Case.snake(pluralize(composition_doc.subject.reference.split('/').slice(0,-1).join(''))))
-      objectPath.set(subject, 'id', composition_doc.subject.reference.split('/').slice(-1).join(''))
-      references.push(subject)
-      for (var a in composition_doc.author) {
-        var author = {}
-        objectPath.set(author, 'resource', Case.snake(pluralize(composition_doc.author[a].reference.split('/').slice(0,-1).join(''))))
-        objectPath.set(author, 'id', composition_doc.author[a].reference.split('/').slice(-1).join(''))
-        references.push(author)
-      }
-      var service_request_entry = {}
-      objectPath.set(service_request_entry, 'resource', service_request_doc)
-      entries.push(service_request_entry)
-      var bundleDoc = {}
-      var id = 'nosh_' + uuidv4()
-      var time = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
-      objectPath.set(bundleDoc, 'resourceType', 'Bundle')
-      objectPath.set(bundleDoc, 'id', id)
-      objectPath.set(bundleDoc, '_id', id)
-      objectPath.set(bundleDoc, 'type', 'document')
-      objectPath.set(bundleDoc, 'timestamp', time)
-      objectPath.set(bundleDoc, 'signature.when', time)
-      objectPath.set(bundleDoc, 'signature.type.0.system', 'urn:iso-astm:E1762-95:2013')
-      objectPath.set(bundleDoc, 'signature.type.0.code', '1.2.840.10065.1.12.1.1')
-      objectPath.set(bundleDoc, 'signature.type.0.display', "Author's Signature")
-      // objectPath.set(bundleDoc, 'sigFormat', 'image/jpg')
-      objectPath.set(bundleDoc, 'sigFormat', 'application/jws')
-      objectPath.set(bundleDoc, 'data', 'ewogICJhbGciOiAiUlMyNTYiLAogICJraWQiOiAiMTMzNzQ3MTQxMjU1IiwKICAiaWF0IjogMCwKICAiaXNzIjogIkM9R0IsIEw9TG9uZG9uLCBPVT1OdWFwYXkgQVBJLCBPPU51YXBheSwgQ049eWJvcXlheTkycSIsCiAgImI2NCI6IGZhbHNlLAogICJjcml0IjogWwogICAgImlhdCIsCiAgICAiaXNzIiwKICAgICJiNjQiCiAgXQp9..d_cZ46lwNiaFHAu_saC-Zz4rSzNbevWirO94EmBlbOwkB1L78vGbAnNjUsmFSU7t_HhL-cyMiQUDyRWswsEnlDljJsRi8s8ft48ipy2SMuZrjPpyYYMgink8nZZK7l-eFJcTiS9ZWezAAXF_IJFXSTO5ax9z6xty3zTNPNMV9W7aH8fEAvbUIiueOhH5xNHcsuqlOGygKdFz2rbjTGffoE_6zS4Dry-uX5mts2duLorobUimGsdlUcSM6P6vZEtcXaJCdjrT9tuFMh4CkX9nqk19Bq2z3i-SX4JCPvhD2r3ghRmX0gG08UcvyFVbrnVZJnpl4MU8V4Nr3-2M5URZOg')
-      for (var reference of references) {
-        const db1 = new PouchDB(prefix + reference.resource)
-        var results1 = await db1.get(reference.id)
-        entries.push({resource: results1})
-      }
-      objectPath.set(bundleDoc, 'entry', entries)
-      await sync('bundles', false, state.patient, true, bundleDoc)
-      $q.notify({
-        message: 'Service Request signed!',
-        color: 'primary',
-        actions: [
-          { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
-        ]
-      })
-      if (objectPath.has(state, 'careplanDoc.id')) {
-        openPage('encounters', 'assessment_plan', state.encounter)
-      }
-      // return new Promise((resolve) => {
-      //   Promise.all(references.map(async(items) => {
-      //     var db1 = new PouchDB(items.resource)
-      //     return db1.get(items.id)
-      //   })).then(async(results1) => {
-      //     for (var k in results1) {
-      //       var entry1 = {}
-      //       objectPath.set(entry1, 'resource', results1[k])
-      //       entries.push(entry1)
-      //     }
-      //     objectPath.set(bundleDoc, 'entry', entries)
-      //     await sync('bundles', state.online, state.couchdb, state.auth, state.pin, true, bundleDoc)
-      //     // var g = new PouchDB('bundles')
-      //     // var h = new PouchDB(state.couchdb + 'bundles', state.auth)
-      //     // g.put(bundleDoc)
-      //     // if (state.online) {
-      //     //   g.sync(h).on('complete', () => {
-      //     //     console.log('sync done')
-      //     //   }).on('error', (err) => {
-      //     //     console.log(err)
-      //     //   })
-      //     // }
-      //     $q.notify({
-      //       message: 'Service Request signed!',
-      //       color: 'primary',
-      //       actions: [
-      //         { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
-      //       ]
-      //     })
-      //     if (objectPath.has(state, 'careplanDoc.id')) {
-      //       openPage('encounters', 'assessment_plan', state.encounter)
-      //     }
-      //   })
-      //   resolve()
-      // }).catch(function (err) {
-      //   console.log(err)
-      // })
-    }
-    const signPrescription = async(medication_request_doc) => {
-      var entries = []
-      var references = []
-      var composition = await import('@/assets/fhir/compositions.json')
-      var composition_doc = composition.fhir
-      var composition_id = 'nosh_' + uuidv4()
-      objectPath.set(composition_doc, 'id', composition_id)
-      objectPath.set(composition_doc, '_id', composition_id)
-      objectPath.set(composition_doc, 'category.0.coding.0.code', '57833-6')
-      objectPath.set(composition_doc, 'category.0.coding.0.display', 'Prescription For Medication')
-      objectPath.set(composition_doc, 'title', 'Prescription for medication')
-      composition_doc.subject.reference = 'Patient/' + state.patient
-      composition_doc.author[0].reference = state.user.reference
-      composition_doc.author[0].display = state.user.display
-      objectPath.del(composition_doc, 'encounter.reference')
-      composition_doc.date = moment().format('YYYY-MM-DD HH:mm')
-      composition_doc.confidentiality = 'N'
-      composition_doc.status = 'final'
-      await sync('compositions', false, state.patient, true, composition_doc)
-      var composition_entry = {}
-      objectPath.set(composition_entry, 'resource', composition_doc)
-      entries.push(composition_entry)
-      var subject = {}
-      objectPath.set(subject, 'resource', Case.snake(pluralize(composition_doc.subject.reference.split('/').slice(0,-1).join(''))))
-      objectPath.set(subject, 'id', composition_doc.subject.reference.split('/').slice(-1).join(''))
-      references.push(subject)
-      for (var a in composition_doc.author) {
-        var author = {}
-        objectPath.set(author, 'resource', Case.snake(pluralize(composition_doc.author[a].reference.split('/').slice(0,-1).join(''))))
-        objectPath.set(author, 'id', composition_doc.author[a].reference.split('/').slice(-1).join(''))
-        references.push(author)
-      }
-      var medication_request_entry = {}
-      objectPath.set(medication_request_entry, 'resource', medication_request_doc)
-      entries.push(medication_request_entry)
-      var bundleDoc = {}
-      var id = 'nosh_' + uuidv4()
-      var time = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
-      objectPath.set(bundleDoc, 'resourceType', 'Bundle')
-      objectPath.set(bundleDoc, 'id', id)
-      objectPath.set(bundleDoc, '_id', id)
-      objectPath.set(bundleDoc, 'type', 'document')
-      objectPath.set(bundleDoc, 'timestamp', time)
-      objectPath.set(bundleDoc, 'signature.when', time)
-      objectPath.set(bundleDoc, 'signature.type.0.system', 'urn:iso-astm:E1762-95:2013')
-      objectPath.set(bundleDoc, 'signature.type.0.code', '1.2.840.10065.1.12.1.1')
-      objectPath.set(bundleDoc, 'signature.type.0.display', "Author's Signature")
-      // objectPath.set(bundleDoc, 'sigFormat', 'image/jpg')
-      objectPath.set(bundleDoc, 'sigFormat', 'application/jws')
-      objectPath.set(bundleDoc, 'data', 'ewogICJhbGciOiAiUlMyNTYiLAogICJraWQiOiAiMTMzNzQ3MTQxMjU1IiwKICAiaWF0IjogMCwKICAiaXNzIjogIkM9R0IsIEw9TG9uZG9uLCBPVT1OdWFwYXkgQVBJLCBPPU51YXBheSwgQ049eWJvcXlheTkycSIsCiAgImI2NCI6IGZhbHNlLAogICJjcml0IjogWwogICAgImlhdCIsCiAgICAiaXNzIiwKICAgICJiNjQiCiAgXQp9..d_cZ46lwNiaFHAu_saC-Zz4rSzNbevWirO94EmBlbOwkB1L78vGbAnNjUsmFSU7t_HhL-cyMiQUDyRWswsEnlDljJsRi8s8ft48ipy2SMuZrjPpyYYMgink8nZZK7l-eFJcTiS9ZWezAAXF_IJFXSTO5ax9z6xty3zTNPNMV9W7aH8fEAvbUIiueOhH5xNHcsuqlOGygKdFz2rbjTGffoE_6zS4Dry-uX5mts2duLorobUimGsdlUcSM6P6vZEtcXaJCdjrT9tuFMh4CkX9nqk19Bq2z3i-SX4JCPvhD2r3ghRmX0gG08UcvyFVbrnVZJnpl4MU8V4Nr3-2M5URZOg')
-      for (var reference of references) {
-        const db1 = new PouchDB(prefix + reference.resource)
-        var results1 = await db1.get(reference.id)
-        entries.push({resource: results1})
-      }
-      objectPath.set(bundleDoc, 'entry', entries)
-      await sync('bundles', false, state.patient, true, bundleDoc)
-      $q.notify({
-        message: 'Prescription signed!',
-        color: 'primary',
-        actions: [
-          { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
-        ]
-      })
-      if (objectPath.has(state, 'careplanDoc.id')) {
-        openPage(state.encounter, 'encounters', 'assessment_plan')
-      }
-      // Promise.all(references.map(async(items) => {
-      //   var db1 = new PouchDB(items.resource)
-      //   return db1.get(items.id)
-      // })).then(async(results1) => {
-      //   for (var k in results1) {
-      //     var entry1 = {}
-      //     objectPath.set(entry1, 'resource', results1[k])
-      //     entries.push(entry1)
-      //   }
-      //   objectPath.set(bundleDoc, 'entry', entries)
-      //   await sync('bundles', state.online, state.couchdb, state.auth, state.pin, true, bundleDoc)
-      //   $q.notify({
-      //     message: 'Prescription signed!',
-      //     color: 'primary',
-      //     actions: [
-      //       { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
-      //     ]
-      //   })
-      //   if (objectPath.has(state, 'careplanDoc.id')) {
-      //     openPage(state.encounter, 'encounters', 'assessment_plan')
-      //   }
-      // })
-    }
     const sortAlpha = () => {
       state.sort = 'alpha'
     }
@@ -2302,6 +2132,7 @@ export default defineComponent({
       onSubmitPIN,
       openActivities,
       openBundle,
+      openBundleQR,
       openCareOpportunities,
       openChart,
       openChat,
@@ -2319,6 +2150,7 @@ export default defineComponent({
       openPageFormComplete,
       openPulldown,
       openQR,
+      openQRReader,
       openSchedule,
       openTimelineEntry,
       openTrustee,
@@ -2341,8 +2173,6 @@ export default defineComponent({
       searchTimeline,
       setChatID,
       signEncounter,
-      signOrder,
-      signPrescription,
       sortAlpha,
       sortDate,
       stopInboxTimer,

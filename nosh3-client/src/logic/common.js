@@ -41,6 +41,46 @@ export function common() {
     }
     return schema
   }
+  const bundleBuild = async(entries, target, signature_data, patient_id) => {
+    const id = 'nosh_' + uuidv4()
+    const id1 = 'nosh_' + uuidv4()
+    const time = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
+    const bundleDoc = {
+      '_id': id,
+      'id': id,
+      'resourceType': 'Bundle',
+      'type': 'document',
+      'timestamp': time
+    }
+    const signature = [{
+      'type': [{
+        'system': 'urn:iso-astm:E1762-95:2013',
+        'code': '1.2.840.10065.1.12.1.1',
+        'display': "Author's Signature"
+      }],
+      'when': signature_data.time,
+      'who': {
+        'reference': signature_data.reference
+        // 'reference' : 'Practitioner/xcda-author'
+      },
+      'targetFormat': 'application/fhir',
+      'sigFormat': 'application/json',
+      'data': signature_data.data
+    }]
+    const provenanceDoc = {
+      '_id': id1,
+      'id': id1,
+      'resourceType': 'Provenance',
+      'target': [{reference: target}],
+      'recorded': time,
+      'signature': signature
+    }
+    await sync('provenances', false, patient_id, true, provenanceDoc)
+    entries.push({resource: provenanceDoc})
+    objectPath.set(bundleDoc, 'entry', entries)
+    await sync('bundles', false, patient_id, true, bundleDoc)
+    return bundleDoc
+  }
   const eventAdd = async(event, online, patient_id, opts={doc_db: null, doc_id: null, diff: null}) => {
     const auth_store = useAuthStore()
     var prefix = ''
@@ -896,7 +936,7 @@ export function common() {
       await eventAdd('Updated ' + pluralize.singular(resource.replace('_statements', '')), online, patient_id, opts)
     }
     if (online) {
-      if (resource !== 'users') {
+      if (resource !== 'users' && resource !== 'presentations') {
         await local.setPassword(pin, {name: couchdb + prefix + resource, opts: auth})
         var info = await local.info()
         if (info.doc_count > 0) {
@@ -1073,6 +1113,7 @@ export function common() {
   }
   return {
     addSchemaOptions,
+    bundleBuild,
     eventAdd,
     fetchJSON,
     fetchTXT,

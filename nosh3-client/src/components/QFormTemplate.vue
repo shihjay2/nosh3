@@ -123,7 +123,8 @@ import { useAuthStore } from '@/stores'
 import { common } from '@/logic/common'
 import axios from 'axios'
 import Case from 'case'
-import { Form } from "vee-validate"
+import { Form } from 'vee-validate'
+import jsum from 'jsum'
 import moment from 'moment'
 import objectPath from 'object-path'
 import pluralize from 'pluralize'
@@ -132,6 +133,7 @@ import QInputWithValidation from './QInputWithValidation.vue'
 import QSearch from './QSearch.vue'
 import QTemplate from './QTemplate.vue'
 import QVaccine from './QVaccine.vue'
+import { SSX, SiweMessage } from '@spruceid/ssx'
 import { useQuasar } from 'quasar'
 import {v4 as uuidv4} from 'uuid'
 
@@ -242,7 +244,7 @@ export default defineComponent({
   emits: ['care-plan', 'composition', 'close-form', 'loading', 'reload-drawer', 'set-composition-section'],
   setup (props, { emit }) {
     const $q = useQuasar()
-    const { addSchemaOptions, fetchTXT, removeTags, sync, syncEmailToUser } = common()
+    const { addSchemaOptions, bundleBuild, fetchTXT, removeTags, sync, syncEmailToUser } = common()
     const myInput = ref(null)
     const mySearchInput = ref(null)
     const state = reactive({
@@ -1200,6 +1202,61 @@ export default defineComponent({
         ]
       })
       if (props.resource === 'medication_requests' || props.resource === 'service_requests') {
+        const entries = []
+        const references = []
+        const composition = await import('@/assets/fhir/compositions.json')
+        const composition_doc = composition.fhir
+        const composition_id = 'nosh_' + uuidv4()
+        objectPath.set(composition_doc, 'id', composition_id)
+        objectPath.set(composition_doc, '_id', composition_id)
+        if (props.resource === 'service_requests') {
+          objectPath.set(composition_doc, 'category.0.coding.0.code', state.fhir.category[0].coding.code)
+          objectPath.set(composition_doc, 'category.0.coding.0.display', state.fhir.category[0].coding.display)
+          objectPath.set(composition_doc, 'title', state.fhir.category[0].coding.display)
+        } else {
+          objectPath.set(composition_doc, 'category.0.coding.0.code', '57833-6')
+          objectPath.set(composition_doc, 'category.0.coding.0.display', 'Prescription For Medication')
+          objectPath.set(composition_doc, 'title', 'Prescription For Medication')
+        }
+        composition_doc.subject.reference = 'Patient/' + state.patient
+        composition_doc.author[0].reference = state.user.reference
+        composition_doc.author[0].display = state.user.display
+        objectPath.del(composition_doc, 'encounter.reference')
+        composition_doc.date = moment().format('YYYY-MM-DD HH:mm')
+        composition_doc.confidentiality = 'N'
+        composition_doc.status = 'final'
+        objectPath.set(composition_doc, 'text', state.fhir.text)
+        await sync('compositions', false, state.patient, true, composition_doc)
+        const composition_entry = {}
+        objectPath.set(composition_entry, 'resource', composition_doc)
+        entries.push(composition_entry)
+        const subject = {}
+        objectPath.set(subject, 'resource', Case.snake(pluralize(composition_doc.subject.reference.split('/').slice(0,-1).join(''))))
+        objectPath.set(subject, 'id', composition_doc.subject.reference.split('/').slice(-1).join(''))
+        references.push(subject)
+        for (var a in composition_doc.author) {
+          var author = {}
+          objectPath.set(author, 'resource', Case.snake(pluralize(composition_doc.author[a].reference.split('/').slice(0,-1).join(''))))
+          objectPath.set(author, 'id', composition_doc.author[a].reference.split('/').slice(-1).join(''))
+          references.push(author)
+        }
+        const entry = {}
+        objectPath.set(entry, 'resource', state.fhir)
+        entries.push(entry)
+        for (var reference of references) {
+          const db1 = new PouchDB(prefix + reference.resource)
+          var results1 = await db1.get(reference.id)
+          entries.push({resource: results1})
+        }
+        const signature_data = await ssxService(props.resource, state.fhir)
+        const bundle_doc = bundleBuild(entries, Case.pascal(pluralize.singular(props.resource)) + '/' + state.fhir._id, signature_data, state.patient)
+        $q.notify({
+          message: 'The ' + Case.lower(pluralize.singular(props.resource)) + ' is signed!',
+          color: 'primary',
+          actions: [
+            { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+          ]
+        })
         if (objectPath.has(props, 'care_plan_doc.id')) {
           var doc = props.care_plan_doc
           if (objectPath.has(doc, 'activity')) {
@@ -1266,6 +1323,38 @@ export default defineComponent({
       } else {
         return false
       }
+    }
+    const ssxService = async(resource, doc) => {
+      const ssx = new SSX()
+      await ssx.signIn()
+      const address = ssx.userAuthorization.address()
+      const chainId = ssx.userAuthorization.chainId()
+      const domain = window.location.host
+      const origin = window.location.origin
+      const statement = 'Sign this ' + Case.pascal(pluralize.singular(resource))
+      const resource_url = origin + '/fhir/api/' + state.patient + '/' + Case.pascal(pluralize.singular(resource)) + '/' + doc._id
+      const resource_arr = []
+      resource_arr.push(resource_url)
+      const siwemessage = new SiweMessage({
+        domain,
+        address,
+        statement,
+        uri: origin,
+        version: '1',
+        chainId,
+        resources: resource_arr
+      })
+      const siwemessage_prep = siwemessage.prepareMessage()
+      const signature = await ssx.userAuthorization.signMessage(siwemessage_prep)
+      const message = siwemessage_prep.replace(/(?:\r\n|\r|\n)/g, '\n')
+      const hash = jsum.digest(doc, 'SHA256', 'hex')
+      const siwe = {signature, message, hash}
+      const return_data = {
+        time: moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
+        reference: Case.pascal(pluralize.singular(resource)) + '/' + doc._id,
+        data: Buffer.from(JSON.stringify(siwe)).toString("base64")
+      }
+      return return_data
     }
     const updateSelect = async(field, val) => {
       if (field == 'country') {
@@ -1403,6 +1492,7 @@ export default defineComponent({
       selectTemplate,
       selectVaccine,
       showForm,
+      ssxService,
       sync,
       syncEmailToUser,
       updateSelect,

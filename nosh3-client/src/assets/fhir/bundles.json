@@ -10,15 +10,25 @@
   "resourceName": "Bundle",
   "activeField": "status",
   "patientField": "subject.reference",
-  "divContent": "{reasonCode} (Date of Service: {periodStart})",
+  "divContent": "",
   "uiListContent": {
-    "title": "{reasonCode}",
-    "subhead": "{periodStart}",
-    "contentFields": ["participant", "class", "serviceType"],
+    "title": "{title}",
+    "subhead": "",
+    "contentFields": [],
     "contentStyle": "p",
-    "extended": "{priority}",
+    "extended": "",
     "status": ""
   },
+  "uiSchema": [
+    {
+      "id": "title",
+      "label": "",
+      "model": "text.div",
+      "type": "text",
+      "readonly": true,
+      "rules": ""
+    }
+  ],
   "tabs": [
     {
       "category": "encounter",

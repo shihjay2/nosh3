@@ -127,6 +127,13 @@
       "gnap": true
     },
     {
+      "resource": "presentations",
+      "icon": "prescriptions",
+      "label": "Presentations",
+      "patientField": "none",
+      "gnap": false
+    },
+    {
       "resource": "provenances",
       "icon": "brush",
       "label": "Provenances",

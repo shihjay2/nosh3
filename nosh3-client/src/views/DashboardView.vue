@@ -67,6 +67,7 @@
             @open-list="openList"
             @open-page="openPage"
             @open-qr="openQR"
+            @open-qr-reader="openQRReader"
             @open-schedule="openSchedule"
             @stop-inbox-timer="stopInboxTimer"
             :user="state.user"
@@ -306,6 +307,10 @@
     <q-spinner color="white" size="md" thickness="5"/>
     <q-tooltip :offset="[0, 8]">Loading...</q-tooltip>
   </q-dialog>
+  <q-dialog v-model="state.showQRReader">
+    <QRReader
+    />
+  </q-dialog>
 </template>
 
 <script>
@@ -323,6 +328,7 @@ import QFormTemplate from '@/components/QFormTemplate.vue'
 import QListTemplate from '@/components/QListTemplate.vue'
 import QMenuTemplate from '@/components/QMenuTemplate.vue'
 import QPageTemplate from '@/components/QPageTemplate.vue'
+import QRReader from '@/components/QRReader.vue'
 import QScheduleTemplate from '@/components/QScheduleTemplate.vue'
 import QToolbarTemplate from '@/components/QToolbarTemplate.vue'
 import { useAuthStore } from '@/stores'
@@ -341,6 +347,7 @@ export default defineComponent({
     QListTemplate,
     QMenuTemplate,
     QPageTemplate,
+    QRReader,
     QScheduleTemplate,
     QToolbarTemplate,
     VOffline,
@@ -464,8 +471,10 @@ export default defineComponent({
       updateExists: false,
       refreshing: false,
       registration: null,
+      // qr
       qr: false,
-      qr_value: ''
+      qr_value: '',
+      showQRReader: false
     })
     const route = useRoute()
     const auth = useAuthStore()
@@ -916,6 +925,9 @@ export default defineComponent({
       state.qr_value = value
       state.qr = true
     }
+    const openQRReader = () => {
+      state.showQRReader = true
+    }
     const openSchedule = async() => {
       closeAll()
       state.serviceTypes = await fetchJSON('serviceTypes', state.online)
@@ -1017,6 +1029,7 @@ export default defineComponent({
       openPageForm,
       openPageFormComplete,
       openQR,
+      openQRReader,
       openSchedule,
       patientList,
       patientSearch,

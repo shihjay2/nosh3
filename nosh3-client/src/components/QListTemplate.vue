@@ -1049,6 +1049,14 @@ export default defineComponent({
         } else {
           selector = {[state.base.patientField]: {$eq: 'Patient/' + props.patient }, _id: {"$gte": null}}
         }
+      } else if (props.resource === 'bundles') {
+        selector = {
+          'entry': {"$elemMatch": {
+            "resource.subject.reference": "Patient/" + props.patient,
+            "resource.resourceType": props.category,
+          }},
+          _id: {"$gte": null}
+        }
       } else {
         selector = {[state.base.patientField]: {$eq: 'Patient/' + props.patient }, _id: {"$gte": null}}
       }
@@ -1079,6 +1087,8 @@ export default defineComponent({
         if (status !== 'all') {
           state.rows = state.rows.filter(row => row.status == Case.title(status))
         }
+      } else if (props.resource === 'bundles') {
+        state.rows.sort((b, c) => moment(c.timestamp) - moment(b.timestamp))
       } else {
         if (status === 'all') {
           state.rows.sort(firstBy('status', {ignoreCase:true, direction:'asc'}).thenBy('title', {ignoreCase:true, direction:'asc'}))
@@ -1147,6 +1157,8 @@ export default defineComponent({
             emit('open-chat', id, props.category, b.doc.status)
           } else if (props.resource === 'document_references') {
             emit('open-file', id, props.resource, 'content')
+          } else if (props.resource === 'bundles') {
+            emit('open-bundle-qr', id, props.category)
           } else {
             emit('open-form', id, props.resource)
           }
