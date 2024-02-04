@@ -55,8 +55,8 @@ export default defineComponent({
   name: 'QRReader',
   components: {
     QrcodeStream,
-    QrcodeDropZone,
-    QrcodeCapture
+    // QrcodeDropZone,
+    // QrcodeCapture
   },
   props: {
     resource: String,
