@@ -69,11 +69,21 @@ app.get('/fetch/:file/:type?', (req, res) => {
 
 app.post('/oidc', async(req, res) => {
   if (objectPath.has(req, 'body.body')) {
-    var result = await axios.post(req.body.url, req.body.body, {headers: {'Content-Type': 'application/json'}})
+    try {
+      const result = await axios.post(req.body.url, req.body.body, {headers: {'Content-Type': 'application/json'}})
+      res.status(200).json(result.data)
+    } catch (err) {
+      res.status(200).json(err)
+    }
   } else {
-    var result = await axios.get(req.body.url, {headers: {'Content-Type': 'application/json'}})
+    try {
+      const result = await axios.get(req.body.url, {headers: {'Content-Type': 'application/json'}})
+      res.status(200).json(result.data)
+    } catch (err) {
+      res.status(200).json(err)
+    }
   }
-  res.status(200).json(result.data)
+  
 })
 
 app.get('/presentation/:pid/:id', async(req, res) => {
