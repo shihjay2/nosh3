@@ -90,6 +90,7 @@
           <q-item-section avatar>
             <div class="q-pa-sm q-gutter-sm">
               <q-badge rounded color="primary" :label="item.count" />
+              <q-badge v-if="item.oidc" rounded color="warning" :label="item.oidc" />
             </div>
           </q-item-section>
         </q-item>
@@ -120,7 +121,11 @@ export default defineComponent({
     patientGender: String,
     patientPhoto: String,
     drawerReload: Boolean,
-    drawerResource: String
+    drawerResource: String,
+    oidc: {
+      type: Array,
+      default: function () { return []}
+    }
   },
   emits: ['open-care-opportunities', 'open-list', 'open-page', 'open-pulldown', 'reload-drawer-complete', 'unset'],
   setup (props, { emit }) {
@@ -173,6 +178,14 @@ export default defineComponent({
           state.resources.push(state.ui[a].resource)
           var count = await query(state.ui[a].resource, a)
           objectPath.set(state, 'ui.' + a + '.count', count)
+          for (var e in props.oidc) {
+            if (objectPath.has(props, 'oidc.' + e + '.docs')) {
+              var oidc_results = props.oidc[e].docs.find(f => f.resource === state.ui[a].resource)
+              if (oidc_results !== undefined) {
+                objectPath.set(state, 'ui.' + a + '.oidc', oidc_results.length.toString() + " imported")
+              }
+            }
+          }
         }
       }
     })

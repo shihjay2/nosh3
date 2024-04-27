@@ -20,6 +20,7 @@
     "comdb": "^6.0.0-beta",
     "convert": "^4.6.0",
     "core-js": "^3.8.3",
+    "downloadjs": "^1.4.7",
     "fast-diff": "^1.2.0",
     "filter-object": "^3.0.0",
     "fuse.js": "^6.6.2",

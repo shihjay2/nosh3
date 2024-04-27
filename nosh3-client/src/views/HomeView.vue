@@ -71,6 +71,7 @@
           <QMenuTemplate
             v-if="state.showMenu"
             @open-activities="openActivities"
+            @open-dump="openDump"
             @open-list="openList"
             @open-page="openPage"
             @open-qr="openQR"
@@ -139,6 +140,7 @@
         :patient-photo="state.patientPhoto"
         :drawer-reload="state.drawerReload"
         :drawer-resource="state.drawerResource"
+        :oidc="state.oidc"
       />
     </q-drawer>
     <q-page-container>
@@ -572,6 +574,7 @@ import {v4 as uuidv4} from 'uuid'
 import { VOffline } from 'v-offline'
 import VueQrious from 'vue-qrious'
 import * as PouchDBFind from 'pouchdb-find'
+import download from 'downloadjs'
 PouchDB.plugin(PouchDBFind)
 
 export default defineComponent({
@@ -1455,6 +1458,34 @@ export default defineComponent({
     const openDetailComplete = () => {
       state.openDetail = false
     }
+    const openDump = async() => {
+      const resources = await fetchJSON('resources', props.online)
+      const bundleDoc = {}
+      const id = 'nosh_' + uuidv4()
+      const time = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
+      const entries = []
+      objectPath.set(bundleDoc, 'resourceType', 'Bundle')
+      objectPath.set(bundleDoc, 'id', id)
+      objectPath.set(bundleDoc, '_id', id)
+      objectPath.set(bundleDoc, 'type', 'collection')
+      objectPath.set(bundleDoc, 'timestamp', time)
+      for (var resource of resources.rows) {
+        const db = new PouchDB(prefix + resource)
+        const result = await db.allDocs({
+          include_docs: true,
+          attachments: true
+        })
+        if (result.rows.length > 0) {
+          for (var a of result.rows) {
+            const entry = {}
+            objectPath.set(entry, 'resource', a.doc)
+            entries.push(entry)
+          }
+        }
+      }
+      objectPath.set(bundleDoc, 'entry', entries)
+      download(bundleDoc, 'fhir_bundle.json', 'application/json')
+    }
     const openFile = async(id, resource, category = 'all', index = '') => {
       closeAll()
       state.docTypeCodes = await fetchJSON('docTypeCodes', state.online)
@@ -2138,6 +2169,7 @@ export default defineComponent({
       openChat,
       openDetail,
       openDetailComplete,
+      openDump,
       openFile,
       openForm,
       openGraph,

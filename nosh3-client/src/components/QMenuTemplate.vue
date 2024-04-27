@@ -73,6 +73,14 @@
           <q-icon color="primary" style="font-size: 1.5em" name="policy" />
         </q-item-section>
       </q-item>
+      <q-item v-if="state.type == 'pnosh' && state.user.role == 'patient'" clickable @click="openDump()">
+        <q-item-section>
+          <q-item-label>FHIR Dump</q-item-label>
+        </q-item-section>
+        <q-item-section avatar>
+          <q-icon color="primary" style="font-size: 1.5em" name="local_fire_department" />
+        </q-item-section>
+      </q-item>
       <q-item v-if="state.patient !== ''" clickable @click="openActivity()">
         <q-item-section>
           <q-item-label>Activity</q-item-label>
@@ -109,7 +117,7 @@ export default defineComponent({
     },
     type: String
   },
-  emits: ['open-activities', 'open-list', 'open-page', 'open-qr', 'open-schedule', 'stop-inbox-timer'],
+  emits: ['open-activities', 'open-dump', 'open-list', 'open-page', 'open-qr', 'open-schedule', 'stop-inbox-timer'],
   setup (props, { emit }) {
     const auth = useAuthStore()
     const { eventAdd } = common()
@@ -143,6 +151,9 @@ export default defineComponent({
     }
     const openActivity = () => {
       emit('open-activities')
+    }
+    const openDump = () => {
+      emit('open-dump')
     }
     const openQR = () => {
       emit('open-qr', window.location.href)
