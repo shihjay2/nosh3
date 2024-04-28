@@ -180,7 +180,7 @@ export default defineComponent({
           objectPath.set(state, 'ui.' + a + '.count', count)
           for (var e in props.oidc) {
             if (objectPath.has(props, 'oidc.' + e + '.docs')) {
-              console.log(objectPath.get(poprs, 'oidc.' + e + '.docs'))
+              console.log(objectPath.get(props, 'oidc.' + e + '.docs'))
               var oidc_results = props.oidc[e].docs.find(f => f.resource === state.ui[a].resource)
               console.log(oidc_results)
               if (oidc_results !== undefined) {

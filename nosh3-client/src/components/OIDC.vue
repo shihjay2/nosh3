@@ -105,56 +105,82 @@ export default defineComponent({
     })
     const open = async(type, name) => {
       var oidc_state = uuidv4()
-      if (props.type === '' && type !== 'synthea') {
-        var relay_url = auth.api.oidc_relay_url + '/oidc_relay'
-        var body = {
-          origin_uri: location.protocol + '//' + location.host + location.pathname + '?oidc=' + type,
-          response_uri: location.protocol + '//' + location.host + location.pathname + '?oidc=' + type,
-          type: type,
-          state: oidc_state,
-          refresh_token: ''
-        }
-        if (type !== 'cms_bluebutton' && type !== 'cms_bluebutton_sandbox') {
-          objectPath.set(body, 'fhir_url', type)
-          state.base_url = type
-          objectPath.set(body, 'type', 'epic')
-          objectPath.set(body, 'origin_uri', location.protocol + '//' + location.host + location.pathname + '?oidc=epic')
-          objectPath.set(body, 'response_uri', location.protocol + '//' + location.host + location.pathname + '?oidc=epic')
-        } else {
-          if (type === 'cms_bluebutton') {
-            state.base_url = 'https://api.bluebutton.cms.gov/'
+      if (props.type === '') {
+        if (type !== 'synthea') {
+          var relay_url = auth.api.oidc_relay_url + '/oidc_relay'
+          var body = {
+            origin_uri: location.protocol + '//' + location.host + location.pathname + '?oidc=' + type,
+            response_uri: location.protocol + '//' + location.host + location.pathname + '?oidc=' + type,
+            type: type,
+            state: oidc_state,
+            refresh_token: ''
+          }
+          if (type !== 'cms_bluebutton' && type !== 'cms_bluebutton_sandbox') {
+            objectPath.set(body, 'fhir_url', type)
+            state.base_url = type
+            objectPath.set(body, 'type', 'epic')
+            objectPath.set(body, 'origin_uri', location.protocol + '//' + location.host + location.pathname + '?oidc=epic')
+            objectPath.set(body, 'response_uri', location.protocol + '//' + location.host + location.pathname + '?oidc=epic')
           } else {
-            state.base_url = 'https://sandbox.bluebutton.cms.gov/'
+            if (type === 'cms_bluebutton') {
+              state.base_url = 'https://api.bluebutton.cms.gov/'
+            } else {
+              state.base_url = 'https://sandbox.bluebutton.cms.gov/'
+            }
+          }
+          localStorage.setItem('oidc', JSON.stringify(body))
+          localStorage.setItem('oidc_url', state.base_url)
+          localStorage.setItem('oidc_state', oidc_state)
+          localStorage.setItem('oidc_name', name)
+          var response = await axios.post(window.location.origin + '/oidc', {url: relay_url, body: body})
+          localStorage.setItem('oidc_response', response.data)
+          window.location.href = auth.api.oidc_relay_url + '/oidc_relay_start/' + oidc_state
+        } else {
+          objectPath.set(state, 'oidc.origin', name)
+          try {
+            var oidc_response2 = await axios.get('https://launch.smarthealthit.org/v/r4/fhir/Patient/c20ccf5d-19ac-4dfe-bdc3-3d1d6344facc/$everything?_count=1000')
+            console.log(oidc_response2.data)
+            var resources2 = await fetchJSON('resources', props.online)
+            state.resources = resources2.rows
+            var c1_synthea = 0
+            for (var c_synthea of resources2.rows) {
+              var rows2 = []
+              for (var c2_synthea of oidc_response.data.entry) {
+                if (c2_synthea.resource.resourceType === Case.pascal(pluralize.singular(c_synthea.resource))) {
+                  rows2.push(c2_synthea.resource)
+                }
+              }
+              var docs_synthea = {
+                resource: c_synthea.resource,
+                rows: rows2
+              }
+              objectPath.set(state, 'oidc.docs.' + c1_synthea, docs_synthea)
+              c1_synthea++
+            }
+            emit('save-oidc', state.oidc)
+          } catch (e) {
+            console.log(e)
           }
         }
-        localStorage.setItem('oidc', JSON.stringify(body))
-        localStorage.setItem('oidc_url', state.base_url)
-        localStorage.setItem('oidc_state', oidc_state)
-        localStorage.setItem('oidc_name', name)
-        var response = await axios.post(window.location.origin + '/oidc', {url: relay_url, body: body})
-        localStorage.setItem('oidc_response', response.data)
-        window.location.href = auth.api.oidc_relay_url + '/oidc_relay_start/' + oidc_state
       } else {
         objectPath.set(state, 'oidc.origin', name)
-        if (type !== 'synthea') {
-          var relay_url1 = auth.api.oidc_relay_url + '/oidc_relay/' + localStorage.getItem('oidc_state')
-          var response1 = await axios.post(window.location.origin + '/oidc', {url: relay_url1})
-          localStorage.setItem('oidc_access_token', response1.data.access_token)
-          state.access_token = response1.data.access_token
-          if (objectPath.has(response1, 'data.refresh_token')) {
-            localStorage.setItem('oidc_refresh_token', response1.data.refresh_token)
-            state.refresh_token = response1.data.refresh_token
-          }
-          if (objectPath.has(response1, 'data.patient_token')) {
-            localStorage.setItem('oidc_patient_token', response1.data.patient_token)
-            state.patient_token = response1.data.patient_token
-          }
-          if (objectPath.has(response1, 'data.patient')) {
-            localStorage.setItem('oidc_patient', response1.data.patient)
-            state.patient = response1.data.patient
-          }
+        var relay_url1 = auth.api.oidc_relay_url + '/oidc_relay/' + localStorage.getItem('oidc_state')
+        var response1 = await axios.post(window.location.origin + '/oidc', {url: relay_url1})
+        localStorage.setItem('oidc_access_token', response1.data.access_token)
+        state.access_token = response1.data.access_token
+        if (objectPath.has(response1, 'data.refresh_token')) {
+          localStorage.setItem('oidc_refresh_token', response1.data.refresh_token)
+          state.refresh_token = response1.data.refresh_token
         }
-        if (type !== 'cms_bluebutton' && type !== 'cms_bluebutton_sandbox' && type !== 'synthea') {
+        if (objectPath.has(response1, 'data.patient_token')) {
+          localStorage.setItem('oidc_patient_token', response1.data.patient_token)
+          state.patient_token = response1.data.patient_token
+        }
+        if (objectPath.has(response1, 'data.patient')) {
+          localStorage.setItem('oidc_patient', response1.data.patient)
+          state.patient = response1.data.patient
+        }
+        if (type !== 'cms_bluebutton' && type !== 'cms_bluebutton_sandbox') {
           var resources = await fetchJSON('resources', props.online)
           state.resources = resources.rows
           var c1 = 0
@@ -181,65 +207,39 @@ export default defineComponent({
             }
           }
         } else {
-          if (type === 'synthea') {
+          var cms_resources = [
+            {label: 'Summary', path: 'v1/connect/userinfo'},
+            {label: 'EOB', path: 'v1/fhir/ExplanationOfBenefit/?patient=' + state.patient, resource: 'ExplanationOfBenefit'},
+            {label: 'Coverage', path: 'v1/fhir/Coverage/?patient=' + state.patient, resource: 'Coverage'}
+          ]
+          var d1 = 0
+          for (var d of cms_resources) {
+            var oidc_url1 = state.base_url + d.path
+            var opts1 = {headers: { Authorization: 'Bearer ' + state.access_token}}
             try {
-              var oidc_response2 = await axios.get('https://launch.smarthealthit.org/v/r4/fhir/Patient/c20ccf5d-19ac-4dfe-bdc3-3d1d6344facc/$everything?_count=1000')
-              console.log(oidc_response2.data)
-              var resources2 = await fetchJSON('resources', props.online)
-              state.resources = resources2.rows
-              var c1_synthea = 0
-              for (var c_synthea of resources2.rows) {
-                var rows2 = []
-                for (var c2_synthea of oidc_response.data.entry) {
-                  if (c2_synthea.resource.resourceType === Case.pascal(pluralize.singular(c_synthea.resource))) {
-                    rows2.push(c2_synthea.resource)
+              var oidc_response1 = await axios.get(oidc_url1, opts1)
+              if (d.label !== 'Summary') {
+                var rows1 = []
+                for (var d2 of oidc_response1.data.entry) {
+                  if (d2.resource.resourceType === d.resource) {
+                    rows.push(d2.resource)
                   }
                 }
-                var docs_synthea = {
-                  resource: c_synthea.resource,
-                  rows: rows2
+                var docs1 = {
+                  resource: d.label,
+                  rows: rows1
                 }
-                objectPath.set(state, 'oidc.docs.' + c1_synthea, docs_synthea)
-                c1_synthea++
+                objectPath.set(state, 'oidc.docs.' + d1, docs1)
+                d1++
+              } else {
+                var docs1 = {
+                  resource: d.label,
+                  rows: oidc_response1.data
+                }
+                objectPath.set(state, 'oidc.docs.' + d1, docs1)
               }
             } catch (e) {
               console.log(e)
-            }
-          } else {
-            var cms_resources = [
-              {label: 'Summary', path: 'v1/connect/userinfo'},
-              {label: 'EOB', path: 'v1/fhir/ExplanationOfBenefit/?patient=' + state.patient, resource: 'ExplanationOfBenefit'},
-              {label: 'Coverage', path: 'v1/fhir/Coverage/?patient=' + state.patient, resource: 'Coverage'}
-            ]
-            var d1 = 0
-            for (var d of cms_resources) {
-              var oidc_url1 = state.base_url + d.path
-              var opts1 = {headers: { Authorization: 'Bearer ' + state.access_token}}
-              try {
-                var oidc_response1 = await axios.get(oidc_url1, opts1)
-                if (d.label !== 'Summary') {
-                  var rows1 = []
-                  for (var d2 of oidc_response1.data.entry) {
-                    if (d2.resource.resourceType === d.resource) {
-                      rows.push(d2.resource)
-                    }
-                  }
-                  var docs1 = {
-                    resource: d.label,
-                    rows: rows1
-                  }
-                  objectPath.set(state, 'oidc.docs.' + d1, docs1)
-                  d1++
-                } else {
-                  var docs1 = {
-                    resource: d.label,
-                    rows: oidc_response1.data
-                  }
-                  objectPath.set(state, 'oidc.docs.' + d1, docs1)
-                }
-              } catch (e) {
-                console.log(e)
-              }
             }
           }
         }
