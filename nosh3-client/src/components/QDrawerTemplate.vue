@@ -89,8 +89,12 @@
           </q-item-section>
           <q-item-section avatar>
             <div class="q-pa-sm q-gutter-sm">
-              <q-badge rounded color="primary" :label="item.count" />
-              <q-badge v-if="item.oidc" rounded color="warning" :label="item.oidc" />
+              <q-badge rounded color="primary" :label="item.count">
+                <q-tooltip># Items in Resource</q-tooltip>
+              </q-badge>
+              <q-badge v-if="item.oidc" rounded color="warning" :label="item.oidc">
+                <q-tooltip>Imported from Sync</q-tooltip>
+              </q-badge>
             </div>
           </q-item-section>
         </q-item>
@@ -179,13 +183,12 @@ export default defineComponent({
           var count = await query(state.ui[a].resource, a)
           objectPath.set(state, 'ui.' + a + '.count', count)
           for (var e in props.oidc) {
-            console.log(props.oidc)
             if (objectPath.has(props, 'oidc.' + e + '.docs')) {
-              console.log(objectPath.get(props, 'oidc.' + e + '.docs'))
               var oidc_results = props.oidc[e].docs.find(f => f.resource === state.ui[a].resource)
-              console.log(oidc_results)
               if (oidc_results !== undefined) {
-                objectPath.set(state, 'ui.' + a + '.oidc', oidc_results.rows.length.toString() + " imported")
+                if (oidc_results.rows.length > 0) {
+                  objectPath.set(state, 'ui.' + a + '.oidc', oidc_results.rows.length.toString())
+                }
               }
             }
           }
