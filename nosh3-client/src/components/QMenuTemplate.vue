@@ -54,7 +54,7 @@
           <q-item-label>Prescriptions to Share</q-item-label>
         </q-item-section>
         <q-item-section avatar>
-          <q-icon color="primary" style="font-size: 1.5em" name="prescriptions" />
+          <q-icon color="primary" style="font-size: 1.5em" name="medication" />
         </q-item-section>
       </q-item>
       <q-item v-if="state.type == 'pnosh' && state.user.role == 'patient'" clickable @click="open('list', 'bundles', 'ServiceRequest', '')">
