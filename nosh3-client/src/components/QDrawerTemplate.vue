@@ -93,7 +93,7 @@
                 <q-tooltip># Items in Resource</q-tooltip>
               </q-badge>
               <q-badge v-if="item.oidc" rounded color="warning" :label="item.oidc">
-                <q-tooltip>Imported from Sync</q-tooltip>
+                <q-tooltip># Ready to Import from Sync</q-tooltip>
               </q-badge>
             </div>
           </q-item-section>

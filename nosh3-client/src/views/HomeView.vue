@@ -103,6 +103,8 @@
           @sort-alpha="sortAlpha"
           @sort-date="sortDate"
           @close-container="closeContainer"
+          @clear-sync="clearSync"
+          @dump-sync="dumpSync"
           @open-detail="openDetail"
           :toolbar-object="state.toolbarObject"
           :encounter="state.encounter"
@@ -983,6 +985,10 @@ export default defineComponent({
     const checkOnline = (e) => {
       state.online = e
     }
+    const clearSync = () => {
+      state.oidc = []
+      localStorage.removeItem('oidc_data')
+    }
     const closeActivities = () => {
       state.showActivity = false
     }
@@ -1203,6 +1209,24 @@ export default defineComponent({
           { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
         ]
       })
+    }
+    const dumpSync = async() => {
+      const bundleDoc = {}
+      const id = 'nosh_' + uuidv4()
+      const time = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
+      const entries = []
+      objectPath.set(bundleDoc, 'resourceType', 'Bundle')
+      objectPath.set(bundleDoc, 'id', id)
+      objectPath.set(bundleDoc, '_id', id)
+      objectPath.set(bundleDoc, 'type', 'collection')
+      objectPath.set(bundleDoc, 'timestamp', time)
+      for (var a in state.oidc) {
+        if (objectPath.has(state, 'oidc.' + a + '.docs')) {
+          entries.concat(objectPath.get(state, 'oidc.' + a + '.docs'))
+        }
+      }
+      objectPath.set(bundleDoc, 'entry', entries)
+      download(bundleDoc, 'fhir_bundle.json', 'application/json')
     }
     const focusInput = async() => {
       await nextTick()
@@ -1459,7 +1483,7 @@ export default defineComponent({
       state.openDetail = false
     }
     const openDump = async() => {
-      const resources = await fetchJSON('resources', props.online)
+      const resources = await fetchJSON('resources', state.online)
       const bundleDoc = {}
       const id = 'nosh_' + uuidv4()
       const time = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
@@ -2137,6 +2161,7 @@ export default defineComponent({
       addPatient,
       addSchemaOptions,
       checkOnline,
+      clearSync,
       closeActivities,
       closeAll,
       closeCareOpportunities,
@@ -2148,6 +2173,7 @@ export default defineComponent({
       closePage,
       closePulldown,
       completeTask,
+      dumpSync,
       fhirModel,
       fhirReplace,
       fetchJSON,

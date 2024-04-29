@@ -33,14 +33,6 @@
           <q-icon color="primary" style="font-size: 1.5em" name="calendar_today" />
         </q-item-section>
       </q-item>
-      <q-item clickable @click="openQR()">
-        <q-item-section>
-          <q-item-label>Share Health Record</q-item-label>
-        </q-item-section>
-        <q-item-section avatar>
-          <q-icon color="primary" style="font-size: 1.5em" name="qr_code_2" />
-        </q-item-section>
-      </q-item>
       <q-item clickable @click="openQRReader()">
         <q-item-section>
           <q-item-label>QR Code Reader for Prescriptions and Orders</q-item-label>
@@ -49,38 +41,56 @@
           <q-icon color="primary" style="font-size: 1.5em" name="qr_code_scanner" />
         </q-item-section>
       </q-item>
-      <q-item v-if="state.type == 'pnosh' && state.user.role == 'patient'" clickable @click="open('list', 'bundles', 'MedicationRequest', '')">
-        <q-item-section>
-          <q-item-label>Prescriptions to Share</q-item-label>
-        </q-item-section>
-        <q-item-section avatar>
-          <q-icon color="primary" style="font-size: 1.5em" name="medication" />
-        </q-item-section>
-      </q-item>
-      <q-item v-if="state.type == 'pnosh' && state.user.role == 'patient'" clickable @click="open('list', 'bundles', 'ServiceRequest', '')">
-        <q-item-section>
-          <q-item-label>Orders to Share</q-item-label>
-        </q-item-section>
-        <q-item-section avatar>
-          <q-icon color="primary" style="font-size: 1.5em" name="medical_services" />
-        </q-item-section>
-      </q-item>
-      <q-item v-if="state.type == 'pnosh' && state.user.role == 'patient'" clickable @click="openTrustee()">
-        <q-item-section>
-          <q-item-label>Trustee<q-icon name="fas fa-registered" style="font-size: 0.6em; vertical-align: super;"/> Policies</q-item-label>
-        </q-item-section>
-        <q-item-section avatar>
-          <q-icon color="primary" style="font-size: 1.5em" name="policy" />
-        </q-item-section>
-      </q-item>
-      <q-item v-if="state.type == 'pnosh' && state.user.role == 'patient'" clickable @click="openDump()">
-        <q-item-section>
-          <q-item-label>FHIR Dump</q-item-label>
-        </q-item-section>
-        <q-item-section avatar>
-          <q-icon color="primary" style="font-size: 1.5em" name="local_fire_department" />
-        </q-item-section>
-      </q-item>
+      <q-expansion-item
+        v-if="state.type == 'pnosh' && state.user.role == 'patient'"
+        expand-separator
+        icon="share"
+        label="Share"
+        caption="For Patient User"
+      >
+        <q-list>
+          <q-item clickable @click="openQR()">
+            <q-item-section>
+              <q-item-label>Share Health Record</q-item-label>
+            </q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" style="font-size: 1.5em" name="qr_code_2" />
+            </q-item-section>
+          </q-item>
+          <q-item v-if="state.type == 'pnosh' && state.user.role == 'patient'" clickable @click="open('list', 'bundles', 'MedicationRequest', '')">
+            <q-item-section>
+              <q-item-label>Prescriptions to Share</q-item-label>
+            </q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" style="font-size: 1.5em" name="medication" />
+            </q-item-section>
+          </q-item>
+          <q-item v-if="state.type == 'pnosh' && state.user.role == 'patient'" clickable @click="open('list', 'bundles', 'ServiceRequest', '')">
+            <q-item-section>
+              <q-item-label>Orders to Share</q-item-label>
+            </q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" style="font-size: 1.5em" name="medical_services" />
+            </q-item-section>
+          </q-item>
+          <q-item v-if="state.type == 'pnosh' && state.user.role == 'patient'" clickable @click="openTrustee()">
+            <q-item-section>
+              <q-item-label>Trustee<q-icon name="fas fa-registered" style="font-size: 0.6em; vertical-align: super;"/> Policies</q-item-label>
+            </q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" style="font-size: 1.5em" name="policy" />
+            </q-item-section>
+          </q-item>
+          <q-item v-if="state.type == 'pnosh' && state.user.role == 'patient'" clickable @click="openDump()">
+            <q-item-section>
+              <q-item-label>FHIR Dump</q-item-label>
+            </q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" style="font-size: 1.5em" name="local_fire_department" />
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-expansion-item>
       <q-item v-if="state.patient !== ''" clickable @click="openActivity()">
         <q-item-section>
           <q-item-label>Activity</q-item-label>

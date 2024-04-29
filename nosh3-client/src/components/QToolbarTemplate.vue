@@ -42,6 +42,12 @@
   <q-btn v-if="state.bundle" push flat round icon="print" clickable v-print="'print_bundle'">
     <q-tooltip>Print</q-tooltip>
   </q-btn>
+  <q-btn v-if="state.oidc" push flat round icon="file_download" clickable @click="dumpSync()">
+    <q-tooltip>Sync Dump</q-tooltip>
+  </q-btn>
+  <q-btn v-if="state.oidc" push flat round icon="delete" clickable @click="clearSync()">
+    <q-tooltip>Clear Sync</q-tooltip>
+  </q-btn>
   <q-btn push flat round icon="close" clickable @click="closeContainer()">
     <q-tooltip>Close</q-tooltip>
   </q-btn>
@@ -68,7 +74,7 @@ export default defineComponent({
   directives: {
     print
   },
-  emits: ['addendum-encounter', 'close-container', 'lock-thread', 'new-prescription', 'open-chat', 'open-detail', 'open-form', 'open-file', 'open-immunizationschedule', 'open-list', 'open-page', 'open-page-form', 'set-composition-section', 'sign-encounter', 'sort-alpha', 'sort-date'],
+  emits: ['addendum-encounter', 'clear-sync', 'close-container', 'dump-sync', 'lock-thread', 'new-prescription', 'open-chat', 'open-detail', 'open-form', 'open-file', 'open-immunizationschedule', 'open-list', 'open-page', 'open-page-form', 'set-composition-section', 'sign-encounter', 'sort-alpha', 'sort-date'],
   setup (props, { emit }) {
     const { fetchJSON } = common()
     const state = reactive({
@@ -117,8 +123,14 @@ export default defineComponent({
     const addendumEncounter = () => {
       emit('addendum-encounter')
     }
+    const clearSync = () => {
+      emit('clear-sync')
+    }
     const closeContainer = () => {
       emit('close-container')
+    }
+    const dumpSync = () => {
+      emit('dump-sync')
     }
     const lockThread = () => {
       emit('lock-thread', props.id)
@@ -287,7 +299,9 @@ export default defineComponent({
     }
     return {
       addendumEncounter,
+      clearSync,
       closeContainer,
+      dumpSync,
       fetchJSON,
       lockThread,
       newPrescription,
