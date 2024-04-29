@@ -1500,6 +1500,8 @@ export default defineComponent({
       objectPath.set(bundleDoc, 'type', 'collection')
       objectPath.set(bundleDoc, 'timestamp', time)
       for (var resource of resources.rows) {
+        console.log(prefix)
+        console.log(resource)
         const db = new PouchDB(prefix + resource)
         const result = await db.allDocs({
           include_docs: true,
