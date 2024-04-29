@@ -1506,6 +1506,7 @@ export default defineComponent({
           attachments: true,
           startkey: 'nosh_'
         })
+        console.log(result)
         if (result.rows.length > 0) {
           for (var a of result.rows) {
             var entry = {}
