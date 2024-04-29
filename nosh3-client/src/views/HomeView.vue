@@ -1210,11 +1210,11 @@ export default defineComponent({
         ]
       })
     }
-    const dumpSync = async() => {
+    const dumpSync = () => {
       const bundleDoc = {}
       const id = 'nosh_' + uuidv4()
       const time = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
-      const entries = []
+      var entries = []
       objectPath.set(bundleDoc, 'resourceType', 'Bundle')
       objectPath.set(bundleDoc, 'id', id)
       objectPath.set(bundleDoc, '_id', id)
@@ -1222,9 +1222,17 @@ export default defineComponent({
       objectPath.set(bundleDoc, 'timestamp', time)
       for (var a in state.oidc) {
         if (objectPath.has(state, 'oidc.' + a + '.docs')) {
-          entries.concat(objectPath.get(state, 'oidc.' + a + '.docs'))
+          for (var b of state.oidc[a].docs) {
+            for (var c of b.rows) {
+              var entry = {}
+              objectPath.set(entry, 'resource', c)
+              console.log(entry)
+              entries.push(entry)
+            }
+          }
         }
       }
+      console.log(entries)
       objectPath.set(bundleDoc, 'entry', entries)
       download(JSON.stringify(bundleDoc), 'fhir_bundle.json', 'application/json')
     }
@@ -1487,7 +1495,7 @@ export default defineComponent({
       const bundleDoc = {}
       const id = 'nosh_' + uuidv4()
       const time = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
-      const entries = []
+      var entries = []
       objectPath.set(bundleDoc, 'resourceType', 'Bundle')
       objectPath.set(bundleDoc, 'id', id)
       objectPath.set(bundleDoc, '_id', id)
@@ -1501,12 +1509,14 @@ export default defineComponent({
         })
         if (result.rows.length > 0) {
           for (var a of result.rows) {
-            const entry = {}
+            var entry = {}
             objectPath.set(entry, 'resource', a.doc)
+            console.log(entry)
             entries.push(entry)
           }
         }
       }
+      console.log(entries)
       objectPath.set(bundleDoc, 'entry', entries)
       download(JSON.stringify(bundleDoc), 'fhir_bundle.json', 'application/json')
     }
