@@ -1226,13 +1226,11 @@ export default defineComponent({
             for (var c of b.rows) {
               var entry = {}
               objectPath.set(entry, 'resource', c)
-              console.log(entry)
               entries.push(entry)
             }
           }
         }
       }
-      console.log(entries)
       objectPath.set(bundleDoc, 'entry', entries)
       download(JSON.stringify(bundleDoc), 'fhir_bundle.json', 'application/json')
     }
@@ -1505,11 +1503,13 @@ export default defineComponent({
         const db = new PouchDB(prefix + resource)
         const result = await db.allDocs({
           include_docs: true,
-          attachments: true
+          attachments: true,
+          startkey: 'nosh_'
         })
         if (result.rows.length > 0) {
           for (var a of result.rows) {
             var entry = {}
+            console.log(a.doc)
             objectPath.set(entry, 'resource', a.doc)
             console.log(entry)
             entries.push(entry)
