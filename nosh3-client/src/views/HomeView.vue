@@ -1226,7 +1226,7 @@ export default defineComponent({
         }
       }
       objectPath.set(bundleDoc, 'entry', entries)
-      download(bundleDoc, 'fhir_bundle.json', 'application/json')
+      download(JSON.stringify(bundleDoc), 'fhir_bundle.json', 'application/json')
     }
     const focusInput = async() => {
       await nextTick()
@@ -1508,7 +1508,7 @@ export default defineComponent({
         }
       }
       objectPath.set(bundleDoc, 'entry', entries)
-      download(bundleDoc, 'fhir_bundle.json', 'application/json')
+      download(JSON.stringify(bundleDoc), 'fhir_bundle.json', 'application/json')
     }
     const openFile = async(id, resource, category = 'all', index = '') => {
       closeAll()
