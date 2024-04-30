@@ -49,36 +49,12 @@
           <q-icon color="primary" style="font-size: 1.5em" name="qr_code_2" />
         </q-item-section>
       </q-item>
-      <q-item v-if="state.type == 'pnosh' && state.user.role == 'patient'" clickable @click="open('list', 'bundles', 'MedicationRequest', '')">
+      <q-item v-if="state.type == 'pnosh' && state.user.role == 'patient'" clickable @click="openShare()">
         <q-item-section>
-          <q-item-label>Prescriptions to Share</q-item-label>
+          <q-item-label>Share</q-item-label>
         </q-item-section>
         <q-item-section avatar>
-          <q-icon color="primary" style="font-size: 1.5em" name="medication" />
-        </q-item-section>
-      </q-item>
-      <q-item v-if="state.type == 'pnosh' && state.user.role == 'patient'" clickable @click="open('list', 'bundles', 'ServiceRequest', '')">
-        <q-item-section>
-          <q-item-label>Orders to Share</q-item-label>
-        </q-item-section>
-        <q-item-section avatar>
-          <q-icon color="primary" style="font-size: 1.5em" name="medical_services" />
-        </q-item-section>
-      </q-item>
-      <q-item v-if="state.type == 'pnosh' && state.user.role == 'patient'" clickable @click="openTrustee()">
-        <q-item-section>
-          <q-item-label>Trustee<q-icon name="fas fa-registered" style="font-size: 0.6em; vertical-align: super;"/> Policies</q-item-label>
-        </q-item-section>
-        <q-item-section avatar>
-          <q-icon color="primary" style="font-size: 1.5em" name="policy" />
-        </q-item-section>
-      </q-item>
-      <q-item v-if="state.type == 'pnosh' && state.user.role == 'patient'" clickable @click="openDump()">
-        <q-item-section>
-          <q-item-label>FHIR Dump</q-item-label>
-        </q-item-section>
-        <q-item-section avatar>
-          <q-icon color="primary" style="font-size: 1.5em" name="local_fire_department" />
+          <q-icon color="primary" style="font-size: 1.5em" name="share" />
         </q-item-section>
       </q-item>
       <q-item v-if="state.patient !== ''" clickable @click="openActivity()">
@@ -117,7 +93,7 @@ export default defineComponent({
     },
     type: String
   },
-  emits: ['open-activities', 'open-dump', 'open-list', 'open-page', 'open-qr', 'open-schedule', 'stop-inbox-timer'],
+  emits: ['open-activities', 'open-list', 'open-page', 'open-qr', 'open-schedule', 'open-share', 'stop-inbox-timer'],
   setup (props, { emit }) {
     const auth = useAuthStore()
     const { eventAdd } = common()
@@ -152,9 +128,6 @@ export default defineComponent({
     const openActivity = () => {
       emit('open-activities')
     }
-    const openDump = () => {
-      emit('open-dump')
-    }
     const openQR = () => {
       emit('open-qr', window.location.href)
     }
@@ -164,8 +137,8 @@ export default defineComponent({
     const openSchedule = () => {
       emit('open-schedule')
     }
-    const openTrustee = () => {
-      emit('open-trustee')
+    const openShare = () => {
+      emit('open-share')
     }
     return {
       logout,
@@ -175,7 +148,7 @@ export default defineComponent({
       openQR,
       openQRReader,
       openSchedule,
-      openTrustee,
+      openShare,
       state
     }
   }

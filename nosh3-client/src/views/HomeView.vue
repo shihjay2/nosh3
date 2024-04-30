@@ -71,13 +71,12 @@
           <QMenuTemplate
             v-if="state.showMenu"
             @open-activities="openActivities"
-            @open-dump="openDump"
             @open-list="openList"
             @open-page="openPage"
             @open-qr="openQR"
             @open-qr-reader="openQRReader"
             @open-schedule="openSchedule"
-            @open-trustee="openTrustee"
+            @open-share="openShare"
             @stop-inbox-timer="stopInboxTimer"
             :user="state.user"
             :online="state.online"
@@ -537,6 +536,42 @@
     <QRReader
     />
   </q-dialog>
+  <q-dialog v-model="state.showShare">
+    <q-list>
+      <q-item clickable @click="openList('bundles', 'MedicationRequest')">
+        <q-item-section>
+          <q-item-label>Prescriptions to Share</q-item-label>
+        </q-item-section>
+        <q-item-section avatar>
+          <q-icon color="primary" style="font-size: 1.5em" name="medication" />
+        </q-item-section>
+      </q-item>
+      <q-item clickable @click="openList('bundles', 'ServiceRequest')">
+        <q-item-section>
+          <q-item-label>Orders to Share</q-item-label>
+        </q-item-section>
+        <q-item-section avatar>
+          <q-icon color="primary" style="font-size: 1.5em" name="medical_services" />
+        </q-item-section>
+      </q-item>
+      <q-item clickable @click="openTrustee()">
+        <q-item-section>
+          <q-item-label>Trustee<q-icon name="fas fa-registered" style="font-size: 0.6em; vertical-align: super;"/> Policies</q-item-label>
+        </q-item-section>
+        <q-item-section avatar>
+          <q-icon color="primary" style="font-size: 1.5em" name="policy" />
+        </q-item-section>
+      </q-item>
+      <q-item clickable @click="openDump()">
+        <q-item-section>
+          <q-item-label>FHIR Dump</q-item-label>
+        </q-item-section>
+        <q-item-section avatar>
+          <q-icon color="primary" style="font-size: 1.5em" name="local_fire_department" />
+        </q-item-section>
+      </q-item>
+    </q-list>
+  </q-dialog>
 </template>
 
 <script>
@@ -759,6 +794,8 @@ export default defineComponent({
       qr: false,
       qr_value: '',
       showQRReader: false,
+      // share
+      showShare: false,
       // sync
       sync_on: false,
       showPIN: false,
@@ -1500,21 +1537,16 @@ export default defineComponent({
       objectPath.set(bundleDoc, 'type', 'collection')
       objectPath.set(bundleDoc, 'timestamp', time)
       for (var resource of resources.rows) {
-        console.log(prefix)
-        console.log(resource)
-        const db = new PouchDB(prefix + resource)
+        const db = new PouchDB(prefix + resource.resource)
         const result = await db.allDocs({
           include_docs: true,
           attachments: true,
           startkey: 'nosh_'
         })
-        console.log(result)
         if (result.rows.length > 0) {
           for (var a of result.rows) {
             var entry = {}
-            console.log(a.doc)
             objectPath.set(entry, 'resource', a.doc)
-            console.log(entry)
             entries.push(entry)
           }
         }
@@ -1772,6 +1804,9 @@ export default defineComponent({
       await nextTick()
       state.resource = 'appointments'
       state.showSchedule = true
+    }
+    const openShare = () => {
+      state.showShare = true
     }
     const openTimelineEntry = async(id) => {
       if (id !== 'intro') {
@@ -2223,6 +2258,7 @@ export default defineComponent({
       openQR,
       openQRReader,
       openSchedule,
+      openShare,
       openTimelineEntry,
       openTrustee,
       patientList,

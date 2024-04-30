@@ -199,8 +199,6 @@ export default defineComponent({
           // selector: {$or: selector}
           selector: selector
         })
-        console.log(state.payload._nosh)
-        console.log(result)
         if (result.docs.length > 0) {
           auth.login(result.docs[0], state.payload, jwt)
           state.progress += '<br/>Welcome, ' + state.payload._nosh.display + '...'
