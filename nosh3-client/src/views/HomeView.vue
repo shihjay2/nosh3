@@ -1909,7 +1909,9 @@ export default defineComponent({
       })
     }
     const removeOIDC = (index, resource, origin) => {
+      console.log("index: " + index + ", resource:" + resource + ", origin: " + origin)
       var a = state.oidc.indexOf(b => b.origin == origin)
+      console.log(state.oidc[a])
       var c = state.oidc[a].docs.indexOf(d => d.resource == resource)
       objectPath.del(state, 'oidc.' + a + '.docs.' + c + '.rows')
       localStorage.setItem('oidc_data', JSON.stringify(state.oidc))
