@@ -43,7 +43,7 @@
       </q-item>
       <q-item clickable @click="openQR()">
         <q-item-section>
-          <q-item-label>Share Health Record</q-item-label>
+          <q-item-label>Health Record Access QR Code</q-item-label>
         </q-item-section>
         <q-item-section avatar>
           <q-icon color="primary" style="font-size: 1.5em" name="qr_code_2" />
@@ -51,7 +51,7 @@
       </q-item>
       <q-item v-if="state.type == 'pnosh' && state.user.role == 'patient'" clickable @click="openShare()">
         <q-item-section>
-          <q-item-label>Share</q-item-label>
+          <q-item-label>Sharing</q-item-label>
         </q-item-section>
         <q-item-section avatar>
           <q-icon color="primary" style="font-size: 1.5em" name="share" />
