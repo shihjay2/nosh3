@@ -144,7 +144,6 @@ export default defineComponent({
       logout,
       open,
       openActivity,
-      openDump,
       openQR,
       openQRReader,
       openSchedule,
