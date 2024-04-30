@@ -743,22 +743,26 @@ export default defineComponent({
             var oidc_results = props.oidc[e].docs.find(f => f.resource === props.resource)
             if (oidc_results !== undefined) {
               var g1 = 0
-              for (var g of oidc_results.rows) {
-                var comp = state.rows.find(h => objectPath.get(h, 'doc.' + state.base.compField) === objectPath.get(g, state.base.compField))
-                if (comp === undefined) {
-                  objectPath.set(state, 'rows.' + a1 + '.id', objectPath.get(g, 'id'))
-                  objectPath.set(state, 'rows.' + a1 + '.title', fhirReplace('title', state.base, g, props.schema.flat()))
-                  objectPath.set(state, 'rows.' + a1 + '.subhead', fhirReplace('subhead', state.base, g, props.schema.flat()))
-                  objectPath.set(state, 'rows.' + a1 + '.content', fhirReplace('content', state.base, g, props.schema.flat()))
-                  objectPath.set(state, 'rows.' + a1 + '.extended', fhirReplace('extended', state.base, g, props.schema.flat()))
-                  objectPath.set(state, 'rows.' + a1 + '.status', fhirReplace('status', state.base, g, props.schema.flat()))
-                  objectPath.set(state, 'rows.' + a1 + '.doc', g)
-                  objectPath.set(state, 'rows.' + a1 + '.oidc', props.oidc[e].origin)
-                  objectPath.set(state, 'rows.' + a1 + '.oidc_index', g1)
-                  objectPath.set(state, 'rows.' + a1 + '.delete', 'n')
-                  a1++
+              if (objectPath.has(oidc_results, 'rows')) {
+                if (oidc_results.rows.length > 0) {
+                  for (var g of oidc_results.rows) {
+                    var comp = state.rows.find(h => objectPath.get(h, 'doc.' + state.base.compField) === objectPath.get(g, state.base.compField))
+                    if (comp === undefined) {
+                      objectPath.set(state, 'rows.' + a1 + '.id', objectPath.get(g, 'id'))
+                      objectPath.set(state, 'rows.' + a1 + '.title', fhirReplace('title', state.base, g, props.schema.flat()))
+                      objectPath.set(state, 'rows.' + a1 + '.subhead', fhirReplace('subhead', state.base, g, props.schema.flat()))
+                      objectPath.set(state, 'rows.' + a1 + '.content', fhirReplace('content', state.base, g, props.schema.flat()))
+                      objectPath.set(state, 'rows.' + a1 + '.extended', fhirReplace('extended', state.base, g, props.schema.flat()))
+                      objectPath.set(state, 'rows.' + a1 + '.status', fhirReplace('status', state.base, g, props.schema.flat()))
+                      objectPath.set(state, 'rows.' + a1 + '.doc', g)
+                      objectPath.set(state, 'rows.' + a1 + '.oidc', props.oidc[e].origin)
+                      objectPath.set(state, 'rows.' + a1 + '.oidc_index', g1)
+                      objectPath.set(state, 'rows.' + a1 + '.delete', 'n')
+                      a1++
+                    }
+                    g1++
+                  }
                 }
-                g1++
               }
             }
           }

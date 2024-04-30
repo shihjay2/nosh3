@@ -1910,9 +1910,8 @@ export default defineComponent({
     }
     const removeOIDC = (index, resource, origin) => {
       var a = state.oidc.findIndex(b => b.origin == origin)
-      console.log(state.oidc[a])
       var c = state.oidc[a].docs.findIndex(d => d.resource == resource)
-      objectPath.del(state, 'oidc.' + a + '.docs.' + c + '.rows')
+      objectPath.del(state, 'oidc.' + a + '.docs.' + c + '.rows.' + index)
       localStorage.setItem('oidc_data', JSON.stringify(state.oidc))
     }
     const setActiveComposition = (doc) => {
