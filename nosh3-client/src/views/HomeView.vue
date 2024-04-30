@@ -537,40 +537,44 @@
     />
   </q-dialog>
   <q-dialog v-model="state.showShare">
-    <q-list>
-      <q-item clickable @click="openList('bundles', 'MedicationRequest')">
-        <q-item-section>
-          <q-item-label>Prescriptions to Share</q-item-label>
-        </q-item-section>
-        <q-item-section avatar>
-          <q-icon color="primary" style="font-size: 1.5em" name="medication" />
-        </q-item-section>
-      </q-item>
-      <q-item clickable @click="openList('bundles', 'ServiceRequest')">
-        <q-item-section>
-          <q-item-label>Orders to Share</q-item-label>
-        </q-item-section>
-        <q-item-section avatar>
-          <q-icon color="primary" style="font-size: 1.5em" name="medical_services" />
-        </q-item-section>
-      </q-item>
-      <q-item clickable @click="openTrustee()">
-        <q-item-section>
-          <q-item-label>Trustee<q-icon name="fas fa-registered" style="font-size: 0.6em; vertical-align: super;"/> Policies</q-item-label>
-        </q-item-section>
-        <q-item-section avatar>
-          <q-icon color="primary" style="font-size: 1.5em" name="policy" />
-        </q-item-section>
-      </q-item>
-      <q-item clickable @click="openDump()">
-        <q-item-section>
-          <q-item-label>FHIR Dump</q-item-label>
-        </q-item-section>
-        <q-item-section avatar>
-          <q-icon color="primary" style="font-size: 1.5em" name="local_fire_department" />
-        </q-item-section>
-      </q-item>
-    </q-list>
+    <q-card>
+      <q-card-section>
+        <q-list>
+          <q-item clickable @click="openList('bundles', 'MedicationRequest')">
+            <q-item-section>
+              <q-item-label>Prescriptions to Share</q-item-label>
+            </q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" style="font-size: 1.5em" name="medication" />
+            </q-item-section>
+          </q-item>
+          <q-item clickable @click="openList('bundles', 'ServiceRequest')">
+            <q-item-section>
+              <q-item-label>Orders to Share</q-item-label>
+            </q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" style="font-size: 1.5em" name="medical_services" />
+            </q-item-section>
+          </q-item>
+          <q-item clickable @click="openTrustee()">
+            <q-item-section>
+              <q-item-label>Trustee<q-icon name="fas fa-registered" style="font-size: 0.6em; vertical-align: super;"/> Policies</q-item-label>
+            </q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" style="font-size: 1.5em" name="policy" />
+            </q-item-section>
+          </q-item>
+          <q-item clickable @click="openDump()">
+            <q-item-section>
+              <q-item-label>FHIR Dump</q-item-label>
+            </q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" style="font-size: 1.5em" name="local_fire_department" />
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-card-section>
+    </q-card>
   </q-dialog>
 </template>
 
