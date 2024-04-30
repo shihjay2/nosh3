@@ -2193,8 +2193,10 @@ export default defineComponent({
         for (var d of state.oidc) {
           if (d.docs.length > 0) {
             for (var e of d.docs) {
-              if (e.rows.length > 0) {
-                oidc = oidc + e.rows.length
+              if (objectPath.has(e, 'rows')) {
+                if (e.rows.length > 0) {
+                  oidc = oidc + e.rows.length
+                }
               }
             }
           }
