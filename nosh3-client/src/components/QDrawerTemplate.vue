@@ -186,8 +186,10 @@ export default defineComponent({
             if (objectPath.has(props, 'oidc.' + e + '.docs')) {
               var oidc_results = props.oidc[e].docs.find(f => f.resource === state.ui[a].resource)
               if (oidc_results !== undefined) {
-                if (oidc_results.rows.length > 0) {
-                  objectPath.set(state, 'ui.' + a + '.oidc', oidc_results.rows.length.toString())
+                if (objectPath.has(oidc_results, 'rows')) {
+                  if (oidc_results.rows.length > 0) {
+                    objectPath.set(state, 'ui.' + a + '.oidc', oidc_results.rows.length.toString())
+                  }
                 }
               }
             }
