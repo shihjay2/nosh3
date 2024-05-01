@@ -348,6 +348,7 @@ export function common() {
             }
           }
           if (replaceWith[g] === undefined) {
+            console.log(field)
             if (objectPath.has(field, 'alt_model')) {
               var alt_model1 = objectPath.get(field, 'alt_model')
               console.log(alt_model1)
