@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md" style="max-width: 250px">
+  <div style="max-width: 250px">
     <q-toolbar class="text-primary">
       <q-toolbar-title clickable @click="open('page', 'patients', 'identity', state.patient)">
         {{ state.patientName }}
