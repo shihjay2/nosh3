@@ -752,6 +752,8 @@ export default defineComponent({
                       if (g.category[0].coding[0].code === props.category) {
                         comp_category = true
                       }
+                    } else {
+                      comp_category = true
                     }
                     if (comp === undefined && comp_category) {
                       objectPath.set(state, 'rows.' + a1 + '.id', objectPath.get(g, 'id'))
