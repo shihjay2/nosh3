@@ -25,7 +25,7 @@
   "finalStatus": "final",
   "indexField": "encounter.reference",
   "indexRoot": "Encounter",
-  "indexField1": "category.coding.0.code",
+  "indexField1": "category.0.coding.0.code",
   "divContent": "{code}, {value} [{nickname}] (Date of Service: {effectiveDateTime})",
   "defaultDate": [
     {

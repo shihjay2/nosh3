@@ -746,8 +746,14 @@ export default defineComponent({
               if (objectPath.has(oidc_results, 'rows')) {
                 if (oidc_results.rows.length > 0) {
                   for (var g of oidc_results.rows) {
+                    var comp_category = false
                     var comp = state.rows.find(h => objectPath.get(h, 'doc.' + state.base.compField) === objectPath.get(g, state.base.compField))
-                    if (comp === undefined) {
+                    if (props.resource === 'observations' || props.resource === 'service_requests') {
+                      if (g.category[0].coding[0].code === props.category) {
+                        comp_category = true
+                      }
+                    }
+                    if (comp === undefined && comp_category) {
                       objectPath.set(state, 'rows.' + a1 + '.id', objectPath.get(g, 'id'))
                       objectPath.set(state, 'rows.' + a1 + '.title', fhirReplace('title', state.base, g, props.schema.flat()))
                       objectPath.set(state, 'rows.' + a1 + '.subhead', fhirReplace('subhead', state.base, g, props.schema.flat()))

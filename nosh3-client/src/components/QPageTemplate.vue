@@ -153,6 +153,7 @@
               :options="state.options"
               :care_plan_doc="state.careplanDoc"
               :composition_doc="state.compositionDoc"
+              :oidc="state.oidc"
             />
             <QFormTemplate
               v-if="state.showForm"
@@ -333,7 +334,11 @@ export default defineComponent({
     invoke: Array,
     states: Array,
     countries: Array,
-    language: Array
+    language: Array,
+    oidc: {
+      type: Array,
+      default: function () { return []}
+    }
   },
   emits: ['care-plan', 'composition', 'loading', 'lock-thread', 'new-prescription', 'open-form', 'open-graph', 'open-page-form-complete', 'reload-complete', 'reload-drawer', 'open-list', 'update-toolbar'],
   setup (props, { emit }) {
@@ -413,7 +418,8 @@ export default defineComponent({
       // compositions
       compositionDoc: {},
       // service_requests
-      service_request_doc: {}
+      service_request_doc: {},
+      oidc: []
     })
     const auth = useAuthStore()
     var prefix = ''
@@ -436,6 +442,7 @@ export default defineComponent({
       state.provider = props.provider
       state.practitioner = props.practitioner
       state.user = props.user
+      state.oidc = props.oidc
       state.base = await import('@/assets/fhir/' + props.resource + '.json')
       if (props.resource !== 'encounters' && props.resource !== 'service_requests' && props.resource !== 'observations') {
         var doc = await localDB.get(props.id)

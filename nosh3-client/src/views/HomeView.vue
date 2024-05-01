@@ -251,6 +251,7 @@
         :states="state.states"
         :countries="state.countries"
         :language="state.language"
+        :oidc="state.oidc"
       />
       <QFileTemplate
         v-if="state.showFile"
