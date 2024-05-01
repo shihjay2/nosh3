@@ -350,6 +350,8 @@ export function common() {
         }
       }
       found.forEach((e,i) => mapping[`{${e}}`] = replaceWith[i])
+      console.log(replaceWith)
+      console.log(mapping)
       str = str.replace(/\{\w+\}/ig, n => mapping[n])
       return str
     }
