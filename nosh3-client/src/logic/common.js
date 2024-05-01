@@ -347,6 +347,9 @@ export function common() {
               replaceWith[g] = objectPath.get(result, alt_model)
             }
           }
+          if (replaceWith[g] === undefined) {
+            replaceWith[g] = 'No value'
+          }
         }
       }
       found.forEach((e,i) => mapping[`{${e}}`] = replaceWith[i])
