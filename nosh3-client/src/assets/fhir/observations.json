@@ -522,6 +522,7 @@
             "id": "effectiveDateTime",
             "label": "Exam Date/Time",
             "model": "effectivePeriod.start",
+            "alt_model": "effectiveDateTime",
             "type": "datetime",
             "rules": "required",
             "mask": "####-##-## ##:##",

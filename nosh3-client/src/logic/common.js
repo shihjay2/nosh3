@@ -348,13 +348,20 @@ export function common() {
             }
           }
           if (replaceWith[g] === undefined) {
-            replaceWith[g] = 'No value'
+            if (objectPath.has(field, 'alt_model')) {
+              var alt_model1 = objectPath.get(field, 'alt_model')
+              if (objectPath.has(result, alt_model1)) {
+                replaceWith[g] = objectPath.get(result, alt_model1)
+              } else {
+                replaceWith[g] = 'No value'
+              }
+            } else {
+              replaceWith[g] = 'No value'
+            }
           }
         }
       }
       found.forEach((e,i) => mapping[`{${e}}`] = replaceWith[i])
-      console.log(replaceWith)
-      console.log(mapping)
       str = str.replace(/\{\w+\}/ig, n => mapping[n])
       return str
     }
