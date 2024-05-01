@@ -87,6 +87,7 @@
       "modelRoot": "reasonCode",
       "modelArray": true,
       "model": "text",
+      "alt_model": "type.0.coding.0.display",
       "type": "tags",
       "rules": "required",
       "category": "new"
@@ -242,6 +243,7 @@
         "modelRoot": "reasonCode",
         "modelArray": true,
         "model": "text",
+        "alt_model": "type.0.coding.0.display",
         "type": "tags",
         "rules": "required",
         "category": "new"

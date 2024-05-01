@@ -348,18 +348,15 @@ export function common() {
             }
           }
           if (replaceWith[g] === undefined) {
-            console.log(field)
             if (objectPath.has(field, 'alt_model')) {
               var alt_model1 = objectPath.get(field, 'alt_model')
-              console.log(alt_model1)
-              console.log(result)
               if (objectPath.has(result, alt_model1)) {
                 replaceWith[g] = objectPath.get(result, alt_model1)
               } else {
-                replaceWith[g] = 'No value'
+                replaceWith[g] = 'Not Defined'
               }
             } else {
-              replaceWith[g] = 'No value'
+              replaceWith[g] = 'Not Defined'
             }
           }
         }
