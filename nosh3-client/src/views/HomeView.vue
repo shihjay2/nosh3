@@ -1910,6 +1910,9 @@ export default defineComponent({
       })
     }
     const removeOIDC = (index, resource, origin) => {
+      console.log(index)
+      console.log(resource)
+      console.log(origin)
       var a = state.oidc.findIndex(b => b.origin == origin)
       var c = state.oidc[a].docs.findIndex(d => d.resource == resource)
       objectPath.del(state, 'oidc.' + a + '.docs.' + c + '.rows.' + index)
