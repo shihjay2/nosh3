@@ -605,6 +605,7 @@ export default defineComponent({
     }
     const deleteOIDCRow = async(index, origin) => {
       emit('remove-oidc', index, props.resource, origin)
+      await reloadList()
     }
     const deleteRow = async(doc, index) => {
       const result = await localDB.remove(doc)
