@@ -229,6 +229,7 @@
         @update-toolbar="updateToolbar"
         @reload-drawer="reloadDrawer"
         @open-list="openList"
+        @remove-oidc="removeOIDC"
         @care-plan="setActiveCarePlan"
         @composition="setActiveComposition"
         @new-prescription="newPrescription"

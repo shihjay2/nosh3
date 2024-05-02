@@ -341,7 +341,7 @@ export default defineComponent({
       default: function () { return []}
     }
   },
-  emits: ['care-plan', 'composition', 'loading', 'lock-thread', 'new-prescription', 'open-form', 'open-graph', 'open-page-form-complete', 'reload-complete', 'reload-drawer', 'open-list', 'update-toolbar'],
+  emits: ['care-plan', 'composition', 'loading', 'lock-thread', 'new-prescription', 'open-form', 'open-graph', 'open-page-form-complete', 'reload-complete', 'reload-drawer', 'remove-oidc', 'open-list', 'update-toolbar'],
   setup (props, { emit }) {
     const $q = useQuasar()
     const { addSchemaOptions, loadSchema, fetchJSON, sync, updateUser } = common()
