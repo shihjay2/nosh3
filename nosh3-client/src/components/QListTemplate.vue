@@ -235,10 +235,10 @@
         <q-btn v-if="row.author === 'patients' && state.provider" flat round color="teal" icon="thumb_up_alt" clickable @click="attestRow(row.doc)">
           <q-tooltip>Attest</q-tooltip>
         </q-btn>
-        <q-btn v-if="row.oidc" flat round color="teal" icon="import_export" clickable @click="importRow(row.doc, row.oidc_index, row.oidc)">
+        <q-btn v-if="row.oidc" flat round color="teal" icon="import_export" clickable @click="importRow(row.doc, row.id, row.oidc)">
           <q-tooltip>Import</q-tooltip>
         </q-btn>
-        <q-btn v-if="row.oidc" flat round color="red" icon="delete" clickable @click="deleteOIDCRow(row.oidc_index, row.oidc)">
+        <q-btn v-if="row.oidc" flat round color="red" icon="delete" clickable @click="deleteOIDCRow(row.id, row.oidc)">
           <q-tooltip>Delete</q-tooltip>
         </q-btn>
         <q-btn v-if="row.delete === 'y'" flat round color="red" icon="delete" clickable @click="deleteRow(row.doc, index)">

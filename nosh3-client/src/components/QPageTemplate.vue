@@ -131,6 +131,7 @@
               @lock-thread="lockThread"
               @open-form="openForm"
               @reload-complete="reloadComplete"
+              @remove-oidc="removeOIDC"
               @care-plan="setActiveCarePlan"
               @composition="setActiveComposition"
               @new-prescription="newPrescription"
@@ -893,6 +894,9 @@ export default defineComponent({
     const reloadDrawer = (resource) => {
       emit('reload-drawer', resource)
     }
+    const removeOIDC = (index, resource, origin) => {
+      emit('remove-oidc', index, resource, origin)
+    }
     const setActiveCarePlan = (doc) => {
       state.careplanDoc = doc
       emit('care-plan', doc)
@@ -965,6 +969,7 @@ export default defineComponent({
       openList,
       reloadComplete,
       reloadDrawer,
+      removeOIDC,
       setActiveCarePlan,
       setActiveComposition,
       sync,
