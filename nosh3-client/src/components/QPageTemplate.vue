@@ -469,7 +469,7 @@ export default defineComponent({
       if (newVal !== '') {
         state.tabReload = true
       }
-    })
+    },{deep: true})
     watch(() => props.reload, async(newVal) => {
       if (newVal) {
         var doc = await localDB.get(props.id)

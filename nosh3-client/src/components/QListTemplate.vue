@@ -539,7 +539,7 @@ export default defineComponent({
       if (newVal !== '') {
         reloadList()
       }
-    })
+    },{deep: true})
     const filterFn = (val, update) => {
       update(() => {
         const needle = val.toLocaleLowerCase()

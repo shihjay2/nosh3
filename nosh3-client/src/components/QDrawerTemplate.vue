@@ -233,7 +233,7 @@ export default defineComponent({
           }
         }
       }
-    })
+    },{deep: true})
     watch(() => props.encounter, async(newVal) => {
       await encounterCheck()
     })

@@ -1911,12 +1911,8 @@ export default defineComponent({
       })
     }
     const removeOIDC = (index, resource, origin) => {
-      console.log(index)
-      console.log(resource)
-      console.log(origin)
       var a = state.oidc.findIndex(b => b.origin == origin)
       var c = state.oidc[a].docs.findIndex(d => d.resource == resource)
-      console.log(objectPath.get(state, 'oidc.' + a + '.docs.' + c + '.rows.' + index))
       objectPath.del(state, 'oidc.' + a + '.docs.' + c + '.rows.' + index)
       localStorage.setItem('oidc_data', JSON.stringify(state.oidc))
       // state.drawerReload = true
