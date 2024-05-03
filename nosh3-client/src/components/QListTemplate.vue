@@ -779,6 +779,7 @@ export default defineComponent({
           }
         }
       }
+      console.log(state.rows)
     }
     const getActivity = async(a, activity) => {
       var progress = []
