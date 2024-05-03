@@ -635,6 +635,7 @@ export default defineComponent({
       await reloadList()
     }
     const importRow = async(doc, index, origin) => {
+      console.log(state.rows)
       const id = 'nosh_' + uuidv4()
       objectPath.set(doc, 'id', id)
       objectPath.set(doc, '_id', id)
