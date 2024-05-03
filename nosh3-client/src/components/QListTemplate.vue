@@ -514,6 +514,7 @@ export default defineComponent({
     })
     watch(() => props.reload, async(newVal) => {
       if (newVal) {
+        console.log('reload list')
         await loadList()
         emit('reload-complete')
       }
@@ -605,7 +606,7 @@ export default defineComponent({
     }
     const deleteOIDCRow = async(index, origin) => {
       emit('remove-oidc', index, props.resource, origin)
-      await reloadList()
+      // await reloadList()
     }
     const deleteRow = async(doc, index) => {
       const result = await localDB.remove(doc)
@@ -1279,7 +1280,8 @@ export default defineComponent({
       await reloadList(state.selected.value)
     }
     const reloadList = async(status = 'all') => {
-      state.rows = []
+      // state.rows = []
+      console.log('reloading list')
       await loadList(status)
     }
     const removeActivity = async(doc, index1, index) => {
