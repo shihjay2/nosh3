@@ -235,10 +235,10 @@
         <q-btn v-if="row.author === 'patients' && state.provider" flat round color="teal" icon="thumb_up_alt" clickable @click="attestRow(row.doc)">
           <q-tooltip>Attest</q-tooltip>
         </q-btn>
-        <q-btn v-if="row.oidc" flat round color="teal" icon="import_export" clickable @click="importRow(row.doc, row.id, row.oidc)">
+        <q-btn v-if="row.oidc" flat round color="teal" icon="import_export" clickable @click="importRow(row.doc, row.oidc_index, row.oidc)">
           <q-tooltip>Import</q-tooltip>
         </q-btn>
-        <q-btn v-if="row.oidc" flat round color="red" icon="delete" clickable @click="deleteOIDCRow(row.id, row.oidc)">
+        <q-btn v-if="row.oidc" flat round color="red" icon="delete" clickable @click="deleteOIDCRow(row.oidc_index, row.oidc)">
           <q-tooltip>Delete</q-tooltip>
         </q-btn>
         <q-btn v-if="row.delete === 'y'" flat round color="red" icon="delete" clickable @click="deleteRow(row.doc, index)">
@@ -606,7 +606,6 @@ export default defineComponent({
     }
     const deleteOIDCRow = async(index, origin) => {
       emit('remove-oidc', index, props.resource, origin)
-      // await reloadList()
     }
     const deleteRow = async(doc, index) => {
       const result = await localDB.remove(doc)
@@ -635,7 +634,6 @@ export default defineComponent({
       await reloadList()
     }
     const importRow = async(doc, index, origin) => {
-      console.log(state.rows)
       const id = 'nosh_' + uuidv4()
       objectPath.set(doc, 'id', id)
       objectPath.set(doc, '_id', id)
@@ -655,7 +653,6 @@ export default defineComponent({
         }
       }
       await sync(props.resource, false, props.patient, true, doc)
-      console.log("from import: " + index)
       emit('remove-oidc', index, props.resource, origin)
       $q.notify({
         message: 'The ' + pluralize.singular(props.resource.replace('_statements', '')) + ' has been imported.',
