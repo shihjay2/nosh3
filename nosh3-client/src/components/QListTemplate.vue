@@ -745,7 +745,6 @@ export default defineComponent({
           if (objectPath.has(props, 'oidc.' + e + '.docs')) {
             var oidc_results = props.oidc[e].docs.find(f => f.resource === props.resource)
             if (oidc_results !== undefined) {
-              console.log(oidc_results)
               var g1 = 0
               if (objectPath.has(oidc_results, 'rows')) {
                 if (oidc_results.rows.length > 0) {
