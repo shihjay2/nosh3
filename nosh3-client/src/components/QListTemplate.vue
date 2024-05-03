@@ -635,7 +635,7 @@ export default defineComponent({
       await reloadList()
     }
     const importRow = async(doc, index, origin) => {
-      var id = 'nosh_' + uuidv4()
+      const id = 'nosh_' + uuidv4()
       objectPath.set(doc, 'id', id)
       objectPath.set(doc, '_id', id)
       if (props.resource === 'immunizations' ||
@@ -654,6 +654,7 @@ export default defineComponent({
         }
       }
       await sync(props.resource, false, props.patient, true, doc)
+      console.log("from import: " + index)
       emit('remove-oidc', index, props.resource, origin)
       $q.notify({
         message: 'The ' + pluralize.singular(props.resource.replace('_statements', '')) + ' has been imported.',
