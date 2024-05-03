@@ -1920,6 +1920,7 @@ export default defineComponent({
       objectPath.del(state, 'oidc.' + a + '.docs.' + c + '.rows.' + index)
       localStorage.setItem('oidc_data', JSON.stringify(state.oidc))
       state.drawerReload = true
+      state.reload = true
     }
     const setActiveComposition = (doc) => {
       state.compositionDoc = doc

@@ -654,7 +654,6 @@ export default defineComponent({
       }
       await sync(props.resource, false, props.patient, true, doc)
       emit('remove-oidc', index, props.resource, origin)
-      await reloadList()
       $q.notify({
         message: 'The ' + pluralize.singular(props.resource.replace('_statements', '')) + ' has been imported.',
         color: 'primary',

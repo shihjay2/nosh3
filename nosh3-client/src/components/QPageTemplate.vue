@@ -465,6 +465,11 @@ export default defineComponent({
         updateTab(state.tab)
       }
     })
+    watch(() => props.oidc, async(newVal) => {
+      if (newVal !== '') {
+        state.tabReload = true
+      }
+    })
     watch(() => props.reload, async(newVal) => {
       if (newVal) {
         var doc = await localDB.get(props.id)
