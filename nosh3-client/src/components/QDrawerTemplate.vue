@@ -218,6 +218,20 @@ export default defineComponent({
         emit('reload-drawer-complete')
       }
     })
+    watch(() => props.oidc, async(newVal) => {
+      for (var e in newVal) {
+        if (objectPath.has(newVal, e + '.docs')) {
+          var oidc_results = newVal[e].docs.find(f => f.resource === state.ui[a].resource)
+          if (oidc_results !== undefined) {
+            if (objectPath.has(oidc_results, 'rows')) {
+              if (oidc_results.rows.length > 0) {
+                objectPath.set(state, 'ui.' + a + '.oidc', oidc_results.rows.length.toString())
+              }
+            }
+          }
+        }
+      }
+    })
     watch(() => props.encounter, async(newVal) => {
       await encounterCheck()
     })
