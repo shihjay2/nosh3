@@ -1327,18 +1327,16 @@ export default defineComponent({
     }
     const loadMarkdown = () => {
       const mdjs = []
-      for (var row in state.timeline) {
-        console.log(state.timeline)
+      for (var row of state.timeline) {
         const ul_arr = []
         if (row.id !== 'intro') {
-          console.log(row)
           mdjs.push({h3: Case.title(pluralize.singular(row.resource)) + ' Details'})
           ul_arr.push('**Date**: ' + moment(row.date).format('MMMM D,YYYY'))
           ul_arr.push('**' + Case.title(pluralize.singular(row.resource)) + '**: ' + row.title)
         } else {
           mdjs.push({h3: 'Patient Information'})
         }
-        for (var data in row.content) {
+        for (var data of row.content) {
           if (row.style === 'p') {
             ul_arr.push('**' + data.key + '**: ' + data.value)
           }
