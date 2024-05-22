@@ -27,6 +27,7 @@
     "highcharts": "^10.2.0",
     "highcharts-vue": "^1.4.0",
     "jose": "^4.9.0",
+    "json2md": "^2.0.1",
     "jspdf": "^2.5.1",
     "jsqry": "^1.2.4",
     "jsum": "^2.0.0-alpha.4",
@@ -75,7 +76,7 @@
     "lint-staged": "^11.1.2",
     "sass": "^1.33",
     "sass-loader": "^12.0.0",
-    "vue-cli-plugin-quasar": "~5.0.1"
+    "vue-cli-plugin-quasar": "^5.1.0"
   },
   "eslintConfig": {
     "root": true,

@@ -606,6 +606,13 @@ export default defineComponent({
     }
     const deleteOIDCRow = async(index, origin) => {
       emit('remove-oidc', index, props.resource, origin)
+      $q.notify({
+        message: 'The ' + pluralize.singular(props.resource.replace('_statements', '')) + ' has been removed.',
+        color: 'primary',
+        actions: [
+          { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+        ]
+      })
     }
     const deleteRow = async(doc, index) => {
       const result = await localDB.remove(doc)

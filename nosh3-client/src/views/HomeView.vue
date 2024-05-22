@@ -574,6 +574,14 @@
               <q-icon color="primary" style="font-size: 1.5em" name="local_fire_department" />
             </q-item-section>
           </q-item>
+          <q-item clickable @click="loadMarkdown()">
+            <q-item-section>
+              <q-item-label>Markdown</q-item-label>
+            </q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" style="font-size: 1.5em" name="format_indent_decrease" />
+            </q-item-section>
+          </q-item>
         </q-list>
       </q-card-section>
     </q-card>
@@ -591,6 +599,7 @@ import CareOpportunities from '@/components/CareOpportunities.vue'
 import { Form } from 'vee-validate'
 import Fuse from 'fuse.js'
 import ImmunizationSchedule from '@/components/ImmunizationSchedule.vue'
+import json2md from 'json2md'
 import moment from 'moment'
 import objectPath from 'object-path'
 import OIDC from '@/components/OIDC.vue'
@@ -1275,7 +1284,7 @@ export default defineComponent({
         }
       }
       objectPath.set(bundleDoc, 'entry', entries)
-      download(JSON.stringify(bundleDoc), 'fhir_bundle.json', 'application/json')
+      download(JSON.stringify(bundleDoc, null, 2), 'fhir_bundle.json', 'application/json')
     }
     const focusInput = async() => {
       await nextTick()
@@ -1315,6 +1324,29 @@ export default defineComponent({
       state.countries = resource_obj.countries
       state.select = resource_obj.select
       state.loading = false
+    }
+    const loadMarkdown = () => {
+      const mdjs = []
+      for (var row in state.timeline) {
+        const ul_arr = []
+        if (row.id !== 'intro') {
+          mdjs.push({h3: Case.title(pluralize.singular(row.resource)) + ' Details'})
+          ul_arr.push('**Date**: ' + moment(row.date).format('MMMM D,YYYY'))
+          ul_arr.push('**' + Case.title(pluralize.singular(row.resource)) + '**: ' + row.title)
+        } else {
+          mdjs.push({h3: 'Patient Information'})
+        }
+        for (var data in row.content) {
+          if (row.style === 'p') {
+            ul_arr.push('**' + data.key + '**: ' + data.value)
+          }
+          if (row.style === 'list') {
+            ul_arr.push('**Display**: ' + data)
+          }
+        }
+        mdjs.push({ul: ul_arr})
+      }
+      download(json2md(mdjs), 'nosh_timeline_' + Date.now() + '.md', 'text/markdown')
     }
     const loadTimeline = async() => {
       state.loading = true
@@ -1559,7 +1591,7 @@ export default defineComponent({
       }
       console.log(entries)
       objectPath.set(bundleDoc, 'entry', entries)
-      download(JSON.stringify(bundleDoc), 'fhir_bundle.json', 'application/json')
+      download(JSON.stringify(bundleDoc, null, 2), 'fhir_bundle.json', 'application/json')
     }
     const openFile = async(id, resource, category = 'all', index = '') => {
       closeAll()
@@ -2241,6 +2273,7 @@ export default defineComponent({
       loadResource,
       loadSchema,
       loadSelect,
+      loadMarkdown,
       loadTimeline,
       lockThread,
       newPrescription,
