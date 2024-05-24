@@ -1320,26 +1320,29 @@ export default defineComponent({
       for (var a in state.oidc) {
         if (objectPath.has(state, 'oidc.' + a + '.docs')) {
           for (var row of state.oidc[a].docs) {
-            for (var doc of row.rows) {
-              const id = 'nosh_' + uuidv4()
-              objectPath.set(doc, 'id', id)
-              objectPath.set(doc, '_id', id)
-              if (row.resource === 'immunizations' ||
-                  row.resource === 'allergy_intolerances' ||
-                  row.resource === 'related_persons') {
-                objectPath.set(doc, 'patient.reference', 'Patient/' + state.patient)
-              } else if (row.resource === 'tasks') {
-                objectPath.set(doc, 'for.reference', 'Patient/' + state.patient)
-              } else {
-                if (row.resource !== 'practitioners' &&
-                    row.resource !== 'organizations' &&
-                    row.resource !== 'appointments' &&
-                    row.resource !== 'users' &&
-                    row.resource !== 'patients') {
-                  objectPath.set(doc, 'subject.reference', 'Patient/' + state.patient)
+            console.log(row)
+            if (objectPath.has(row, 'rows')) {
+              for (var doc of row.rows) {
+                const id = 'nosh_' + uuidv4()
+                objectPath.set(doc, 'id', id)
+                objectPath.set(doc, '_id', id)
+                if (row.resource === 'immunizations' ||
+                    row.resource === 'allergy_intolerances' ||
+                    row.resource === 'related_persons') {
+                  objectPath.set(doc, 'patient.reference', 'Patient/' + state.patient)
+                } else if (row.resource === 'tasks') {
+                  objectPath.set(doc, 'for.reference', 'Patient/' + state.patient)
+                } else {
+                  if (row.resource !== 'practitioners' &&
+                      row.resource !== 'organizations' &&
+                      row.resource !== 'appointments' &&
+                      row.resource !== 'users' &&
+                      row.resource !== 'patients') {
+                    objectPath.set(doc, 'subject.reference', 'Patient/' + state.patient)
+                  }
                 }
+                await sync(row.resource, false, state.patient, true, doc)
               }
-              await sync(row.resource, false, state.patient, true, doc)
             }
           }
         }
