@@ -48,6 +48,12 @@
   <q-btn v-if="state.oidc" push flat round icon="delete" clickable @click="clearSync()">
     <q-tooltip>Clear Sync</q-tooltip>
   </q-btn>
+  <q-btn v-if="state.oidc" push flat round icon="import_export" clickable @click="importAll()">
+    <q-tooltip>Import Everything</q-tooltip>
+  </q-btn>
+  <q-btn v-if="state.oidc" push flat round icon="delete" clickable @click="clearAll()">
+    <q-tooltip>Clear Everything</q-tooltip>
+  </q-btn>
   <q-btn push flat round icon="close" clickable @click="closeContainer()">
     <q-tooltip>Close</q-tooltip>
   </q-btn>
@@ -74,7 +80,7 @@ export default defineComponent({
   directives: {
     print
   },
-  emits: ['addendum-encounter', 'clear-sync', 'close-container', 'dump-sync', 'lock-thread', 'new-prescription', 'open-chat', 'open-detail', 'open-form', 'open-file', 'open-immunizationschedule', 'open-list', 'open-page', 'open-page-form', 'set-composition-section', 'sign-encounter', 'sort-alpha', 'sort-date'],
+  emits: ['addendum-encounter', 'clear-all', 'clear-sync', 'close-container', 'dump-sync', 'import-all', 'lock-thread', 'new-prescription', 'open-chat', 'open-detail', 'open-form', 'open-file', 'open-immunizationschedule', 'open-list', 'open-page', 'open-page-form', 'set-composition-section', 'sign-encounter', 'sort-alpha', 'sort-date'],
   setup (props, { emit }) {
     const { fetchJSON } = common()
     const state = reactive({
@@ -123,6 +129,9 @@ export default defineComponent({
     const addendumEncounter = () => {
       emit('addendum-encounter')
     }
+    const clearAll = () => {
+      emit('clear-all')
+    }
     const clearSync = () => {
       emit('clear-sync')
     }
@@ -131,6 +140,9 @@ export default defineComponent({
     }
     const dumpSync = () => {
       emit('dump-sync')
+    }
+    const importAll = () => {
+      emit('import-all')
     }
     const lockThread = () => {
       emit('lock-thread', props.id)
@@ -299,10 +311,12 @@ export default defineComponent({
     }
     return {
       addendumEncounter,
+      clearAll,
       clearSync,
       closeContainer,
       dumpSync,
       fetchJSON,
+      importAll,
       lockThread,
       newPrescription,
       onFormOpen,

@@ -145,17 +145,19 @@ export default defineComponent({
             var c1_synthea = 0
             for (var c_synthea of resources2.rows) {
               var rows2 = []
-              for (var c2_synthea of oidc_response2.data.entry) {
-                if (c2_synthea.resource.resourceType === Case.pascal(pluralize.singular(c_synthea.resource))) {
-                  rows2.push(c2_synthea.resource)
+              if (c_synthea.resource !== 'patients') {
+                for (var c2_synthea of oidc_response2.data.entry) {
+                  if (c2_synthea.resource.resourceType === Case.pascal(pluralize.singular(c_synthea.resource))) {
+                    rows2.push(c2_synthea.resource)
+                  }
                 }
+                var docs_synthea = {
+                  resource: c_synthea.resource,
+                  rows: rows2
+                }
+                objectPath.set(state, 'oidc.docs.' + c1_synthea, docs_synthea)
+                c1_synthea++
               }
-              var docs_synthea = {
-                resource: c_synthea.resource,
-                rows: rows2
-              }
-              objectPath.set(state, 'oidc.docs.' + c1_synthea, docs_synthea)
-              c1_synthea++
             }
             emit('save-oidc', state.oidc)
           } catch (e) {
@@ -185,25 +187,27 @@ export default defineComponent({
           state.resources = resources.rows
           var c1 = 0
           for (var c of resources.rows) {
-            var oidc_url = localStorage.getItem('oidc_url') + Case.pascal(pluralize.singular(c.resource)) + '?patient=' + state.patient_token
-            var opts = {headers: {Authorization: 'Bearer ' + state.access_token, Accept: 'application/json'}}
-            try {
-              var oidc_response = await axios.get(oidc_url, opts)
-              var rows = []
-              console.log(oidc_response.data)
-              for (var c2 of oidc_response.data.entry) {
-                if (c2.resource.resourceType === Case.pascal(pluralize.singular(c.resource))) {
-                  rows.push(c2.resource)
+            if (c.resource !== 'patients') {
+              var oidc_url = localStorage.getItem('oidc_url') + Case.pascal(pluralize.singular(c.resource)) + '?patient=' + state.patient_token
+              var opts = {headers: {Authorization: 'Bearer ' + state.access_token, Accept: 'application/json'}}
+              try {
+                var oidc_response = await axios.get(oidc_url, opts)
+                var rows = []
+                console.log(oidc_response.data)
+                for (var c2 of oidc_response.data.entry) {
+                  if (c2.resource.resourceType === Case.pascal(pluralize.singular(c.resource))) {
+                    rows.push(c2.resource)
+                  }
                 }
+                var docs = {
+                  resource: c.resource,
+                  rows: rows
+                }
+                objectPath.set(state, 'oidc.docs.' + c1, docs)
+                c1++
+              } catch (e) {
+                console.log(e)
               }
-              var docs = {
-                resource: c.resource,
-                rows: rows
-              }
-              objectPath.set(state, 'oidc.docs.' + c1, docs)
-              c1++
-            } catch (e) {
-              console.log(e)
             }
           }
         } else {

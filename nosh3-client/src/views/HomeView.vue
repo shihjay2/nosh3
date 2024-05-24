@@ -105,6 +105,8 @@
           @clear-sync="clearSync"
           @dump-sync="dumpSync"
           @open-detail="openDetail"
+          @clear-all="clearAll"
+          @import-all="importAll"
           :toolbar-object="state.toolbarObject"
           :encounter="state.encounter"
           :id="state.id"
@@ -1037,6 +1039,30 @@ export default defineComponent({
     const checkOnline = (e) => {
       state.online = e
     }
+    const clearAll = async() => {
+      var resources = await fetchJSON('resources', state.online)
+      for (var a of resources.rows) {
+        if (a.resource !== 'patients' && a.resource !== 'users') {
+          const db = new PouchDB(prefix + a.resource)
+          const allDocs = await db.allDocs({
+            include_docs: true
+          })
+          const deleteDocs = allDocs.rows.map(row => {
+            return {_id: row.id, _rev: row.doc._rev, _deleted: true}
+          })
+          await db.bulkDocs(deleteDocs)
+          auth.setSyncResource(a.resource)
+        }
+      }
+      clearSync()
+      $q.notify({
+        message: 'Entire chart is cleared!',
+        color: 'primary',
+        actions: [
+          { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+        ]
+      })
+    }
     const clearSync = () => {
       state.oidc = []
       localStorage.removeItem('oidc_data')
@@ -1290,6 +1316,43 @@ export default defineComponent({
       await nextTick()
       patientSearch.value.focus()
     }
+    const importAll = async() => {
+      for (var a in state.oidc) {
+        if (objectPath.has(state, 'oidc.' + a + '.docs')) {
+          for (var row of state.oidc[a].docs) {
+            for (var doc of row.rows) {
+              const id = 'nosh_' + uuidv4()
+              objectPath.set(doc, 'id', id)
+              objectPath.set(doc, '_id', id)
+              if (row.resource === 'immunizations' ||
+                  row.resource === 'allergy_intolerances' ||
+                  row.resource === 'related_persons') {
+                objectPath.set(doc, 'patient.reference', 'Patient/' + state.patient)
+              } else if (row.resource === 'tasks') {
+                objectPath.set(doc, 'for.reference', 'Patient/' + state.patient)
+              } else {
+                if (row.resource !== 'practitioners' &&
+                    row.resource !== 'organizations' &&
+                    row.resource !== 'appointments' &&
+                    row.resource !== 'users' &&
+                    row.resource !== 'patients') {
+                  objectPath.set(doc, 'subject.reference', 'Patient/' + state.patient)
+                }
+              }
+              await sync(row.resource, false, state.patient, true, doc)
+            }
+          }
+        }
+      }
+      clearSync()
+      $q.notify({
+        message: 'All synced external resources have been imported!',
+        color: 'primary',
+        actions: [
+          { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+        ]
+      })
+    }
     const loading = () => {
       if (state.loading === true) {
         state.loading = false
@@ -1331,7 +1394,7 @@ export default defineComponent({
         const ul_arr = []
         if (row.id !== 'intro') {
           mdjs.push({h3: Case.title(pluralize.singular(row.resource)) + ' Details'})
-          ul_arr.push('**Date**: ' + moment(row.date).format('MMMM D,YYYY'))
+          ul_arr.push('**Date**: ' + moment(row.date).format('MMMM DD, YYYY'))
           ul_arr.push('**' + Case.title(pluralize.singular(row.resource)) + '**: ' + row.title)
         } else {
           mdjs.push({h3: 'Patient Information'})
@@ -2251,6 +2314,7 @@ export default defineComponent({
       addPatient,
       addSchemaOptions,
       checkOnline,
+      clearAll,
       clearSync,
       closeActivities,
       closeAll,
@@ -2268,6 +2332,7 @@ export default defineComponent({
       fhirReplace,
       fetchJSON,
       focusInput,
+      importAll,
       inbox,
       loading,
       loadResource,
