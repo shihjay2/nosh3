@@ -89,9 +89,9 @@ export function common() {
     const divContent = base.divContent
     const found = []
     var rxp = /{([^}]+)}/g, curMatch
-    const replaceWith = []
-    const mapping = {}
-    const field = {}
+    var replaceWith = []
+    var mapping = {}
+    var field = {}
     var modelRoot = ''
     while((curMatch = rxp.exec(divContent))) {
       found.push(curMatch[1])
