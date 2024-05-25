@@ -86,7 +86,7 @@ export function common() {
     var value = '<div xmlns="http://www.w3.org/1999/xhtml">'
     const base = await import('@/assets/fhir/' + resource + '.json')
     const schema = base.uiSchema.flat()
-    const divContent = base.divContent
+    var divContent = base.divContent
     const found = []
     var rxp = /{([^}]+)}/g, curMatch
     var replaceWith = []
