@@ -108,7 +108,11 @@ export function common() {
         } else {
           modelRoot += field.model
         }
-        replaceWith[a] = objectPath.get(doc, modelRoot)
+        if (objectPath.has(doc, modelRoot)) {
+          replaceWith[a] = objectPath.get(doc, modelRoot)
+        } else {
+          replaceWith[a] = ''
+        }
       } else {
         replaceWith[a] = ''
       }
@@ -330,7 +334,11 @@ export function common() {
                 var alt_model = model.replace('coding.0.display', 'text')
                 if (objectPath.has(result, alt_model)) {
                   obj['value'] = objectPath.get(result, alt_model)
+                } else {
+                  obj['value'] = ''
                 }
+              } else {
+                obj['value'] = ''
               }
             }
           }
@@ -381,7 +389,6 @@ export function common() {
         } else {
           if (model.split('.').slice(-3).join('.') === 'coding.0.display') {
             var alt_model = model.replace('coding.0.display', 'text')
-            console.log(alt_model)
             if (objectPath.has(result, alt_model)) {
               replaceWith[g] = objectPath.get(result, alt_model)
             }
@@ -419,7 +426,6 @@ export function common() {
     })
     if (result.rows.length > 0) {
       for (var a of result.rows) {
-        console.log(a)
         arr.push({
           val: Case.pascal(pluralize.singular(resource)) + '/' + a.doc.id,
           label: removeTags(a.doc.text.div)
