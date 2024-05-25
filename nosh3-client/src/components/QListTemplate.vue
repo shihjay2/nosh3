@@ -1062,15 +1062,17 @@ export default defineComponent({
     }
     const getMedicationRequests = async(rows) => {
       for (var index in rows) {
-        var result = await localDB4.find({
-          selector: {'medicationCodeableConcept.coding.0.code': {$eq: rows[index].doc.medicationCodeableConcept.coding[0].code}, _id: {"$gte": null}}
-        })
-        if (objectPath.has(result, 'docs.0')) {
-          result.docs.sort((a1, b1) => moment(b1.authoredOn) - moment(a1.authoredOn))
-          for (var d in objectPath.get(result, 'docs')) {
-            objectPath.set(state, 'rows.' + index + '.history.' + d + '.description', removeTags(objectPath.get(result, 'docs.' + d + '.text.div')))
-            objectPath.set(state, 'rows.' + index + '.history.' + d + '.created', objectPath.get(result, 'docs.' + d + '.authoredOn'))
-            objectPath.set(state, 'rows.' + index + '.history.' + d + '.id', objectPath.get(result, 'docs.' + d + '.id'))
+        if (objectPath.has(rows, index + '.doc.medicationCodeableConcept.coding.0.code')) {
+          var result = await localDB4.find({
+            selector: {'medicationCodeableConcept.coding.0.code': {$eq: rows[index].doc.medicationCodeableConcept.coding[0].code}, _id: {"$gte": null}}
+          })
+          if (objectPath.has(result, 'docs.0')) {
+            result.docs.sort((a1, b1) => moment(b1.authoredOn) - moment(a1.authoredOn))
+            for (var d in objectPath.get(result, 'docs')) {
+              objectPath.set(state, 'rows.' + index + '.history.' + d + '.description', removeTags(objectPath.get(result, 'docs.' + d + '.text.div')))
+              objectPath.set(state, 'rows.' + index + '.history.' + d + '.created', objectPath.get(result, 'docs.' + d + '.authoredOn'))
+              objectPath.set(state, 'rows.' + index + '.history.' + d + '.id', objectPath.get(result, 'docs.' + d + '.id'))
+            }
           }
         }
       }

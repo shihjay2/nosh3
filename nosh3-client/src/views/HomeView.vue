@@ -1052,10 +1052,10 @@ export default defineComponent({
           })
           await db.bulkDocs(deleteDocs)
           auth.setSyncResource(a.resource)
+          reloadDrawer(a.resource)
         }
       }
       clearSync()
-      reloadDrawerComplete()
       $q.notify({
         message: 'Entire chart is cleared!',
         color: 'primary',
@@ -1375,6 +1375,7 @@ export default defineComponent({
                     }
                   }
                   await sync(row.resource, false, state.patient, true, doc)
+                  reloadDrawer(row.resource)
                 }
               }
             }
@@ -1382,7 +1383,6 @@ export default defineComponent({
         }
       }
       clearSync()
-      reloadDrawerComplete()
       $q.notify({
         message: 'All synced external resources have been imported!',
         color: 'primary',
