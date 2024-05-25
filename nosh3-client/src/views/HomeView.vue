@@ -1381,6 +1381,7 @@ export default defineComponent({
         }
       }
       clearSync()
+      reloadDrawerComplete()
       $q.notify({
         message: 'All synced external resources have been imported!',
         color: 'primary',
@@ -1403,13 +1404,6 @@ export default defineComponent({
         }
         await sync(resource, false, state.patient, true, reference_doc)
         removeOIDC(e, resource, origin)
-        $q.notify({
-          message: 'The ' + pluralize.singular(resource.replace('_statements', '')) + ' has been imported.',
-          color: 'primary',
-          actions: [
-            { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
-          ]
-        })
         return reference_new_id
       }
     }
