@@ -379,7 +379,7 @@ export default defineComponent({
   emits: ['care-plan', 'complete-task', 'composition', 'loading', 'lock-thread', 'new-prescription', 'open-bundle', 'open-chat', 'open-form', 'open-file', 'open-page', 'open-qr', 'reload-complete', 'remove-oidc', 'set-composition-section'],
   setup (props, { emit }) {
     const $q = useQuasar()
-    const { addSchemaOptions, eventAdd, fetchJSON, fhirModel, fhirReplace, groupItems, inbox, loadSelect, removeTags, sync } = common()
+    const { addSchemaOptions, divBuild, eventAdd, fetchJSON, fhirModel, fhirReplace, groupItems, inbox, loadSelect, removeTags, sync } = common()
     const state = reactive({
       auth: {},
       online: false,
@@ -644,6 +644,30 @@ export default defineComponent({
       const id = 'nosh_' + uuidv4()
       objectPath.set(doc, 'id', id)
       objectPath.set(doc, '_id', id)
+      if (props.resource === 'practitioners' || props.resource === 'related_persons') {
+        if (!objectPath.has(doc, 'text.div')) {
+          doc = await divBuild(props.resource, doc)
+        }
+      }
+      if (props.resource === 'observations') {
+        if (!objectPath.has(doc, 'effectivePeriod.start')) {
+          objectPath.set(doc, 'effectivePeriod.start', objectPath.get(doc, 'effectiveDateTime'))
+        }
+        if (objectPath.has(doc, 'performer.0.reference')) {
+          if (objectPath.get(doc, 'performer.0.reference').search('Practitioner') === 0) {
+            await importReference('practitioners', objectPath.get(doc, 'performer.0.reference').split('/').slice(-1).join(''), origin)
+          }
+        }
+      }
+      if (props.resource === 'encounters') {
+        if (objectPath.has(doc, 'participant')) {
+          for (var a in objectPath.get(doc, 'participant')) {
+            if (objectPath.get(doc, 'participant.' + a + '.individual.reference').search('Practitioner') === 0) {
+              await importReference('practitioners', objectPath.get(doc, 'participant.' + a + '.individual.reference').split('/').slice(-1).join(''), origin)
+            }
+          }
+        }
+      }
       if (props.resource === 'immunizations' ||
           props.resource === 'allergy_intolerances' ||
           props.resource === 'related_persons') {
@@ -668,6 +692,29 @@ export default defineComponent({
           { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
         ]
       })
+    }
+    const importReference = async(resource, reference_id, origin) => {
+      const a = props.oidc.findIndex(b => b.origin == origin)
+      const c = props.oidc[a].docs.findIndex(d => d.resource == resource)
+      const e = props.oidc[a].docs[c].rows.findIndex(f => f.id == reference_id)
+      if (e !== -1) {
+        const reference_doc = objectPath.get(props, 'oidc.' + a + '.docs.' + c + '.rows.' + e)
+        const reference_new_id = 'nosh_' + uuidv4()
+        objectPath.set(reference_doc, 'id', reference_new_id)
+        objectPath.set(reference_doc, '_id', reference_new_id)
+        if (!objectPath.has(reference_doc, 'text.div')) {
+          reference_doc = await divBuild(resource, reference_doc)
+        }
+        await sync(resource, false, props.patient, true, reference_doc)
+        emit('remove-oidc', e, resource, origin)
+        $q.notify({
+          message: 'The ' + pluralize.singular(resource.replace('_statements', '')) + ' has been imported.',
+          color: 'primary',
+          actions: [
+            { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+          ]
+        })
+      }
     }
     const inactivateRow = async(doc) => {
       if (props.resource === 'conditions' || props.resource === 'allergy_intolerances') {
@@ -1512,6 +1559,7 @@ export default defineComponent({
       getMedicationRequests,
       groupItems,
       importRow,
+      importReference,
       inactivateRow,
       inbox,
       loading,

@@ -81,6 +81,45 @@ export function common() {
     await sync('bundles', false, patient_id, true, bundleDoc)
     return bundleDoc
   }
+  const divBuild = async(resource, doc) => {
+    // create div
+    var value = '<div xmlns="http://www.w3.org/1999/xhtml">'
+    const base = await import('@/assets/fhir/' + resource + '.json')
+    const schema = base.uiSchema.flat()
+    const divContent = base.divContent
+    const found = []
+    var rxp = /{([^}]+)}/g, curMatch
+    const replaceWith = []
+    const mapping = {}
+    const field = {}
+    var modelRoot = ''
+    while((curMatch = rxp.exec(divContent))) {
+      found.push(curMatch[1])
+    }
+    for (var a in found) {
+      field = schema.find(({ id }) => id === found[a])
+      if (field !== undefined) {
+        if (typeof field.modelRoot !== 'undefined') {
+          if (field.modelArray == false) {
+            modelRoot += field.modelRoot + '.' + field.model
+          } else {
+            modelRoot += field.modelRoot + '.0.' + field.model
+          }
+        } else {
+          modelRoot += field.model
+        }
+        replaceWith[a] = objectPath.get(doc, modelRoot)
+      } else {
+        replaceWith[a] = ''
+      }
+    }
+    found.forEach((e,i) => mapping[`{${e}}`] = replaceWith[i])
+    str = str.replace(/\{\w+\}/ig, n => mapping[n])
+    value += str + '</div>'
+    objectPath.set(doc, 'text.status', 'generated')
+    objectPath.set(doc, 'text.div', value)
+    return doc
+  }
   const eventAdd = async(event, online, patient_id, opts={doc_db: null, doc_id: null, diff: null}) => {
     const auth_store = useAuthStore()
     var prefix = ''
@@ -1126,6 +1165,7 @@ export function common() {
   return {
     addSchemaOptions,
     bundleBuild,
+    divBuild,
     eventAdd,
     fetchJSON,
     fetchTXT,

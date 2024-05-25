@@ -659,7 +659,7 @@ export default defineComponent({
 },
   setup () {
     const $q = useQuasar()
-    const { addSchemaOptions, bundleBuild, fetchJSON, fhirModel, fhirReplace, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, sync, syncAll, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
+    const { addSchemaOptions, bundleBuild, divBuild, fetchJSON, fhirModel, fhirReplace, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, sync, syncAll, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
     const state = reactive({
       menuVisible: false,
       showDrawer: false,
@@ -1326,6 +1326,16 @@ export default defineComponent({
                 const id = 'nosh_' + uuidv4()
                 objectPath.set(doc, 'id', id)
                 objectPath.set(doc, '_id', id)
+                if (row.resource === 'practitioners' || row.resource === 'related_persons') {
+                  if (!objectPath.has(doc, 'text.div')) {
+                    doc = await divBuild(row.resource, doc)
+                  }
+                }
+                if (row.resource === 'observations') {
+                  if (!objectPath.has(doc, 'effectivePeriod.start')) {
+                    objectPath.set(doc, 'effectivePeriod.start', objectPath.get(doc, 'effectiveDateTime'))
+                  }
+                }
                 if (row.resource === 'immunizations' ||
                     row.resource === 'allergy_intolerances' ||
                     row.resource === 'related_persons') {
