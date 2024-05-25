@@ -51,7 +51,7 @@
   <q-btn v-if="state.oidc" push flat round icon="import_export" clickable @click="importAll()">
     <q-tooltip>Import Everything</q-tooltip>
   </q-btn>
-  <q-btn v-if="state.oidc" push flat round icon="delete" clickable @click="clearAll()">
+  <q-btn v-if="state.oidc" push flat round icon="delete_sweep" clickable @click="clearAll()">
     <q-tooltip>Clear Everything</q-tooltip>
   </q-btn>
   <q-btn push flat round icon="close" clickable @click="closeContainer()">

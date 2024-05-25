@@ -379,7 +379,7 @@ export default defineComponent({
   emits: ['care-plan', 'complete-task', 'composition', 'loading', 'lock-thread', 'new-prescription', 'open-bundle', 'open-chat', 'open-form', 'open-file', 'open-page', 'open-qr', 'reload-complete', 'remove-oidc', 'set-composition-section'],
   setup (props, { emit }) {
     const $q = useQuasar()
-    const { addSchemaOptions, divBuild, eventAdd, fetchJSON, fhirModel, fhirReplace, groupItems, inbox, loadSelect, removeTags, sync } = common()
+    const { addSchemaOptions, divBuild, eventAdd, fetchJSON, fhirModel, fhirReplace, groupItems, inbox, loadSelect, referenceSearch, removeTags, sync } = common()
     const state = reactive({
       auth: {},
       online: false,
@@ -642,6 +642,7 @@ export default defineComponent({
     }
     const importRow = async(doc, index, origin) => {
       const id = 'nosh_' + uuidv4()
+      objectPath.set(doc, 'sync_id', objectPath.get(doc, 'id'))
       objectPath.set(doc, 'id', id)
       objectPath.set(doc, '_id', id)
       if (props.resource === 'practitioners' || props.resource === 'related_persons') {
@@ -655,8 +656,13 @@ export default defineComponent({
         }
         if (objectPath.has(doc, 'performer.0.reference')) {
           if (objectPath.get(doc, 'performer.0.reference').search('Practitioner') === 0) {
-            const reference_new_id = await importReference('practitioners', objectPath.get(doc, 'performer.0.reference').split('/').slice(-1).join(''), origin)
-            objectPath.set(doc, 'performer.0.reference', 'Practitioner/' + reference_new_id)
+            const nosh_id = await referenceSearch('practitioners', objectPath.get(doc, 'performer.0.reference').split('/').slice(-1).join(''))
+            if (nosh_id === null) {
+              const reference_new_id = await importReference('practitioners', objectPath.get(doc, 'performer.0.reference').split('/').slice(-1).join(''), origin)
+              objectPath.set(doc, 'performer.0.reference', 'Practitioner/' + reference_new_id)
+            } else {
+              objectPath.set(doc, 'performer.0.reference', 'Practitioner/' + nosh_id)
+            }
           }
         }
       }
@@ -664,8 +670,13 @@ export default defineComponent({
         if (objectPath.has(doc, 'participant')) {
           for (var a in objectPath.get(doc, 'participant')) {
             if (objectPath.get(doc, 'participant.' + a + '.individual.reference').search('Practitioner') === 0) {
-              const reference_new_id1 = await importReference('practitioners', objectPath.get(doc, 'participant.' + a + '.individual.reference').split('/').slice(-1).join(''), origin)
-              objectPath.set(doc, 'participant.' + a + '.individual.reference', 'Practitioner/' + reference_new_id1)
+              const nosh_id1 = await referenceSearch('practitioners', objectPath.get(doc, 'performer.0.reference').split('/').slice(-1).join(''))
+              if (nosh_id1 === null) {
+                const reference_new_id1 = await importReference('practitioners', objectPath.get(doc, 'participant.' + a + '.individual.reference').split('/').slice(-1).join(''), origin)
+                objectPath.set(doc, 'participant.' + a + '.individual.reference', 'Practitioner/' + reference_new_id1)
+              } else {
+                objectPath.set(doc, 'participant.' + a + '.individual.reference', 'Practitioner/' + nosh_id1)
+              }
             }
           }
         }

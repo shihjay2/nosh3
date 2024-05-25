@@ -220,6 +220,7 @@ export default defineComponent({
     })
     watch(() => props.oidc, async(newVal) => {
       for (var a in state.ui) {
+        objectPath.del(state, 'ui.' + a + '.oidc')
         for (var e in newVal) {
           if (objectPath.has(newVal, e + '.docs')) {
             var oidc_results = newVal[e].docs.find(f => f.resource === state.ui[a].resource)

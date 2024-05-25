@@ -659,7 +659,7 @@ export default defineComponent({
 },
   setup () {
     const $q = useQuasar()
-    const { addSchemaOptions, bundleBuild, divBuild, fetchJSON, fhirModel, fhirReplace, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, sync, syncAll, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
+    const { addSchemaOptions, bundleBuild, divBuild, fetchJSON, fhirModel, fhirReplace, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, referenceSearch, removeTags, sync, syncAll, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
     const state = reactive({
       menuVisible: false,
       showDrawer: false,
@@ -1320,38 +1320,61 @@ export default defineComponent({
       for (var a in state.oidc) {
         if (objectPath.has(state, 'oidc.' + a + '.docs')) {
           for (var row of state.oidc[a].docs) {
-            console.log(row)
             if (objectPath.has(row, 'rows')) {
               for (var doc of row.rows) {
-                const id = 'nosh_' + uuidv4()
-                objectPath.set(doc, 'id', id)
-                objectPath.set(doc, '_id', id)
-                if (row.resource === 'practitioners' || row.resource === 'related_persons') {
-                  if (!objectPath.has(doc, 'text.div')) {
-                    doc = await divBuild(row.resource, doc)
+                if (row.resource !== 'practitioners' && row.resource !== 'related_persons') {
+                  const id = 'nosh_' + uuidv4()
+                  objectPath.set(doc, 'sync_id', objectPath.get(doc, 'id'))
+                  objectPath.set(doc, 'id', id)
+                  objectPath.set(doc, '_id', id)
+                  if (row.resource === 'observations') {
+                    if (!objectPath.has(doc, 'effectivePeriod.start')) {
+                      objectPath.set(doc, 'effectivePeriod.start', objectPath.get(doc, 'effectiveDateTime'))
+                    }
+                    if (objectPath.has(doc, 'performer.0.reference')) {
+                      if (objectPath.get(doc, 'performer.0.reference').search('Practitioner') === 0) {
+                        const nosh_id = await referenceSearch('practitioners', objectPath.get(doc, 'performer.0.reference').split('/').slice(-1).join(''))
+                        if (nosh_id === null) {
+                          const reference_new_id = await importReference('practitioners', objectPath.get(doc, 'performer.0.reference').split('/').slice(-1).join(''), state.oidc[a].origin)
+                          objectPath.set(doc, 'performer.0.reference', 'Practitioner/' + reference_new_id)
+                        } else {
+                          objectPath.set(doc, 'performer.0.reference', 'Practitioner/' + nosh_id)
+                        }
+                      }
+                    }
                   }
-                }
-                if (row.resource === 'observations') {
-                  if (!objectPath.has(doc, 'effectivePeriod.start')) {
-                    objectPath.set(doc, 'effectivePeriod.start', objectPath.get(doc, 'effectiveDateTime'))
+                  if (row.resource === 'encounters') {
+                    if (objectPath.has(doc, 'participant')) {
+                      for (var a in objectPath.get(doc, 'participant')) {
+                        if (objectPath.get(doc, 'participant.' + a + '.individual.reference').search('Practitioner') === 0) {
+                          const nosh_id1 = await referenceSearch('practitioners', objectPath.get(doc, 'performer.0.reference').split('/').slice(-1).join(''))
+                          if (nosh_id1 === null) {
+                            const reference_new_id1 = await importReference('practitioners', objectPath.get(doc, 'participant.' + a + '.individual.reference').split('/').slice(-1).join(''), state.oidc[a].origin)
+                            objectPath.set(doc, 'participant.' + a + '.individual.reference', 'Practitioner/' + reference_new_id1)
+                          } else {
+                            objectPath.set(doc, 'participant.' + a + '.individual.reference', 'Practitioner/' + nosh_id1)
+                          }
+                        }
+                      }
+                    }
                   }
-                }
-                if (row.resource === 'immunizations' ||
-                    row.resource === 'allergy_intolerances' ||
-                    row.resource === 'related_persons') {
-                  objectPath.set(doc, 'patient.reference', 'Patient/' + state.patient)
-                } else if (row.resource === 'tasks') {
-                  objectPath.set(doc, 'for.reference', 'Patient/' + state.patient)
-                } else {
-                  if (row.resource !== 'practitioners' &&
-                      row.resource !== 'organizations' &&
-                      row.resource !== 'appointments' &&
-                      row.resource !== 'users' &&
-                      row.resource !== 'patients') {
-                    objectPath.set(doc, 'subject.reference', 'Patient/' + state.patient)
+                  if (row.resource === 'immunizations' ||
+                      row.resource === 'allergy_intolerances' ||
+                      row.resource === 'related_persons') {
+                    objectPath.set(doc, 'patient.reference', 'Patient/' + state.patient)
+                  } else if (row.resource === 'tasks') {
+                    objectPath.set(doc, 'for.reference', 'Patient/' + state.patient)
+                  } else {
+                    if (row.resource !== 'practitioners' &&
+                        row.resource !== 'organizations' &&
+                        row.resource !== 'appointments' &&
+                        row.resource !== 'users' &&
+                        row.resource !== 'patients') {
+                      objectPath.set(doc, 'subject.reference', 'Patient/' + state.patient)
+                    }
                   }
+                  await sync(row.resource, false, state.patient, true, doc)
                 }
-                await sync(row.resource, false, state.patient, true, doc)
               }
             }
           }
@@ -1365,6 +1388,30 @@ export default defineComponent({
           { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
         ]
       })
+    }
+    const importReference = async(resource, reference_id, origin) => {
+      const a = state.oidc.findIndex(b => b.origin == origin)
+      const c = state.oidc[a].docs.findIndex(d => d.resource == resource)
+      const e = state.oidc[a].docs[c].rows.findIndex(f => f.id == reference_id)
+      if (e !== -1) {
+        const reference_doc = objectPath.get(state, 'oidc.' + a + '.docs.' + c + '.rows.' + e)
+        const reference_new_id = 'nosh_' + uuidv4()
+        objectPath.set(reference_doc, 'id', reference_new_id)
+        objectPath.set(reference_doc, '_id', reference_new_id)
+        if (!objectPath.has(reference_doc, 'text.div')) {
+          reference_doc = await divBuild(resource, reference_doc)
+        }
+        await sync(resource, false, state.patient, true, reference_doc)
+        emit('remove-oidc', e, resource, origin)
+        $q.notify({
+          message: 'The ' + pluralize.singular(resource.replace('_statements', '')) + ' has been imported.',
+          color: 'primary',
+          actions: [
+            { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+          ]
+        })
+        return reference_new_id
+      }
     }
     const loading = () => {
       if (state.loading === true) {
@@ -1996,6 +2043,10 @@ export default defineComponent({
     const saveOIDC = (doc) => {
       state.oidc.push(doc)
       localStorage.setItem('oidc_data', JSON.stringify(state.oidc))
+      var complete = false
+      if (localStorage.getItem("oidc_access_token") !== null) {
+        complete = true
+      }
       localStorage.removeItem('oidc')
       localStorage.removeItem('oidc_url')
       localStorage.removeItem('oidc_state')
@@ -2005,8 +2056,9 @@ export default defineComponent({
       localStorage.removeItem('oidc_refresh_token')
       localStorage.removeItem('oidc_patient_token')
       localStorage.removeItem('oidc_patient')
-      state.oidc_complete = true
-      // closeContainer()
+      if (complete) {
+        state.oidc_complete = true
+      }
     }
     const setActiveCarePlan = (doc) => {
       state.careplanDoc = doc
@@ -2346,6 +2398,7 @@ export default defineComponent({
       fetchJSON,
       focusInput,
       importAll,
+      importReference,
       inbox,
       loading,
       loadResource,

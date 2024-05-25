@@ -145,7 +145,7 @@ export default defineComponent({
             var c1_synthea = 0
             for (var c_synthea of resources2.rows) {
               var rows2 = []
-              if (c_synthea.resource !== 'patients' && c_synthea.resource !== 'practitioners') {
+              if (c_synthea.resource !== 'patients') {
                 for (var c2_synthea of oidc_response2.data.entry) {
                   if (c2_synthea.resource.resourceType === Case.pascal(pluralize.singular(c_synthea.resource))) {
                     rows2.push(c2_synthea.resource)

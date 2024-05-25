@@ -922,6 +922,22 @@ export function common() {
     }
     return ret
   }
+  const referenceSearch = async(resource, id) => {
+    const auth_store = useAuthStore()
+    var prefix = ''
+    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
+      prefix = auth_store.patient + '_'
+    }
+    const db = new PouchDB(prefix + resource)
+    var results = await db.find({
+      selector: {'sync_id': {$eq: id}, _id: {"$gte": null}}
+    })
+    if (results.docs.length > 0) {
+      return objectPath.get(results, 'docs.0.id')
+    } else {
+      return null
+    }
+  }
   const removeTags = (str) => {
     if ((str===null) || (str==='')) {
       return false
@@ -1185,6 +1201,7 @@ export function common() {
     observationStatusRaw,
     patientList,
     patientStatus,
+    referenceSearch,
     removeTags,
     setOptions,
     sync,
