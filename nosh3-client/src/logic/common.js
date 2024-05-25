@@ -419,6 +419,7 @@ export function common() {
     })
     if (result.rows.length > 0) {
       for (var a of result.rows) {
+        console.log(a)
         arr.push({
           val: Case.pascal(pluralize.singular(resource)) + '/' + a.doc.id,
           label: removeTags(a.doc.text.div)
