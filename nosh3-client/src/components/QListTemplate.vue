@@ -670,7 +670,7 @@ export default defineComponent({
         if (objectPath.has(doc, 'participant')) {
           for (var a in objectPath.get(doc, 'participant')) {
             if (objectPath.get(doc, 'participant.' + a + '.individual.reference').search('Practitioner') === 0) {
-              const nosh_id1 = await referenceSearch('practitioners', objectPath.get(doc, 'performer.0.reference').split('/').slice(-1).join(''))
+              const nosh_id1 = await referenceSearch('practitioners', objectPath.get(doc, 'participant.' + a + '.individual.reference').split('/').slice(-1).join(''))
               if (nosh_id1 === null) {
                 const reference_new_id1 = await importReference('practitioners', objectPath.get(doc, 'participant.' + a + '.individual.reference').split('/').slice(-1).join(''), origin)
                 objectPath.set(doc, 'participant.' + a + '.individual.reference', 'Practitioner/' + reference_new_id1)
