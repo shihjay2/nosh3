@@ -1055,6 +1055,7 @@ export default defineComponent({
         }
       }
       clearSync()
+      reloadDrawerComplete()
       $q.notify({
         message: 'Entire chart is cleared!',
         color: 'primary',
