@@ -114,8 +114,8 @@ export function common() {
       }
     }
     found.forEach((e,i) => mapping[`{${e}}`] = replaceWith[i])
-    str = str.replace(/\{\w+\}/ig, n => mapping[n])
-    value += str + '</div>'
+    divContent = divContent.replace(/\{\w+\}/ig, n => mapping[n])
+    value += divContent + '</div>'
     objectPath.set(doc, 'text.status', 'generated')
     objectPath.set(doc, 'text.div', value)
     return doc
