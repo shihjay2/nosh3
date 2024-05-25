@@ -1394,7 +1394,7 @@ export default defineComponent({
       const c = state.oidc[a].docs.findIndex(d => d.resource == resource)
       const e = state.oidc[a].docs[c].rows.findIndex(f => f.id == reference_id)
       if (e !== -1) {
-        const reference_doc = objectPath.get(state, 'oidc.' + a + '.docs.' + c + '.rows.' + e)
+        var reference_doc = objectPath.get(state, 'oidc.' + a + '.docs.' + c + '.rows.' + e)
         const reference_new_id = 'nosh_' + uuidv4()
         objectPath.set(reference_doc, 'id', reference_new_id)
         objectPath.set(reference_doc, '_id', reference_new_id)
@@ -2058,6 +2058,14 @@ export default defineComponent({
       localStorage.removeItem('oidc_patient')
       if (complete) {
         state.oidc_complete = true
+      } else {
+        $q.notify({
+        message: 'Synthetic Records Synced - ready for import',
+        color: 'primary',
+        actions: [
+          { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+        ]
+      })
       }
     }
     const setActiveCarePlan = (doc) => {
