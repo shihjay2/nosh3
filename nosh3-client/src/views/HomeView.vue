@@ -1402,7 +1402,7 @@ export default defineComponent({
           reference_doc = await divBuild(resource, reference_doc)
         }
         await sync(resource, false, state.patient, true, reference_doc)
-        emit('remove-oidc', e, resource, origin)
+        removeOIDC(e, resource, origin)
         $q.notify({
           message: 'The ' + pluralize.singular(resource.replace('_statements', '')) + ' has been imported.',
           color: 'primary',
