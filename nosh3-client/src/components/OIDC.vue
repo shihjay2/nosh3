@@ -139,7 +139,6 @@ export default defineComponent({
           objectPath.set(state, 'oidc.origin', name)
           try {
             var oidc_response2 = await axios.get('https://launch.smarthealthit.org/v/r4/fhir/Patient/c20ccf5d-19ac-4dfe-bdc3-3d1d6344facc/$everything?_count=1000')
-            console.log(oidc_response2.data)
             var resources2 = await fetchJSON('resources', props.online)
             state.resources = resources2.rows
             var c1_synthea = 0

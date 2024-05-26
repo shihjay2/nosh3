@@ -1349,10 +1349,8 @@ export default defineComponent({
                       for (var a in objectPath.get(doc, 'participant')) {
                         if (objectPath.get(doc, 'participant.' + a + '.individual.reference').search('Practitioner') === 0) {
                           const nosh_id1 = await referenceSearch('practitioners', objectPath.get(doc, 'participant.' + a + '.individual.reference').split('/').slice(-1).join(''))
-                          console.log('ID of encounter: ' + id, '; NOSH ID of practitioner: ' + nosh_id1)
                           if (nosh_id1 === null) {
                             const reference_new_id1 = await importReference('practitioners', objectPath.get(doc, 'participant.' + a + '.individual.reference').split('/').slice(-1).join(''), state.oidc[a].origin)
-                            console.log(reference_new_id1)
                             objectPath.set(doc, 'participant.' + a + '.individual.reference', 'Practitioner/' + reference_new_id1)
                           } else {
                             objectPath.set(doc, 'participant.' + a + '.individual.reference', 'Practitioner/' + nosh_id1)
@@ -2359,13 +2357,15 @@ export default defineComponent({
         }
       }
       var oidc = 0
-      if (state.oidc.length > 0) {
-        for (var d of state.oidc) {
-          if (d.docs.length > 0) {
-            for (var e of d.docs) {
-              if (objectPath.has(e, 'rows')) {
-                if (e.rows.length > 0) {
-                  oidc = oidc + e.rows.length
+      if (Array.isArray(state.oidc)) {
+        if (state.oidc.length > 0) {
+          for (var d of state.oidc) {
+            if (d.docs.length > 0) {
+              for (var e of d.docs) {
+                if (objectPath.has(e, 'rows')) {
+                  if (e.rows.length > 0) {
+                    oidc = oidc + e.rows.length
+                  }
                 }
               }
             }
