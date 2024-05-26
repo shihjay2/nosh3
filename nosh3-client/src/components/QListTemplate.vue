@@ -713,6 +713,7 @@ export default defineComponent({
       if (e !== -1) {
         const reference_doc = objectPath.get(props, 'oidc.' + a + '.docs.' + c + '.rows.' + e)
         const reference_new_id = 'nosh_' + uuidv4()
+        objectPath.set(reference_doc, 'sync_id', objectPath.get(reference_doc, 'id'))
         objectPath.set(reference_doc, 'id', reference_new_id)
         objectPath.set(reference_doc, '_id', reference_new_id)
         if (!objectPath.has(reference_doc, 'text.div')) {
