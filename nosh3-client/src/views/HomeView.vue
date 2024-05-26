@@ -1405,6 +1405,8 @@ export default defineComponent({
         if (!objectPath.has(reference_doc, 'text.div')) {
           reference_doc = await divBuild(resource, reference_doc)
         }
+        console.log(reference_doc)
+        console.log(reference_new_id)
         await sync(resource, false, state.patient, true, reference_doc)
         removeOIDC(e, resource, origin)
         return reference_new_id
