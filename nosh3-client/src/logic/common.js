@@ -972,7 +972,7 @@ export function common() {
   const sleep = async(seconds) => {
     return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
   }
-  const sync = async(resource, online, patient_id, save=false, data={}) => {
+  const sync = async(resource, online, patient_id, save=false, data={}, destroy=false) => {
     const auth_store = useAuthStore()
     const couchdb = auth_store.couchdb
     const auth = {fetch: (url, opts) => {
@@ -1038,6 +1038,14 @@ export function common() {
           console.log(err)
         })
       }
+    }
+    if (destroy) {
+      await local.destroy()
+      const destroy_remote = new PouchDB(couchdb + prefix + resource, auth)
+      await destroy_remote.destroy()
+      await local.info()
+      await destroy_remote.info()
+      console.log('PouchDB destroy and sync complete for DB: ' + resource)
     }
   }
   const syncAll = async(online, patient_id) => {

@@ -1043,15 +1043,7 @@ export default defineComponent({
       var resources = await fetchJSON('resources', state.online)
       for (var a of resources.rows) {
         if (a.resource !== 'patients' && a.resource !== 'users') {
-          const db = new PouchDB(prefix + a.resource)
-          const allDocs = await db.allDocs({
-            include_docs: true
-          })
-          const deleteDocs = allDocs.rows.map(row => {
-            return {_id: row.id, _rev: row.doc._rev, _deleted: true}
-          })
-          await db.bulkDocs(deleteDocs)
-          auth.setSyncResource(a.resource)
+          await sync(a.resource, true, state.patient, false, {}, true)
           reloadDrawer(a.resource)
         }
       }
@@ -2357,13 +2349,15 @@ export default defineComponent({
         }
       }
       var oidc = 0
-      if (state.oidc.length > 0) {
-        for (var d of state.oidc) {
-          if (d.docs.length > 0) {
-            for (var e of d.docs) {
-              if (objectPath.has(e, 'rows')) {
-                if (e.rows.length > 0) {
-                  oidc = oidc + e.rows.length
+      if (Array.isArray(state.oidc)) {
+        if (state.oidc.length > 0) {
+          for (var d of state.oidc) {
+            if (d.docs.length > 0) {
+              for (var e of d.docs) {
+                if (objectPath.has(e, 'rows')) {
+                  if (e.rows.length > 0) {
+                    oidc = oidc + e.rows.length
+                  }
                 }
               }
             }
