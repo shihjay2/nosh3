@@ -1043,8 +1043,10 @@ export function common() {
       await local.destroy()
       const destroy_remote = new PouchDB(couchdb + prefix + resource, auth)
       await destroy_remote.destroy()
-      await local.info()
-      await destroy_remote.info()
+      const new_local = new PouchDB(prefix + resource)
+      await new_local.info()
+      const new_destroy_remote = new PouchDB(couchdb + prefix + resource, auth)
+      await new_destroy_remote.info()
       console.log('PouchDB destroy and sync complete for DB: ' + resource)
     }
   }
