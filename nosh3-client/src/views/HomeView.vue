@@ -1040,6 +1040,7 @@ export default defineComponent({
       state.online = e
     }
     const clearAll = async() => {
+      state.loading = true
       var resources = await fetchJSON('resources', state.online)
       for (var a of resources.rows) {
         if (a.resource !== 'patients' && a.resource !== 'users') {
@@ -1048,6 +1049,7 @@ export default defineComponent({
         }
       }
       clearSync()
+      state.loading = false
       $q.notify({
         message: 'Entire chart is cleared!',
         color: 'primary',
