@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md">
-    <q-input ref="filter" dense="dense" bottom-slots v-model="state.filter" placeholder="Search EPIC Institution" debounce="300" autofocus>
+    <q-input ref="filter" dense="dense" bottom-slots v-model="state.filter" placeholder="Search EPIC Institution or Synthetic Record" debounce="300" autofocus>
       <template v-slot:append>
         <q-icon v-if="state.filter !== ''" name="close" @click="state.filter = ''" class="cursor-pointer" />
         <q-icon name="search" />
@@ -17,13 +17,13 @@
         EPIC Sandbox
       </q-item>
       <div v-for="item in state.data" :key="item.id">
-        <q-item clickable @click="open(item.resource.address, item.resource.name, item.resourceType)">
+        <q-item clickable @click="open(item.resource.address, item.resource.name, item.resource.resourceType)">
           <q-item-section>{{ item.resource.name }}</q-item-section>
-          <q-item-section v-if="item.resourceType === 'Endpoint'" avatar>
+          <q-item-section v-if="item.resource.resourceType === 'Endpoint'" avatar>
             <img src="https://open.epic.com/Content/Images/logo.png?version=R41429">
           </q-item-section>
           <q-item-section v-else avatar>
-            <img src="https://synthea.mitre.org/logos/logo?v=1562710747000">
+            <img src="https://synthea.mitre.org/logos/logo?v=1562710747000" height="20">
           </q-item-section>
         </q-item>
       </div>
@@ -90,6 +90,7 @@ export default defineComponent({
             state.epic.push(datarow)
             state.data.push(datarow)
           }
+          console.log(state.data)
         } catch (e) {
           console.log('Error reaching out to EPIC')
         }
