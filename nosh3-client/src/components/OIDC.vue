@@ -20,7 +20,7 @@
         <q-item clickable @click="open(item.resource.address, item.resource.name, item.resource.resourceType)">
           <q-item-section>{{ item.resource.name }}</q-item-section>
           <q-item-section v-if="item.resource.resourceType === 'Endpoint'" avatar>
-            <img src="https://open.epic.com/Content/Images/logo.png?version=R41429">
+            <img src="https://open.epic.com/Content/Images/logo.png?version=R41429" height="20">
           </q-item-section>
           <q-item-section v-else avatar>
             <img src="https://synthea.mitre.org/logos/logo?v=1562710747000" height="20">
