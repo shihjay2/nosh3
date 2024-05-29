@@ -7,21 +7,24 @@
       </template>
     </q-input>
     <q-list>
-      <q-item v-if="state.bluebutton" clickable @click="open('synthea', 'Synthea Synthetic FHIR Data')">
-        Synthea Synthetic FHIR Data
-      </q-item>
-      <q-item v-if="state.bluebutton" clickable @click="open('cms_bluebutton', 'CMS Bluebutton')">
+      <q-item v-if="state.bluebutton" clickable @click="open('cms_bluebutton', 'CMS Bluebutton', 'cms_bluebutton')">
         CMS Bluebutton
       </q-item>
-      <q-item v-if="state.bluebutton" clickable @click="open('cms_bluebutton_sandbox', 'CMS Bluebutton Sandbox')">
+      <q-item v-if="state.bluebutton" clickable @click="open('cms_bluebutton_sandbox', 'CMS Bluebutton Sandbox', 'cms_bluebutton_sandbox')">
         CMS Bluebutton Sandbox
       </q-item>
-      <q-item v-if="state.bluebutton" clickable @click="open('https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4/', 'EPIC Sandbox')">
+      <q-item v-if="state.bluebutton" clickable @click="open('https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4/', 'EPIC Sandbox', 'Endpoint')">
         EPIC Sandbox
       </q-item>
       <div v-for="item in state.data" :key="item.id">
-        <q-item clickable @click="open(item.resource.address, item.resource.name)">
-          {{ item.resource.name }}
+        <q-item clickable @click="open(item.resource.address, item.resource.name, item.resourceType)">
+          <q-item-section>{{ item.resource.name }}</q-item-section>
+          <q-item-section v-if="item.resourceType === 'Endpoint'" avatar>
+            <img src="https://open.epic.com/Content/Images/logo.png?version=R41429">
+          </q-item-section>
+          <q-item-section v-else avatar>
+            <img src="https://synthea.mitre.org/logos/logo?v=1562710747000">
+          </q-item-section>
         </q-item>
       </div>
     </q-list>
@@ -74,6 +77,19 @@ export default defineComponent({
           emit('loading')
           state.epic = result.data.entry
           state.data = result.data.entry
+          // synthetic records
+          const result_synth = await axios.get('https://api.github.com/repos/agropper/Challenge/contents/synthetic?ref=main')
+          for (var synth_row of result_synth.data) {
+            const datarow = {
+              resource: {
+                address: synth_row.download_url,
+                name: synth_row.name.replace('.json', ''),
+                resourceType: 'synthea'
+              }
+            }
+            state.epic.push(datarow)
+            state.data.push(datarow)
+          }
         } catch (e) {
           console.log('Error reaching out to EPIC')
         }
@@ -103,10 +119,10 @@ export default defineComponent({
         window.location.href = window.location.origin + '/app/chart/' + props.patient
       }
     })
-    const open = async(type, name) => {
+    const open = async(type, name, origin) => {
       var oidc_state = uuidv4()
       if (props.type === '') {
-        if (type !== 'synthea') {
+        if (origin !== 'synthea') {
           var relay_url = auth.api.oidc_relay_url + '/oidc_relay'
           var body = {
             origin_uri: location.protocol + '//' + location.host + location.pathname + '?oidc=' + type,
@@ -138,7 +154,7 @@ export default defineComponent({
         } else {
           objectPath.set(state, 'oidc.origin', name)
           try {
-            var oidc_response2 = await axios.get('https://launch.smarthealthit.org/v/r4/fhir/Patient/c20ccf5d-19ac-4dfe-bdc3-3d1d6344facc/$everything?_count=1000')
+            var oidc_response2 = await axios.get(type)
             var resources2 = await fetchJSON('resources', props.online)
             state.resources = resources2.rows
             var c1_synthea = 0
