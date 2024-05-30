@@ -65,16 +65,18 @@ export default defineComponent({
       patient_token: '',
       patient: '',
       oidc: {},
-      bluebutton: false
+      bluebutton: false,
+      loading: false
     })
     const auth = useAuthStore()
     onMounted(async() => {
       if (props.type === '') {
         state.bluebutton = true
+        state.loading = true
         try {
           emit('loading')
           var result = await axios.post(window.location.origin + '/oidc', {url: 'https://open.epic.com/Endpoints/R4'})
-          state.epic = result.data.entry
+          // state.epic = result.data.entry
           state.data = result.data.entry
           // synthetic records
           const result_synth = await axios.get('https://api.github.com/repos/agropper/Challenge/contents/synthetic?ref=main')
@@ -86,11 +88,13 @@ export default defineComponent({
                 resourceType: 'synthea'
               }
             }
-            state.epic.push({...synth_push})
-            state.data.push({...synth_push})
+            // state.epic.push({...synth_push})
+            state.data.push(synth_push)
           }
           emit('loading')
           console.log(state.data)
+          state.epic = state.data
+          state.loading = false
         } catch (e) {
           console.log('Error reaching out to EPIC')
         }
@@ -111,8 +115,10 @@ export default defineComponent({
           state.data.push(a.item)
         }
       } else {
-        state.bluebutton = true
-        state.data = state.epic
+        if (state.loading !== true) {
+          state.bluebutton = true
+          state.data = state.epic
+        }
       }
     })
     watch(() => props.oidcComplete, (newVal) => {
