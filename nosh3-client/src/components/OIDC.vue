@@ -78,7 +78,7 @@ export default defineComponent({
           state.data = result.data.entry
           // synthetic records
           const result_synth = await axios.get('https://api.github.com/repos/agropper/Challenge/contents/synthetic?ref=main')
-          for (var synth_row in result_synth.data) {
+          for (var synth_row of result_synth.data) {
             state.epic.push({
               resource: {
                 address: synth_row.download_url,
