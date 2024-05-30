@@ -76,7 +76,6 @@ export default defineComponent({
         try {
           emit('loading')
           var result = await axios.post(window.location.origin + '/oidc', {url: 'https://open.epic.com/Endpoints/R4'})
-          // state.epic = result.data.entry
           state.data = result.data.entry
           // synthetic records
           const result_synth = await axios.get('https://api.github.com/repos/agropper/Challenge/contents/synthetic?ref=main')
@@ -88,11 +87,9 @@ export default defineComponent({
                 resourceType: 'synthea'
               }
             }
-            // state.epic.push({...synth_push})
             state.data.push(synth_push)
           }
           emit('loading')
-          console.log(state.data)
           state.epic = state.data
           state.loading = false
         } catch (e) {
