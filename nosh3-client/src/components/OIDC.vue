@@ -79,13 +79,10 @@ export default defineComponent({
           // synthetic records
           const result_synth = await axios.get('https://api.github.com/repos/agropper/Challenge/contents/synthetic?ref=main')
           for (var synth_row of result_synth.data) {
-            var datarow = {
-              resource: {
-                address: synth_row.download_url,
-                name: synth_row.name.replace('.json', ''),
-                resourceType: 'synthea'
-              }
-            }
+            const datarow = {}
+            objectPath.set(datarow, 'resource.address', synth_row.download_url)
+            objectPath.set(datarow, 'resource.name', synth_row.name.replace('.json', ''))
+            objectPath.set(datarow, 'resource.resourceType', 'synthea')
             state.epic.push(datarow)
             state.data.push(datarow)
           }
