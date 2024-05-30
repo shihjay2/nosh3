@@ -20,10 +20,10 @@
         <q-item clickable @click="open(item.resource.address, item.resource.name, item.resource.resourceType)">
           <q-item-section>{{ item.resource.name }}</q-item-section>
           <q-item-section v-if="item.resource.resourceType === 'Endpoint'" avatar>
-            <img src="https://open.epic.com/Content/Images/logo.png?version=R41429" height="20">
+            <img src="https://open.epic.com/Content/Images/logo.png?version=R41429" height="25">
           </q-item-section>
           <q-item-section v-else avatar>
-            <img src="https://synthea.mitre.org/logos/logo?v=1562710747000" height="20">
+            <img src="https://synthea.mitre.org/logos/logo?v=1562710747000" height="25">
           </q-item-section>
         </q-item>
       </div>
@@ -74,13 +74,12 @@ export default defineComponent({
         try {
           emit('loading')
           var result = await axios.post(window.location.origin + '/oidc', {url: 'https://open.epic.com/Endpoints/R4'})
-          emit('loading')
           state.epic = result.data.entry
           state.data = result.data.entry
           // synthetic records
           const result_synth = await axios.get('https://api.github.com/repos/agropper/Challenge/contents/synthetic?ref=main')
           for (var synth_row of result_synth.data) {
-            const datarow = {
+            var datarow = {
               resource: {
                 address: synth_row.download_url,
                 name: synth_row.name.replace('.json', ''),
@@ -90,6 +89,7 @@ export default defineComponent({
             state.epic.push(datarow)
             state.data.push(datarow)
           }
+          emit('loading')
           console.log(state.data)
         } catch (e) {
           console.log('Error reaching out to EPIC')
