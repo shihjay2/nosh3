@@ -2031,6 +2031,10 @@ export default defineComponent({
       state.drawerReload = false
     }
     const saveOIDC = (doc) => {
+      if (!Array.isArray(state.oidc)) {
+        state.oidc = []
+        localStorage.removeItem('oidc_data')
+      }
       state.oidc.push(doc)
       localStorage.setItem('oidc_data', JSON.stringify(state.oidc))
       var complete = false
