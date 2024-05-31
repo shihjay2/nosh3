@@ -297,6 +297,7 @@
       :search="state.section_search"
       :preview="state.preview"
       :default="state.section_default"
+      :doc="state.compositionDoc"
     />
   </q-dialog>
   <q-dialog v-model="state.dialogHistory" full-width>

@@ -45,11 +45,13 @@
               <div class="text-subtitle2">Check your email for your Magic Link for entry into NOSH ChartingSystem and come back here once verified</div>
             </q-card-section>
             <q-card-actions vertical align="center">
-              <div v-if="state.magic">
+              <div v-if="state.magic" class="q-pa-md">
                 <q-btn v-if="!state.sending" class="full-width q-pa-md" push icon="login" color="primary" label="Sign in without password" type="submit" />
                 <q-btn v-if="state.sending" class="full-width q-pa-md" push icon="replay" color="primary" label="Request another Magic Link" @click="resubmit" />
               </div>
-              <q-btn class="full-width q-pa-md" push icon="vpn_key" color="primary" label="Trustee Authorization Server" @click="gnapSubmit" />
+              <div class="q-pa-md">
+                <q-btn class="full-width q-pa-md" push icon="vpn_key" color="primary" label="Trustee Authorization Server" @click="gnapSubmit" />
+              </div>
             </q-card-actions>
           </Form>
         </q-card>
