@@ -44,7 +44,7 @@
               <div class="text-subtitle2 text-red">{{ state.timeout }} seconds remaining</div>
               <div class="text-subtitle2">Check your email for your Magic Link for entry into NOSH ChartingSystem and come back here once verified</div>
             </q-card-section>
-            <q-card-actions vertical align="center" class="q-gutter-md">
+            <q-card-actions vertical align="center">
               <div v-if="state.magic">
                 <q-btn v-if="!state.sending" class="full-width q-pa-md" push icon="login" color="primary" label="Sign in without password" type="submit" />
                 <q-btn v-if="state.sending" class="full-width q-pa-md" push icon="replay" color="primary" label="Request another Magic Link" @click="resubmit" />
