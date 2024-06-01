@@ -1325,6 +1325,7 @@ export default defineComponent({
         state.section_schema = state.base.section.uiSchema
         state.section_divContent = state.base.divContent
         state.compositionDoc = objectPath.get(state, 'rows.0.doc')
+        setActiveComposition(state.compositionDoc)
         state.section_schema = addSchemaOptions('section_code', compSection, 'Code', 'Display', state.section_schema)
         state.section_schema = await loadSelect('practitioners', 'section_author', state.section_schema)
         setTimeout(() => {
@@ -1352,7 +1353,6 @@ export default defineComponent({
     }
     const reloadList = async(status = 'all') => {
       // state.rows = []
-      console.log('reloading list')
       await loadList(status)
     }
     const removeActivity = async(doc, index1, index) => {

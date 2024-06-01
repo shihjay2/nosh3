@@ -46,7 +46,7 @@
             </q-card-section>
             <q-card-actions vertical align="center">
               <div v-if="state.magic" class="q-pa-md">
-                <q-btn v-if="!state.sending" class="full-width q-pa-md" push icon="login" color="primary" label="Sign in without password" type="submit" />
+                <q-btn v-if="!state.sending" class="full-width q-pa-md" push icon="login" color="primary" label="Sign in with Magic" type="submit" />
                 <q-btn v-if="state.sending" class="full-width q-pa-md" push icon="replay" color="primary" label="Request another Magic Link" @click="resubmit" />
               </div>
               <div class="q-pa-md">
@@ -157,7 +157,7 @@ export default defineComponent({
       schema: [
         {
           "id": "email",
-          "label": "Email",
+          "label": "Email for Magic Sign-In",
           "model": "email",
           "type": "email",
           "placeholder": "yourname@email.com",
