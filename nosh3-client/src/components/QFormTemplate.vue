@@ -371,8 +371,8 @@ export default defineComponent({
         state.divMap = false
       }
       // load form
+      clearForm()
       if (props.id == 'add') {
-        clearForm()
         state.fhir.id = 'nosh_' + uuidv4()
         state.fhir._id = state.fhir.id
         // default patient
@@ -527,15 +527,12 @@ export default defineComponent({
       } else {
         if (objectPath.has(props, 'doc._id')) {
           var doc = props.doc
-          console.log('direct from doc')
         } else {
           await sync(props.resource, props.online, props.patient, false)
           var doc = await localDB.get(props.id)
         }
-        console.log(doc)
         objectPath.set(state, 'fhir', doc)
         state.fhir1 = JSON.stringify(state.fhir, null, "  ")
-        console.log(state.fhir1)
         if (state.index == 'add') {
           state.index = getIndex()
           if (props.resource === 'compositions') {

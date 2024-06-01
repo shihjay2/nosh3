@@ -84,7 +84,7 @@ services:
     container_name: watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 30 --scope nosh
+    command: --interval 30 --scope nosh --cleanup
     labels:
       - "traefik.enable=false"
 networks:
