@@ -261,9 +261,6 @@ export default defineComponent({
     watch(() => props.patientNickname, (newVal) => {
       state.patientNickname = newVal
     })
-    watch(() => props.patientNickname, (newVal) => {
-      state.patientNickname = newVal
-    })
     watch(() => props.patient, (newVal) => {
       state.patient = newVal
     })
@@ -271,7 +268,7 @@ export default defineComponent({
       state.patientDoc = newVal
     })
     watch(() => props.encounter, (newVal) => {
-      state.patientNickname = newVal
+      state.encounter = newVal
     })
     const encounterCheck = async() => {
       if (props.encounter !== '') {
