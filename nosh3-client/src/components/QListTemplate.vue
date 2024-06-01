@@ -404,6 +404,7 @@ export default defineComponent({
       selected: '',
       dialogHistory: false,
       history: [],
+      preview: true,
       // care_plans
       dialogActivity: false,
       careplanDoc: {},
@@ -473,7 +474,7 @@ export default defineComponent({
         state.section_resource = 'compositions'
         state.section_category = 'section'
         state.section_divContent = state.base.divContent
-        state.preview = false
+        // state.preview = false
       }
       if (props.resource === 'service_requests' || props.resource === 'tasks') {
         state.select = true
