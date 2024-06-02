@@ -54,6 +54,7 @@
             <QFormTemplate
               v-if="state.showForm"
               @care-plan="setActiveCarePlan"
+              @clear-default="clearDefault"
               @close-form="closeForm"
               @loading="loading"
               @reload-drawer="reloadDrawer"
@@ -94,6 +95,7 @@
             <QFormTemplate
               v-if="state.showForm"
               @care-plan="setActiveCarePlan"
+              @clear-default="clearDefault"
               @close-form="closeForm"
               @loading="loading"
               @reload-drawer="reloadDrawer"
@@ -159,6 +161,7 @@
             <QFormTemplate
               v-if="state.showForm"
               @care-plan="setActiveCarePlan"
+              @clear-default="clearDefault"
               @close-form="closeForm"
               @loading="loading"
               @reload-drawer="reloadDrawer"
@@ -208,6 +211,7 @@
             <QFormTemplate
               v-if="state.showForm"
               @care-plan="setActiveCarePlan"
+              @clear-default="clearDefault"
               @close-form="closeForm"
               @loading="loading"
               @reload-drawer="reloadDrawer"
@@ -497,6 +501,9 @@ export default defineComponent({
         emit('open-page-form-complete')
       }
     })
+    const clearDefault = () => {
+      state.default = {}
+    }
     const closeAll = () => {
       if (props.resource !== 'service_requests' && props.resource !== 'observations') {
         state.id = props.id
@@ -958,6 +965,7 @@ export default defineComponent({
     }
     return {
       addSchemaOptions,
+      clearDefault,
       closeAll,
       closeForm,
       closeList,

@@ -281,6 +281,7 @@
       @composition="setActiveComposition"
       @close-form="closeSection"
       @loading="loading"
+      @clear-default="clearDefault"
       :auth="state.auth"
       :id="state.section_id"
       :patient="state.patient"
@@ -594,6 +595,9 @@ export default defineComponent({
         objectPath.set(state, 'rows.' + a + '.add_user', add_user)
         objectPath.set(state, 'rows.' + a + '.magic_link', magic_link)
       }
+    }
+    const clearDefault = () => {
+      state.section_default = {} 
     }
     const closeActivity = async() => {
       state.dialogActivity = false
@@ -1560,6 +1564,7 @@ export default defineComponent({
       addSchemaOptions,
       attestRow,
       checkUser,
+      clearDefault,
       closeActivity,
       closeSection,
       completeTask,

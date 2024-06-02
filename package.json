@@ -31,8 +31,8 @@
     "object-path": "^0.11.8",
     "parse-full-name": "^1.2.6",
     "pluralize": "^8.0.0",
-    "pouchdb": "^7.3.0",
-    "pouchdb-find": "^7.3.0",
+    "pouchdb": "^8.0.1",
+    "pouchdb-find": "^8.0.1",
     "sort-array": "^4.1.5",
     "uuid": "^8.3.2"
   }

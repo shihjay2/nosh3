@@ -157,6 +157,7 @@
       <QFormTemplate
         v-if="state.showForm"
         @care-plan="setActiveCarePlan"
+        @clear-default="clearDefault"
         @close-form="closeForm"
         @loading="loading"
         @reload-drawer="reloadDrawer"
@@ -575,6 +576,9 @@ export default defineComponent({
     }
     const checkOnline = (e) => {
       state.online = e
+    }
+    const clearDefault = () => {
+      state.default = {}
     }
     const closeAll = () => {
       state.showChat = false
@@ -1002,6 +1006,7 @@ export default defineComponent({
       addSchemaOptions,
       addPatient,
       checkOnline,
+      clearDefault,
       closeAll,
       closeContainer,
       closeForm,

@@ -1476,8 +1476,8 @@
           "bar": "searchLOINC",
           "label": "Search LOINC Code",
           "code": "code",
-          "codeText": "text",
-          "codeSystem": "system"
+          "text": "text",
+          "system": "system"
         }
       ]
     },
@@ -1773,6 +1773,12 @@
       "category": "growth-charts",
       "label": "Growth Charts",
       "template": "graph",
+      "resource": "observations"
+    },
+    {
+      "category": "social-history",
+      "label": "Social History",
+      "template": "list",
       "resource": "observations"
     },
     {

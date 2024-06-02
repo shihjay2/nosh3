@@ -150,6 +150,7 @@
       <QFormTemplate
         v-if="state.showForm"
         @care-plan="setActiveCarePlan"
+        @clear-default="clearDefault"
         @close-form="closeForm"
         @loading="loading"
         @reload-drawer="reloadDrawer"
@@ -1057,6 +1058,9 @@ export default defineComponent({
           { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
         ]
       })
+    }
+    const clearDefault = () => {
+      state.default = {}
     }
     const clearSync = () => {
       state.oidc = []
@@ -2384,6 +2388,7 @@ export default defineComponent({
       addSchemaOptions,
       checkOnline,
       clearAll,
+      clearDefault,
       clearSync,
       closeActivities,
       closeAll,

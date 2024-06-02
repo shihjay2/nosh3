@@ -198,6 +198,7 @@
   <q-dialog v-model="state.details" persistent position="top" full-width full-height seamless>
     <QFormTemplate
       v-if="state.details"
+      @clear-default="clearDefault"
       @close-form="closeForm"
       @loading="loading"
       :auth="state.auth"
@@ -393,6 +394,9 @@ export default defineComponent({
       } else {
         await getEvents(state.currentTimeStamp)
       }
+    }
+    const clearDefault = () => {
+      state.default = {}
     }
     const closeForm = async() => {
       state.id = 'add'
@@ -591,6 +595,7 @@ export default defineComponent({
       badgeClasses,
       badgeStyles,
       changeStatus,
+      clearDefault,
       closeForm,
       editEvent,
       eventsMap,

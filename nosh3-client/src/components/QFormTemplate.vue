@@ -241,7 +241,7 @@ export default defineComponent({
       default: function () { return {}}
     }
   },
-  emits: ['care-plan', 'composition', 'close-form', 'loading', 'reload-drawer', 'set-composition-section'],
+  emits: ['care-plan', 'clear-default', 'composition', 'close-form', 'loading', 'reload-drawer', 'set-composition-section'],
   setup (props, { emit }) {
     const $q = useQuasar()
     const { addSchemaOptions, bundleBuild, fetchTXT, removeTags, sync, syncEmailToUser } = common()
@@ -541,13 +541,13 @@ export default defineComponent({
           }
         } else {
           getForm(state.index)
-          console.log(state.form)
         }
         // load default object
         if (JSON.stringify(props.default) !== '{}') {
           Object.entries(props.default).forEach(entry => {
             objectPath.set(state, 'form.' + entry[0], entry[1])
           })
+          emit('clear-default')
         }
       }
       // search bars
