@@ -482,7 +482,8 @@ export default defineComponent({
         j.label = d.data[3][i][0] + ' [' + d.data[3][i][1] + ']'
         j.value = {
           code: d.data[3][i][1],
-          text: d.data[3][i][0]
+          text: d.data[3][i][0],
+          system: "http://loinc.org"
         }
         state.options.push(j)
       }
