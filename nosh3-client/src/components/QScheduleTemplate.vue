@@ -379,9 +379,7 @@ export default defineComponent({
         // create encounter
         const defaults = {}
         var userDB = new PouchDB(prefix + 'users')
-        var result = await userDB.find({
-          selector: {'reference': {$eq: state.fhir.participant[1].actor[0].reference }, _id: {"$gte": null}}
-        })
+        const result = await userDB.find({selector: {'reference': {$eq: state.fhir.participant[1].actor[0].reference }, _id: {"$gte": null}}})
         if (result.docs.length > 0) {
           objectPath.set(defaults, 'class', result.docs[0].defaults.class)
           objectPath.set(defaults, 'type', result.docs[0].defaults.type)
@@ -445,7 +443,7 @@ export default defineComponent({
       state.eventsMapped = []
       var start = moment(dt).format('YYYY-MM-DD HH:mm')
       var end = moment(dt).add(1, 'd').format('YYYY-MM-DD HH:mm')
-      var result = await localDB.find({
+      const result = await localDB.find({
         selector: {
           $and: [
             { start: {$gte: start}},

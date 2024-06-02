@@ -113,9 +113,7 @@ export default defineComponent({
     }
     const dft = async(observation) => {
       var series = []
-      var result = await db.find({
-        selector: {'code.coding.code': {$eq: observation}, _id: {"$gte": null}}
-      })
+      const result = await db.find({selector: {'code.coding.code': {$eq: observation}, _id: {"$gte": null}}})
       var data1 = []
       result.docs.sort((a1, b1) => moment(a1.effectivePeriod.start) - moment(b1.effectivePeriod.start))
       for (var d in result.docs) {
@@ -194,9 +192,7 @@ export default defineComponent({
       for (var c in typeSub.selector) {
         selector.push({'code.coding.0.code': {$eq: typeSub.selector[c]}, _id: {"$gte": null}})
       }
-      var result = await db.find({
-        selector: {$or: selector}
-      })
+      const result = await db.find({selector: {$or: selector}})
       var data1 = []
       var data2 = []
       result.docs.sort((a1, b1) => moment(a1.effectivePeriod.start) - moment(b1.effectivePeriod.start))

@@ -217,9 +217,7 @@ export default defineComponent({
     const qOptions = ref(props.options)
     const query = async() => {
       state.cards = []
-      var result = await localDB.find({
-        selector: {[state.base.indexField]: {$eq: [state.base.indexRoot] + '/' + props.encounter}, _id: {"$gte": null}}
-      })
+      const result = await localDB.find({selector: {[state.base.indexField]: {$eq: [state.base.indexRoot] + '/' + props.encounter}, _id: {"$gte": null}}})
       state.result = result.docs
       tableMap()
     }

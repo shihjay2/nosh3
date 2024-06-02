@@ -315,13 +315,11 @@ export default defineComponent({
     }
     const query = async(resource, index) => {
       const localDB = new PouchDB(prefix + resource)
-      var selector = {[state.base[index].activeField]: {$ne: 'inactive'}, [state.base[index].patientField]: {$eq: 'Patient/' + props.patient }, _id: {"$gte": null}}
+      const findobj = {selector: {[state.base[index].activeField]: {$ne: 'inactive'}, [state.base[index].patientField]: {$eq: 'Patient/' + props.patient }, _id: {"$gte": null}}}
       if (resource === 'communications') {
-        selector = {[state.base[index].activeField]: {$ne: 'inactive'}, [state.base[index].patientField]: {$eq: 'Patient/' + props.patient }, inResponseTo: {$exists: false}, _id: {"$gte": null}}
+        findobj.selector = {[state.base[index].activeField]: {$ne: 'inactive'}, [state.base[index].patientField]: {$eq: 'Patient/' + props.patient }, inResponseTo: {$exists: false}, _id: {"$gte": null}}
       }
-      var result = await localDB.find({
-        selector: selector
-      })
+      const result = await localDB.find(findobj)
       return result.docs.length.toString()
     }
     const unset = (type) => {

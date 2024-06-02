@@ -577,9 +577,7 @@ export default defineComponent({
           var email = rows[a].doc.telecom.find((a) => a.system === 'email')
           if (email !== undefined) {
             // check if user exists
-            var result_users = await localDB5.find({
-              selector: {'email': {$eq: email.value}, _id: {"$gte": null}}
-            })
+            const result_users = await localDB5.find({selector: {'email': {$eq: email.value}, _id: {"$gte": null}}})
             if (result_users.docs.length > 0) {
               add_user = false
               if (auth.auth === 'mojoauth') {
@@ -956,9 +954,7 @@ export default defineComponent({
     const getBundle = async(rows) => {
       var results = []
       for (var b of rows) {
-        var result = await localDB3.find({
-          selector: {'entry.0.resource.encounter.reference': {$eq: 'Encounter/' + b.id}, _id: {"$gte": null}}
-        })
+        const result = await localDB3.find({selector: {'entry.0.resource.encounter.reference': {$eq: 'Encounter/' + b.id}, _id: {"$gte": null}}})
         if (result.docs.length > 0) {
           result.docs.sort((a1, b1) => moment(b1.timestamp) - moment(a1.timestamp))
         }
@@ -1028,9 +1024,7 @@ export default defineComponent({
     }
     const getCarePlans = async(rows) => {
       for (var index in rows) {
-        var result = await localDB1.find({
-          selector: {'contained.0.id': {$eq: rows[index].id}, _id: {"$gte": null}}
-        })
+        const result = await localDB1.find({selector: {'contained.0.id': {$eq: rows[index].id}, _id: {"$gte": null}}})
         if (objectPath.has(result, 'docs.0')) {
           result.docs.sort((a1, b1) => moment(b1.created) - moment(a1.created))
           objectPath.set(state, 'rows.' + index + '.careplan.description', objectPath.get(result, 'docs.0.description'))
@@ -1052,9 +1046,7 @@ export default defineComponent({
     }
     const getMedicationCarePlan = async(rows) => {
       for (var index in rows) {
-        var result = await localDB1.find({
-          selector: {'activity': {"$elemMatch": {"reference": "MedicationStatement/" + rows[index].id}}, _id: {"$gte": null}}
-        })
+        const result = await localDB1.find({selector: {'activity': {"$elemMatch": {"reference": "MedicationStatement/" + rows[index].id}}, _id: {"$gte": null}}})
         if (objectPath.has(result, 'docs.0')) {
           for (var d in objectPath.get(result, 'docs')) {
             var e = objectPath.get(result, 'docs.' + d + '.activity')
@@ -1070,9 +1062,7 @@ export default defineComponent({
     const getMedicationRequests = async(rows) => {
       for (var index in rows) {
         if (objectPath.has(rows, index + '.doc.medicationCodeableConcept.coding.0.code')) {
-          var result = await localDB4.find({
-            selector: {'medicationCodeableConcept.coding.0.code': {$eq: rows[index].doc.medicationCodeableConcept.coding[0].code}, _id: {"$gte": null}}
-          })
+          const result = await localDB4.find({selector: {'medicationCodeableConcept.coding.0.code': {$eq: rows[index].doc.medicationCodeableConcept.coding[0].code}, _id: {"$gte": null}}})
           if (objectPath.has(result, 'docs.0')) {
             result.docs.sort((a1, b1) => moment(b1.authoredOn) - moment(a1.authoredOn))
             for (var d in objectPath.get(result, 'docs')) {

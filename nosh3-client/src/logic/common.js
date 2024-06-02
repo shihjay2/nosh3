@@ -1084,9 +1084,7 @@ export function common() {
         resource === 'practitioners' ||
         resource === 'related_persons') {
       const db_users = new PouchDB(prefix + 'users')
-      const result_users = await db_users.find({
-        selector: {'reference': {$eq: Case.pascal(pluralize.singular(resource)) + '/' + doc.id}}
-      })
+      const result_users = await db_users.find({selector: {'reference': {$eq: Case.pascal(pluralize.singular(resource)) + '/' + doc.id}}})
       if (result_users.docs.length > 0) {
         if (category === 'telecom') {
           var a = doc[category].find(b => b.system == 'email')
@@ -1139,7 +1137,7 @@ export function common() {
       var selector = {"inResponseTo.reference": {$eq: 'Communication/' + id }, status: {$eq: 'completed'}, _id: {"$gte": null}}
     } else {
       var pending = {"inResponseTo.reference": {$eq: 'Communication/' + id }, status: {$eq: 'preparation'}, _id: {"$gte": null}}
-      var pending_result = await localDB.find({selector: pending})
+      const pending_result = await localDB.find({selector: pending})
       if (pending_result.docs.length > 0) {
         for (var a in pending_result.docs) {
           if (moment(pending_result.docs[a].sent).isBefore()) {
@@ -1150,7 +1148,7 @@ export function common() {
       }
       var selector = {"inResponseTo.reference": {$eq: 'Communication/' + id }, status: {$eq: 'in-progress'}, _id: {"$gte": null}}
     }
-    var result = await localDB.find({selector: selector})
+    const result = await localDB.find({selector: selector})
     if (result.docs.length > 0) {
       for (var b in result.docs) {
         arr.push(result.docs[b])

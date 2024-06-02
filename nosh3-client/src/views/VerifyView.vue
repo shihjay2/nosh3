@@ -195,7 +195,7 @@ export default defineComponent({
         //   {'email': {$eq: state.payload._nosh.email}, _id: {"$gte": null}},
         //   {'did': {$eq: state.payload._nosh.did}, _id: {"$gte": null}}
         // ]
-        var result = await users.find({
+        const result = await users.find({
           // selector: {$or: selector}
           selector: selector
         })

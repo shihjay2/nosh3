@@ -139,7 +139,7 @@ app.get('/start', async(req, res) => {
       if (b) {
         await couchdbDatabase()
         const db_users = new PouchDB(urlFix(settings.couchdb_uri) + 'users', settings.couchdb_auth)
-        var result = await db_users.find({selector: {_id: {$regex: "^nosh_*"}}})
+        const result = await db_users.find({selector: {_id: {$regex: "^nosh_*"}}})
         if (result.docs.length === 0) {
           await userAdd()
         }

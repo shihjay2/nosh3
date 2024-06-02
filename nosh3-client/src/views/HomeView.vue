@@ -907,40 +907,38 @@ export default defineComponent({
       state.patientList = await patientList(user)
       if (route.params.id !== 'new') {
         try {
-          var result = await patientDB.find({
-            selector: {_id: {$eq: route.params.id}}
-          })
+          const result = await patientDB.find({selector: {_id: {$eq: route.params.id}}})
+          if (result.docs.length > 0) {
+            state.patient = result.docs[0].id
+            auth.setPatient(state.patient)
+            await refreshPatient(false)
+            state.showDrawer = true
+            state.showMenu = true
+            var chart = {
+              name: removeTags(result.docs[0].text.div),
+              url: location.protocol + '//' + location.host + location.pathname,
+              id: result.docs[0].id,
+              date: moment().unix()
+            }
+            state.user = await updateUser(user, 'charts', chart)
+            if (route.query.encounter !== undefined) {
+              openPage(route.query.encounter, 'encounters', 'subjective')
+            } else if (route.query.oidc !== undefined) {
+              openOIDC(route.query.oidc, localStorage.getItem('oidc_name'))
+            } else {
+              state.showTimelineParent = true
+              state.showTimeline = true
+              if (localStorage.getItem('oidc_data') !== null) {
+                state.oidc = JSON.parse(localStorage.getItem('oidc_data'))
+              }
+            }
+          } else {
+            state.menuVisible = false
+            openForm('add', 'patients', 'new')
+          }
         } catch (e) {
           auth.returnUrl = route.fullPath
           return auth.logout()
-        }
-        if (result.docs.length > 0) {
-          state.patient = result.docs[0].id
-          auth.setPatient(state.patient)
-          await refreshPatient(false)
-          state.showDrawer = true
-          state.showMenu = true
-          var chart = {
-            name: removeTags(result.docs[0].text.div),
-            url: location.protocol + '//' + location.host + location.pathname,
-            id: result.docs[0].id,
-            date: moment().unix()
-          }
-          state.user = await updateUser(user, 'charts', chart)
-          if (route.query.encounter !== undefined) {
-            openPage(route.query.encounter, 'encounters', 'subjective')
-          } else if (route.query.oidc !== undefined) {
-            openOIDC(route.query.oidc, localStorage.getItem('oidc_name'))
-          } else {
-            state.showTimelineParent = true
-            state.showTimeline = true
-            if (localStorage.getItem('oidc_data') !== null) {
-              state.oidc = JSON.parse(localStorage.getItem('oidc_data'))
-            }
-          }
-        } else {
-          state.menuVisible = false
-          openForm('add', 'patients', 'new')
         }
       } else {
         state.menuVisible = false
@@ -1507,53 +1505,46 @@ export default defineComponent({
         }
         const db = new PouchDB(prefix + resource)
         try {
-          var result = await db.find({
-            selector: {[base.patientField]: {$eq: 'Patient/' + state.patient }, _id: {"$gte": null}}
-          })
+          const result = await db.find({selector: {[base.patientField]: {$eq: 'Patient/' + state.patient }, _id: {"$gte": null}}})
+          for (var a in result.docs) {
+            var timelineItem = {}
+            objectPath.set(timelineItem, 'id', objectPath.get(result, 'docs.' + a + '.id'))
+            objectPath.set(timelineItem, 'title', fhirReplace('title', base, result.docs[a], schema))
+            objectPath.set(timelineItem, 'subtitle', objectPath.get(result, 'docs.' + a + '.' + base.timelineDate) + ', ' + title)
+            objectPath.set(timelineItem, 'content', fhirReplace('content', base, result.docs[a], schema))
+            objectPath.set(timelineItem, 'extended', fhirReplace('extended', base, result.docs[a], schema))
+            objectPath.set(timelineItem, 'status', fhirReplace('status', base, result.docs[a], schema))
+            objectPath.set(timelineItem, 'date', new Date(objectPath.get(result, 'docs.' + a + '.' + base.timelineDate)))
+            objectPath.set(timelineItem, 'icon', resource1.icon)
+            objectPath.set(timelineItem, 'resource', resource)
+            objectPath.set(timelineItem, 'doc', objectPath.get(result, 'docs.' + a))
+            objectPath.set(timelineItem, 'keys', base.fuse)
+            objectPath.set(timelineItem, 'style', base.uiListContent.contentStyle)
+            if (resource === 'encounters') {
+              const bundle_db = new PouchDB(prefix + 'bundles')
+              const bundle_result = await bundle_db.find({selector: {'entry': {"$elemMatch": {"resource.encounter.reference": 'Encounter/' + objectPath.get(result, 'docs.' + a + '.doc.id')}}, _id: {"$gte": null}}})
+              if (bundle_result.docs.length > 0) {
+                bundle_result.docs.sort((a1, b1) => moment(b1.timestamp) - moment(a1.timestamp))
+                var history = []
+                for (var b in bundle_result.docs) {
+                  if (!objectPath.has(timelineItem, 'bundle')) {
+                    objectPath.set(timelineItem, 'bundle', objectPath.get(bundle_result, 'docs.' + b))
+                    history.push(objectPath.get(bundle_result, 'docs.' + b))
+                  } else {
+                    history.push(objectPath.get(bundle_result, 'docs.' + b))
+                  }
+                }
+                objectPath.set(timelineItem, 'bundle_history', history)
+              }
+            }
+            timeline.push(timelineItem)
+          }
         } catch (err) {
           console.log(err)
         }
-        for (var a in result.docs) {
-          var timelineItem = {}
-          objectPath.set(timelineItem, 'id', objectPath.get(result, 'docs.' + a + '.id'))
-          objectPath.set(timelineItem, 'title', fhirReplace('title', base, result.docs[a], schema))
-          objectPath.set(timelineItem, 'subtitle', objectPath.get(result, 'docs.' + a + '.' + base.timelineDate) + ', ' + title)
-          objectPath.set(timelineItem, 'content', fhirReplace('content', base, result.docs[a], schema))
-          objectPath.set(timelineItem, 'extended', fhirReplace('extended', base, result.docs[a], schema))
-          objectPath.set(timelineItem, 'status', fhirReplace('status', base, result.docs[a], schema))
-          objectPath.set(timelineItem, 'date', new Date(objectPath.get(result, 'docs.' + a + '.' + base.timelineDate)))
-          objectPath.set(timelineItem, 'icon', resource1.icon)
-          objectPath.set(timelineItem, 'resource', resource)
-          objectPath.set(timelineItem, 'doc', objectPath.get(result, 'docs.' + a))
-          objectPath.set(timelineItem, 'keys', base.fuse)
-          objectPath.set(timelineItem, 'style', base.uiListContent.contentStyle)
-          if (resource === 'encounters') {
-            const bundle_db = new PouchDB(prefix + 'bundles')
-            var bundle_result = await bundle_db.find({
-              // selector: {'entry.0.resource.encounter.reference': {$eq: 'Encounter/' + objectPath.get(result, 'docs.' + a + '.doc.id')}, _id: {"$gte": null}},
-              selector: {'entry': {"$elemMatch": {"resource.encounter.reference": 'Encounter/' + objectPath.get(result, 'docs.' + a + '.doc.id')}}, _id: {"$gte": null}}
-            })
-            if (bundle_result.docs.length > 0) {
-              bundle_result.docs.sort((a1, b1) => moment(b1.timestamp) - moment(a1.timestamp))
-              var history = []
-              for (var b in bundle_result.docs) {
-                if (!objectPath.has(timelineItem, 'bundle')) {
-                  objectPath.set(timelineItem, 'bundle', objectPath.get(bundle_result, 'docs.' + b))
-                  history.push(objectPath.get(bundle_result, 'docs.' + b))
-                } else {
-                  history.push(objectPath.get(bundle_result, 'docs.' + b))
-                }
-              }
-              objectPath.set(timelineItem, 'bundle_history', history)
-            }
-          }
-          timeline.push(timelineItem)
-        }
       }
       const activitiesDb = new PouchDB(prefix + 'activities')
-      var activitiesResult = await activitiesDb.find({
-        selector: {event: {$eq: 'Chart Created' }, _id: {"$gte": null}}
-      })
+      const activitiesResult = await activitiesDb.find({selector: {event: {$eq: 'Chart Created' }, _id: {"$gte": null}}})
       const timelineIntro = {
         id: 'intro',
         title: 'New Chart Created',
@@ -1823,7 +1814,7 @@ export default defineComponent({
       state.id = id
       if (state.resource == 'encounters') {
         const a = new PouchDB(prefix + 'bundles')
-        var results = await a.find({selector: {'entry.0.resource.encounter.reference': {$eq: 'Encounter/' + id}, _id: {"$gte": null}}})
+        const results = await a.find({selector: {'entry.0.resource.encounter.reference': {$eq: 'Encounter/' + id}, _id: {"$gte": null}}})
         if (results.length > 0) {
           results.docs.sort((b, c) => moment(c.timestamp) - moment(b.timestamp))
           state.bundleDoc = objectPath.get(results, '0.docs.0')
@@ -2095,9 +2086,7 @@ export default defineComponent({
         var sections_arr = []
         const a = new PouchDB(prefix + resource)
         var b = await import('@/assets/fhir/' + resource + '.json')
-        var result = await a.find({
-          selector: {[b.activeField]: {$ne: 'inactive'}, _id: {"$gte": null}}
-        })
+        const result = await a.find({selector: {[b.activeField]: {$ne: 'inactive'}, _id: {"$gte": null}}})
         text = '<ul>'
         for (var c in result.docs) {
           text += '<li>' + removeTags(result.docs[c].text.div) + '</li>'
@@ -2215,9 +2204,7 @@ export default defineComponent({
       for (var resource of resources) {
         base = await import('@/assets/fhir/' + resource + '.json')
         const db = new PouchDB(prefix + resource)
-        var results = await db.find({
-          selector: {[base.indexField]: {$eq: [base.indexRoot] + '/' + state.encounter}, _id: {"$gte": null}}
-        })
+        const results = await db.find({selector: {[base.indexField]: {$eq: [base.indexRoot] + '/' + state.encounter}, _id: {"$gte": null}}})
         for (var a in results.docs) {
           var resource1 = Case.snake(pluralize(results.docs[a].resourceType))
           var item = {}

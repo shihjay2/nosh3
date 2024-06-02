@@ -155,12 +155,7 @@ async function couchdbUpdate(patient_id='', protocol='', hostname='') {
     prefix = patient_id + '_'
     var base_url = urlFix(protocol + '://' + hostname + '/')
     const db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
-    const result_users = await db_users.find({
-      selector: {
-        'role': {"$eq": 'patient'}
-        // 'reference': {"$eq": 'Patient/' + patient_id}
-      }
-    })
+    const result_users = await db_users.find({selector: {'role': {"$eq": 'patient'}}})
     email = result_users.docs[0].email
   }
   for (var resource of resources.rows) {
@@ -300,9 +295,7 @@ async function getAllKeys() {
     }
     // Local key
     const db = new PouchDB(urlFix(settings.couchdb_uri) + 'keys', settings.couchdb_auth)
-    const result = await db.find({
-      selector: {_id: {"$gte": null}}
-    })
+    const result = await db.find({selector: {_id: {"$gte": null}}})
     for (var a in result.docs) {
       keys.push(result.docs[a].publicKey)
       if (objectPath.has(result, 'docs.' + a + '.privateKey')) {
@@ -317,9 +310,7 @@ async function getAllKeys() {
 
 async function getKeys() {
   const db = new PouchDB(urlFix(settings.couchdb_uri) + 'keys', settings.couchdb_auth)
-  var result = await db.find({
-    selector: {_id: {"$gte": null}, privateKey: {"$gte": null}}
-  })
+  const result = await db.find({selector: {_id: {"$gte": null}, privateKey: {"$gte": null}}})
   return result.docs
 }
 

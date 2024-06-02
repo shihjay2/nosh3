@@ -89,9 +89,7 @@ async function authenticate(req, res) {
       res.status(401).send('Unauthorized - No PIN set')
     } else {
       const db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
-      const result_users = await db_users.find({
-        selector: {'email': {$eq: email}}
-      })
+      const result_users = await db_users.find({selector: {'email': {$eq: email}}})
       if (result_users.docs.length > 0) {
         var payload = {
           "_auth": req.body,
@@ -366,11 +364,7 @@ async function gnapVerify(req, res) {
                   //   }
                   // }
                   const db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
-                  const result_users = await db_users.find({
-                    selector: {
-                      'email': {"$eq": objectPath.get(verify_results, 'payload.sub')}
-                    }
-                  })
+                  const result_users = await db_users.find({selector: {'email': {"$eq": objectPath.get(verify_results, 'payload.sub')}}})
                   objectPath.set(nosh, 'email', objectPath.get(verify_results, 'payload.sub'))
                   const payload = {
                     "_gnap": doc,
@@ -727,9 +721,7 @@ async function pinCheck (req, res, next) {
     const db = new PouchDB('pins', {skip_setup: true})
     try {
       await db.info()
-      const result = await db.find({
-        selector: {'_id': {$eq: req.body.patient}}
-      })
+      const result = await db.find({selector: {'_id': {$eq: req.body.patient}}})
       if (result.docs.length > 0) {
         res.status(200).json({ response: 'OK'})
       } else {

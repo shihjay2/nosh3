@@ -1412,9 +1412,7 @@ export default defineComponent({
       if (props.resource == 'appointments') {
         if (field == 'practitioner') {
           const userDB = new PouchDB(prefix + 'users')
-          var result = await userDB.find({
-            selector: {'reference': {$eq: val }, _id: {"$gte": null}}
-          })
+          const result = await userDB.find({selector: {'reference': {$eq: val }, _id: {"$gte": null}}})
           if (result.docs.length > 0) {
             objectPath.set(state, 'form.serviceType', objectPath.get(result, 'docs.0.defaults.serviceType'))
             objectPath.set(state, 'form.appointmentType', objectPath.get(result, 'docs.0.defaults.appointmentType'))
