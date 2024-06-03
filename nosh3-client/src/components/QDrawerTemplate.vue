@@ -105,7 +105,6 @@
 
 <script>
 import { defineComponent, reactive, onMounted, watch } from 'vue'
-import { useAuthStore } from '@/stores'
 import { common } from '@/logic/common'
 import objectPath from 'object-path'
 import PouchDB from 'pouchdb-browser'
@@ -133,7 +132,7 @@ export default defineComponent({
   },
   emits: ['open-care-opportunities', 'open-list', 'open-page', 'open-pulldown', 'reload-drawer-complete', 'unset'],
   setup (props, { emit }) {
-    const { observationStatus, observationStatusRaw } = common()
+    const { getPrefix, observationStatus, observationStatusRaw } = common()
     const state = reactive({
       patientName: '',
       patientAge: '',
@@ -160,11 +159,7 @@ export default defineComponent({
       smokingStatusTooltip: '',
       careplan: ''
     })
-    const auth = useAuthStore()
-    var prefix = ''
-    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
-      prefix = auth.patient + '_'
-    }
+    var prefix = getPrefix()
     onMounted(async() => {
       encounterCheck()
       state.patientName = props.patientName

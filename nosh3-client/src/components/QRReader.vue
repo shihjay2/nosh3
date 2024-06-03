@@ -39,17 +39,10 @@
 import { defineComponent, reactive, onMounted } from 'vue'
 import { common } from '@/logic/common'
 import axios from 'axios'
-import Case from 'case'
-import Fuse from 'fuse.js'
 import jsum from 'jsum'
 import objectPath from 'object-path'
-import pluralize from 'pluralize'
 import { SiweMessage } from '@spruceid/ssx'
 import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from 'vue-qrcode-reader'
-import {v4 as uuidv4} from 'uuid'
-
-
-import { useAuthStore } from '@/stores'
 
 export default defineComponent({
   name: 'QRReader',
@@ -81,7 +74,6 @@ export default defineComponent({
       doc: {}
     })
     const { fhirReplace } = common()
-    const auth = useAuthStore()
     onMounted(async() => {
       
     })

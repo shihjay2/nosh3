@@ -381,7 +381,7 @@ export default defineComponent({
   emits: ['care-plan', 'complete-task', 'composition', 'loading', 'lock-thread', 'new-prescription', 'open-bundle', 'open-chat', 'open-form', 'open-file', 'open-page', 'open-qr', 'reload-complete', 'remove-oidc', 'set-composition-section'],
   setup (props, { emit }) {
     const $q = useQuasar()
-    const { addSchemaOptions, divBuild, eventAdd, fetchJSON, fhirModel, fhirReplace, groupItems, inbox, loadSelect, referenceSearch, removeTags, sync } = common()
+    const { addSchemaOptions, divBuild, eventAdd, fetchJSON, fhirModel, fhirReplace, getPrefix, groupItems, inbox, loadSelect, referenceSearch, removeTags, sync } = common()
     const state = reactive({
       auth: {},
       online: false,
@@ -430,10 +430,7 @@ export default defineComponent({
       section_default: {},
     })
     const auth = useAuthStore()
-    var prefix = ''
-    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
-      prefix = auth.patient + '_'
-    }
+    var prefix = getPrefix()
     var localDB = new PouchDB(prefix + props.resource)
     var localDB1 = new PouchDB(prefix + 'care_plans')
     var localDB2 = new PouchDB(prefix + 'compositions')
@@ -625,7 +622,7 @@ export default defineComponent({
         doc_id: result.id,
         diff: null
       }
-      await eventAdd('Deleted ' + pluralize.singular(props.resource.replace('_statements', '')), props.online, props.patient, opts)
+      await eventAdd('Deleted ' + pluralize.singular(props.resource.replace('_statements', '')), props.patient, opts)
       if (props.resource === 'conditions') {
         if (state.rows[index].history) {
           for (var a in state.rows[index].history) {
@@ -636,7 +633,7 @@ export default defineComponent({
               doc_id: result_b.id,
               diff: null
             }
-            await eventAdd('Deleted Care Plan', props.online, props.patient, opts_b)
+            await eventAdd('Deleted Care Plan', props.patient, opts_b)
           }
         }
       }

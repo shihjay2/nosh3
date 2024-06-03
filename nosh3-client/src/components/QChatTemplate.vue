@@ -110,7 +110,6 @@
 
 <script>
 import { defineComponent, reactive, ref, onMounted, watch } from 'vue'
-import { useAuthStore } from '@/stores'
 import Case from 'case'
 import { common } from '@/logic/common'
 import { Form } from 'vee-validate'
@@ -145,7 +144,7 @@ export default defineComponent({
   },
   emits: ['reload-complete', 'set-chat-id'],
   setup (props, { emit }) {
-    const { sync, thread } = common()
+    const { getPrefix, sync, thread } = common()
     const state = reactive({
       messages: [],
       last: {},
@@ -161,11 +160,7 @@ export default defineComponent({
       virtual_index: 0
     })
     const virtualChatRef = ref(null)
-    const auth = useAuthStore()
-    var prefix = ''
-    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
-      prefix = auth.patient + '_'
-    }
+    var prefix = getPrefix()
     var localDB = new PouchDB(prefix + props.resource)
     onMounted(async() => {
       state.base = props.base

@@ -292,7 +292,6 @@
 
 <script>
 import { defineComponent, nextTick, reactive, onMounted, watch } from 'vue'
-import { useAuthStore } from '@/stores'
 import { useQuasar } from 'quasar'
 import { common } from '@/logic/common'
 import convert from 'convert'
@@ -348,7 +347,7 @@ export default defineComponent({
   emits: ['care-plan', 'composition', 'loading', 'lock-thread', 'new-prescription', 'open-form', 'open-graph', 'open-page-form-complete', 'reload-complete', 'reload-drawer', 'remove-oidc', 'open-list', 'update-toolbar'],
   setup (props, { emit }) {
     const $q = useQuasar()
-    const { addSchemaOptions, loadSchema, fetchJSON, sync, updateUser } = common()
+    const { addSchemaOptions, getPrefix, loadSchema, fetchJSON, sync, updateUser } = common()
     const state = reactive({
       auth: {},
       online: false,
@@ -426,11 +425,7 @@ export default defineComponent({
       service_request_doc: {},
       oidc: []
     })
-    const auth = useAuthStore()
-    var prefix = ''
-    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
-      prefix = auth.patient + '_'
-    }
+    var prefix = getPrefix()
     var localDB = new PouchDB(prefix + props.resource)
     var conditionsDB = new PouchDB(prefix + 'conditions')
     onMounted(async() => {

@@ -114,7 +114,7 @@ export default defineComponent({
     const logout = async() => {
       emit('stop-inbox-timer')
       if (props.patient !== '') {
-        await eventAdd('Logged Out', props.online, props.patient)
+        await eventAdd('Logged Out', props.patient)
       }
       return auth.logout()
     }

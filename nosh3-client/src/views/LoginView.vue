@@ -11,7 +11,7 @@
       <div class="q-pa-md row items-start q-gutter-md fixed-center">
         <q-card v-if="state.login" class="q-pa-md">
           <q-card-section>
-            <div class="text-h6 text-center">Login</div>
+            <div class="text-h6 text-center">Sign In With</div>
           </q-card-section>
           <q-separator />
           <Form @submit="onSubmit">
@@ -309,7 +309,7 @@ export default defineComponent({
         })
         if (result.docs.length > 0) {
           auth.login(result.docs[0], state.payload, jwt)
-          await eventAdd('Logged in', true, state.patient)
+          await eventAdd('Logged in', state.patient)
           state.progress += '<br/>Syncing data...'
           await syncAll(true, state.patient, true)
           state.progress += '<br/>Complete!'

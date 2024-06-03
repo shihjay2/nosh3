@@ -124,12 +124,9 @@ export function common() {
     objectPath.set(doc, 'text.div', value)
     return doc
   }
-  const eventAdd = async(event, online, patient_id, opts={doc_db: null, doc_id: null, diff: null}) => {
+  const eventAdd = async(event, patient_id, opts={doc_db: null, doc_id: null, diff: null}) => {
     const auth_store = useAuthStore()
-    var prefix = ''
-    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
-      prefix = patient_id + '_'
-    } 
+    const prefix = getPrefix()
     const db = new PouchDB(prefix + 'activities')
     var doc = {
       _id: 'nosh_' + uuidv4(),
@@ -412,12 +409,16 @@ export function common() {
       return str
     }
   }
-  const getResource = async(resource, arr) => {
+  const getPrefix = () => {
     const auth_store = useAuthStore()
     var prefix = ''
     if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
       prefix = auth_store.patient + '_'
     }
+    return prefix
+  }
+  const getResource = async(resource, arr) => {
+    const prefix = getPrefix()
     const resourceDB = new PouchDB(prefix + resource)
     var result = await resourceDB.allDocs({
       include_docs: true,
@@ -436,11 +437,8 @@ export function common() {
   }
   const getSignedEncounters = async(yearback="100") => {
     const auth_store = useAuthStore()
+    const prefix = getPrefix()
     var ret = []
-    var prefix = ''
-    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
-      prefix = auth_store.patient + '_'
-    }
     const encountersDB = new PouchDB(prefix + 'encounters')
     const period = moment().subtract(yearback, 'year').format('YYYY-MM-DD')
     const encountersResult = await encountersDB.find({selector: {'subject.reference': {$eq: 'Patient/' + auth_store.patient }, 'period.start': { "$gte": period }, _id: {"$gte": null}}})
@@ -489,11 +487,7 @@ export function common() {
     return ret
   }
   const inbox = async(resource, user) => {
-    const auth_store = useAuthStore()
-    var prefix = ''
-    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
-      prefix = auth_store.patient + '_'
-    }
+    const prefix = getPrefix()
     const localDB = new PouchDB(prefix + resource)
     var result = {}
     if (resource === 'communications') {
@@ -536,11 +530,7 @@ export function common() {
     return result
   }
   const loadSchema = async(resource, category, schema, online, options) => {
-    const auth_store = useAuthStore()
-    var prefix = ''
-    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
-      prefix = auth_store.patient + '_'
-    }
+    const prefix = getPrefix()
     var countries = []
     var select = {}
     var states = []
@@ -766,11 +756,7 @@ export function common() {
     return schema
   }
   const observationResult = async(code, patient) => {
-    const auth_store = useAuthStore()
-    var prefix = ''
-    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
-      prefix = auth_store.patient + '_'
-    }
+    const prefix = getPrefix()
     var res = ''
     const observationDB = new PouchDB(prefix + 'observations')
     const result = await observationDB.find({selector: {
@@ -786,11 +772,7 @@ export function common() {
     return res
   }
   const observationStatus = async(type, patient, boolean=false, unknown=false) => {
-    const auth_store = useAuthStore()
-    var prefix = ''
-    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
-      prefix = auth_store.patient + '_'
-    }
+    const prefix = getPrefix()
     var map = [
       {
         type: 'pregnancy',
@@ -840,11 +822,7 @@ export function common() {
     }
   }
   const observationStatusRaw = async(type, patient) => {
-    const auth_store = useAuthStore()
-    var prefix = ''
-    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
-      prefix = auth_store.patient + '_'
-    }
+    const prefix = getPrefix()
     var map = [
       {
         type: 'pregnancy',
@@ -896,11 +874,7 @@ export function common() {
     return arr
   }
   const patientStatus = async(type, patient, boolean=false) => {
-    const auth_store = useAuthStore()
-    var prefix = ''
-    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
-      prefix = auth_store.patient + '_'
-    }
+    const prefix = getPrefix()
     var map = [
       {
         type: 'race',
@@ -930,11 +904,7 @@ export function common() {
     return ret
   }
   const referenceSearch = async(resource, id) => {
-    const auth_store = useAuthStore()
-    var prefix = ''
-    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
-      prefix = auth_store.patient + '_'
-    }
+    const prefix = getPrefix()
     const db = new PouchDB(prefix + resource)
     var results = await db.find({
       selector: {'sync_id': {$eq: id}, _id: {"$gte": null}}
@@ -980,10 +950,7 @@ export function common() {
       return PouchDB.fetch(url, opts)
     }}
     const pin = auth_store.pin
-    var prefix = ''
-    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
-      prefix = patient_id + '_'
-    }
+    const prefix = getPrefix()
     const local = new PouchDB(prefix + resource)
     if (save) {
       var prev_data = ''
@@ -1007,7 +974,7 @@ export function common() {
         auth_store.update(data)
       }
       auth_store.setSyncResource(resource)
-      await eventAdd('Updated ' + pluralize.singular(resource.replace('_statements', '')), online, patient_id, opts)
+      await eventAdd('Updated ' + pluralize.singular(resource.replace('_statements', '')), patient_id, opts)
     }
     if (online) {
       if (resource !== 'users' && resource !== 'presentations') {
@@ -1075,11 +1042,7 @@ export function common() {
   }
   const syncState = reactive({ total: 0, complete: 0 })
   const syncEmailToUser = async(resource, category, doc, patient_id, online) => {
-    const auth_store = useAuthStore()
-    var prefix = ''
-    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
-      prefix = auth_store.patient + '_'
-    }
+    const prefix = getPrefix()
     if (resource === 'patients' ||
         resource === 'practitioners' ||
         resource === 'related_persons') {
@@ -1113,11 +1076,7 @@ export function common() {
     return arr
   }
   const threadEarlier = async(doc, arr) => {
-    const auth_store = useAuthStore()
-    var prefix = ''
-    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
-      prefix = auth_store.patient + '_'
-    }
+    const prefix = getPrefix()
     const localDB = new PouchDB(prefix + 'communications')
     if (objectPath.has(doc, 'inResponseTo')) {
       var doc1 = await localDB.get(doc.inResponseTo.reference.replace('Communication/', ''))
@@ -1127,11 +1086,7 @@ export function common() {
     return arr
   }
   const threadLater = async(id, arr, status, online, patient_id) => {
-    const auth_store = useAuthStore()
-    var prefix = ''
-    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
-      prefix = auth_store.patient + '_'
-    }
+    const prefix = getPrefix()
     const localDB = new PouchDB(prefix + 'communications')
     if (status === 'completed') {
       var selector = {"inResponseTo.reference": {$eq: 'Communication/' + id }, status: {$eq: 'completed'}, _id: {"$gte": null}}
@@ -1203,6 +1158,7 @@ export function common() {
     fhirDisplay,
     fhirModel,
     fhirReplace,
+    getPrefix,
     getResource,
     getSignedEncounters,
     getValue,

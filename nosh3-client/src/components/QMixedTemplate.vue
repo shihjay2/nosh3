@@ -68,7 +68,6 @@
 
 <script>
 import { defineComponent, reactive, ref, onMounted, watch } from 'vue'
-import { useAuthStore } from '@/stores'
 import { common } from '@/logic/common'
 import objectPath from 'object-path'
 import pluralize from 'pluralize'
@@ -93,7 +92,7 @@ export default defineComponent({
   },
   emits: ['open-form', 'open-graph', 'reload-complete'],
   setup (props, { emit }) {
-    const { eventAdd } = common()
+    const { eventAdd, getPrefix } = common()
     const state = reactive({
       base: {},
       schema: {},
@@ -105,11 +104,7 @@ export default defineComponent({
       wrap: true,
       pagination: {rowsPerPage: 0}
     })
-    const auth = useAuthStore()
-    var prefix = ''
-    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
-      prefix = auth.patient + '_'
-    }
+    var prefix = getPrefix()
     var localDB = new PouchDB(prefix + props.resource)
     onMounted(async() => {
       state.base = props.base
@@ -230,7 +225,7 @@ export default defineComponent({
         doc_id: result.id,
         diff: null
       }
-      await eventAdd('Deleted ' + pluralize.singular(props.resource.replace('_statements', '')), props.online, props.patient, opts)
+      await eventAdd('Deleted ' + pluralize.singular(props.resource.replace('_statements', '')), props.patient, opts)
       await query()
     }
     const removeTags = (str) => {

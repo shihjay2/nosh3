@@ -55,7 +55,7 @@ import { common } from '@/logic/common'
 import moment from 'moment'
 import PouchDB from 'pouchdb-browser'
 import PouchDBFind from 'pouchdb-find'
-import objectPath from 'object-path'
+import objectPath, { get } from 'object-path'
 import print from 'vue3-print-nb'
 PouchDB.plugin(PouchDBFind)
 
@@ -71,7 +71,7 @@ export default {
   },
   emits: ['close-immunizationschedule'],
   setup(props, { emit }) {
-    const { fetchJSON } = common()
+    const { fetchJSON, getPrefix } = common()
     const state = reactive({
       patientImmunizationHistory: [],
       patientAgeMonths: null,
@@ -80,11 +80,7 @@ export default {
       table: {},
       wrap: true
     })
-    const auth = useAuthStore()
-    var prefix = ''
-    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
-      prefix = auth.patient + '_'
-    }
+    var prefix = getPrefix()
     onMounted(async() => {
       state.vacSched = await fetchJSON('vacSched', props.online)
       state.patientAgeMonths = '' + moment().diff(props.patientDOB, 'months')

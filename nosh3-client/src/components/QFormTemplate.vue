@@ -119,7 +119,6 @@
 
 <script>
 import { ref, defineComponent, nextTick, onMounted, reactive } from 'vue'
-import { useAuthStore } from '@/stores'
 import { common } from '@/logic/common'
 import axios from 'axios'
 import Case from 'case'
@@ -244,7 +243,7 @@ export default defineComponent({
   emits: ['care-plan', 'clear-default', 'composition', 'close-form', 'loading', 'reload-drawer', 'set-composition-section'],
   setup (props, { emit }) {
     const $q = useQuasar()
-    const { addSchemaOptions, bundleBuild, fetchTXT, removeTags, sync, syncEmailToUser } = common()
+    const { addSchemaOptions, bundleBuild, fetchTXT, getPrefix, removeTags, sync, syncEmailToUser } = common()
     const myInput = ref(null)
     const mySearchInput = ref(null)
     const state = reactive({
@@ -316,11 +315,7 @@ export default defineComponent({
       encounterTypes: [],
       online: false
     })
-    const auth = useAuthStore()
-    var prefix = ''
-    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
-      prefix = auth.patient + '_'
-    }
+    var prefix = getPrefix()
     var localDB = new PouchDB(prefix + props.resource)
     var localDB1 = new PouchDB(prefix + 'care_plans')
     onMounted(async() => {

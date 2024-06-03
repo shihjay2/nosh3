@@ -233,7 +233,6 @@
 
 <script>
 import { defineComponent, reactive, ref, nextTick, onMounted, watch } from 'vue'
-import { useAuthStore } from '@/stores'
 import { common } from '@/logic/common'
 import { addToDate, parseTimestamp, isBetweenDates, today, parsed, parseDate, parseTime } from '@quasar/quasar-ui-qcalendar/src/Timestamp.js'
 import { QCalendarDay } from '@quasar/quasar-ui-qcalendar/dist/QCalendarDay.esm.js'
@@ -274,7 +273,7 @@ export default defineComponent({
   emits: ['close-container', 'loading', 'open-form', 'reload-drawer', 'update-toolbar' ],
   setup(props, { emit }) {
     const $q = useQuasar()
-    const { addSchemaOptions, loadSelect, removeTags, sync } = common()
+    const { addSchemaOptions, getPrefix, loadSelect, removeTags, sync } = common()
     const calendar = ref(null)
     const state = reactive({
       view: 'day',
@@ -313,11 +312,7 @@ export default defineComponent({
       couchdb: '',
       pin: ''
     })
-    const auth = useAuthStore()
-    var prefix = ''
-    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
-      prefix = auth.patient + '_'
-    }
+    var prefix = getPrefix()
     var localDB = new PouchDB(prefix + props.resource)
     onMounted(async() => {
       state.base = await import('@/assets/fhir/' + props.resource + '.json')

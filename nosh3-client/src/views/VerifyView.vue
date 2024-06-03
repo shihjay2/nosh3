@@ -202,7 +202,7 @@ export default defineComponent({
         if (result.docs.length > 0) {
           auth.login(result.docs[0], state.payload, jwt)
           state.progress += '<br/>Welcome, ' + state.payload._nosh.display + '...'
-          await eventAdd('Logged in', true, state.patient)
+          await eventAdd('Logged in', state.patient)
           state.progress += '<br/>Syncing data...'
           await syncAll(true, state.patient, true)
           state.progress += '<br/>Complete!'

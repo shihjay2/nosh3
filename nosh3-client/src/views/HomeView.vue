@@ -660,7 +660,7 @@ export default defineComponent({
 },
   setup () {
     const $q = useQuasar()
-    const { addSchemaOptions, bundleBuild, divBuild, fetchJSON, fhirModel, fhirReplace, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, referenceSearch, removeTags, sync, syncAll, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
+    const { addSchemaOptions, bundleBuild, divBuild, fetchJSON, fhirModel, fhirReplace, getPrefix, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, referenceSearch, removeTags, sync, syncAll, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
     const state = reactive({
       menuVisible: false,
       showDrawer: false,
@@ -869,10 +869,7 @@ export default defineComponent({
       localStorage.setItem('gnap_jwt', gnap_jwt)
       window.location.reload()
     })
-    var prefix = ''
-    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
-      prefix = route.params.id + '_'
-    }
+    var prefix = getPrefix()
     var patientDB = new PouchDB(prefix + 'patients')
     var inboxTimer = null
     var syncTimer = null
