@@ -995,7 +995,7 @@ export function common() {
         }
       } else {
         const remote = new PouchDB(couchdb + prefix + resource, auth)
-        local.sync(remote).on('complete', () => {
+        local.sync(remote,{batch_size: 20, batches_limit: 2}).on('complete', () => {
           console.log('PouchDB sync complete for DB: ' + resource)
           const resources = auth_store.sync_resource
           const index = resources.indexOf(resource)
