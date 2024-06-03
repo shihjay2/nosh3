@@ -233,7 +233,7 @@ export default defineComponent({
         state.loading = false
         state.login = true
       }
-      if (state.login) {
+      if (state.login && state.magic) {
         nextTick(() => {
           var a = myInput.value.find(b => b._.props.readonly !== true)
           a._.props.focus = true
