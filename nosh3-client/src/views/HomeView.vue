@@ -879,10 +879,8 @@ export default defineComponent({
       try {
         await verifyJWT(state.online)
       } catch(e) {
-        console.log('jwt not valid')
-        console.log(e)
         auth.returnUrl = route.fullPath
-        // return auth.logout()
+        return auth.logout()
       }
       state.type = auth.type
       state.auth = {fetch: (url, opts) => {
@@ -896,6 +894,7 @@ export default defineComponent({
       try {
         var user = await userDB.get(auth.user.id)
       } catch (e) {
+        console.log(auth.user.id)
         console.log('user not found')
         console.log(e)
         auth.returnUrl = route.fullPath
