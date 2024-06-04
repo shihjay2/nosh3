@@ -894,6 +894,7 @@ export default defineComponent({
       try {
         var user = await userDB.get(auth.user.id)
       } catch (e) {
+        console.log(prefix)
         console.log(auth.user.id)
         console.log('user not found')
         console.log(e)
@@ -937,10 +938,9 @@ export default defineComponent({
             openForm('add', 'patients', 'new')
           }
         } catch (e) {
-          console.log('patient not found')
           console.log(e)
           auth.returnUrl = route.fullPath
-          // return auth.logout()
+          return auth.logout()
         }
       } else {
         state.menuVisible = false
