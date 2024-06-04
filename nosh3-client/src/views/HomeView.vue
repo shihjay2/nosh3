@@ -934,8 +934,14 @@ export default defineComponent({
               }
             }
           } else {
-            state.menuVisible = false
-            openForm('add', 'patients', 'new')
+            if (prefix === '') {
+              state.menuVisible = false
+              openForm('add', 'patients', 'new')
+            } else {
+              auth.setMessage('wrong patient')
+              auth.returnUrl = route.fullPath
+              return auth.logout()
+            }
           }
         } catch (e) {
           auth.setMessage('no patient')
