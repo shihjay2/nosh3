@@ -185,10 +185,7 @@ export default defineComponent({
         state.pin = state.payload._nosh.pin
         state.patient = state.payload._nosh.patient
         state.progress += '<br/>Setting user...'
-        var prefix = ''
-        if (state.payload._nosh.instance === 'digitalocean' && state.payload._noshType === 'pnosh') {
-          prefix = state.patient + '_'
-        }
+        var prefix = state.payload._nosh.prefix
         var users = new PouchDB(state.couchdb + prefix + 'users', state.auth)
         var selector = {'email': {$eq: state.payload._nosh.email}, _id: {"$gte": null}}
         // var selector = [

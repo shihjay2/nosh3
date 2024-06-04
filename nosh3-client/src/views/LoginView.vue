@@ -191,6 +191,9 @@ export default defineComponent({
       if (auth.user !== null) {
         auth.logout()
       }
+      if (auth.message !== null) {
+        console.log('Message: ' + auth.message)
+      }
       var config = await axios.get(window.location.origin + '/auth/config')
       state.config = config.data
       if (state.config.auth === 'magic') {
@@ -296,10 +299,7 @@ export default defineComponent({
         state.pin = state.payload._nosh.pin
         state.patient = state.payload._nosh.patient
         state.progress += '<br/>Setting user...'
-        var prefix = ''
-        if (state.payload._nosh.instance === 'digitalocean' && state.payload._noshType === 'pnosh') {
-          prefix = state.patient + '_'
-        }
+        var prefix = state.payload._nosh.prefix
         var users = new PouchDB(state.couchdb + prefix + 'users', state.auth)
         var selector = {'email': {$eq: state.payload._nosh.email}, _id: {"$gte": null}}
           // {'did': {$eq: state.payload._nosh.did}, _id: {"$gte": null}}

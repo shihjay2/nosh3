@@ -660,7 +660,7 @@ export default defineComponent({
 },
   setup () {
     const $q = useQuasar()
-    const { addSchemaOptions, bundleBuild, divBuild, fetchJSON, fhirModel, fhirReplace, getPrefix, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, referenceSearch, removeTags, sync, syncAll, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
+    const { addSchemaOptions, bundleBuild, divBuild, fetchJSON, fhirModel, fhirReplace, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, referenceSearch, removeTags, sync, syncAll, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
     const state = reactive({
       menuVisible: false,
       showDrawer: false,
@@ -855,6 +855,7 @@ export default defineComponent({
       const trustee = localStorage.getItem('trustee')
       const oidc_data = JSON.parse(localStorage.getItem('oidc_data'))
       const gnap_jwt = localStorage.getItem('gnap_jwt')
+      const prefix1 = localStorage.getItem('prefix')
       window.localStorage.clear()
       localStorage.setItem('user', JSON.stringify(user1))
       localStorage.setItem('jwt', jwt)
@@ -867,9 +868,10 @@ export default defineComponent({
       localStorage.setItem('trustee', trustee)
       localStorage.setItem('oidc_data', JSON.stringify(oidc_data))
       localStorage.setItem('gnap_jwt', gnap_jwt)
+      localStorage.setItem('prefix', prefix1)
       window.location.reload()
     })
-    var prefix = getPrefix()
+    var prefix = auth.prefix
     var patientDB = new PouchDB(prefix + 'patients')
     var inboxTimer = null
     var syncTimer = null
@@ -879,9 +881,9 @@ export default defineComponent({
       try {
         await verifyJWT(state.online)
       } catch(e) {
-        console.log('jwt not valid')
+        auth.setMessage('jwt not valid')
         auth.returnUrl = route.fullPath
-        // return auth.logout()
+        return auth.logout()
       }
       state.type = auth.type
       state.auth = {fetch: (url, opts) => {
@@ -895,9 +897,9 @@ export default defineComponent({
       try {
         var user = await userDB.get(auth.user.id)
       } catch (e) {
-        console.log('user not found')
+        auth.setMessage('user not found')
         auth.returnUrl = route.fullPath
-        // return auth.logout()
+        return auth.logout()
       }
       var user_arr = user.reference.split('/')
       if (user_arr[0] == 'Practitioner') {
@@ -936,11 +938,9 @@ export default defineComponent({
             openForm('add', 'patients', 'new')
           }
         } catch (e) {
-          console.log('no patient')
-          console.log(prefix)
-          console.log(auth.patient)
+          auth.setMessage('no patient')
           auth.returnUrl = route.fullPath
-          // return auth.logout()
+          return auth.logout()
         }
       } else {
         state.menuVisible = false

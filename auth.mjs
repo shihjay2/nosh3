@@ -100,7 +100,8 @@ async function authenticate(req, res) {
             "did": '',
             "pin": pin,
             "trustee": '',
-            "instance": process.env.INSTANCE
+            "instance": process.env.INSTANCE,
+            "prefix": prefix
           },
           "_noshAuth": process.env.AUTH,
           "_noshAPI": {
@@ -337,7 +338,8 @@ async function gnapVerify(req, res) {
                 npi: '',
                 display: '',
                 trustee: urlFix(process.env.TRUSTEE_URL),
-                instance: process.env.INSTANCE
+                instance: process.env.INSTANCE,
+                prefix: prefix
               }
               var user_id = ''
               // assume access token is JWT that contains verifiable credentials and if valid, attach to payload

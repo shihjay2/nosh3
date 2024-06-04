@@ -411,11 +411,7 @@ export function common() {
   }
   const getPrefix = () => {
     const auth_store = useAuthStore()
-    var prefix = ''
-    if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
-      prefix = auth_store.patient + '_'
-    }
-    return prefix
+    return auth_store.prefix
   }
   const getResource = async(resource, arr) => {
     const prefix = getPrefix()

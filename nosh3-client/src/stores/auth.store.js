@@ -16,8 +16,10 @@ export const useAuthStore = defineStore({
     trustee: localStorage.getItem('trustee'),
     gnap_jwt: localStorage.getItem('gnap_jwt'),
     patient: null,
+    prefix: localStorage.getItem('prefix'),
     sync_resource: [],
-    returnUrl: null
+    returnUrl: null,
+    message: null
   }),
   actions: {
     login(user, payload, jwt) {
@@ -33,6 +35,7 @@ export const useAuthStore = defineStore({
       this.trustee = payload._nosh.trustee_url
       this.gnap_jwt = payload.jwt
       this.patient = payload._nosh.patient
+      this.prefix = payload._nosh.prefix
       // store user details and jwt in local storage to keep user logged in between page refreshes
       localStorage.setItem('user', JSON.stringify(user))
       localStorage.setItem('jwt', jwt)
@@ -44,6 +47,7 @@ export const useAuthStore = defineStore({
       localStorage.setItem('instance', payload._nosh.instance)
       localStorage.setItem('trustee', payload._nosh.trustee)
       localStorage.setItem('gnap_jwt', payload.jwt)
+      localStorage.setItem('prefix', payload._nosh.prefix)
     },
     logout() {
       var route = '/app/login'
@@ -60,6 +64,7 @@ export const useAuthStore = defineStore({
       this.instance = null
       this.trustee = null
       this.gnap_jwt = null
+      this.prefix = null
       localStorage.removeItem('user')
       localStorage.removeItem('jwt')
       localStorage.removeItem('type')
@@ -70,6 +75,7 @@ export const useAuthStore = defineStore({
       localStorage.removeItem('instance')
       localStorage.removeItem('trustee')
       localStorage.removeItem('gnap_jwt')
+      localStorage.removeItem('prefix')
       console.log(window.location.href)
       console.log(route)
       if (route !== '/app/login') {
@@ -81,6 +87,9 @@ export const useAuthStore = defineStore({
     update(user) {
       this.user = user
       localStorage.setItem('user', JSON.stringify(user))
+    },
+    setMessage(message) {
+      this.message = message
     },
     setPatient(patient) {
       this.patient = patient
