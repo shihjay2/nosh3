@@ -415,7 +415,6 @@ export function common() {
     if (auth_store.instance === 'digitalocean' && auth_store.type === 'pnosh') {
       prefix = auth_store.patient + '_'
     }
-    console.log(prefix)
     return prefix
   }
   const getResource = async(resource, arr) => {

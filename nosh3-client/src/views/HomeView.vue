@@ -869,11 +869,7 @@ export default defineComponent({
       localStorage.setItem('gnap_jwt', gnap_jwt)
       window.location.reload()
     })
-    var prefix = ''
-    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
-      prefix = auth.patient + '_'
-    }
-    console.log(prefix)
+    var prefix = getPrefix()
     var patientDB = new PouchDB(prefix + 'patients')
     var inboxTimer = null
     var syncTimer = null
@@ -898,12 +894,8 @@ export default defineComponent({
       try {
         var user = await userDB.get(auth.user.id)
       } catch (e) {
-        console.log(prefix)
-        console.log(auth.user.id)
-        console.log('user not found')
-        console.log(e)
         auth.returnUrl = route.fullPath
-        // return auth.logout()
+        return auth.logout()
       }
       var user_arr = user.reference.split('/')
       if (user_arr[0] == 'Practitioner') {
@@ -942,7 +934,6 @@ export default defineComponent({
             openForm('add', 'patients', 'new')
           }
         } catch (e) {
-          console.log(e)
           auth.returnUrl = route.fullPath
           return auth.logout()
         }

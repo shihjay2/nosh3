@@ -294,7 +294,7 @@ export default defineComponent({
         }}
         state.couchdb = state.payload._noshDB
         state.pin = state.payload._nosh.pin
-        state.patient = state.payload._noshRedirect.replace('/app/chart/', '')
+        state.patient = state.payload._nosh.patient
         state.progress += '<br/>Setting user...'
         var prefix = ''
         if (state.payload._nosh.instance === 'digitalocean' && state.payload._noshType === 'pnosh') {
