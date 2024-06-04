@@ -895,8 +895,9 @@ export default defineComponent({
       try {
         var user = await userDB.get(auth.user.id)
       } catch (e) {
+        console.log('user not found')
         auth.returnUrl = route.fullPath
-        return auth.logout()
+        // return auth.logout()
       }
       var user_arr = user.reference.split('/')
       if (user_arr[0] == 'Practitioner') {
