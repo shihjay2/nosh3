@@ -944,6 +944,7 @@ export default defineComponent({
       nextTick(() => {
         qTimeline.value.focus()
       })
+      await syncProcess()
       inboxTimer = setInterval(async() => {
         await updateInbox(user)
         console.log('Inbox updated')
@@ -955,18 +956,17 @@ export default defineComponent({
             await syncSome(state.online, state.patient)
             state.drawerReload = true
             state.sync_on = false
+            if (state.showTimeline) {
+              await loadTimeline()
+              nextTick(() => {
+                qTimeline.value.focus()
+              })
+            }
           }
         }
       }, 15000)
       syncallTimer = setInterval(async() => {
-        if (state.online) {
-          if (!state.sync_on) {
-            state.sync_on = true
-            await syncAll(true, state.patient, true)
-            state.drawerReload = true
-            state.sync_on = false
-          }
-        }
+        await syncProcess()
       }, 600000)
       if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
         pinTimer = setInterval(async() => {
@@ -2303,6 +2303,22 @@ export default defineComponent({
       clearInterval(pinTimer)
       clearInterval(syncallTimer)
     }
+    const syncProcess = async() => {
+      if (state.online) {
+        if (!state.sync_on) {
+          state.sync_on = true
+          await syncAll(true, state.patient, true)
+          state.drawerReload = true
+          state.sync_on = false
+          if (state.showTimeline) {
+            await loadTimeline()
+            nextTick(() => {
+              qTimeline.value.focus()
+            })
+          }
+        }
+      }
+    }
     const unset = (type) => {
       if (type == 'encounters') {
         var a = state.encounter
@@ -2452,6 +2468,7 @@ export default defineComponent({
       stopInboxTimer,
       sync,
       syncAll,
+      syncProcess,
       thread,
       threadEarlier,
       threadLater,

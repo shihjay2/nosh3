@@ -310,9 +310,13 @@ export default defineComponent({
         if (result.docs.length > 0) {
           auth.login(result.docs[0], state.payload, jwt)
           await eventAdd('Logged in', state.patient)
-          state.progress += '<br/>Syncing data...'
-          await syncAll(true, state.patient, true)
-          state.progress += '<br/>Complete!'
+          const localDB = new PouchDB(prefix + 'users', {skip_setup: true})
+          const localinfo = await localDB.info()
+          if (objectPath.has(localinfo, 'error')) {
+            state.progress += '<br/>Syncing data for the first time...'
+            await syncAll(true, state.patient, true)
+            state.progress += '<br/>Complete!'
+          }
           // redirect to previous url or default to home page
           router.push(auth.returnUrl || state.payload._noshRedirect)
         } else {
