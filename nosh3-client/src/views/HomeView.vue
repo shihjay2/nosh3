@@ -869,7 +869,10 @@ export default defineComponent({
       localStorage.setItem('gnap_jwt', gnap_jwt)
       window.location.reload()
     })
-    var prefix = getPrefix()
+    var prefix = ''
+    if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
+      prefix = auth.patient + '_'
+    }
     console.log(prefix)
     var patientDB = new PouchDB(prefix + 'patients')
     var inboxTimer = null
