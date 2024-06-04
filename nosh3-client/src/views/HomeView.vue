@@ -870,6 +870,7 @@ export default defineComponent({
       window.location.reload()
     })
     var prefix = getPrefix()
+    console.log(prefix)
     var patientDB = new PouchDB(prefix + 'patients')
     var inboxTimer = null
     var syncTimer = null
