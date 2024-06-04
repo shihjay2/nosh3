@@ -879,8 +879,10 @@ export default defineComponent({
       try {
         await verifyJWT(state.online)
       } catch(e) {
+        console.log('jwt not valid')
+        console.log(e)
         auth.returnUrl = route.fullPath
-        return auth.logout()
+        // return auth.logout()
       }
       state.type = auth.type
       state.auth = {fetch: (url, opts) => {
@@ -894,8 +896,10 @@ export default defineComponent({
       try {
         var user = await userDB.get(auth.user.id)
       } catch (e) {
+        console.log('user not found')
+        console.log(e)
         auth.returnUrl = route.fullPath
-        return auth.logout()
+        // return auth.logout()
       }
       var user_arr = user.reference.split('/')
       if (user_arr[0] == 'Practitioner') {
@@ -934,8 +938,10 @@ export default defineComponent({
             openForm('add', 'patients', 'new')
           }
         } catch (e) {
+          console.log('patient not found')
+          console.log(e)
           auth.returnUrl = route.fullPath
-          return auth.logout()
+          // return auth.logout()
         }
       } else {
         state.menuVisible = false
