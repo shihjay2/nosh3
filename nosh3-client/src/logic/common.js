@@ -986,10 +986,6 @@ export function common() {
         try {
           await local.loadEncrypted()
           console.log('PouchDB encrypted sync complete for DB: ' + resource )
-          const resources = auth_store.sync_resource
-          const index = resources.indexOf(resource)
-          resources.splice(index, 1)
-          auth_store.setSyncResource(resources)
         } catch (e) {
           console.log(e)
         }
@@ -997,19 +993,20 @@ export function common() {
         const remote = new PouchDB(couchdb + prefix + resource, auth)
         local.sync(remote,{batch_size: 20, batches_limit: 2}).on('complete', () => {
           console.log('PouchDB sync complete for DB: ' + resource)
-          const resources = auth_store.sync_resource
-          const index = resources.indexOf(resource)
-          resources.splice(index, 1)
-          auth_store.setSyncResource(resources)
         }).on('error', (err) => {
           console.log(err)
         })
       }
     }
     if (destroy) {
+      if (resource !== 'users' && resource !== 'presentations') {
+        await local.setPassword(pin, {name: couchdb + prefix + resource, opts: auth})
+      }
       await local.destroy()
-      const destroy_remote = new PouchDB(couchdb + prefix + resource, auth)
-      await destroy_remote.destroy()
+      if (resource === 'users' || resource === 'presentations') {
+        const destroy_remote = new PouchDB(couchdb + prefix + resource, auth)
+        await destroy_remote.destroy()
+      }
       const new_local = new PouchDB(prefix + resource)
       await new_local.info()
       const new_destroy_remote = new PouchDB(couchdb + prefix + resource, auth)
@@ -1030,6 +1027,7 @@ export function common() {
   const syncSome = async(online, patient_id) => {
     const auth_store = useAuthStore()
     const resources = auth_store.sync_resource
+    console.log(resources)
     if (resources.length > 0) {
       if (online) {
         for (var resource of resources) {
@@ -1037,6 +1035,7 @@ export function common() {
             await sync(resource, online, patient_id, false, {})
           }
         }
+        auth_store.setSyncResource([])
       }
     }
   }
