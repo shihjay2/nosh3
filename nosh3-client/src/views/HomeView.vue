@@ -938,7 +938,7 @@ export default defineComponent({
           console.log(prefix)
           console.log(auth.patient)
           auth.returnUrl = route.fullPath
-          return auth.logout()
+          // return auth.logout()
         }
       } else {
         state.menuVisible = false
