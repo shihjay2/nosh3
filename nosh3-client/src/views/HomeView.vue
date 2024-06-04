@@ -934,6 +934,9 @@ export default defineComponent({
             openForm('add', 'patients', 'new')
           }
         } catch (e) {
+          console.log('no patient')
+          console.log(prefix)
+          console.log(auth.patient)
           auth.returnUrl = route.fullPath
           return auth.logout()
         }
