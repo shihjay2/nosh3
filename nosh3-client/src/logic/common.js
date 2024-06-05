@@ -1132,9 +1132,10 @@ export function common() {
   }
   const verifyJWT = async(online) => {
     if (online) {
+      const auth_store = useAuthStore()
       const keys = await axios.get(window.location.origin + '/auth/jwks')
       const jwk = await jose.importJWK(keys.data.keys[0])
-      const jwt = localStorage.getItem('jwt')
+      const jwt = auth_store.jwt
       try {
         const { payload, protectedHeader } = await jose.jwtVerify(jwt, jwk)
         return true
