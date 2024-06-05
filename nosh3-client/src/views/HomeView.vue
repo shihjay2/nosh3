@@ -927,6 +927,7 @@ export default defineComponent({
             } else {
               state.showTimelineParent = true
               state.showTimeline = true
+              console.log(auth.oidc)
               if (auth.oidc !== null) {
                 state.oidc = auth.oidc
               }
@@ -957,6 +958,7 @@ export default defineComponent({
       inboxTimer = setInterval(async() => {
         await updateInbox(user)
         console.log('Inbox updated')
+        console.log(auth.oidc)
       }, 5000)
       syncTimer = setInterval(async() => {
         if (state.online) {
