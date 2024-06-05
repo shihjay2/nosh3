@@ -895,7 +895,7 @@ export default defineComponent({
       try {
         var user = await userDB.get(auth.user.id)
       } catch (e) {
-        auth.setMessage('user not found')
+        auth.setMessage('user not found; prefix: ' + prefix + '; userid: ' + auth.user.id)
         auth.returnUrl = route.fullPath
         return auth.logout()
       }
