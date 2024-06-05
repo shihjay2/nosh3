@@ -200,9 +200,9 @@ export default defineComponent({
           auth.login(result.docs[0], state.payload, jwt)
           state.progress += '<br/>Welcome, ' + state.payload._nosh.display + '...'
           await eventAdd('Logged in', state.patient)
-          const localDB = new PouchDB(prefix + 'users', {skip_setup: true})
+          const localDB = new PouchDB(prefix + 'users')
           const localinfo = await localDB.info()
-          if (objectPath.has(localinfo, 'error')) {
+          if (localinfo.doc_count == 0 && localinfo.update_seq == 0) {
             state.progress += '<br/>Syncing data for the first time...'
             await syncAll(true, state.patient, true)
             state.progress += '<br/>Complete!'
