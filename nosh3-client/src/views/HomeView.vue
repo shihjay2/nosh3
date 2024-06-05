@@ -853,7 +853,6 @@ export default defineComponent({
       const pin = localStorage.getItem('pin')
       const instance = localStorage.getItem('instance')
       const trustee = localStorage.getItem('trustee')
-      const oidc_data = JSON.parse(localStorage.getItem('oidc_data'))
       const gnap_jwt = localStorage.getItem('gnap_jwt')
       const prefix1 = localStorage.getItem('prefix')
       window.localStorage.clear()
@@ -866,7 +865,6 @@ export default defineComponent({
       localStorage.setItem('pin', pin)
       localStorage.setItem('instance', instance)
       localStorage.setItem('trustee', trustee)
-      localStorage.setItem('oidc_data', JSON.stringify(oidc_data))
       localStorage.setItem('gnap_jwt', gnap_jwt)
       localStorage.setItem('prefix', prefix1)
       window.location.reload()
@@ -929,8 +927,8 @@ export default defineComponent({
             } else {
               state.showTimelineParent = true
               state.showTimeline = true
-              if (localStorage.getItem('oidc_data') !== null) {
-                state.oidc = JSON.parse(localStorage.getItem('oidc_data'))
+              if (auth.oidc !== null) {
+                state.oidc = auth.oidc
               }
             }
           } else {
@@ -1070,7 +1068,7 @@ export default defineComponent({
     }
     const clearSync = () => {
       state.oidc = []
-      localStorage.removeItem('oidc_data')
+      auth.clearOIDC()
     }
     const closeActivities = () => {
       state.showActivity = false
@@ -2036,10 +2034,10 @@ export default defineComponent({
     const saveOIDC = (doc) => {
       if (!Array.isArray(state.oidc)) {
         state.oidc = []
-        localStorage.removeItem('oidc_data')
+        auth.clearOIDC()
       }
       state.oidc.push(doc)
-      localStorage.setItem('oidc_data', JSON.stringify(state.oidc))
+      auth.setOIDC(state.oidc)
       var complete = false
       if (localStorage.getItem("oidc_access_token") !== null) {
         complete = true
@@ -2079,9 +2077,7 @@ export default defineComponent({
       var a = state.oidc.findIndex(b => b.origin == origin)
       var c = state.oidc[a].docs.findIndex(d => d.resource == resource)
       objectPath.del(state, 'oidc.' + a + '.docs.' + c + '.rows.' + index)
-      localStorage.setItem('oidc_data', JSON.stringify(state.oidc))
-      // state.drawerReload = true
-      //state.reload = true
+      auth.setOIDC(state.oidc)
     }
     const setActiveComposition = (doc) => {
       state.compositionDoc = doc

@@ -18,10 +18,14 @@ export const useAuthStore = defineStore({
     patient: null,
     prefix: localStorage.getItem('prefix'),
     sync_resource: [],
+    oidc: [],
     returnUrl: null,
     message: null
   }),
   actions: {
+    clearOIDC() {
+      this.oidc = []
+    },
     login(user, payload, jwt) {
       // update pinia state
       this.user = user
@@ -90,6 +94,9 @@ export const useAuthStore = defineStore({
     },
     setMessage(message) {
       this.message = message
+    },
+    setOIDC(oidc) {
+      this.oidc = oidc
     },
     setPatient(patient) {
       this.patient = patient
