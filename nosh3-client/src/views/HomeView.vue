@@ -843,30 +843,6 @@ export default defineComponent({
     navigator.serviceWorker.addEventListener('controllerchange', () => {
       if (state.refreshing) return
       state.refreshing = true
-      // Here the actual reload of the page occurs
-      // const user1 = JSON.parse(localStorage.getItem('user'))
-      // const jwt = localStorage.getItem('jwt')
-      // const type = localStorage.getItem('type')
-      // const auth = localStorage.getItem('auth')
-      // const couchdb = localStorage.getItem('couchdb')
-      // const api = JSON.parse(localStorage.getItem('api'))
-      // const pin = localStorage.getItem('pin')
-      // const instance = localStorage.getItem('instance')
-      // const trustee = localStorage.getItem('trustee')
-      // const gnap_jwt = localStorage.getItem('gnap_jwt')
-      // const prefix1 = localStorage.getItem('prefix')
-      window.localStorage.clear()
-      // localStorage.setItem('user', JSON.stringify(user1))
-      // localStorage.setItem('jwt', jwt)
-      // localStorage.setItem('type', type)
-      // localStorage.setItem('auth', auth)
-      // localStorage.setItem('couchdb', couchdb)
-      // localStorage.setItem('api', JSON.stringify(api))
-      // localStorage.setItem('pin', pin)
-      // localStorage.setItem('instance', instance)
-      // localStorage.setItem('trustee', trustee)
-      // localStorage.setItem('gnap_jwt', gnap_jwt)
-      // localStorage.setItem('prefix', prefix1)
       window.location.reload()
     })
     var prefix = auth.prefix
@@ -895,7 +871,7 @@ export default defineComponent({
       try {
         var user = await userDB.get(auth.user.id)
       } catch (e) {
-        auth.setMessage('user not found; prefix: ' + prefix + '; userid: ' + auth.user.id)
+        auth.setMessage('user not found')
         auth.returnUrl = route.fullPath
         return auth.logout()
       }
@@ -2286,7 +2262,6 @@ export default defineComponent({
       var h = state.user.unsigned.map(g => g.id).indexOf(state.encounter)
       if (h !== -1) {
         state.user.unsigned.splice(h, 1)
-        // await sync('users', state.online, state.couchdb, state.auth, state.pin, true, state.user)
         auth.update(state.user)
       }
       $q.notify({

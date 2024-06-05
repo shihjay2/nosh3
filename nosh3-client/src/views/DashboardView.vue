@@ -490,26 +490,6 @@ export default defineComponent({
     navigator.serviceWorker.addEventListener('controllerchange', () => {
       if (state.refreshing) return
       state.refreshing = true
-      // Here the actual reload of the page occurs
-      // const user1 = JSON.parse(localStorage.getItem('user'))
-      // const jwt = localStorage.getItem('jwt')
-      // const type = localStorage.getItem('type')
-      // const auth = localStorage.getItem('auth')
-      // const couchdb = localStorage.getItem('couchdb')
-      // const api = JSON.parse(localStorage.getItem('api'))
-      // const pin = localStorage.getItem('pin')
-      // const trustee = localStorage.getItem('trustee')
-      // const gnap_jwt = localStorage.getItem('gnap_jwt')
-      window.localStorage.clear()
-      // localStorage.setItem('user', JSON.stringify(user1))
-      // localStorage.setItem('jwt', jwt)
-      // localStorage.setItem('type', type)
-      // localStorage.setItem('auth', auth)
-      // localStorage.setItem('couchdb', couchdb)
-      // localStorage.setItem('api', JSON.stringify(api))
-      // localStorage.setItem('pin', pin)
-      // localStorage.setItem('trustee', trustee)
-      // localStorage.setItem('gnap_jwt', gnap_jwt)
       window.location.reload()
     })
     // state.couchdb = window.location.origin + ':5984/'
