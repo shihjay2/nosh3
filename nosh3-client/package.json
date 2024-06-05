@@ -38,6 +38,7 @@
     "papaparse": "^5.3.2",
     "pdfjs-dist": "^2.14.305",
     "pinia": "^2.0.17",
+    "pinia-plugin-persistedstate": "^3.2.1",
     "pluralize": "^8.0.0",
     "pouchdb-browser": "^8.0.1",
     "pouchdb-find": "^8.0.1",
