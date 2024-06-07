@@ -976,12 +976,16 @@ export function common() {
       if (resource !== 'users' && resource !== 'presentations') {
         await local.setPassword(pin, {name: couchdb + prefix + resource, opts: auth})
         var info = await local.info()
-        if (info.doc_count > 0) {
-          await local.loadDecrypted({batch_size: 20})
-        }
         try {
-          await local.loadEncrypted({batch_size: 20, batches_limit: 2})
-          console.log('PouchDB encrypted sync complete for DB: ' + resource )
+          if (info.doc_count > 0) {
+            await local.loadDecrypted({batch_size: 20})
+          }
+          try {
+            await local.loadEncrypted({batch_size: 20, batches_limit: 2})
+            console.log('PouchDB encrypted sync complete for DB: ' + resource )
+          } catch (e) {
+            console.log(e)
+          }
         } catch (e) {
           console.log(e)
         }
