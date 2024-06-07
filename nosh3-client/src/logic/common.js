@@ -977,10 +977,10 @@ export function common() {
         await local.setPassword(pin, {name: couchdb + prefix + resource, opts: auth})
         var info = await local.info()
         if (info.doc_count > 0) {
-          await local.loadDecrypted({batch_size: 50, batches_limit: 5})
+          await local.loadDecrypted({batch_size: 20})
         }
         try {
-          await local.loadEncrypted({batch_size: 50, batches_limit: 5})
+          await local.loadEncrypted({batch_size: 20, batches_limit: 2})
           console.log('PouchDB encrypted sync complete for DB: ' + resource )
         } catch (e) {
           console.log(e)
@@ -999,10 +999,10 @@ export function common() {
         await local.setPassword(pin, {name: couchdb + prefix + resource, opts: auth})
       }
       await local.destroy()
-      if (resource === 'users' || resource === 'presentations') {
+      // if (resource === 'users' || resource === 'presentations') {
         const destroy_remote = new PouchDB(couchdb + prefix + resource, auth)
         await destroy_remote.destroy()
-      }
+      // }
       const new_local = new PouchDB(prefix + resource)
       await new_local.info()
       const new_destroy_remote = new PouchDB(couchdb + prefix + resource, auth)
