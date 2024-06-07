@@ -682,6 +682,32 @@ export default defineComponent({
           }
         }
       }
+      if (props.resource === 'document_references') {
+        if (objectPath.has(doc, 'content')) {
+          for (var c in objectPath.get(doc, 'content')) {
+            if (objectPath.has(doc, 'content.' + c + '.attachment.contentType')) {
+              if (objectPath.get(doc, 'content.' + c + '.attachment.contentType').includes('text/plain')) {
+                var doc0 = new jsPDF()
+                doc0.text(objectPath.get(doc, 'content.' + c + '.attachment.data'), 10, 10)
+                const pdf = doc0.output('datauristring')
+                objectPath.set(doc, 'content.' + c + 'attachment.contentType', pdf.substr(pdf.indexOf(':') + 1, pdf.indexOf(';') - pdf.indexOf(':') - 1))
+                objectPath.set(doc, 'content.' + c + 'attachment.data', pdf.substr(pdf.indexOf(',') + 1))
+              }
+              if (objectPath.get(doc, 'content.' + c + '.attachment.contentType').includes('image')) {
+                var img = new Image()
+                img.onload = () => {
+                  var doc1 = new jsPDF('p', 'px', 'a4')
+                  doc1.addImage(objectPath.get(doc, 'content.' + c + '.attachment.data'), 10, 10, img.width, img.height)
+                  const pdf1 = doc1.output('datauristring')
+                  objectPath.set(doc, 'content.' + c + 'attachment.contentType', pdf1.substr(pdf1.indexOf(':') + 1, pdf1.indexOf(';') - pdf1.indexOf(':') - 1))
+                  objectPath.set(doc, 'content.' + c + 'attachment.data', pdf1.substr(pdf1.indexOf(',') + 1))
+                }
+                img.src = objectPath.get(doc, 'content.' + c + '.attachment.data')
+              }
+            }
+          }
+        }
+      }
       if (props.resource === 'immunizations' ||
           props.resource === 'allergy_intolerances' ||
           props.resource === 'related_persons') {

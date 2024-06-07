@@ -977,17 +977,17 @@ export function common() {
         await local.setPassword(pin, {name: couchdb + prefix + resource, opts: auth})
         var info = await local.info()
         if (info.doc_count > 0) {
-          await local.loadDecrypted({batch_size: 20, batches_limit: 2})
+          await local.loadDecrypted({batch_size: 50, batches_limit: 5})
         }
         try {
-          await local.loadEncrypted({batch_size: 20, batches_limit: 2})
+          await local.loadEncrypted({batch_size: 50, batches_limit: 5})
           console.log('PouchDB encrypted sync complete for DB: ' + resource )
         } catch (e) {
           console.log(e)
         }
       } else {
         const remote = new PouchDB(couchdb + prefix + resource, auth)
-        local.sync(remote,{batch_size: 20, batches_limit: 2}).on('complete', () => {
+        local.sync(remote,{batch_size: 50, batches_limit: 5}).on('complete', () => {
           console.log('PouchDB sync complete for DB: ' + resource)
         }).on('error', (err) => {
           console.log(err)
@@ -1023,7 +1023,6 @@ export function common() {
   const syncSome = async(online, patient_id) => {
     const auth_store = useAuthStore()
     const resources = auth_store.sync_resource
-    console.log(resources)
     if (resources.length > 0) {
       if (online) {
         for (var resource of resources) {

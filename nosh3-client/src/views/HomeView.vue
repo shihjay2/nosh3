@@ -603,6 +603,7 @@ import { Form } from 'vee-validate'
 import Fuse from 'fuse.js'
 import ImmunizationSchedule from '@/components/ImmunizationSchedule.vue'
 import json2md from 'json2md'
+import jsPDF from 'jspdf'
 import moment from 'moment'
 import objectPath from 'object-path'
 import OIDC from '@/components/OIDC.vue'
@@ -952,7 +953,7 @@ export default defineComponent({
       }, 15000)
       syncallTimer = setInterval(async() => {
         await syncProcess()
-      }, 600000)
+      }, 3600000)
       if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
         pinTimer = setInterval(async() => {
           await pinCheck()
@@ -1296,6 +1297,7 @@ export default defineComponent({
       patientSearch.value.focus()
     }
     const importAll = async() => {
+      state.loading = true
       for (var a in state.oidc) {
         if (objectPath.has(state, 'oidc.' + a + '.docs')) {
           for (var row of state.oidc[a].docs) {
@@ -1324,14 +1326,40 @@ export default defineComponent({
                   }
                   if (row.resource === 'encounters') {
                     if (objectPath.has(doc, 'participant')) {
-                      for (var a in objectPath.get(doc, 'participant')) {
-                        if (objectPath.get(doc, 'participant.' + a + '.individual.reference').search('Practitioner') === 0) {
-                          const nosh_id1 = await referenceSearch('practitioners', objectPath.get(doc, 'participant.' + a + '.individual.reference').split('/').slice(-1).join(''))
+                      for (var b in objectPath.get(doc, 'participant')) {
+                        if (objectPath.get(doc, 'participant.' + b + '.individual.reference').search('Practitioner') === 0) {
+                          const nosh_id1 = await referenceSearch('practitioners', objectPath.get(doc, 'participant.' + b + '.individual.reference').split('/').slice(-1).join(''))
                           if (nosh_id1 === null) {
-                            const reference_new_id1 = await importReference('practitioners', objectPath.get(doc, 'participant.' + a + '.individual.reference').split('/').slice(-1).join(''), state.oidc[a].origin)
-                            objectPath.set(doc, 'participant.' + a + '.individual.reference', 'Practitioner/' + reference_new_id1)
+                            const reference_new_id1 = await importReference('practitioners', objectPath.get(doc, 'participant.' + b + '.individual.reference').split('/').slice(-1).join(''), state.oidc[a].origin)
+                            objectPath.set(doc, 'participant.' + b + '.individual.reference', 'Practitioner/' + reference_new_id1)
                           } else {
-                            objectPath.set(doc, 'participant.' + a + '.individual.reference', 'Practitioner/' + nosh_id1)
+                            objectPath.set(doc, 'participant.' + b + '.individual.reference', 'Practitioner/' + nosh_id1)
+                          }
+                        }
+                      }
+                    }
+                  }
+                  if (row.resource === 'document_references') {
+                    if (objectPath.has(doc, 'content')) {
+                      for (var c in objectPath.get(doc, 'content')) {
+                        if (objectPath.has(doc, 'content.' + c + '.attachment.contentType')) {
+                          if (objectPath.get(doc, 'content.' + c + '.attachment.contentType').includes('text/plain')) {
+                            var doc0 = new jsPDF()
+                            doc0.text(objectPath.get(doc, 'content.' + c + '.attachment.data'), 10, 10)
+                            const pdf = doc0.output('datauristring')
+                            objectPath.set(doc, 'content.' + c + 'attachment.contentType', pdf.substr(pdf.indexOf(':') + 1, pdf.indexOf(';') - pdf.indexOf(':') - 1))
+                            objectPath.set(doc, 'content.' + c + 'attachment.data', pdf.substr(pdf.indexOf(',') + 1))
+                          }
+                          if (objectPath.get(doc, 'content.' + c + '.attachment.contentType').includes('image')) {
+                            var img = new Image()
+                            img.onload = () => {
+                              var doc1 = new jsPDF('p', 'px', 'a4')
+                              doc1.addImage(objectPath.get(doc, 'content.' + c + '.attachment.data'), 10, 10, img.width, img.height)
+                              const pdf1 = doc1.output('datauristring')
+                              objectPath.set(doc, 'content.' + c + 'attachment.contentType', pdf1.substr(pdf1.indexOf(':') + 1, pdf1.indexOf(';') - pdf1.indexOf(':') - 1))
+                              objectPath.set(doc, 'content.' + c + 'attachment.data', pdf1.substr(pdf1.indexOf(',') + 1))
+                            }
+                            img.src = objectPath.get(doc, 'content.' + c + '.attachment.data')
                           }
                         }
                       }
@@ -1361,6 +1389,7 @@ export default defineComponent({
         }
       }
       clearSync()
+      state.loading = false
       $q.notify({
         message: 'All synced external resources have been imported!',
         color: 'primary',
