@@ -144,10 +144,11 @@ export function common() {
         }
       }
     }
+    const db1 = new PouchDB(prefix + 'activities')
     // check if existing day event doc, otherwise create one
     const datetime = moment().startOf('day').unix()
     const datetime_formal = moment().startOf('day').format('YYYY-MM-DDTHH:mm:ss.SSSZ')
-    const check1 = await db.find({selector: {'datetime': {"$eq": datetime}}})
+    const check1 = await db1.find({selector: {'datetime': {"$eq": datetime}}})
     if (check1.docs.length > 0) {
       var doc = check1.docs[0]
     } else {
@@ -168,7 +169,7 @@ export function common() {
       diff: opts.diff
     }
     doc.events.push(event_item)
-    await db.put(doc)
+    await db1.put(doc)
     await sync('activities', false, patient_id)
   }
   const fetchJSON = async(type, online) => {
