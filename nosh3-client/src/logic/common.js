@@ -158,7 +158,7 @@ export function common() {
         events: []
       }
     }
-    const event = {
+    const event_item = {
       event: event,
       datetime: moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
       user: auth_store.user.display,
@@ -167,7 +167,7 @@ export function common() {
       doc_id: opts.doc_id,
       diff: opts.diff
     }
-    doc.events.push(event)
+    doc.events.push(event_item)
     await db.put(doc)
     await sync('activities', false, patient_id)
   }

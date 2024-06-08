@@ -298,7 +298,7 @@ async function eventAdd(event, opts, patient_id='') {
       events: []
     }
   }
-  const event = {
+  const event_item = {
     event: event,
     datetime: moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
     user: auth_store.user.display,
@@ -307,7 +307,7 @@ async function eventAdd(event, opts, patient_id='') {
     doc_id: opts.doc_id,
     diff: opts.diff
   }
-  doc.events.push(event)
+  doc.events.push(event_item)
   await db.put(doc)
   await sync('activities', patient_id)
 }
