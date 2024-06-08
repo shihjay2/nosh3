@@ -344,9 +344,9 @@ export default defineComponent({
           state.defaultDate = state.base[props.category].defaultDate
         }
       }
-      if (props.resource === 'document_references') {
-        state.preview = false
-      }
+      // if (props.resource === 'document_references') {
+      //   state.preview = false
+      // }
       if (props.resource === 'medication_statements') {
         state.routesArray = objectPath.get(state, 'schema.1.2.options')
       }

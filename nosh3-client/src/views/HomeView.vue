@@ -1347,6 +1347,7 @@ export default defineComponent({
                             var doc0 = new jsPDF()
                             doc0.text(objectPath.get(doc, 'content.' + c + '.attachment.data'), 10, 10)
                             const pdf = doc0.output('datauristring')
+                            console.log(pdf)
                             objectPath.set(doc, 'content.' + c + 'attachment.contentType', pdf.substr(pdf.indexOf(':') + 1, pdf.indexOf(';') - pdf.indexOf(':') - 1))
                             objectPath.set(doc, 'content.' + c + 'attachment.data', pdf.substr(pdf.indexOf(',') + 1))
                           }
