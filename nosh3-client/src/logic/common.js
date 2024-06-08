@@ -513,6 +513,110 @@ export function common() {
     }
     return ret
   }
+  const importFHIR = async(doc, resource, patient, origin) => {
+    if (resource !== 'practitioners' && resource !== 'related_persons') {
+      const id = 'nosh_' + uuidv4()
+      objectPath.set(doc, 'sync_id', objectPath.get(doc, 'id'))
+      objectPath.set(doc, 'id', id)
+      objectPath.set(doc, '_id', id)
+      if (resource === 'observations') {
+        if (!objectPath.has(doc, 'effectivePeriod.start')) {
+          objectPath.set(doc, 'effectivePeriod.start', objectPath.get(doc, 'effectiveDateTime'))
+        }
+        if (objectPath.has(doc, 'performer.0.reference')) {
+          if (objectPath.get(doc, 'performer.0.reference').search('Practitioner') === 0) {
+            const nosh_id = await referenceSearch('practitioners', objectPath.get(doc, 'performer.0.reference').split('/').slice(-1).join(''))
+            if (nosh_id === null) {
+              const reference_new_id = await importReference('practitioners', objectPath.get(doc, 'performer.0.reference').split('/').slice(-1).join(''), origin)
+              objectPath.set(doc, 'performer.0.reference', 'Practitioner/' + reference_new_id)
+            } else {
+              objectPath.set(doc, 'performer.0.reference', 'Practitioner/' + nosh_id)
+            }
+          }
+        }
+      }
+      if (resource === 'encounters') {
+        if (objectPath.has(doc, 'participant')) {
+          for (var b in objectPath.get(doc, 'participant')) {
+            if (objectPath.get(doc, 'participant.' + b + '.individual.reference').search('Practitioner') === 0) {
+              const nosh_id1 = await referenceSearch('practitioners', objectPath.get(doc, 'participant.' + b + '.individual.reference').split('/').slice(-1).join(''))
+              if (nosh_id1 === null) {
+                const reference_new_id1 = await importReference('practitioners', objectPath.get(doc, 'participant.' + b + '.individual.reference').split('/').slice(-1).join(''), origin)
+                objectPath.set(doc, 'participant.' + b + '.individual.reference', 'Practitioner/' + reference_new_id1)
+              } else {
+                objectPath.set(doc, 'participant.' + b + '.individual.reference', 'Practitioner/' + nosh_id1)
+              }
+            }
+          }
+        }
+      }
+      if (resource === 'document_references') {
+        if (objectPath.has(doc, 'content')) {
+          for (var c in objectPath.get(doc, 'content')) {
+            if (objectPath.has(doc, 'content.' + c + '.attachment.contentType')) {
+              if (objectPath.get(doc, 'content.' + c + '.attachment.contentType').includes('text/plain')) {
+                var doc0 = new jsPDF()
+                doc0.text(objectPath.get(doc, 'content.' + c + '.attachment.data'), 10, 10)
+                const pdf = doc0.output('datauristring')
+                objectPath.set(doc, 'content.' + c + '.attachment.contentType', pdf.substr(pdf.indexOf(':') + 1, pdf.indexOf(';') - pdf.indexOf(':') - 1))
+                objectPath.set(doc, 'content.' + c + '.attachment.data', pdf.substr(pdf.indexOf(',') + 1))
+              }
+              if (objectPath.get(doc, 'content.' + c + '.attachment.contentType').includes('image')) {
+                var img = new Image()
+                img.onload = () => {
+                  var doc1 = new jsPDF('p', 'px', 'a4')
+                  doc1.addImage(objectPath.get(doc, 'content.' + c + '.attachment.data'), 10, 10, img.width, img.height)
+                  const pdf1 = doc1.output('datauristring')
+                  objectPath.set(doc, 'content.' + c + '.attachment.contentType', pdf1.substr(pdf1.indexOf(':') + 1, pdf1.indexOf(';') - pdf1.indexOf(':') - 1))
+                  objectPath.set(doc, 'content.' + c + '.attachment.data', pdf1.substr(pdf1.indexOf(',') + 1))
+                }
+                img.src = objectPath.get(doc, 'content.' + c + '.attachment.data')
+              }
+            }
+          }
+        }
+      }
+      if (resource === 'immunizations' ||
+          resource === 'allergy_intolerances' ||
+          resource === 'related_persons') {
+        objectPath.set(doc, 'patient.reference', 'Patient/' + patient)
+      } else if (resource === 'tasks') {
+        objectPath.set(doc, 'for.reference', 'Patient/' + patient)
+      } else {
+        if (resource !== 'practitioners' &&
+            resource !== 'organizations' &&
+            resource !== 'appointments' &&
+            resource !== 'users' &&
+            resource !== 'patients') {
+          objectPath.set(doc, 'subject.reference', 'Patient/' + patient)
+        }
+      }
+      await sync(resource, false, patient, true, doc)
+    }
+  }
+  const importReference = async(resource, reference_id, origin) => {
+    const auth_store = useAuthStore()
+    const oidc = auth_store.oidc
+    const a = oidc.findIndex(b => b.origin == origin)
+    const c = oidc[a].docs.findIndex(d => d.resource == resource)
+    const e = oidc[a].docs[c].rows.findIndex(f => f.id == reference_id)
+    if (e !== -1) {
+      const reference_doc = objectPath.get(oidc, a + '.docs.' + c + '.rows.' + e)
+      const reference_new_id = 'nosh_' + uuidv4()
+      objectPath.set(reference_doc, 'sync_id', objectPath.get(reference_doc, 'id'))
+      objectPath.set(reference_doc, 'id', reference_new_id)
+      objectPath.set(reference_doc, '_id', reference_new_id)
+      if (!objectPath.has(reference_doc, 'text.div')) {
+        reference_doc = await divBuild(resource, reference_doc)
+      }
+      await sync(resource, false, props.patient, true, reference_doc)
+      var a1 = oidc.findIndex(b1 => b1.origin == origin)
+      var c1 = oidc[a].docs.findIndex(d1 => d1.resource == resource)
+      objectPath.del(oidc, a1 + '.docs.' + c1 + '.rows.' + index)
+      auth.setOIDC(oidc)
+      return reference_new_id
+    }
+  }
   const inbox = async(resource, user) => {
     const prefix = getPrefix()
     const localDB = new PouchDB(prefix + resource)
@@ -1198,6 +1302,8 @@ export function common() {
     getValue,
     groupItems,
     historyDXMatch,
+    importFHIR,
+    importReference,
     inbox,
     loadSchema,
     loadSelect,

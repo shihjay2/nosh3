@@ -661,7 +661,7 @@ export default defineComponent({
 },
   setup () {
     const $q = useQuasar()
-    const { addSchemaOptions, bundleBuild, divBuild, fetchJSON, fhirModel, fhirReplace, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, referenceSearch, removeTags, sync, syncAll, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
+    const { addSchemaOptions, bundleBuild, divBuild, fetchJSON, fhirModel, fhirReplace, importFHIR, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, sync, syncAll, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
     const state = reactive({
       menuVisible: false,
       showDrawer: false,
@@ -1303,86 +1303,8 @@ export default defineComponent({
           for (var row of state.oidc[a].docs) {
             if (objectPath.has(row, 'rows')) {
               for (var doc of row.rows) {
-                if (row.resource !== 'practitioners' && row.resource !== 'related_persons') {
-                  const id = 'nosh_' + uuidv4()
-                  objectPath.set(doc, 'sync_id', objectPath.get(doc, 'id'))
-                  objectPath.set(doc, 'id', id)
-                  objectPath.set(doc, '_id', id)
-                  if (row.resource === 'observations') {
-                    if (!objectPath.has(doc, 'effectivePeriod.start')) {
-                      objectPath.set(doc, 'effectivePeriod.start', objectPath.get(doc, 'effectiveDateTime'))
-                    }
-                    if (objectPath.has(doc, 'performer.0.reference')) {
-                      if (objectPath.get(doc, 'performer.0.reference').search('Practitioner') === 0) {
-                        const nosh_id = await referenceSearch('practitioners', objectPath.get(doc, 'performer.0.reference').split('/').slice(-1).join(''))
-                        if (nosh_id === null) {
-                          const reference_new_id = await importReference('practitioners', objectPath.get(doc, 'performer.0.reference').split('/').slice(-1).join(''), state.oidc[a].origin)
-                          objectPath.set(doc, 'performer.0.reference', 'Practitioner/' + reference_new_id)
-                        } else {
-                          objectPath.set(doc, 'performer.0.reference', 'Practitioner/' + nosh_id)
-                        }
-                      }
-                    }
-                  }
-                  if (row.resource === 'encounters') {
-                    if (objectPath.has(doc, 'participant')) {
-                      for (var b in objectPath.get(doc, 'participant')) {
-                        if (objectPath.get(doc, 'participant.' + b + '.individual.reference').search('Practitioner') === 0) {
-                          const nosh_id1 = await referenceSearch('practitioners', objectPath.get(doc, 'participant.' + b + '.individual.reference').split('/').slice(-1).join(''))
-                          if (nosh_id1 === null) {
-                            const reference_new_id1 = await importReference('practitioners', objectPath.get(doc, 'participant.' + b + '.individual.reference').split('/').slice(-1).join(''), state.oidc[a].origin)
-                            objectPath.set(doc, 'participant.' + b + '.individual.reference', 'Practitioner/' + reference_new_id1)
-                          } else {
-                            objectPath.set(doc, 'participant.' + b + '.individual.reference', 'Practitioner/' + nosh_id1)
-                          }
-                        }
-                      }
-                    }
-                  }
-                  if (row.resource === 'document_references') {
-                    if (objectPath.has(doc, 'content')) {
-                      for (var c in objectPath.get(doc, 'content')) {
-                        if (objectPath.has(doc, 'content.' + c + '.attachment.contentType')) {
-                          if (objectPath.get(doc, 'content.' + c + '.attachment.contentType').includes('text/plain')) {
-                            var doc0 = new jsPDF()
-                            doc0.text(objectPath.get(doc, 'content.' + c + '.attachment.data'), 10, 10)
-                            const pdf = doc0.output('datauristring')
-                            objectPath.set(doc, 'content.' + c + '.attachment.contentType', pdf.substr(pdf.indexOf(':') + 1, pdf.indexOf(';') - pdf.indexOf(':') - 1))
-                            objectPath.set(doc, 'content.' + c + '.attachment.data', pdf.substr(pdf.indexOf(',') + 1))
-                          }
-                          if (objectPath.get(doc, 'content.' + c + '.attachment.contentType').includes('image')) {
-                            var img = new Image()
-                            img.onload = () => {
-                              var doc1 = new jsPDF('p', 'px', 'a4')
-                              doc1.addImage(objectPath.get(doc, 'content.' + c + '.attachment.data'), 10, 10, img.width, img.height)
-                              const pdf1 = doc1.output('datauristring')
-                              objectPath.set(doc, 'content.' + c + '.attachment.contentType', pdf1.substr(pdf1.indexOf(':') + 1, pdf1.indexOf(';') - pdf1.indexOf(':') - 1))
-                              objectPath.set(doc, 'content.' + c + '.attachment.data', pdf1.substr(pdf1.indexOf(',') + 1))
-                            }
-                            img.src = objectPath.get(doc, 'content.' + c + '.attachment.data')
-                          }
-                        }
-                      }
-                    }
-                  }
-                  if (row.resource === 'immunizations' ||
-                      row.resource === 'allergy_intolerances' ||
-                      row.resource === 'related_persons') {
-                    objectPath.set(doc, 'patient.reference', 'Patient/' + state.patient)
-                  } else if (row.resource === 'tasks') {
-                    objectPath.set(doc, 'for.reference', 'Patient/' + state.patient)
-                  } else {
-                    if (row.resource !== 'practitioners' &&
-                        row.resource !== 'organizations' &&
-                        row.resource !== 'appointments' &&
-                        row.resource !== 'users' &&
-                        row.resource !== 'patients') {
-                      objectPath.set(doc, 'subject.reference', 'Patient/' + state.patient)
-                    }
-                  }
-                  await sync(row.resource, false, state.patient, true, doc)
-                  reloadDrawer(row.resource)
-                }
+                await importFHIR(doc, row.resource, state.patient, state.oidc[a].origin)
+                reloadDrawer(row.resource)
               }
             }
           }
@@ -2079,6 +2001,7 @@ export default defineComponent({
       })
     }
     const removeOIDC = (index, resource, origin) => {
+      state.oidc = auth.oidc
       var a = state.oidc.findIndex(b => b.origin == origin)
       var c = state.oidc[a].docs.findIndex(d => d.resource == resource)
       objectPath.del(state, 'oidc.' + a + '.docs.' + c + '.rows.' + index)
