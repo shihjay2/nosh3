@@ -268,17 +268,46 @@ function equals (a, b) {
 }
 
 async function eventAdd(event, opts, patient_id='') {
+  var prefix = ''
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    prefix = patient_id + '_'
+  }
   const db = new PouchDB('activities')
-  var doc = {
-    _id: 'nosh_' + uuidv4(),
-    datetime: moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
+  // check if old version and destroy
+  const check = await db.allDocs({include_docs: true})
+  if (check.rows.length > 0) {
+    for (var a of check.rows) {
+      if (objectPath.has(a, 'doc.diff')) {
+        db.destroy()
+        const destroy_remote= new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'activities', settings.couchdb_auth)
+        destroy_remote.destroy()
+      }
+    }
+  }
+  // check if existing day event doc, otherwise create one
+  const datetime = moment().startOf('day').unix()
+  const datetime_formal = moment().startOf('day').format('YYYY-MM-DDTHH:mm:ss.SSSZ')
+  const check1 = await db.find({selector: {'datetime': {"$eq": datetime}}})
+  if (check1.docs.length > 0) {
+    var doc = check1.docs[0]
+  } else {
+    var doc = {
+      _id: 'nosh_' + uuidv4(),
+      datetime: datetime,
+      datetime_formal: datetime_formal,
+      events: []
+    }
+  }
+  const event = {
     event: event,
-    user: opts.display,
-    user_id: opts.id,
+    datetime: moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
+    user: auth_store.user.display,
+    user_id: auth_store.user.id,
     doc_db: opts.doc_db,
     doc_id: opts.doc_id,
     diff: opts.diff
   }
+  doc.events.push(event)
   await db.put(doc)
   await sync('activities', patient_id)
 }

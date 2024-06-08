@@ -128,7 +128,9 @@ export default {
       })
       if (result.rows.length > 0) {
         for (var a of result.rows) {
-          state.activities.push(a.doc)
+          for (var b of a.doc.events) {
+            state.activities.push(b)
+          }
         }
       }
     }
