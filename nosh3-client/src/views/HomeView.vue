@@ -1513,7 +1513,7 @@ export default defineComponent({
     const lockThread = async(id) => {
       const localDB = new PouchDB(prefix + 'communications')
       var a = await localDB.get(id)
-      arr = await thread(a, state.online, state.patient)
+      const arr = await thread(a, state.online, state.patient)
       for (var b in arr) {
         objectPath.set(arr, b + '.status', 'completed')
         await localDB.put(arr[b])
