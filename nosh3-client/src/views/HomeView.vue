@@ -592,7 +592,7 @@
 </template>
 
 <script>
-import { defineComponent, nextTick, onMounted, reactive, ref, watch } from 'vue'
+import { defineComponent, nextTick, onMounted, reactive, ref, watch, watchEffect } from 'vue'
 import { useQuasar } from 'quasar'
 import { common } from '@/logic/common'
 import axios from 'axios'
