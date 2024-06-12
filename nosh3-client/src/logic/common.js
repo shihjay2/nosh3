@@ -455,8 +455,7 @@ export function common() {
     })
     if (result.rows.length > 0) {
       for (var a of result.rows) {
-        console.log(a)
-        var label = 'No name'
+        var label = 'No Name'
         if (objectPath.has(a, 'doc.text.div')) {
           label = removeTags(a.doc.text.div)
         }
@@ -631,9 +630,11 @@ export function common() {
       var docs_arr = []
       const a = await localDB.query((doc, emit) => {
         if (doc.status == 'in-progress') {
-          for (let recipient of doc.recipient) {
-            if (recipient.reference == user.reference) {
-              emit(recipient)
+          if (objectPath.has(doc, 'recipient')) {
+            for (let recipient of doc.recipient) {
+              if (recipient.reference == user.reference) {
+                emit(recipient)
+              }
             }
           }
         }
