@@ -1281,7 +1281,7 @@ export default defineComponent({
           emit('set-composition-section', props.resource)
         }
       }
-      await syncEmailToUser(props.resource, props.category, state.fhir, props.patient, props.online)
+      await syncEmailToUser(props.resource, props.category, state.fhir, props.patient)
       state.formSaved = true
       state.sending = false
       emit('reload-drawer', props.resource)

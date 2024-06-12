@@ -1159,27 +1159,13 @@ export function common() {
     objectPath.set(syncState, 'total', resources.rows.length)
     objectPath.set(syncState, 'complete', 0)
     for (var resource of resources.rows) {
+      objectPath.set(syncTooltip, 'text', 'Syncing ' + Case.title(resource.resource) + '...')
       await sync(resource.resource, online, patient_id, false, {})
       objectPath.set(syncState, 'complete', objectPath.get(syncState, 'complete') + 1)
     }
     await sleep(5)
   }
-  const syncSome = async(online, patient_id) => {
-    const auth_store = useAuthStore()
-    const resources = auth_store.sync_resource
-    if (resources.length > 0) {
-      if (online) {
-        for (var resource of resources) {
-          if (resource !== undefined) {
-            await sync(resource, online, patient_id, false, {})
-          }
-        }
-        auth_store.setSyncResource([])
-      }
-    }
-  }
-  const syncState = reactive({ total: 0, complete: 0 })
-  const syncEmailToUser = async(resource, category, doc, patient_id, online) => {
+  const syncEmailToUser = async(resource, category, doc, patient_id) => {
     const prefix = getPrefix()
     if (resource === 'patients' ||
         resource === 'practitioners' ||
@@ -1206,6 +1192,23 @@ export function common() {
       }
     }
   }
+  const syncSome = async(online, patient_id) => {
+    const auth_store = useAuthStore()
+    const resources = auth_store.sync_resource
+    if (resources.length > 0) {
+      if (online) {
+        for (var resource of resources) {
+          if (resource !== undefined) {
+            objectPath.set(syncTooltip, 'text', 'Syncing ' + Case.title(resource) + '...')
+            await sync(resource, online, patient_id, false, {})
+          }
+        }
+        auth_store.setSyncResource([])
+      }
+    }
+  }
+  const syncState = reactive({ total: 0, complete: 0 })
+  const syncTooltip = reactive({ text: '' })
   const thread = async(doc, online, patient_id) => {
     var arr = []
     arr.push(doc)
@@ -1318,9 +1321,10 @@ export function common() {
     setOptions,
     sync,
     syncAll,
+    syncEmailToUser,
     syncSome,
     syncState,
-    syncEmailToUser,
+    syncTooltip,
     thread,
     threadEarlier,
     threadLater,

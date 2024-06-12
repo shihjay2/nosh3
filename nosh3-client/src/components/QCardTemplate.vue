@@ -97,7 +97,7 @@ export default defineComponent({
       state.result[state.data.category].splice(index,1)
       state.rows.splice(index,1)
       await sync(state.data.resource, false, props.patient, true, state.result)
-      await syncEmailToUser(state.data.resource, state.data.category, state.result, props.patient, props.online)
+      await syncEmailToUser(state.data.resource, state.data.category, state.result, props.patient)
     }
     const fhirMap = () => {
       for (var a in state.result[state.data.category]) {

@@ -16,7 +16,7 @@
         <div class="q-pa-md q-gutter-xs">
           <div class="q-gutter-md row justify-center">
             <q-spinner-radio v-if="state.sync_on" color="white" size="1em"/>
-            <q-tooltip>Syncing...</q-tooltip>
+            <q-tooltip>{{ state.sync_tooltip }}</q-tooltip>
           </div>
         </div>
         <q-btn v-if="state.updateExists" flat dense round icon="update" @click="refreshApp">
@@ -660,7 +660,7 @@ export default defineComponent({
 },
   setup () {
     const $q = useQuasar()
-    const { addSchemaOptions, bundleBuild, divBuild, fetchJSON, fhirModel, fhirReplace, importFHIR, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, sync, syncAll, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
+    const { addSchemaOptions, divBuild, fetchJSON, fhirModel, fhirReplace, importFHIR, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, sync, syncAll, syncTooltip, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
     const state = reactive({
       menuVisible: false,
       showDrawer: false,
@@ -816,6 +816,7 @@ export default defineComponent({
       showShare: false,
       // sync
       sync_on: false,
+      sync_tooltip: '',
       showPIN: false,
       formPin: {},
       schemaPin: [
@@ -988,6 +989,13 @@ export default defineComponent({
     watch(() => state.user, async(newVal) => {
       if (newVal) {
         await sync('users', false, state.patient, true, newVal)
+      }
+    })
+    watchEffect(() => {
+      if (syncTooltip.text !== '') {
+        state.sync_tooltip = syncTooltip.text
+      } else {
+        state.sync_tooltip = 'Syncing...'
       }
     })
     const addendumEncounter = async() => {
