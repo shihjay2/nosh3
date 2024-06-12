@@ -455,9 +455,14 @@ export function common() {
     })
     if (result.rows.length > 0) {
       for (var a of result.rows) {
+        console.log(a)
+        var label = 'No name'
+        if (objectPath.has(a, 'doc.text.div')) {
+          label = removeTags(a.doc.text.div)
+        }
         arr.push({
           val: Case.pascal(pluralize.singular(resource)) + '/' + a.doc.id,
-          label: removeTags(a.doc.text.div)
+          label: label
         })
       }
     }
