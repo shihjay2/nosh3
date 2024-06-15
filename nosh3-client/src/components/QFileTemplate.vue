@@ -34,6 +34,8 @@
     @edit-pdf="onEditPdf"
     @save-pdf="onSavePdf"
   />
+  <MdEditor v-if="state.markdown" v-model="state.txt_data" language="en-US"/>
+  <QuillEditor v-if="state.text" v-model="state.txt_data" theme="snow" toolbar="minimal"/>
   <q-stepper
     v-if="state.add"
     v-model="state.step"
@@ -144,6 +146,12 @@
       :schema="state.schema"
     />
   </q-dialog>
+  <q-dialog v-model="state.markdown_preview" persistent position="top" full-width full-height seamless>
+    <MdEditor v-model="state.txt" language="en-US"/>
+  </q-dialog>
+  <q-dialog v-model="state.text_preview" persistent position="top" full-width full-height seamless>
+    <QuillEditor v-model="state.txt" theme="snow" toolbar="minimal"/>
+  </q-dialog>
   <q-dialog v-model="state.showPreview" persistent position="top" full-width full-height seamless>
     <q-card>
       <q-card-section>
@@ -164,6 +172,8 @@ import { defineComponent, nextTick, reactive, onMounted, watch } from 'vue'
 import { useQuasar } from 'quasar'
 import { common } from '@/logic/common'
 import jsPDF from 'jspdf'
+import { MdEditor } from 'md-editor-v3'
+import 'md-editor-v3/lib/style.css'
 import moment from 'moment'
 import objectPath from 'object-path'
 import PouchDB from 'pouchdb-browser'
@@ -171,13 +181,17 @@ import QFormTemplate from './QFormTemplate.vue'
 import TuiImageEditor from './TuiImageEditor.vue'
 import PDFDocument from './PDFDocument.vue'
 import {v4 as uuidv4} from 'uuid'
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
 
 export default defineComponent({
   name: 'QFileTemplate',
   components: {
     TuiImageEditor,
     QFormTemplate,
-    PDFDocument
+    PDFDocument,
+    MdEditor,
+    QuillEditor
   },
   props: {
     auth: Object,
@@ -196,7 +210,7 @@ export default defineComponent({
   emits: ['update-toolbar', 'loading', 'reload-drawer', 'open-detail-complete', 'close-container'],
   setup(props, { emit }) {
     const $q = useQuasar()
-    const { addSchemaOptions, getPrefix, sync } = common()
+    const { addSchemaOptions, getPrefix, isMarkdown, sync } = common()
     const state = reactive({
       fhir: {},
       fhir1: {},
@@ -206,7 +220,7 @@ export default defineComponent({
       subcategory: '',
       data: '',
       change: false,
-      accept: 'image/*,.pdf',
+      accept: 'image/*,.pdf,.md,.txt',
       step: 1,
       viewer: false,
       pdfViewer: false,
@@ -250,6 +264,13 @@ export default defineComponent({
       formCategory: '',
       formIndex: '',
       default: {},
+      // markdown
+      markdown: false,
+      text: false,
+      txt_data: '',
+      txt: '',
+      markdown_preview: false,
+      text_preview: false,
       // forms
       base: {},
       schema: {},
@@ -337,6 +358,13 @@ export default defineComponent({
           var contentType = objectPath.get(state, 'fhir.' + c + '.contentType')
           if (contentType == 'application/pdf') {
             state.pdfViewer = true
+          } else if (contentType == 'text/plain') {
+              state.txt_data = atob(objectPath.get(state, 'fhir.' + c + '.data'))
+            if (isMarkdown(state.txt_data)) {
+              state.markdown = true
+            } else {
+              state.text = true
+            }
           } else {
             state.viewer = true
           }
@@ -374,6 +402,16 @@ export default defineComponent({
             state.image.name = files[i].name
             state.edit = true
             emit('update-toolbar', {type: 'file', resource: props.resource, category: props.category, action: 'Image Editor'})
+          }
+          if (contentType == 'text/plain') {
+            state.txt = data
+            if (isMarkdown(atob(data))) {
+              state.markdown_preview = true
+              emit('update-toolbar', {type: 'file', resource: props.resource, category: props.category, action: 'Markdown Editor'})
+            } else {
+              state.text_preview = true
+              emit('update-toolbar', {type: 'file', resource: props.resource, category: props.category, action: 'Text Editor'})
+            }
           }
         }).catch((e) => {
           console.log(e)
@@ -540,15 +578,27 @@ export default defineComponent({
         state.sending = true
         await sync(props.resource, false, props.patient, true, state.fhir)
         state.sending = false
+        const contentType = objectPath.get(state, 'fhir.' + state.model + '.contentType')
+        var notify = ''
+        if (contentType === 'application/pdf') {
+          notify = 'PDF document'
+        } else if (contentType === 'text/plain'){
+          if (isMarkdown(atob(objectPath.get(state, 'fhir.' + state.model + '.data')))) {
+            notify = 'Markdown document'
+          } else {
+            notify = 'text document'
+          }
+        } else {
+          notify = 'image'
+        }
         $q.notify({
-          message: 'The image was saved with success!',
+          message: 'The ' + notify + ' was saved with success!',
           color: 'primary',
           actions: [
             { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
           ]
         })
         state.add = false
-        var contentType = objectPath.get(state, 'fhir.' + state.model + '.contentType')
         if (contentType == 'application/pdf') {
           state.page = 1
           state.pdfViewer = true

@@ -4,6 +4,7 @@ import { reactive } from '@vue/reactivity'
 import * as jose from 'jose'
 import jsPDF from 'jspdf'
 import fastDiff from 'fast-diff'
+import * as marked from 'marked'
 import moment from 'moment'
 import objectPath from 'object-path'
 import * as Papa from 'papaparse'
@@ -561,10 +562,12 @@ export function common() {
             if (objectPath.has(doc, 'content.' + c + '.attachment.contentType')) {
               if (objectPath.get(doc, 'content.' + c + '.attachment.contentType').includes('text/plain')) {
                 var doc0 = new jsPDF()
-                doc0.text(objectPath.get(doc, 'content.' + c + '.attachment.data'), 10, 10)
-                const pdf = doc0.output('datauristring')
-                objectPath.set(doc, 'content.' + c + '.attachment.contentType', pdf.substr(pdf.indexOf(':') + 1, pdf.indexOf(';') - pdf.indexOf(':') - 1))
-                objectPath.set(doc, 'content.' + c + '.attachment.data', pdf.substr(pdf.indexOf(',') + 1))
+                if (!isMarkdown(atob(objectPath.get(doc, 'content.' + c + '.attachment.data')))) {
+                  doc0.text(atob(objectPath.get(doc, 'content.' + c + '.attachment.data')), 10, 10)
+                  const pdf = doc0.output('datauristring')
+                  objectPath.set(doc, 'content.' + c + '.attachment.contentType', pdf.substr(pdf.indexOf(':') + 1, pdf.indexOf(';') - pdf.indexOf(':') - 1))
+                  objectPath.set(doc, 'content.' + c + '.attachment.data', pdf.substr(pdf.indexOf(',') + 1))
+                }
               }
               if (objectPath.get(doc, 'content.' + c + '.attachment.contentType').includes('image')) {
                 var img = new Image()
@@ -666,6 +669,23 @@ export function common() {
       result = await localDB.find({selector: selector})
     }
     return result
+  }
+  const isMarkdown = (text) => {
+    const containsNonTextTokens = (tokens) =>{
+      return tokens.some(token => {
+        // change this as per your needs
+        if (token.type !== 'text' && token.type !== 'paragraph' ) { 
+          return true
+        }
+        // Check recursively for nested tokens
+        if (token.tokens && containsNonTextTokens(token.tokens)) {
+          return true
+        }
+        return false
+      })
+    }
+    const tokens = marked.lexer(text)
+    return containsNonTextTokens(tokens)
   }
   const loadSchema = async(resource, category, schema, online, options) => {
     const prefix = getPrefix()
@@ -1315,6 +1335,7 @@ export function common() {
     importFHIR,
     importReference,
     inbox,
+    isMarkdown,
     loadSchema,
     loadSelect,
     observationResult,

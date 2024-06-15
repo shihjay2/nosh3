@@ -49,7 +49,7 @@
         :sent="item.sent"
       />
     </q-virtual-scroll>
-    <q-footer elevated>
+    <q-footer v-if="state.message_field" elevated>
       <q-toolbar>
         <q-form @submit="sendMessage" class="full-width">
           <q-input
@@ -110,6 +110,7 @@
 
 <script>
 import { defineComponent, reactive, ref, onMounted, watch } from 'vue'
+import { useQuasar } from 'quasar'
 import Case from 'case'
 import { common } from '@/logic/common'
 import { Form } from 'vee-validate'
@@ -144,6 +145,7 @@ export default defineComponent({
   },
   emits: ['reload-complete', 'set-chat-id'],
   setup (props, { emit }) {
+    const $q = useQuasar()
     const { getPrefix, sync, thread } = common()
     const state = reactive({
       messages: [],
@@ -157,7 +159,8 @@ export default defineComponent({
       schema: {},
       opened: false,
       send_date: '',
-      virtual_index: 0
+      virtual_index: 0,
+      message_field: false
     })
     const virtualChatRef = ref(null)
     var prefix = getPrefix()
@@ -169,6 +172,7 @@ export default defineComponent({
         state.opened = true
       } else {
         await query()
+        state.message_field = true
         virtualChatRef.value.scrollTo(state.virtual_index)
       }
     })
@@ -187,7 +191,18 @@ export default defineComponent({
       state.topic = state.form.topic
       state.recipients = state.form.recipients
       recipientNames()
-      state.opened = false
+      if (state.topic !== '' && state.recipients.length > 0) {
+        state.opened = false
+        state.message_field = true
+      } else {
+        $q.notify({
+          message: 'Please complete all fields!',
+          color: 'red',
+          actions: [
+            { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+          ]
+        })
+      }
     }
     const onVirtualScroll = ({ index }) => {
       console.log('virtual scroll fired, index ' + index)
