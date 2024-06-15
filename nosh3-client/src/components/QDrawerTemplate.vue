@@ -161,7 +161,7 @@ export default defineComponent({
     })
     var prefix = getPrefix()
     onMounted(async() => {
-      encounterCheck()
+      await encounterCheck()
       state.patientName = props.patientName
       state.patientAge = props.patientAge
       state.patientGender = props.patientGender
@@ -194,6 +194,7 @@ export default defineComponent({
     })
     watch(() => props.drawerReload, async(newVal) => {
       if (newVal) {
+        await encounterCheck()
         for (var a in state.ui) {
           var count = await query(state.ui[a].resource, a)
           objectPath.set(state, 'ui.' + a + '.count', count)
