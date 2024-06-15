@@ -34,7 +34,7 @@
     @edit-pdf="onEditPdf"
     @save-pdf="onSavePdf"
   />
-  <MdEditor v-if="state.markdown" v-model="state.txt_data" language="en-US"/>
+  <MdPreview v-if="state.markdown" v-model="state.txt_data" language="en-US"/>
   <QuillEditor v-if="state.text" v-model="state.txt_data" theme="snow" toolbar="minimal"/>
   <q-stepper
     v-if="state.add"
@@ -147,7 +147,7 @@
     />
   </q-dialog>
   <q-dialog v-model="state.markdown_preview" persistent position="top" full-width full-height seamless>
-    <MdEditor v-model="state.txt" language="en-US"/>
+    <MdPreview v-model="state.txt" language="en-US"/>
   </q-dialog>
   <q-dialog v-model="state.text_preview" persistent position="top" full-width full-height seamless>
     <QuillEditor v-model="state.txt" theme="snow" toolbar="minimal"/>
@@ -172,7 +172,7 @@ import { defineComponent, nextTick, reactive, onMounted, watch } from 'vue'
 import { useQuasar } from 'quasar'
 import { common } from '@/logic/common'
 import jsPDF from 'jspdf'
-import { MdEditor } from 'md-editor-v3'
+import { MdPreview } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import moment from 'moment'
 import objectPath from 'object-path'
@@ -190,7 +190,7 @@ export default defineComponent({
     TuiImageEditor,
     QFormTemplate,
     PDFDocument,
-    MdEditor,
+    MdPreview,
     QuillEditor
   },
   props: {
