@@ -358,7 +358,7 @@ export default defineComponent({
           var contentType = objectPath.get(state, 'fhir.' + c + '.contentType')
           if (contentType == 'application/pdf') {
             state.pdfViewer = true
-          } else if (contentType == 'text/plain') {
+          } else if (contentType == 'text/plain; charset=utf-8') {
               state.txt_data = atob(objectPath.get(state, 'fhir.' + c + '.data'))
             if (isMarkdown(state.txt_data)) {
               state.markdown = true
@@ -403,7 +403,7 @@ export default defineComponent({
             state.edit = true
             emit('update-toolbar', {type: 'file', resource: props.resource, category: props.category, action: 'Image Editor'})
           }
-          if (contentType == 'text/plain') {
+          if (contentType == 'text/plain; charset=utf-8') {
             state.txt = data
             if (isMarkdown(atob(data))) {
               state.markdown_preview = true
@@ -582,7 +582,7 @@ export default defineComponent({
         var notify = ''
         if (contentType === 'application/pdf') {
           notify = 'PDF document'
-        } else if (contentType === 'text/plain'){
+        } else if (contentType === 'text/plain; charset=utf-8'){
           if (isMarkdown(atob(objectPath.get(state, 'fhir.' + state.model + '.data')))) {
             notify = 'Markdown document'
           } else {
