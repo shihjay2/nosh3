@@ -51,7 +51,9 @@
               </div>
               <div class="q-pa-md">
                 <q-btn class="full-width q-pa-md" push icon="vpn_key" color="primary" label="Trustee Authorization Server" @click="gnapSubmit" />
-                <q-btn class="full-width q-pa-md" push icon="replay" color="primary" label="Reload" @click="reload" />
+              </div>
+              <div class="q-pa-md">
+                <q-btn round push icon="replay" color="primary" @click="reload" />
               </div>
             </q-card-actions>
           </Form>
