@@ -56,8 +56,6 @@ export const useAuthStore = defineStore({
       this.trustee = null
       this.gnap_jwt = null
       this.prefix = null
-      console.log(window.location.href)
-      console.log(route)
       if (route !== '/app/login') {
         location.reload()
       } else {

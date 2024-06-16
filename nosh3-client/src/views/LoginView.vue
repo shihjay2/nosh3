@@ -51,6 +51,7 @@
               </div>
               <div class="q-pa-md">
                 <q-btn class="full-width q-pa-md" push icon="vpn_key" color="primary" label="Trustee Authorization Server" @click="gnapSubmit" />
+                <q-btn class="full-width q-pa-md" push icon="replay" color="primary" label="Reload" @click="reload" />
               </div>
             </q-card-actions>
           </Form>
@@ -177,6 +178,7 @@ export default defineComponent({
       payload: null,
       protectedHeader: null,
       patient: '',
+      url: '',
       // db
       auth: {},
       couchdb: '',
@@ -199,6 +201,7 @@ export default defineComponent({
       if (state.config.auth === 'magic') {
         magic = new Magic(state.config.key)
       }
+      state.url = auth.returnUrl
       if (state.config.instance === 'digitalocean' && state.config.type === 'pnosh') {
         state.magic = false
         if (auth.returnUrl !== null) {
@@ -338,7 +341,6 @@ export default defineComponent({
       const body = {route: url, patient: state.patient}
       const a = await axios.post(window.location.origin + '/auth/gnapAuth', body)
       if (objectPath.has(a, 'data.interact.redirect')) {
-        // window.open(a.data.interact.redirect, '_blank')
         window.location.href = a.data.interact.redirect
       } else {
         $q.notify({
@@ -403,6 +405,9 @@ export default defineComponent({
         })
       }
     }
+    const reload = () => {
+      window.location.href = state.url
+    }
     const resubmit = () => {
       state.login = true
       state.verifying = false
@@ -426,6 +431,7 @@ export default defineComponent({
       gnapSubmit,
       onSubmit,
       onSubmitPIN,
+      reload,
       resubmit,
       updateValue,
       updateValue1,
