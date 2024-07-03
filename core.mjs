@@ -89,6 +89,7 @@ async function couchdbDatabase(patient_id='', protocol='', hostname='', email=''
       protocol: protocol
     }
     const signedRequest = await signRequest(body, '/api/as/resource', 'POST', req)
+    console.log(signedRequest)
     try {
       const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', signedRequest)
         .then((res) => {
