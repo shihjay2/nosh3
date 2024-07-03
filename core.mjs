@@ -4,7 +4,7 @@ import axios from 'axios'
 import Case from 'case'
 import crypto from 'crypto'
 import fs from 'fs'
-import { createSigner, httpis } from 'http-message-signatures';
+import { createSigner, httpis } from 'http-message-signatures'
 import { parseFullName } from 'parse-full-name'
 import * as jose from 'jose'
 import moment from 'moment'
@@ -93,11 +93,11 @@ async function couchdbDatabase(patient_id='', protocol='', hostname='', email=''
       const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', signedRequest)
         .then((res) => {
           if (res.status > 400 && res.status < 600) { 
-            return {error: res};
+            return {error: res}
           } else {
-            return res.json();
+            return res.json()
           }
-        });
+        })
       console.log(doc)
     } catch (e) {
       console.log(e)
@@ -209,11 +209,11 @@ async function couchdbUpdate(patient_id='', protocol='', hostname='') {
           .then((res) => {
             console.log(res)
             if (res.status > 400 && res.status < 600) { 
-              return {error: res};
+              return {error: res}
             } else {
-              return res.json();
+              return res.json()
             }
-          });
+          })
         console.log(doc)
       } catch (e) {
         console.log(e)
@@ -221,7 +221,7 @@ async function couchdbUpdate(patient_id='', protocol='', hostname='') {
     }
   }
   console.log('# records updated: ' + gnap_resources.length)
-  return true;
+  return true
 }
 
 async function createKeyPair(alg='RS256') {
@@ -302,8 +302,8 @@ async function eventAdd(event, opts, patient_id='') {
   const event_item = {
     event: event,
     datetime: moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
-    user: auth_store.user.display,
-    user_id: auth_store.user.id,
+    user: opts.display,
+    user_id: opts.id,
     doc_db: opts.doc_db,
     doc_id: opts.doc_id,
     diff: opts.diff
@@ -512,11 +512,11 @@ async function registerResources(patient_id='', protocol='', hostname='', email=
       const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', signedRequest)
         .then((res) => {
           if (res.status > 400 && res.status < 600) { 
-            return {error: res};
+            return {error: res}
           } else {
-            return res.json();
+            return res.json()
           }
-        });
+        })
       return body
     } catch (e) {
       return false
@@ -552,7 +552,7 @@ async function signRequest(doc, urlinput, method, req, auth='') {
       "content-type": "application/json",
     },
     body: JSON.stringify(body)
-  };
+  }
   if (auth !== '') {
     objectPath.set(opt, "headers.authorization", "GNAP " + auth)
   }
@@ -572,14 +572,14 @@ async function signRequest(doc, urlinput, method, req, auth='') {
       signer: createSigner('rsa-v1_5-sha256', key),
       format: "httpbis"
     })
-    return signedRequest;
+    return signedRequest
   } catch (e) {
-    return false;
+    return false
   }
 }
 
 async function sleep(seconds) {
-  return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+  return new Promise((resolve) => setTimeout(resolve, seconds * 1000))
 }
 
 async function sync(resource, patient_id='', save=false, data={}) {

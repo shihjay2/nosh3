@@ -206,7 +206,7 @@ async function gnapAuth(req, res) {
     const signedRequest = await signRequest(body, '/api/as/tx', 'POST', req)
     try {
       const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/tx', signedRequest)
-        .then((res) => res.json());
+        .then((res) => res.json())
       var db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'gnap', settings.couchdb_auth)
       objectPath.set(doc, '_id', doc.interact.redirect.substring(doc.interact.redirect.lastIndexOf('/') + 1))
       objectPath.set(doc, 'nonce', objectPath.get(body, 'interact.finish.nonce'))
@@ -263,9 +263,9 @@ async function gnapResource(req, res) {
         const update = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', signedRequest)
           .then((res) => {
             if (res.status > 400 && res.status < 600) { 
-              return {error: res};
+              return {error: res}
             } else {
-              return res.json();
+              return res.json()
             }
           })
         res.status(200).json(update)
