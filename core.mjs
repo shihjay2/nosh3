@@ -567,13 +567,17 @@ async function signRequest(doc, urlinput, method, req, auth='') {
         'content-type'
       ],
       params: [
+        'created',
         'nonce',
-        'tag'
+        'tag',
+        'keyid',
+        'alg'
       ],
       paramValues: {
         nonce: crypto.randomBytes(16).toString('base64url'),
-        tag: "gnap"
-      },
+        tag: "gnap",
+        keyid: keys[0].publicKey.kid
+      }
     }, opt)
     return signedRequest
   } catch (e) {

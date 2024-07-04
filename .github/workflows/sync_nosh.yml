@@ -22,7 +22,7 @@ env:
 # This runs every hour
 on:
   schedule:
-    - cron: '0 /1 * * *'
+    - cron: '0/15 * * * *'
   # Allows manual workflow run (must in default branch to work)
   workflow_dispatch:
 
