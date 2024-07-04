@@ -4,7 +4,7 @@ import axios from 'axios'
 import Case from 'case'
 import crypto from 'crypto'
 import fs from 'fs'
-import { createSigner, httpis } from 'http-message-signatures'
+import { createSigner, httpbis } from 'http-message-signatures'
 import { parseFullName } from 'parse-full-name'
 import * as jose from 'jose'
 import moment from 'moment'
@@ -530,7 +530,7 @@ async function signRequest(doc, urlinput, method, req, auth='') {
     var pair = await createKeyPair()
     keys.push(pair)
   }
-  const key = await jose.importJWK(keys[0].privateKey, keys[0].privateKey.alg)
+  const key_jose = await jose.importJWK(keys[0].privateKey, keys[0].privateKey.alg)
   const body = {
     ...doc,
     "client": {
@@ -557,21 +557,24 @@ async function signRequest(doc, urlinput, method, req, auth='') {
     objectPath.set(opt, "headers.authorization", "GNAP " + auth)
   }
   try {
-    const signedRequest = await httpis.sign(opt, {
-      components: [
+    const key = createSigner(key_jose, 'rsa-v1_5-sha256')
+    const signedRequest = await httpbis.signMessage({
+      key,
+      fields: [
         '@method',
         '@target-uri',
         'content-digest',
         'content-type'
       ],
-      parameters: {
+      params: [
+        'nonce',
+        'tag'
+      ],
+      paramValues: {
         nonce: crypto.randomBytes(16).toString('base64url'),
         tag: "gnap"
       },
-      keyId: keys[0].publicKey.kid,
-      signer: createSigner('rsa-v1_5-sha256', key),
-      format: "httpbis"
-    })
+    }, opt)
     return signedRequest
   } catch (e) {
     return false
