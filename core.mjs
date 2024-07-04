@@ -560,6 +560,7 @@ async function signRequest(doc, urlinput, method, req, auth='') {
     const key = createSigner(key_jose, 'rsa-v1_5-sha256')
     const signedRequest = await httpbis.signMessage({
       key,
+      name: 'sig1',
       fields: [
         '@method',
         '@target-uri',
