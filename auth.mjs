@@ -203,8 +203,7 @@ async function gnapAuth(req, res) {
         }
       }
     }
-    const signedRequest = await signRequest(body, '/api/as/tx', 'POST', req)
-    console.log(signedRequest)
+    const signedRequest = await signRequest(body, urlFix(process.env.TRUSTEE_URL) + 'api/as/tx', 'POST', req)
     try {
       const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/tx', signedRequest)
         .then((res) => res.json())
