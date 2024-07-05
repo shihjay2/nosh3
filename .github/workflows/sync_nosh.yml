@@ -5,7 +5,7 @@ env:
   UPSTREAM_URL: "https://github.com/shihjay2/nosh3.git"
   # Required, token to authenticate bot, could use ${{ secrets.GITHUB_TOKEN }} 
   # Over here, we use a PAT instead to authenticate workflow file changes.
-  WORKFLOW_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
+  WORKFLOW_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # Optional, defaults to main
   UPSTREAM_BRANCH: "main"
   # Optional, defaults to UPSTREAM_BRANCH
@@ -19,7 +19,7 @@ env:
   # Optional toggle to spawn time logs (keeps action active) 
   SPAWN_LOGS: "false" # "true" or "false"
 
-# This runs every hour
+# This runs every 15 minutes
 on:
   schedule:
     - cron: '0/15 * * * *'
