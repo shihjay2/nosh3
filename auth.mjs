@@ -314,7 +314,7 @@ async function gnapVerify(req, res) {
     var db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'gnap', settings.couchdb_auth)
     try {
       var result = await db.get(req.query.interact_ref)
-      const hash = crypto.createHash('sha3-512')
+      const hash = crypto.createHash('sha256')
       hash.update(result.nonce + '\n')
       hash.update(result.interact.finish + '\n')
       hash.update(req.query.interact_ref + '\n')
