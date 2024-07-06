@@ -320,11 +320,6 @@ async function gnapVerify(req, res) {
       hash.update(req.query.interact_ref + '\n')
       hash.update(urlFix(process.env.TRUSTEE_URL) + 'api/as/tx')
       const hash_result = hash.digest('base64url')
-      console.log(result.nonce)
-      console.log(result.interact.finish)
-      console.log(req.query.interact_ref)
-      console.log(urlFix(process.env.TRUSTEE_URL) + 'api/as/tx')
-      console.log(hash_result)
       if (hash_result !== req.query.hash) {
         res.status(401).send('Interaction hash does not match')
       } else {
