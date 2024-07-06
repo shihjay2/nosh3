@@ -243,7 +243,7 @@ async function gnapProxy(req, res) {
       },
       "token": req.body.token
     }
-    const signedRequest = await signRequest(body, '/api/as/proxy', 'POST', req)
+    const signedRequest = await signRequest(body, urlFix(process.env.TRUSTEE_URL) + 'api/as/proxy', 'POST', req)
     try {
       const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/proxy', signedRequest)
         .then((res) => res.json())
@@ -258,7 +258,7 @@ async function gnapResource(req, res) {
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     const body = {resource: req.body.resource}
     try {
-      const signedRequest = await signRequest(body, '/api/as/resource', req.body.method, req, req.body.jwt)
+      const signedRequest = await signRequest(body, urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', req.body.method, req, req.body.jwt)
       try {
         const update = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', signedRequest)
           .then((res) => {
@@ -284,7 +284,7 @@ async function gnapResources(req, res) {
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     const body = {email: req.body.email, filter: req.body.filter}
     try {
-      const signedRequest = await signRequest(body, '/api/as/resources', 'POST', req)
+      const signedRequest = await signRequest(body, urlFix(process.env.TRUSTEE_URL) + 'api/as/resources', 'POST', req)
       try {
         const resources = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/resources', signedRequest)
           .then((res) => res.json())
@@ -325,7 +325,7 @@ async function gnapVerify(req, res) {
       } else {
         const body = {"interact_ref": req.query.interact_ref}
         try {
-          const signedRequest = await signRequest(body, '/api/as/continue', 'POST', req, result.continue.access_token.value)
+          const signedRequest = await signRequest(body, urlFix(process.env.TRUSTEE_URL) + 'api/as/continue', 'POST', req, result.continue.access_token.value)
           try {
             const doc = await fetch(result.continue.uri, signedRequest)
               .then((res) => res.json())

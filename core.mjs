@@ -88,7 +88,7 @@ async function couchdbDatabase(patient_id='', protocol='', hostname='', email=''
       hostname: hostname,
       protocol: protocol
     }
-    const signedRequest = await signRequest(body, '/api/as/resource', 'POST', req)
+    const signedRequest = await signRequest(body, urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', 'POST', req)
     try {
       const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', signedRequest)
         .then((res) => {
@@ -202,7 +202,7 @@ async function couchdbUpdate(patient_id='', protocol='', hostname='') {
         hostname: hostname,
         protocol: protocol
       }
-      const signedRequest = await signRequest(body, '/api/as/resource', 'POST', req)
+      const signedRequest = await signRequest(body, urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', 'POST', req)
       console.log(signedRequest)
       try {
         const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', signedRequest)
@@ -507,7 +507,7 @@ async function registerResources(patient_id='', protocol='', hostname='', email=
       hostname: hostname,
       protocol: protocol
     }
-    const signedRequest = await signRequest(body, '/api/as/resource', 'POST', req)
+    const signedRequest = await signRequest(body, urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', 'POST', req)
     try {
       const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', signedRequest)
         .then((res) => {
