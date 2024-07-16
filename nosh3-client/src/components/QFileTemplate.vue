@@ -207,7 +207,7 @@ export default defineComponent({
     doc_class_codes: Array,
     doc_type_codes: Array
   },
-  emits: ['update-toolbar', 'loading', 'reload-drawer', 'open-detail-complete', 'close-container'],
+  emits: ['update-toolbar', 'loading', 'load-timeline', 'reload-drawer', 'open-detail-complete', 'close-container'],
   setup(props, { emit }) {
     const $q = useQuasar()
     const { addSchemaOptions, getPrefix, isMarkdown, sync } = common()
@@ -607,6 +607,7 @@ export default defineComponent({
         }
         stopVideo()
         emit('reload-drawer', props.resource)
+        emit('load-timeline')
         if (state.detailsPending == true) {
           openForm()
         } else {

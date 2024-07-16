@@ -167,7 +167,7 @@ async function couchdbUpdate(patient_id='', protocol='', hostname='') {
       const db_resource = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource.resource, settings.couchdb_auth)
       await db_resource.info()
       if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
-        if (resource.gnap) {
+        if (resource.gnap && resource.fhir) {
           const gnap_resource_all = {
             "type": Case.title(resource.resource),
             "actions": ["read", "write", "delete"],
@@ -188,6 +188,30 @@ async function couchdbUpdate(patient_id='', protocol='', hostname='') {
           }
           gnap_resources.push(gnap_resource_all)
           gnap_resources.push(gnap_resource_read)
+        }
+        if (resource.gnap && !resource.fhir) {
+          if (resource.resource === 'timeline') {
+            const timeline_read = {
+              "type": Case.title(resource.resource) + " - Read Only",
+              "actions": ["read"],
+              "datatypes": ["text/plain"],
+              "identifier": patient_id,
+              "locations": [base_url + "api/" + patient_id + "/" + Case.pascal(pluralize.singular(resource.resource))],
+              "privileges": [email],
+              "ro": email
+            }
+            const markdown_post = {
+              "type": "Markdown - Write Only",
+              "actions": ["write"],
+              "datatypes": ["text/plain"],
+              "identifier": patient_id,
+              "locations": [base_url + "api/" + patient_id + "/md"],
+              "privileges": [email],
+              "ro": email
+            }
+            gnap_resources.push(timeline_read)
+            gnap_resources.push(markdown_post)
+          }
         }
       }
     }
@@ -311,6 +335,19 @@ async function eventAdd(event, opts, patient_id='') {
   doc.events.push(event_item)
   await db1.put(doc)
   await sync('activities', patient_id)
+}
+
+async function eventUser(res, opts, prefix) {
+  const db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
+  const result_users = await db_users.find({selector: {'email': {"$eq": objectPath.get(res, 'locals.payload.sub')}}})
+  if (result_users.docs.length > 0) {
+    objectPath.set(opts, 'id', result_users.docs[0].id)
+    objectPath.set(opts, 'display', result_users.docs[0].display)
+  } else {
+    objectPath.set(opts, 'id', objectPath.get(res, 'locals.payload.sub'))
+    objectPath.set(opts, 'display', objectPath.get(res, 'locals.payload.sub'))
+  }
+  return opts
 }
 
 async function getAllKeys() {
@@ -449,6 +486,42 @@ async function gnapInstrospect(jwt, publicKey, location, action) {
   } else {
     return false
   }
+}
+
+async function isMarkdown(text) {
+  const containsNonTextTokens = (tokens) =>{
+    return tokens.some(token => {
+      // change this as per your needs
+      if (token.type !== 'text' && token.type !== 'paragraph' ) { 
+        return true
+      }
+      // Check recursively for nested tokens
+      if (token.tokens && containsNonTextTokens(token.tokens)) {
+        return true
+      }
+      return false
+    })
+  }
+  const tokens = marked.lexer(text)
+  return containsNonTextTokens(tokens)
+}
+
+async function pollSet(patient_id, new_resource) {
+  const db = new PouchDB('sync')
+  const resources = []
+  const result = await db.find({selector: {'_id': {$eq: req.body.patient}}})
+  if (result.docs.length > 0) {
+    for (resource of result.docs[0].resources) {
+      resources.push(resource)
+    } 
+  }
+  resources.push(new_resource)
+  const doc = {
+    _id: patient_id,
+    resources
+  }
+  await db.put(doc)
+  return true
 }
 
 async function registerResources(patient_id='', protocol='', hostname='', email='') {
@@ -791,4 +864,4 @@ async function verifyPIN(pin, patient_id) {
   }
 }
 
-export { couchdbConfig, couchdbDatabase, couchdbInstall, couchdbUpdate, createKeyPair, equals, eventAdd, getKeys, getName, getNPI, getPIN, registerResources, signRequest, sleep, sync, urlFix, userAdd, verify, verifyJWT, verifyPIN }
+export { couchdbConfig, couchdbDatabase, couchdbInstall, couchdbUpdate, createKeyPair, equals, eventAdd, eventUser, getKeys, getName, getNPI, getPIN, isMarkdown, pollSet, registerResources, signRequest, sleep, sync, urlFix, userAdd, verify, verifyJWT, verifyPIN }

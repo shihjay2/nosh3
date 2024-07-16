@@ -16,6 +16,7 @@ PouchDB.plugin(PouchDBFind)
 
 import fhir from './fhir.mjs'
 import auth from './auth.mjs'
+import api from './api.mjs'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const client = __dirname + '/nosh3-client/dist/'
@@ -31,6 +32,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use('/fhir', fhir)
 app.use('/auth', auth)
+app.use('/api', api)
 app.use('/app', express.static(client))
 
 app.use('/app/chart', (req, res) => {

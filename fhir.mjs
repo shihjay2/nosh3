@@ -12,27 +12,9 @@ import { v4 as uuidv4 } from 'uuid'
 import { eventAdd,  sync,  verifyJWT } from './core.mjs'
 
 const router = express.Router()
-const options = {
-  // scope: ['read', 'write']
-  claims: [
-    // {name: 'sub'},
-    {name: 'aud', value: 'urn:example:audience'}
-  ]
-}
-
 import PouchDBFind from 'pouchdb-find'
 PouchDB.plugin(PouchDBFind)
 export default router
-
-// const jwksService = jose.createRemoteJWKSet(new URL(settings.jwks_uri))
-
-// router.get('/api/:type', querySecuredResource) //search
-// router.post('/api/:type', postSecuredResource) //create
-// router.get('/api/:type/:id', getSecuredResource) //read
-// router.put('/api/:type/:id', putSecuredResource) //update
-// router.delete('/api/:type/:id', deleteSecuredResource) //delete
-// router.get('/api/:type/:id/_history/:vid', getSecuredResourceVersion) //vread
-router.get('/test', test)
 
 router.get('/api/:pid/:type', verifyJWT, querySecuredResource) //search
 router.post('/api/:pid/:type', verifyJWT, postSecuredResource) //create
@@ -52,14 +34,14 @@ async function deleteSecuredResource(req, res) {
   try {
     const doc = await db.get(req.params.id)
     const result = await db.remove(doc)
-    const opts = {
-      id: res.locals.payload._nosh.id,
-      display: res.locals.payload._nosh.display,
+    var opts = {
       doc_db: Case.snake(pluralize(req.params.type)),
       doc_id: result.id,
       diff: null
     }
-    await eventAdd('Deleted ' + pluralize.singular(req.params.type.replace('_statements', '')), opts, res.local.payload._nosh.patient)
+    opts = await eventUser(res, opts, prefix)
+    await eventAdd('Deleted ' + pluralize.singular(req.params.type.replace('_statements', '')), opts, req.params.pid)
+    await pollSet(req.params.pid, Case.snake(pluralize(req.params.type)))
     const endTime = performance.now()
     const diff = endTime - startTime
     const diagnostics = "Successfully deleted 1 resource(s) in " + diff + "ms"
@@ -124,14 +106,14 @@ async function postSecuredResource(req, res) {
     objectPath.set(req, 'body.subject.reference', 'Patient/' + req.params.pid)
     const body = await db.put(req.body)
     await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
-    const opts = {
-      id: res.locals.payload._nosh.id,
-      display: res.locals.payload._nosh.display,
+    var opts = {
       doc_db: Case.snake(pluralize(req.params.type)),
       doc_id: body.id,
       diff: null
     }
-    await eventAdd('Updated ' + pluralize.singular(req.params.type.replace('_statements', '')), opts, res.local.payload._nosh.patient)
+    opts = await eventUser(res, opts, prefix)
+    await eventAdd('Updated ' + pluralize.singular(req.params.type.replace('_statements', '')), opts, req.params.pid)
+    await pollSet(req.params.pid, Case.snake(pluralize(req.params.type)))
     res.set('ETag', 'W/"' + body.rev + '"')
     res.status(200).json(body)
   } catch(err) {
@@ -162,14 +144,14 @@ async function putSecuredResource(req, res) {
       console.log(diff_result)
       diff = diff_result.join(',')
     }
-    const opts = {
-      id: res.locals.payload._nosh.id,
-      display: res.locals.payload._nosh.display,
+    var opts = {
       doc_db: Case.snake(pluralize(req.params.type)),
       doc_id: body.id,
       diff: diff
     }
-    await eventAdd('Updated ' + pluralize.singular(req.params.type.replace('_statements', '')), opts, res.locals.payload._nosh.patient)
+    opts = await eventUser(res, opts, prefix)
+    await eventAdd('Updated ' + pluralize.singular(req.params.type.replace('_statements', '')), opts, req.params.pid)
+    await pollSet(req.params.pid, Case.snake(pluralize(req.params.type)))
     res.set('ETag', 'W/"' + body.rev + '"')
     res.status(200).json(body)
   } catch(err) {
@@ -220,11 +202,4 @@ async function querySecuredResource(req, res) {
     total: i,
     entry: entries 
   })
-}
-
-function test(req,res,next) {
-  axios.get('http://localhost:4000/auth/createJWT').then((a) => {
-   res.status(200).json({ message: a.data})
-  })
-  // res.status(200).json(req.protocol + '://' + req.hostname + req.baseUrl + req.path)
 }

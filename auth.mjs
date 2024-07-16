@@ -12,18 +12,14 @@ import settings from './settings.mjs'
 import sortArray from "sort-array"
 import { v4 as uuidv4 } from 'uuid'
 import { couchdbDatabase, couchdbInstall, couchdbUpdate, createKeyPair, equals, getKeys, getName, getNPI, getPIN, registerResources, signRequest, sync, urlFix, verify, verifyPIN } from './core.mjs'
-// const mailgun = new Mailgun(formData)
-// const mg = mailgun.client({username: 'api', key: process.env.MAILGUN_API_KEY})
 const router = express.Router()
 import PouchDBFind from 'pouchdb-find'
 PouchDB.plugin(PouchDBFind)
 export default router
-// const jwksService = jose.createRemoteJWKSet(new URL(settings.jwks_uri))
 
 router.post('/verifyJWT', verifyJWTEndpoint)
 router.get('/jwks', jwks) // endpoint to share public key
 router.get('/config', config)
-// router.post('/save', save)
 router.post('/authenticate', authenticate)
 router.get('/exportJWT', exportJWT)
 router.post('/addPatient', addPatient)
@@ -39,7 +35,8 @@ router.post('/pinCheck', pinCheck)
 router.post('/pinClear', pinClear)
 router.post('/pinSet', pinSet)
 
-router.post('/mail', mail)
+router.post('/pollCheck', pollCheck)
+
 router.get('/test', test)
 
 function config(req, res) {
@@ -61,18 +58,6 @@ function config(req, res) {
   }
   res.status(200).json(response)
 }
-
-// async function save(req, res) {
-//   if (req.get('referer') === req.protocol + '://' + req.hostname + '/app/login') {
-//     const db = new PouchDB((settings.couchdb_uri + '/magic'), settings.couchdb_auth)
-//     var doc = req.body
-//     objectPath.set(doc, '_id', 'nosh_' + uuidv4())
-//     await db.put(doc)
-//     res.status(200).json(doc)
-//   } else {
-//     res.status(401).send('Unauthorized')
-//   }
-// }
 
 async function authenticate(req, res) {
   if (req.get('referer') === req.protocol + '://' + req.hostname + '/app/login') {
@@ -528,26 +513,6 @@ async function gnapVerify(req, res) {
   }
 }
 
-async function mail(req, res) {
-  const jwt = await new jose.SignJWT(payload)
-    .setProtectedHeader({ alg: 'RS256' })
-    .setIssuedAt()
-    .setIssuer('urn:example:issuer')
-    .setAudience('urn:example:audience')
-    .setExpirationTime('2m')
-    .sign(rsaPrivateKey)
-  // mg.messages.create(process.env.MAILGUN_DOMAIN, {
-  //   from: fromEmail,
-  //   to: toEmails,
-  //   subject: 'Hello',
-  //   html: '<img src="cid:mailgun.png" width="200px"><br><h3>Testing some Mailgun awesomness!</h3>',
-  //   text: 'Testing some Mailgun awesomness!',
-  //   inline: [mailgunLogo],
-  //   attachment: [rackspaceLogo]
-  // }).then((msg) => console.log(msg))
-  //   .catch((err) => console.log(err))
-}
-
 async function createJWT(sub, aud, iss, payload=null) {
   // aud is audience - base url of this server
   var keys = await getKeys()
@@ -774,6 +739,20 @@ async function pinSet (req, res, next) {
     res.status(200).json({ response: 'OK' })
   } else {
     res.status(200).json({ response: 'Incorrect PIN' })
+  }
+}
+
+async function pollCheck (req, res, next) {
+  const db = new PouchDB('sync')
+  try {
+    const result = await db.find({selector: {'_id': {$eq: req.body.patient}}})
+    if (result.docs.length > 0) {
+      res.status(200).json({ response: 'Sync', resources: result.docs[0].resources})
+    } else {
+      res.status(200).json({ response: 'Nothing to sync' })
+    }
+  } catch (e) {
+    res.status(200).json({ response: 'Error', message: e})
   }
 }
 

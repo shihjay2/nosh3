@@ -5,168 +5,200 @@
       "icon": "receipt_long",
       "label": "Activities",
       "patientField": "none",
-      "gnap": true
+      "gnap": true,
+      "fhir": false
     },
     {
       "resource": "allergy_intolerances",
       "icon": "warning",
       "label": "Allergies",
       "patientField": "patient",
-      "gnap": true
+      "gnap": true,
+      "fhir": true
     },
     {
       "resource": "appointments",
       "icon": "event",
       "label": "Appointments",
       "patientField": "participant",
-      "gnap": true
+      "gnap": true,
+      "fhir": true
     },
     {
       "resource": "bundles",
       "icon": "source",
       "label": "Bundles",
       "patientField": "subject",
-      "gnap": true
+      "gnap": true,
+      "fhir": true
     },
     {
       "resource": "care_plans",
       "icon": "next_plan",
       "label": "Care Plans",
       "patientField": "subject",
-      "gnap": true
+      "gnap": true,
+      "fhir": true
     },
     {
       "resource": "claims",
       "icon": "request_quote",
       "label": "Claims",
       "patientField": "patient",
-      "gnap": true
+      "gnap": true,
+      "fhir": true
     },
     {
       "resource": "communications",
       "icon": "chat",
       "label": "Communications",
       "patientField": "subject",
-      "gnap": true
+      "gnap": true,
+      "fhir": true
     },
     {
       "resource": "compositions",
       "icon": "edit_note",
       "label": "Compositions",
       "patientField": "subject",
-      "gnap": true
+      "gnap": true,
+      "fhir": true
     },
     {
       "resource": "conditions",
       "icon": "list",
       "label": "Conditions",
       "patientField": "subject",
-      "gnap": true
+      "gnap": true,
+      "fhir": true
     },
     {
       "resource": "document_references",
       "icon": "description",
       "label": "Documents",
       "patientField": "subject",
-      "gnap": true
+      "gnap": true,
+      "fhir": true
     },
     {
       "resource": "encounters",
       "icon": "event",
       "label": "Encounters",
       "patientField": "subject",
-      "gnap": true
+      "gnap": true,
+      "fhir": true
     },
     {
       "resource": "immunizations",
       "icon": "vaccines",
       "label": "Immunizations",
       "patientField": "patient",
-      "gnap": true
+      "gnap": true,
+      "fhir": true
     },
     {
       "resource": "invoices",
       "icon": "receipt_long",
       "label": "Invoices",
       "patientField": "subject",
-      "gnap": true
+      "gnap": true,
+      "fhir": true
     },
     {
       "resource": "medication_requests",
       "icon": "medication",
       "label": "Medication Requests",
       "patientField": "subject",
-      "gnap": true
+      "gnap": true,
+      "fhir": true
     },
     {
       "resource": "medication_statements",
       "icon": "medication",
       "label": "Medications",
       "patientField": "subject",
-      "gnap": true
+      "gnap": true,
+      "fhir": true
     },
     {
       "resource": "observations",
       "icon": "biotech",
       "label": "Observations",
       "patientField": "subject",
-      "gnap": true
+      "gnap": true,
+      "fhir": true
     },
     {
       "resource": "patients",
       "icon": "person",
       "label": "Patients",
       "patientField": "id",
-      "gnap": true
+      "gnap": true,
+      "fhir": true
     },
     {
       "resource": "practitioners",
       "icon": "masks",
       "label": "Practitioners",
       "patientField": "none",
-      "gnap": true
+      "gnap": true,
+      "fhir": true
     },
     {
       "resource": "presentations",
       "icon": "prescriptions",
       "label": "Presentations",
       "patientField": "none",
-      "gnap": false
+      "gnap": false,
+      "fhir": true
     },
     {
       "resource": "provenances",
       "icon": "brush",
       "label": "Provenances",
       "patientField": "patient",
-      "gnap": true
+      "gnap": true,
+      "fhir": true
     },
     {
       "resource": "related_persons",
       "icon": "groups",
       "label": "Related Persons",
       "patientField": "patient",
-      "gnap": true
+      "gnap": true,
+      "fhir": true
     },
     {
       "resource": "service_requests",
       "icon": "subscriptions",
       "label": "Service Requests",
       "patientField": "subject",
-      "gnap": true
+      "gnap": true,
+      "fhir": true
     },
     {
       "resource": "tasks",
       "icon": "task",
       "label": "Tasks",
       "patientField": "for",
-      "gnap": true
+      "gnap": true,
+      "fhir": true
+    },
+    {
+      "resource": "timeline",
+      "icon": "timeline",
+      "label": "Timeline",
+      "patientField": "none",
+      "gnap": true,
+      "fhir": false
     },
     {
       "resource": "users",
       "icon": "group",
       "label": "Users",
       "patientField": "none",
-      "gnap": false
+      "gnap": false,
+      "fhir": false
     }
   ]
 }

@@ -225,6 +225,7 @@
       <QPageTemplate
         v-if="state.showPage"
         @loading="loading"
+        @load-timeline="loadTimeline"
         @open-graph="openGraph"
         @open-form="openForm"
         @open-page-form-complete="openPageFormComplete"
@@ -259,6 +260,7 @@
       />
       <QFileTemplate
         v-if="state.showFile"
+        @load-timeline="loadTimeline"
         @update-toolbar="updateToolbar"
         @reload-drawer="reloadDrawer"
         @open-detail-complete="openDetailComplete"
@@ -936,20 +938,7 @@ export default defineComponent({
         console.log('Inbox updated')
       }, 5000)
       syncTimer = setInterval(async() => {
-        if (state.online) {
-          if (!state.sync_on) {
-            state.sync_on = true
-            await syncSome(state.online, state.patient)
-            state.drawerReload = true
-            state.sync_on = false
-            if (state.showTimeline) {
-              await loadTimeline()
-              nextTick(() => {
-                qTimeline.value.focus()
-              })
-            }
-          }
-        }
+        await syncProcess('some')
       }, 15000)
       syncallTimer = setInterval(async() => {
         await syncProcess()
@@ -957,7 +946,8 @@ export default defineComponent({
       if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
         pinTimer = setInterval(async() => {
           await pinCheck()
-          console.log('PIN Checked')
+          await pollCheck()
+          console.log('PIN & Poll Checked')
         }, 10000)
       }
     })
@@ -1121,6 +1111,7 @@ export default defineComponent({
     }
     const closeForm = async(id = '', doc = {}) => {
       state.showForm = false
+      await loadTimeline()
       if (state.resource == 'patients' ||
           state.resource == 'encounters' ||
           state.resource == 'practitioners' ||
@@ -1508,6 +1499,25 @@ export default defineComponent({
         timeline.push(timelineIntro)
       }
       state.timeline = timeline
+      const timelineDB = new PouchDB(prefix + 'timeline')
+      const result = await timelineDB.allDocs({
+        include_docs: true,
+        attachments: true,
+        startkey: 'nosh_'
+      })
+      if (result.rows.length > 0) {
+        const doc = objectPath.get(result, 'rows.0.doc')
+        objectPath.set(doc, 'timeline', timeline)
+        await sync('timeline', state.online, state.patient, true, doc)
+      } else {
+        const id = 'nosh_' + uuidv4()
+        const doc1 = {
+          '_id': id,
+          'id': id,
+          'timeline': timeline
+        }
+        await sync('timeline', state.online, state.patient, true, doc1)
+      }
       state.loading = false
     }
     const lockThread = async(id) => {
@@ -1927,6 +1937,25 @@ export default defineComponent({
         })
       }
     }
+    const pollCheck = async() => {
+      var check = await axios.post(window.location.origin + '/auth/pollCheck', {patient: state.patient})
+      if (check.data.response === 'Sync') {
+        for (var resource of check.data.resources) {
+          auth.setSyncResource(resource)
+        }
+        await syncProcess('some')
+      }
+      if (check.data.response === 'Forbidden') {
+        state.login = false
+        $q.notify({
+          message: 'Invalid URL - forbidden',
+          color: 'red',
+          actions: [
+            { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+          ]
+        })
+      }
+    }
     const refreshApp = () => {
       state.updateExists = false
       // Make sure we only send a 'skip waiting' message if the SW is waiting
@@ -2244,11 +2273,15 @@ export default defineComponent({
       clearInterval(pinTimer)
       clearInterval(syncallTimer)
     }
-    const syncProcess = async() => {
+    const syncProcess = async(type='all') => {
       if (state.online) {
         if (!state.sync_on) {
           state.sync_on = true
-          await syncAll(true, state.patient, true)
+          if (type === 'all') {
+            await syncAll(true, state.patient, true)
+          } else {
+            await syncSome(state.online, state.patient)
+          }
           state.drawerReload = true
           state.sync_on = false
           if (state.showTimeline) {
@@ -2389,6 +2422,7 @@ export default defineComponent({
       patientSearch,
       patientSearchBtn,
       pinCheck,
+      pollCheck,
       qTimeline,
       refreshApp,
       refreshPatient,

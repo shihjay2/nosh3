@@ -245,6 +245,7 @@
           <q-card-section v-if="tab2.template == 'file'">
             <QFileTemplate
               v-if="state.showFile"
+              @load-timeline="loadTimeline"
               @update-toolbar="updateToolbar"
               @reload-drawer="reloadDrawer"
               :auth="state.auth"
@@ -344,7 +345,7 @@ export default defineComponent({
       default: function () { return []}
     }
   },
-  emits: ['care-plan', 'composition', 'loading', 'lock-thread', 'new-prescription', 'open-form', 'open-graph', 'open-page-form-complete', 'reload-complete', 'reload-drawer', 'remove-oidc', 'open-list', 'update-toolbar'],
+  emits: ['care-plan', 'composition', 'loading', 'load-timeline', 'lock-thread', 'new-prescription', 'open-form', 'open-graph', 'open-page-form-complete', 'reload-complete', 'reload-drawer', 'remove-oidc', 'open-list', 'update-toolbar'],
   setup (props, { emit }) {
     const $q = useQuasar()
     const { addSchemaOptions, getPrefix, loadSchema, fetchJSON, sync, updateUser } = common()
@@ -511,6 +512,7 @@ export default defineComponent({
     }
     const closeForm = async(id = '', doc = {}) => {
       closeAll()
+      emit('load-timeline')
       if (state.careplan == true) {
         var defaults = {}
         state.careplan = false
@@ -819,6 +821,9 @@ export default defineComponent({
       state.select = resource_obj.select
       emit('loading')
     }
+    const loadTimeline = () => {
+      emit('load-timeline')
+    }
     const lockThread = (id) => {
       emit('lock-thread', id)
     }
@@ -961,6 +966,7 @@ export default defineComponent({
       loading,
       loadResource,
       loadSchema,
+      loadTimeline,
       lockThread,
       newPrescription,
       onFormOpen,
