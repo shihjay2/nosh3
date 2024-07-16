@@ -15,7 +15,7 @@ import PouchDBFind from 'pouchdb-find'
 PouchDB.plugin(PouchDBFind)
 export default router
 
-router.get('/:pid/timeline', verifyJWT, getTimeline) //get
+router.get('/:pid/Timeline', verifyJWT, getTimeline) //get
 router.put('/:pid/md', verifyJWT, putMarkdown) //post
 
 async function getTimeline(req, res) {
