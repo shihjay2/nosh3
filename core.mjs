@@ -846,17 +846,21 @@ async function verifyJWT(req, res, next) {
 async function verifyPIN(pin, patient_id) {
   const hashpins = new PouchDB('hashpins')
   const remote_hashpins = new PouchDB(urlFix(settings.couchdb_uri) + 'hashpins', settings.couchdb_auth)
-  await hashpins.sync(remote_hashpins).on('complete', () => {
-    console.log('PouchDB sync complete for DB: hashpins')
-  }).on('error', (err) => {
-    console.log(err)
-  })
   try {
-    const result = await hashpins.get(patient_id)
-    const hash = crypto.pbkdf2Sync(pin, result.salt, 1000, 64, 'sha512').toString('hex')
-    if (hash === result.hash) {
-      return true
-    } else {
+    await hashpins.sync(remote_hashpins).on('complete', () => {
+      console.log('PouchDB sync complete for DB: hashpins')
+    }).on('error', (err) => {
+      console.log(err)
+    })
+    try {
+      const result = await hashpins.get(patient_id)
+      const hash = crypto.pbkdf2Sync(pin, result.salt, 1000, 64, 'sha512').toString('hex')
+      if (hash === result.hash) {
+        return true
+      } else {
+        return false
+      }
+    } catch (e) {
       return false
     }
   } catch (e) {
