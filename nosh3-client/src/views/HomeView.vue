@@ -1507,8 +1507,10 @@ export default defineComponent({
       })
       if (result.rows.length > 0) {
         const doc = objectPath.get(result, 'rows.0.doc')
-        objectPath.set(doc, 'timeline', timeline)
-        await sync('timeline', false, state.patient, true, doc)
+        if (JSON.stringify(objectPath.get(doc, 'timeline')) !== timeline) {
+          objectPath.set(doc, 'timeline', timeline)
+          await sync('timeline', false, state.patient, true, doc)
+        }
       } else {
         const id = 'nosh_' + uuidv4()
         const doc1 = {
