@@ -25,6 +25,7 @@ async function getTimeline(req, res) {
     prefix = req.params.pid + '_'
   }
   await sync('timeline', req.params.pid)
+  console.log('sync done')
   const db = new PouchDB(prefix + 'timeline')
   const timeline_result = await db.allDocs({
     include_docs: true,
