@@ -681,17 +681,29 @@ async function sync(resource, patient_id='', save=false, data={}) {
   if (resource !== 'users') {
     var info = await local.info()
     if (info.doc_count > 0) {
-      await local.loadDecrypted()
+      try {
+        await local.loadDecrypted()
+      } catch (e) {
+        console.log(e)
+      }
     }
-    await local.loadEncrypted()
-    console.log('PouchDB sync complete for DB: ' + resource)
+    try {
+      await local.loadEncrypted()
+      console.log('PouchDB sync complete for DB: ' + resource)
+    } catch (e) {
+      console.log(e)
+    }
   } else {
     var remote = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource, settings.couchdb_auth)
-    await local.sync(remote).on('complete', () => {
-      console.log('PouchDB sync complete for DB: ' + resource)
-    }).on('error', (err) => {
-      console.log(err)
-    })
+    try {
+      await local.sync(remote).on('complete', () => {
+        console.log('PouchDB sync complete for DB: ' + resource)
+      }).on('error', (err) => {
+        console.log(err)
+      })
+    } catch (e) {
+      console.log(e)
+    }
   }
 }
 
