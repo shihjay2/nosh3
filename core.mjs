@@ -681,6 +681,7 @@ async function sync(resource, patient_id='', save=false, data={}) {
   if (resource !== 'users') {
     console.log(resource)
     var info = await local.info()
+    console.log(info)
     if (info.doc_count > 0) {
       try {
         await local.loadDecrypted()

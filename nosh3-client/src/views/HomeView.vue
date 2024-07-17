@@ -932,6 +932,9 @@ export default defineComponent({
       nextTick(() => {
         qTimeline.value.focus()
       })
+      if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
+        await pinCheck()
+      }
       if (!auth.init_sync) {
         await syncProcess()
         auth.unsetSync()
