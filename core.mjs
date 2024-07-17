@@ -780,23 +780,23 @@ async function userAdd() {
 async function verify(jwt) {
   var keys = await getAllKeys()
   var response = {}
-  var found = false
+  var found = 0
   if (keys.keys.length > 0) {
     for (var a in keys.keys) {
       const jwk = await jose.importJWK(keys.keys[a])
       try {
         const { payload, protectedHeader } = await jose.jwtVerify(jwt, jwk)
-        objectPath.set(response, 'status', 'isValid')
         objectPath.set(response, 'payload', payload)
         objectPath.set(response, 'protectedHeader', protectedHeader)
-        found = true
+        found++
       } catch (err) {
-        console.log(err)
-        if (found !== true) {
-          objectPath.set(response, 'status', 'notValid')
-          objectPath.set(response, 'error', err)
-        }
+        objectPath.set(response, 'errors.' + a, err)
       }
+    }
+    if (found > 0) {
+      objectPath.set(response, 'status', 'isValid')
+    } else {
+      objectPath.set(response, 'status', 'notValid')
     }
   } else {
     objectPath.set(response, 'status', 'noKeys')

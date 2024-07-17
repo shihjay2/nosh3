@@ -25,6 +25,7 @@
       "format": "YYYY-MM-DD HH:mm"
     }
   ],
+  "timelineDate": "date",
   "uiListContent": {
     "title": "{type}",
     "subhead": "{date}",
