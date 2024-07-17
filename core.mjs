@@ -462,7 +462,7 @@ async function gnapInstrospect(jwt, publicKey, location, action) {
     return false
   }
   try {
-    var b = await axios.post(a.introspection_endpoint, params)
+    var b = await axios.post(a.data.introspection_endpoint, params)
   } catch (err) {
     console.log(err)
     return false
@@ -842,13 +842,13 @@ async function verifyJWT(req, res, next) {
       if (req.method === 'GET') {
         method = 'read'
       }
-      var keys = await getKeys()
-      if (gnapInstrospect(jwt, keys[0].publicKey, url, method)) {
+      // var keys = await getKeys()
+      // if (gnapInstrospect(jwt, keys[0].publicKey, url, method)) {
         res.locals.payload = response.payload
         next()
-      } else {
-        res.status(401).send('Unauthorized')
-      }
+      // } else {
+      //   res.status(401).send('Unauthorized')
+      // }
     } else {
       res.status(401).json(response.error)
     }
