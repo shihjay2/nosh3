@@ -1507,7 +1507,10 @@ export default defineComponent({
       })
       if (result.rows.length > 0) {
         const doc = objectPath.get(result, 'rows.0.doc')
-        if (JSON.stringify(objectPath.get(doc, 'timeline')) !== timeline) {
+        if (JSON.stringify(objectPath.get(doc, 'timeline')) !== JSON.stringify(timeline)) {
+          console.log('diff timeline')
+          console.log(JSON.stringify(objectPath.get(doc, 'timeline')))
+          console.log(JSON.stringify(timeline))
           objectPath.set(doc, 'timeline', timeline)
           await sync('timeline', false, state.patient, true, doc)
         }
