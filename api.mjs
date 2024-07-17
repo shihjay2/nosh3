@@ -19,6 +19,7 @@ router.get('/:pid/Timeline', verifyJWT, getTimeline) //get
 router.put('/:pid/md', verifyJWT, putMarkdown) //post
 
 async function getTimeline(req, res) {
+  console.log('timeline started')
   var prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.pid + '_'

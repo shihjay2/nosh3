@@ -828,10 +828,8 @@ async function verifyJWT(req, res, next) {
       console.log(e)
     }
   } else {
-    console.log('verify in process')
     const jwt = authHeader.split(' ')[1]
     const response = await verify(jwt)
-    console.log(response)
     var method = 'write'
     if (response.status === 'isValid') {
       // if (objectPath.has(response, 'payload.vc') || objectPath.has(response, 'payload.vp')) {
