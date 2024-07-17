@@ -946,8 +946,8 @@ export default defineComponent({
       if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
         pinTimer = setInterval(async() => {
           await pinCheck()
-          await pollCheck()
-          console.log('PIN & Poll Checked')
+          // await pollCheck()
+          console.log('PIN Checked')
         }, 10000)
       }
     })
