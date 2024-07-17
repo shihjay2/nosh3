@@ -35,8 +35,6 @@ router.post('/pinCheck', pinCheck)
 router.post('/pinClear', pinClear)
 router.post('/pinSet', pinSet)
 
-router.post('/pollCheck', pollCheck)
-
 router.get('/test', test)
 
 function config(req, res) {
@@ -690,7 +688,18 @@ async function pinCheck (req, res, next) {
       await db.info()
       const result = await db.find({selector: {'_id': {$eq: req.body.patient}}})
       if (result.docs.length > 0) {
-        res.status(200).json({ response: 'OK'})
+        const sync_db = new PouchDB('sync')
+        const sync = {status: 'nothing to sync', resources: []}
+        try {
+          const result = await sync_db.find({selector: {'_id': {$eq: req.body.patient}}})
+          if (result.docs.length > 0) {
+            objectPath.set(sync, 'status', 'sync')
+            objectPath.set(sync, 'resources', result.docs[0].resources)
+          }
+        } catch (e) {
+          console.log(e)
+        }
+        res.status(200).json({ response: 'OK', sync})
       } else {
         res.status(200).json({ response: 'Error', message: 'PIN required' })
       }
@@ -739,20 +748,6 @@ async function pinSet (req, res, next) {
     res.status(200).json({ response: 'OK' })
   } else {
     res.status(200).json({ response: 'Incorrect PIN' })
-  }
-}
-
-async function pollCheck (req, res, next) {
-  const db = new PouchDB('sync')
-  try {
-    const result = await db.find({selector: {'_id': {$eq: req.body.patient}}})
-    if (result.docs.length > 0) {
-      res.status(200).json({ response: 'Sync', resources: result.docs[0].resources})
-    } else {
-      res.status(200).json({ response: 'Nothing to sync' })
-    }
-  } catch (e) {
-    res.status(200).json({ response: 'Error', message: e})
   }
 }
 

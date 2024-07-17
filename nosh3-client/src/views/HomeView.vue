@@ -932,7 +932,10 @@ export default defineComponent({
       nextTick(() => {
         qTimeline.value.focus()
       })
-      await syncProcess()
+      if (!auth.init_sync) {
+        await syncProcess()
+        auth.unsetSync()
+      }
       inboxTimer = setInterval(async() => {
         await updateInbox(user)
         console.log('Inbox updated')
@@ -946,8 +949,7 @@ export default defineComponent({
       if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
         pinTimer = setInterval(async() => {
           await pinCheck()
-          await pollCheck()
-          console.log('PIN Checked')
+          console.log('PIN and Poll Checked')
         }, 10000)
       }
     })
@@ -1931,24 +1933,13 @@ export default defineComponent({
         state.loading = false
         state.showPIN = true
       }
-      if (check.data.response === 'Forbidden') {
-        state.login = false
-        $q.notify({
-          message: 'Invalid URL - forbidden',
-          color: 'red',
-          actions: [
-            { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
-          ]
-        })
-      }
-    }
-    const pollCheck = async() => {
-      var check = await axios.post(window.location.origin + '/auth/pollCheck', {patient: state.patient})
-      if (check.data.response === 'Sync') {
-        for (var resource of check.data.resources) {
-          auth.setSyncResource(resource)
+      if (objectPath.has(check, 'data.sync.status')) {
+        if (objectPath.get(check, 'data.sync.status') === 'sync') {
+          for (var resource of objectPath.get(check, 'data.sync.resources')) {
+            auth.setSyncResource(resource)
+          }
+          await syncProcess('some')
         }
-        await syncProcess('some')
       }
       if (check.data.response === 'Forbidden') {
         state.login = false
@@ -2427,7 +2418,6 @@ export default defineComponent({
       patientSearch,
       patientSearchBtn,
       pinCheck,
-      pollCheck,
       qTimeline,
       refreshApp,
       refreshPatient,

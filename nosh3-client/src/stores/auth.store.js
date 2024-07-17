@@ -19,7 +19,8 @@ export const useAuthStore = defineStore({
     sync_resource: [],
     oidc: [],
     returnUrl: null,
-    message: null
+    message: null,
+    init_sync: false
   }),
   persist: true,
   actions: {
@@ -73,6 +74,12 @@ export const useAuthStore = defineStore({
     },
     setPatient(patient) {
       this.patient = patient
+    },
+    setSync() {
+      this.init_sync = true
+    },
+    unsetSync() {
+      this.init_sync = false
     },
     setSyncResource(resource) {
       if (Array.isArray(resource)) {

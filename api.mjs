@@ -9,15 +9,14 @@ import pluralize from 'pluralize'
 import PouchDB from 'pouchdb'
 import { v4 as uuidv4 } from 'uuid'
 import { eventAdd, eventUser, isMarkdown, pollSet, sync, verifyJWT } from './core.mjs'
-import cors from 'cors'
 
 const router = express.Router()
 import PouchDBFind from 'pouchdb-find'
 PouchDB.plugin(PouchDBFind)
 export default router
 
-router.get('/:pid/Timeline', [cors({origin: '*'}), verifyJWT], getTimeline) //get
-router.put('/:pid/md', [cors({origin: '*'}), verifyJWT], putMarkdown) //post
+router.get('/:pid/Timeline', verifyJWT, getTimeline) //get
+router.put('/:pid/md', verifyJWT, putMarkdown) //post
 
 async function getTimeline(req, res) {
   var prefix = ''
@@ -31,6 +30,7 @@ async function getTimeline(req, res) {
     attachments: true,
     startkey: 'nosh_'
   })
+  console.log(timeline_result.rows[0].doc)
   if (timeline_result.rows.length > 0) {
     const timeline = objectPath.get(timeline_result, 'rows.0.doc.timeline')
     const mdjs = []

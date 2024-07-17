@@ -203,6 +203,7 @@ export default defineComponent({
           const localDB = new PouchDB(prefix + 'users')
           const localinfo = await localDB.info()
           if (localinfo.doc_count == 0 && localinfo.update_seq == 0) {
+            auth.setSync()
             state.progress += '<br/>Syncing data for the first time...'
             await syncAll(true, state.patient, true)
             state.progress += '<br/>Complete!'
