@@ -225,7 +225,7 @@ async function couchdbUpdate(patient_id='', protocol='', hostname='') {
       const db = new PouchDB(prefix + resource, { adapter: 'memory' })
       await db.setPassword(pin)
       await db.loadEncrypted()
-      const remotedb = urlFix(settings.couchdb_uri) + prefix + resource
+      const remotedb = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource, settings.couchdb_auth)
       PouchDB.sync(db, remotedb, { live: true, retry: true })
     } else {
       const db1 = new PouchDB(prefix + resource)
