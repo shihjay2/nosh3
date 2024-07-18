@@ -14,7 +14,9 @@ import { v4 as uuidv4 } from 'uuid'
 import { couchdbDatabase, couchdbInstall, couchdbUpdate, createKeyPair, equals, getKeys, getName, getNPI, getPIN, registerResources, signRequest, sync, urlFix, verify, verifyPIN } from './core.mjs'
 const router = express.Router()
 import PouchDBFind from 'pouchdb-find'
+import PouchDBAdapterMemory from 'pouchdb-adapter-memory'
 PouchDB.plugin(PouchDBFind)
+PouchDB.plugin(PouchDBAdapterMemory)
 export default router
 
 router.post('/verifyJWT', verifyJWTEndpoint)
@@ -119,8 +121,8 @@ async function authenticate(req, res) {
           objectPath.set(payload, '_nosh.trustee', urlFix(process.env.TRUSTEE_URL) )
         }
         if (process.env.NOSH_ROLE == 'patient') {
-          await sync('patients', req.body.patient)
-          const db_patients = new PouchDB(prefix + 'patients')
+          // await sync('patients', req.body.patient)
+          const db_patients = new PouchDB(prefix + 'patients', { adapter: 'memory' })
           const result_patients = await db_patients.find({selector: {_id: {$regex: '^nosh_*'}}})
           if (result_patients.docs.length > 0) {
             if (req.body.route === null) {
@@ -464,8 +466,8 @@ async function gnapVerify(req, res) {
                     objectPath.set(payload, '_noshDB', urlFix(process.env.COUCHDB_URL))
                   }
                   if (process.env.NOSH_ROLE == 'patient') {
-                    await sync('patients', req.params.patient)
-                    const db_patients = new PouchDB(prefix + 'patients')
+                    // await sync('patients', req.params.patient)
+                    const db_patients = new PouchDB(prefix + 'patients', { adapter: 'memory' })
                     const result_patients = await db_patients.find({selector: {_id: {$regex: '^nosh_*'}}})
                     if (result_patients.docs.length > 0) {
                       if (result.route === null) {

@@ -12,7 +12,9 @@ import { eventAdd, eventUser, isMarkdown, pollSet, sync, verifyJWT } from './cor
 
 const router = express.Router()
 import PouchDBFind from 'pouchdb-find'
+import PouchDBAdapterMemory from 'pouchdb-adapter-memory'
 PouchDB.plugin(PouchDBFind)
+PouchDB.plugin(PouchDBAdapterMemory)
 export default router
 
 router.get('/:pid/Timeline', verifyJWT, getTimeline) //get
@@ -24,9 +26,9 @@ async function getTimeline(req, res) {
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.pid + '_'
   }
-  await sync('timeline', req.params.pid)
-  console.log('sync done')
-  const db = new PouchDB(prefix + 'timeline')
+  // await sync('timeline', req.params.pid)
+  // console.log('sync done')
+  const db = new PouchDB(prefix + 'timeline', { adapter: 'memory' })
   const timeline_result = await db.allDocs({
     include_docs: true,
     attachments: true,
@@ -70,7 +72,7 @@ async function putMarkdown(req, res) {
     prefix = req.params.pid + '_'
   }
   await sync('document_references', req.params.pid)
-  const db = new PouchDB(prefix + 'document_references')
+  const db = new PouchDB(prefix + 'document_references', { adapter: 'memory' })
   const id = 'nosh_' + uuidv4()
   const md = req.body.content
   if (isMarkdown(md)) {

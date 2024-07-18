@@ -687,10 +687,10 @@ async function sync(resource, patient_id='', save=false, data={}) {
     prefix = patient_id + '_'
     pin = await getPIN(patient_id)
   }
-  const local = new PouchDB(prefix + resource)
-  if (resource !== 'users') {
-    await local.setPassword(pin, {name: urlFix(settings.couchdb_uri) + prefix + resource, opts: settings.couchdb_auth})
-  }
+  const local = new PouchDB(prefix + resource, { adapter: 'memory' })
+  // if (resource !== 'users') {
+  //   await local.setPassword(pin, {name: urlFix(settings.couchdb_uri) + prefix + resource, opts: settings.couchdb_auth})
+  // }
   if (save) {
     const result = await local.put(data)
     await eventAdd('Updated ' + pluralize.singular(resource.replace('_statements', '')), {id: 'system', display: 'System', doc_db: resource, doc_id: result.id, diff: null}, patient_id)

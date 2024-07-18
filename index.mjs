@@ -12,7 +12,9 @@ import path from 'path'
 import {fileURLToPath} from 'url'
 import PouchDB from 'pouchdb'
 import PouchDBFind from 'pouchdb-find'
+import PouchDBAdapterMemory from 'pouchdb-adapter-memory'
 PouchDB.plugin(PouchDBFind)
+PouchDB.plugin(PouchDBAdapterMemory)
 
 import fhir from './fhir.mjs'
 import auth from './auth.mjs'
@@ -93,8 +95,8 @@ app.get('/presentation/:pid/:id', async(req, res) => {
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.pid + '_'
   }
-  await sync('presentations', req.params.pid)
-  const db = new PouchDB(prefix + 'presentations')
+  // await sync('presentations', req.params.pid)
+  const db = new PouchDB(prefix + 'presentations', { adapter: 'memory' })
   try {
     const doc = await db.get(req.params.id, {revs_info: true})
     res.status(200).json(doc)
