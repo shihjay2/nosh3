@@ -154,8 +154,10 @@ async function couchdbUpdate(patient_id='', protocol='', hostname='') {
   var prefix = ''
   var email = ''
   var gnap_resources = []
+  var pin = process.env.COUCHDB_ENCRYPT_PIN
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = patient_id + '_'
+    pin = await getPIN(patient_id)
     var base_url = urlFix(protocol + '://' + hostname + '/')
     const db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
     const result_users = await db_users.find({selector: {'role': {"$eq": 'patient'}}})
