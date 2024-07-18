@@ -121,8 +121,8 @@ async function authenticate(req, res) {
           objectPath.set(payload, '_nosh.trustee', urlFix(process.env.TRUSTEE_URL) )
         }
         if (process.env.NOSH_ROLE == 'patient') {
-          // await sync('patients', req.body.patient)
-          const db_patients = new PouchDB(prefix + 'patients', { adapter: 'memory' })
+          await sync('patients', req.body.patient)
+          const db_patients = new PouchDB(prefix + 'patients')
           const result_patients = await db_patients.find({selector: {_id: {$regex: '^nosh_*'}}})
           if (result_patients.docs.length > 0) {
             if (req.body.route === null) {
@@ -466,8 +466,8 @@ async function gnapVerify(req, res) {
                     objectPath.set(payload, '_noshDB', urlFix(process.env.COUCHDB_URL))
                   }
                   if (process.env.NOSH_ROLE == 'patient') {
-                    // await sync('patients', req.params.patient)
-                    const db_patients = new PouchDB(prefix + 'patients', { adapter: 'memory' })
+                    await sync('patients', req.params.patient)
+                    const db_patients = new PouchDB(prefix + 'patients')
                     const result_patients = await db_patients.find({selector: {_id: {$regex: '^nosh_*'}}})
                     if (result_patients.docs.length > 0) {
                       if (result.route === null) {

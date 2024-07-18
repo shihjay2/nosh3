@@ -95,8 +95,8 @@ app.get('/presentation/:pid/:id', async(req, res) => {
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.pid + '_'
   }
-  // await sync('presentations', req.params.pid)
-  const db = new PouchDB(prefix + 'presentations', { adapter: 'memory' })
+  await sync('presentations', req.params.pid)
+  const db = new PouchDB(prefix + 'presentations')
   try {
     const doc = await db.get(req.params.id, {revs_info: true})
     res.status(200).json(doc)

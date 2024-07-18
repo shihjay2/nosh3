@@ -154,10 +154,8 @@ async function couchdbUpdate(patient_id='', protocol='', hostname='') {
   var prefix = ''
   var email = ''
   var gnap_resources = []
-  var pin = process.env.COUCHDB_ENCRYPT_PIN
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = patient_id + '_'
-    pin = await getPIN(patient_id)
     var base_url = urlFix(protocol + '://' + hostname + '/')
     const db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
     const result_users = await db_users.find({selector: {'role': {"$eq": 'patient'}}})
@@ -221,17 +219,17 @@ async function couchdbUpdate(patient_id='', protocol='', hostname='') {
       }
     }
     // initiate live replication
-    if (resource !== 'users') {
-      const db = new PouchDB(prefix + resource, { adapter: 'memory' })
-      await db.setPassword(pin)
-      await db.loadEncrypted()
-      const remotedb = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource, settings.couchdb_auth)
-      PouchDB.sync(db, remotedb, { live: true, retry: true })
-    } else {
-      const db1 = new PouchDB(prefix + resource)
-      const remotedb1 = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource, settings.couchdb_auth)
-      PouchDB.sync(db1, remotedb1, { live: true, retry: true })
-    }
+    // if (resource !== 'users') {
+    //   const db = new PouchDB(prefix + resource, { adapter: 'memory' })
+    //   await db.setPassword(pin)
+    //   await db.loadEncrypted()
+    //   const remotedb = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource, settings.couchdb_auth)
+    //   PouchDB.sync(db, remotedb, { live: true, retry: true })
+    // } else {
+    //   const db1 = new PouchDB(prefix + resource)
+    //   const remotedb1 = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource, settings.couchdb_auth)
+    //   PouchDB.sync(db1, remotedb1, { live: true, retry: true })
+    // }
   }
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     if (gnap_resources.length > 0) {
@@ -687,43 +685,43 @@ async function sync(resource, patient_id='', save=false, data={}) {
     prefix = patient_id + '_'
     pin = await getPIN(patient_id)
   }
-  const local = new PouchDB(prefix + resource, { adapter: 'memory' })
-  // if (resource !== 'users') {
-  //   await local.setPassword(pin, {name: urlFix(settings.couchdb_uri) + prefix + resource, opts: settings.couchdb_auth})
-  // }
+  const local = new PouchDB(prefix + resource)
+  if (resource !== 'users') {
+    await local.setPassword(pin, {name: urlFix(settings.couchdb_uri) + prefix + resource, opts: settings.couchdb_auth})
+  }
   if (save) {
     const result = await local.put(data)
     await eventAdd('Updated ' + pluralize.singular(resource.replace('_statements', '')), {id: 'system', display: 'System', doc_db: resource, doc_id: result.id, diff: null}, patient_id)
   }
-  // if (resource !== 'users') {
-  //   console.log(resource)
-  //   var info = await local.info()
-  //   console.log(info)
-  //   if (info.doc_count > 0) {
-  //     try {
-  //       await local.loadDecrypted()
-  //     } catch (e) {
-  //       console.log(e)
-  //     }
-  //   }
-  //   try {
-  //     await local.loadEncrypted()
-  //     console.log('PouchDB sync complete for DB: ' + resource)
-  //   } catch (e) {
-  //     console.log(e)
-  //   }
-  // } else {
-  //   var remote = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource, settings.couchdb_auth)
-  //   try {
-  //     await local.sync(remote).on('complete', () => {
-  //       console.log('PouchDB sync complete for DB: ' + resource)
-  //     }).on('error', (err) => {
-  //       console.log(err)
-  //     })
-  //   } catch (e) {
-  //     console.log(e)
-  //   }
-  // }
+  if (resource !== 'users') {
+    console.log(resource)
+    var info = await local.info()
+    console.log(info)
+    if (info.doc_count > 0) {
+      try {
+        await local.loadDecrypted()
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    try {
+      await local.loadEncrypted()
+      console.log('PouchDB sync complete for DB: ' + resource)
+    } catch (e) {
+      console.log(e)
+    }
+  } else {
+    var remote = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource, settings.couchdb_auth)
+    try {
+      await local.sync(remote).on('complete', () => {
+        console.log('PouchDB sync complete for DB: ' + resource)
+      }).on('error', (err) => {
+        console.log(err)
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  }
 }
 
 function urlFix(url) {

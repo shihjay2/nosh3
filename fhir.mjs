@@ -32,8 +32,8 @@ async function deleteSecuredResource(req, res) {
     prefix = req.params.pid + '_'
   }
   const startTime = performance.now()
-  // await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
-  const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)), { adapter: 'memory' })
+  await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
+  const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
   try {
     const doc = await db.get(req.params.id)
     const result = await db.remove(doc)
@@ -69,8 +69,8 @@ async function getSecuredResource(req, res) {
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.pid + '_'
   }
-  // await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
-  const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)), { adapter: 'memory' })
+  await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
+  const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
   try {
     const doc = await db.get(req.params.id, {revs_info: true})
     res.status(200).json(doc)
@@ -85,8 +85,8 @@ async function getSecuredResourceVersion(req, res) {
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.pid + '_'
   }
-  // await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
-  const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)), { adapter: 'memory' })
+  await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
+  const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
   try {
     const doc = db.get(req.params.id, {rev: req.params.vid})
     res.status(200).json(doc)
@@ -100,8 +100,8 @@ async function postSecuredResource(req, res) {
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.pid + '_'
   }
-  // await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
-  const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)), { adapter: 'memory' })
+  await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
+  const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
   try {
     var id = 'nosh_' + uuidv4()
     objectPath.set(req, 'body.id', id)
@@ -129,8 +129,8 @@ async function putSecuredResource(req, res) {
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.pid + '_'
   }
-  // await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
-  const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)), { adapter: 'memory' })
+  await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
+  const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
   try {
     var prev_data = ''
     var diff = null
@@ -167,8 +167,8 @@ async function querySecuredResource(req, res) {
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.pid + '_'
   }
-  // await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
-  const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)), { adapter: 'memory' })
+  await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
+  const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
   var entries = []
   var selector = []
   var reference_arr = ['subject','patient','encounter','asserter','requester','author']
