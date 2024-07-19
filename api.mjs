@@ -111,7 +111,7 @@ async function putMarkdown(req, res) {
       "content": [
         {
           "attachment": {
-            "contentType": "application/pdf",
+            "contentType": "text/plain",
             "data": btoa(md)
           }
         }
