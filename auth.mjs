@@ -701,6 +701,7 @@ async function pinCheck (req, res, next) {
         } catch (e) {
           console.log(e)
         }
+        console.log(sync)
         res.status(200).json({ response: 'OK', sync})
       } else {
         res.status(200).json({ response: 'Error', message: 'PIN required' })

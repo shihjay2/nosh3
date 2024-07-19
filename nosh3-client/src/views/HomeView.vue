@@ -1513,9 +1513,6 @@ export default defineComponent({
       if (result.rows.length > 0) {
         const doc = objectPath.get(result, 'rows.0.doc')
         if (JSON.stringify(objectPath.get(doc, 'timeline')) !== JSON.stringify(timeline)) {
-          console.log('diff timeline')
-          console.log(JSON.stringify(objectPath.get(doc, 'timeline')))
-          console.log(JSON.stringify(timeline))
           objectPath.set(doc, 'timeline', timeline)
           await sync('timeline', false, state.patient, true, doc)
         }
@@ -1936,7 +1933,9 @@ export default defineComponent({
         state.loading = false
         state.showPIN = true
       }
+      console.log(check)
       if (objectPath.has(check, 'data.sync.status')) {
+        console.log(objectPath.get(check, 'data.sync.status'))
         if (objectPath.get(check, 'data.sync.status') === 'sync') {
           for (var resource of objectPath.get(check, 'data.sync.resources')) {
             auth.setSyncResource(resource)
