@@ -526,7 +526,7 @@ async function pollSet(patient_id, new_resource) {
   const db = new PouchDB('sync')
   const resources = []
   var doc = {}
-  const result = await db.find({selector: {'_id': {$eq: req.body.patient}}})
+  const result = await db.find({selector: {'_id': {$eq: patient_id}}})
   if (result.docs.length > 0) {
     for (var resource of result.docs[0].resources) {
       resources.push(resource)
