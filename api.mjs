@@ -111,7 +111,7 @@ async function putMarkdown(req, res) {
       "content": [
         {
           "attachment": {
-            "contentType": "text/plain",
+            "contentType": "text/plain; charset=utf-8",
             "data": btoa(md)
           }
         }
@@ -127,7 +127,7 @@ async function putMarkdown(req, res) {
       }
       opts = await eventUser(res, opts, prefix)
       await eventAdd('Updated document reference', opts, req.params.pid)
-      await pollSet(req.params.pid, 'timeline')
+      await pollSet(req.params.pid, 'document_references')
       res.set('ETag', 'W/"' + body.rev + '"')
       res.status(200).json(body)
     } catch(err) {
