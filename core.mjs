@@ -536,7 +536,6 @@ async function pollSet(patient_id, new_resource) {
     objectPath.set(doc, '_id', patient_id)
   }
   resources.push(new_resource)
-  console.log(resources)
   objectPath.set(doc, 'resources', resources)
   await db.put(doc)
   return true

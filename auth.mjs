@@ -694,14 +694,11 @@ async function pinCheck (req, res, next) {
         const sync = {status: 'nothing to sync', resources: []}
         try {
           const result = await sync_db.find({selector: {'_id': {$eq: req.body.patient}}})
-          console.log(result)
           if (result.docs.length > 0) {
-            console.log(result.docs)
             objectPath.set(sync, 'status', 'sync')
             objectPath.set(sync, 'resources', result.docs[0].resources)
             await sync_db.remove(result.docs[0])
           }
-          console.log(sync)
           res.status(200).json({ response: 'OK', sync})
         } catch (e) {
           console.log(e)
