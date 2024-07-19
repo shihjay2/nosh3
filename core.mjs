@@ -525,17 +525,19 @@ async function isMarkdown(text) {
 async function pollSet(patient_id, new_resource) {
   const db = new PouchDB('sync')
   const resources = []
+  var doc = {}
   const result = await db.find({selector: {'_id': {$eq: req.body.patient}}})
   if (result.docs.length > 0) {
     for (var resource of result.docs[0].resources) {
       resources.push(resource)
-    } 
+    }
+    doc = result.docs[0]
+  } else {
+    objectPath.set(doc, '_id', patient_id)
   }
   resources.push(new_resource)
-  const doc = {
-    _id: patient_id,
-    resources
-  }
+  console.log(resources)
+  objectPath.set(doc, 'resources', resources)
   await db.put(doc)
   return true
 }
