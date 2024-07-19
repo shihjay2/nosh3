@@ -527,7 +527,7 @@ async function pollSet(patient_id, new_resource) {
   const resources = []
   const result = await db.find({selector: {'_id': {$eq: req.body.patient}}})
   if (result.docs.length > 0) {
-    for (resource of result.docs[0].resources) {
+    for (var resource of result.docs[0].resources) {
       resources.push(resource)
     } 
   }
