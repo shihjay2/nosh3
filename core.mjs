@@ -460,50 +460,6 @@ async function getPIN(patient_id) {
   
 }
 
-async function gnapInstrospect(jwt, publicKey, location, action) {
-  const params = {
-    "access_token": jwt,
-    "proof": "httpsig",
-    "resource_server": {
-      "key": {
-        "proof": "httpsig",
-        "jwk": publicKey
-      }
-    }
-  }
-  try {
-    var a = await axios.get(urlFix(process.env.TRUSTEE_URL) + '.well-known/gnap-as-rs')
-  } catch (err) {
-    console.log(err)
-    return false
-  }
-  try {
-    var b = await axios.post(a.data.introspection_endpoint, params)
-  } catch (err) {
-    console.log(err)
-    return false
-  }
-  if (b.active === true) {
-    var i = 0
-    for (var c in b.access) {
-      var d = b.access[c].locations.find(c => c === location)
-      if (d !== undefined) {
-        var e = b.access[c].actions.find(f => f === action)
-        if (e !== undefined) {
-          i++
-        }
-      }
-    }
-    if (i > 0) {
-      return true
-    } else {
-      return false
-    }
-  } else {
-    return false
-  }
-}
-
 async function isMarkdown(text) {
   const containsNonTextTokens = (tokens) =>{
     return tokens.some(token => {
@@ -845,6 +801,12 @@ async function verifyJWT(req, res, next) {
       console.log(e)
     }
   } else {
+    if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+      const pin = await getPIN(req.params.pid)
+      if (!pin) {
+        res.status(401).json({status: 'awaiting resource to be available'})
+      }
+    }
     const jwt = authHeader.split(' ')[1]
     const response = await verify(jwt)
     var method = 'write'
@@ -855,17 +817,11 @@ async function verifyJWT(req, res, next) {
       // } else {
         // res.status(200).json(payload)
       // }
-      const url = req.protocol + '://' + req.hostname + req.baseUrl + req.path
       if (req.method === 'GET') {
         method = 'read'
       }
-      // var keys = await getKeys()
-      // if (gnapInstrospect(jwt, keys[0].publicKey, url, method)) {
-        res.locals.payload = response.payload
-        next()
-      // } else {
-      //   res.status(401).send('Unauthorized')
-      // }
+      res.locals.payload = response.payload
+      next()
     } else {
       res.status(401).json(response.error)
     }
