@@ -65,6 +65,7 @@
 <script>
 import { defineComponent, onMounted, reactive, watch } from 'vue'
 import { common } from '@/logic/common'
+import { useAuthStore } from '@/stores'
 import Case from 'case'
 import pluralize from 'pluralize'
 import print from 'vue3-print-nb'
