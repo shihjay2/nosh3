@@ -16,10 +16,7 @@ import settings from './settings.mjs'
 import { v4 as uuidv4 } from 'uuid'
 
 import PouchDBFind from 'pouchdb-find'
-import PouchDBAdapterMemory from 'pouchdb-adapter-memory'
-
 PouchDB.plugin(PouchDBFind)
-PouchDB.plugin(PouchDBAdapterMemory)
 import comdb from 'comdb'
 PouchDB.plugin(comdb)
 
@@ -219,18 +216,6 @@ async function couchdbUpdate(patient_id='', protocol='', hostname='') {
         }
       }
     }
-    // initiate live replication
-    // if (resource !== 'users') {
-    //   const db = new PouchDB(prefix + resource, { adapter: 'memory' })
-    //   await db.setPassword(pin)
-    //   await db.loadEncrypted()
-    //   const remotedb = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource, settings.couchdb_auth)
-    //   PouchDB.sync(db, remotedb, { live: true, retry: true })
-    // } else {
-    //   const db1 = new PouchDB(prefix + resource)
-    //   const remotedb1 = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource, settings.couchdb_auth)
-    //   PouchDB.sync(db1, remotedb1, { live: true, retry: true })
-    // }
   }
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     if (gnap_resources.length > 0) {

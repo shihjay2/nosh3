@@ -65,6 +65,14 @@
           <q-icon color="primary" style="font-size: 1.5em" name="receipt_long" />
         </q-item-section>
       </q-item>
+      <q-item v-if="state.maia !== ''" dense clickable @click="openMAIA()">
+        <q-item-section>
+          <q-item-label>Launch MAIA</q-item-label>
+        </q-item-section>
+        <q-item-section avatar>
+          <q-icon color="primary" style="font-size: 1.5em" name="smart_toy" />
+        </q-item-section>
+      </q-item>
       <q-item dense clickable @click="logout()">
         <q-item-section>
           <q-item-label>Logout</q-item-label>
@@ -99,12 +107,17 @@ export default defineComponent({
     const { eventAdd } = common()
     const state = reactive({
       user: {},
-      patient: ''
+      patient: '',
+      type: '',
+      maia: ''
     })
     onMounted(() => {
       state.user = props.user
       state.patient = props.patient
       state.type = props.type
+      if (auth.maia !== '') {
+        state.maia = auth.maia
+      }
     })
     watch(() => props.user, (newVal) => {
       if (newVal) {
@@ -128,6 +141,9 @@ export default defineComponent({
     const openActivity = () => {
       emit('open-activities')
     }
+    const openMAIA = () => {
+      window.open(state.maia)
+    }
     const openQR = () => {
       emit('open-qr', window.location.href)
     }
@@ -144,6 +160,7 @@ export default defineComponent({
       logout,
       open,
       openActivity,
+      openMAIA,
       openQR,
       openQRReader,
       openSchedule,

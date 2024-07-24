@@ -20,7 +20,8 @@ export const useAuthStore = defineStore({
     oidc: [],
     returnUrl: null,
     message: null,
-    init_sync: false
+    init_sync: false,
+    maia: null
   }),
   persist: true,
   actions: {
@@ -40,6 +41,7 @@ export const useAuthStore = defineStore({
       this.gnap_jwt = payload.jwt
       this.patient = payload._nosh.patient
       this.prefix = payload._nosh.prefix
+      this.maia = payload._nosh.maia
     },
     logout() {
       var route = '/app/login'
@@ -57,6 +59,7 @@ export const useAuthStore = defineStore({
       this.trustee = null
       this.gnap_jwt = null
       this.prefix = null
+      this.maia = null
       if (route !== '/app/login') {
         location.reload()
       } else {

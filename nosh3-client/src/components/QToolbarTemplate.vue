@@ -15,6 +15,9 @@
   <q-btn v-if="state.relatedPersons" push flat round icon="groups" clickable @click="openRelatedPersons">
     <q-tooltip>Related Persons</q-tooltip>
   </q-btn>
+  <q-btn v-if="state.resource == 'document_references' && state.maia !== ''" push flat round icon="smart_toy" clickable @click="openMAIA">
+    <q-tooltip>Launch MAIA</q-tooltip>
+  </q-btn>
   <q-btn v-if="state.resource == 'medication_statements' && state.provider" push flat round icon="local_pharmacy" clickable @click="newPrescription">
     <q-tooltip>New Prescription</q-tooltip>
   </q-btn>
@@ -82,6 +85,7 @@ export default defineComponent({
   },
   emits: ['addendum-encounter', 'clear-all', 'clear-sync', 'close-container', 'dump-sync', 'import-all', 'lock-thread', 'new-prescription', 'open-chat', 'open-detail', 'open-form', 'open-file', 'open-immunizationschedule', 'open-list', 'open-page', 'open-page-form', 'set-composition-section', 'sign-encounter', 'sort-alpha', 'sort-date'],
   setup (props, { emit }) {
+    const auth = useAuthStore()
     const { fetchJSON } = common()
     const state = reactive({
       base: {},
@@ -112,12 +116,16 @@ export default defineComponent({
       mixed: false,
       form: false,
       oidc: false,
-      status: ''
+      status: '',
+      maia: ''
     })
     onMounted(async() => {
       var resources = await fetchJSON('resources', props.online)
       state.resources = resources.rows
       state.provider = props.provider
+      if (auth.maia !== '') {
+        state.maia = auth.maia
+      }
       await updateToolbar(props.toolbarObject)
     })
     watch(() => props.toolbarObject, (newVal) => {
@@ -184,6 +192,9 @@ export default defineComponent({
     }
     const openImmunizationSchedule = () => {
       emit('open-immunizationschedule')
+    }
+    const openMAIA = () => {
+      window.open(state.maia)
     }
     const openRelatedPersons = () => {
       emit('open-list', 'related_persons', 'all')
@@ -322,6 +333,7 @@ export default defineComponent({
       onFormOpen,
       openDetail,
       openImmunizationSchedule,
+      openMAIA,
       openRelatedPersons,
       setCompositionSection,
       signEncounter,

@@ -118,7 +118,8 @@ async function authenticate(req, res) {
           objectPath.set(payload, '_noshDB', urlFix(process.env.COUCHDB_URL))
         }
         if (process.env.AUTH == 'trustee') {
-          objectPath.set(payload, '_nosh.trustee', urlFix(process.env.TRUSTEE_URL) )
+          objectPath.set(payload, '_nosh.trustee', urlFix(process.env.TRUSTEE_URL))
+          objectPath.set(payload, '_nosh.maia', urlFix(process.env.MAIA_URL) || '')
         }
         if (process.env.NOSH_ROLE == 'patient') {
           await sync('patients', req.body.patient)
@@ -324,6 +325,7 @@ async function gnapVerify(req, res) {
                 display: '',
                 trustee: urlFix(process.env.TRUSTEE_URL),
                 instance: process.env.INSTANCE,
+                maia: urlFix(process.env.MAIA_URL) || '',
                 prefix: prefix
               }
               var user_id = ''
