@@ -14,9 +14,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { couchdbDatabase, couchdbInstall, couchdbUpdate, createKeyPair, equals, getKeys, getName, getNPI, getPIN, registerResources, signRequest, sync, urlFix, verify, verifyPIN } from './core.mjs'
 const router = express.Router()
 import PouchDBFind from 'pouchdb-find'
-import PouchDBAdapterMemory from 'pouchdb-adapter-memory'
 PouchDB.plugin(PouchDBFind)
-PouchDB.plugin(PouchDBAdapterMemory)
 export default router
 
 router.post('/verifyJWT', verifyJWTEndpoint)

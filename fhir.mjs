@@ -13,9 +13,7 @@ import { eventAdd,  sync,  verifyJWT } from './core.mjs'
 
 const router = express.Router()
 import PouchDBFind from 'pouchdb-find'
-import PouchDBAdapterMemory from 'pouchdb-adapter-memory'
 PouchDB.plugin(PouchDBFind)
-PouchDB.plugin(PouchDBAdapterMemory)
 
 export default router
 
