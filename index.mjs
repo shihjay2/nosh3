@@ -12,9 +12,7 @@ import path from 'path'
 import {fileURLToPath} from 'url'
 import PouchDB from 'pouchdb'
 import PouchDBFind from 'pouchdb-find'
-import PouchDBAdapterMemory from 'pouchdb-adapter-memory'
 PouchDB.plugin(PouchDBFind)
-PouchDB.plugin(PouchDBAdapterMemory)
 
 import fhir from './fhir.mjs'
 import auth from './auth.mjs'
