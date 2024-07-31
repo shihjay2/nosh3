@@ -116,7 +116,7 @@ export default defineComponent({
       state.patient = props.patient
       state.type = props.type
       if (auth.maia !== '') {
-        state.maia = auth.maia
+        state.maia = auth.maia + "?uri=" + encodeURIComponent(location.protocol + '//' + location.host + '/api/' + state.patient + '/Timeline')
       }
     })
     watch(() => props.user, (newVal) => {

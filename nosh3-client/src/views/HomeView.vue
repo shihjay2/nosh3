@@ -112,6 +112,7 @@
           :id="state.id"
           :user="state.user"
           :provider="state.provider"
+          :patient="state.patient"
           :online="state.online"
         />
       </q-toolbar>

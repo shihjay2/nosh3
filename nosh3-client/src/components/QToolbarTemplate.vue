@@ -78,6 +78,7 @@ export default defineComponent({
     id: String,
     toolbarObject: Object,
     user: Object,
+    patient: String,
     provider: Boolean,
     online: Boolean
   },
@@ -124,7 +125,9 @@ export default defineComponent({
       var resources = await fetchJSON('resources', props.online)
       state.resources = resources.rows
       state.provider = props.provider
+      state.patient = props.patient
       if (auth.maia !== '') {
+        state.maia = auth.maia + "?uri=" + encodeURIComponent(location.protocol + '//' + location.host + '/api/' + state.patient + '/Timeline')
         state.maia = auth.maia
       }
       await updateToolbar(props.toolbarObject)
