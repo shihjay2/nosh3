@@ -90,7 +90,7 @@ export default defineComponent({
             }
             data_build.push(synth_push)
           }
-          sortArray(data_build, {by: 'resource.name', order: 'asc'})
+          sortArray(data_build, {by: 'name', computed:{name: row => row.resource.name}, order: 'asc'})
           state.data = data_build
           emit('loading')
           state.epic = state.data
