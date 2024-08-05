@@ -58,26 +58,51 @@ async function couchdbDatabase(patient_id='', protocol='', hostname='', email=''
     await db_resource.info()
     if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
       if (resource.gnap) {
-        const gnap_resource_all = {
-          "type": Case.title(resource.resource),
-          "actions": ["read", "write", "delete"],
-          "datatypes": ["json"],
-          "identifier": patient_id,
-          "locations": [base_url + "fhir/api/" + patient_id + "/" + Case.pascal(pluralize.singular(resource.resource))],
-          "privileges": [email],
-          "ro": email
+        if (resource.fhir) {
+          const gnap_resource_all = {
+            "type": Case.title(resource.resource),
+            "actions": ["read", "write", "delete"],
+            "datatypes": ["json"],
+            "identifier": patient_id,
+            "locations": [base_url + "fhir/api/" + patient_id + "/" + Case.pascal(pluralize.singular(resource.resource))],
+            "privileges": [email],
+            "ro": email
+          }
+          const gnap_resource_read = {
+            "type": Case.title(resource.resource) + " - Read Only",
+            "actions": ["read"],
+            "datatypes": ["json"],
+            "identifier": patient_id,
+            "locations": [base_url + "fhir/api/" + patient_id + "/" + Case.pascal(pluralize.singular(resource.resource))],
+            "privileges": [email],
+            "ro": email
+          }
+          gnap_resources.push(gnap_resource_all)
+          gnap_resources.push(gnap_resource_read)
+        } else {
+          if (resource.resource === 'timeline') {
+            const timeline_read = {
+              "type": Case.title(resource.resource) + " - Read Only",
+              "actions": ["read"],
+              "datatypes": ["text/plain"],
+              "identifier": patient_id,
+              "locations": [base_url + "api/" + patient_id + "/" + Case.pascal(pluralize.singular(resource.resource))],
+              "privileges": [email],
+              "ro": email
+            }
+            const markdown_post = {
+              "type": "Markdown - Write Only",
+              "actions": ["write"],
+              "datatypes": ["text/plain"],
+              "identifier": patient_id,
+              "locations": [base_url + "api/" + patient_id + "/md"],
+              "privileges": [email],
+              "ro": email
+            }
+            gnap_resources.push(timeline_read)
+            gnap_resources.push(markdown_post)
+          }
         }
-        const gnap_resource_read = {
-          "type": Case.title(resource.resource) + " - Read Only",
-          "actions": ["read"],
-          "datatypes": ["json"],
-          "identifier": patient_id,
-          "locations": [base_url + "fhir/api/" + patient_id + "/" + Case.pascal(pluralize.singular(resource.resource))],
-          "privileges": [email],
-          "ro": email
-        }
-        gnap_resources.push(gnap_resource_all)
-        gnap_resources.push(gnap_resource_read)
       }
     }
   }
@@ -168,50 +193,51 @@ async function couchdbUpdate(patient_id='', protocol='', hostname='') {
       const db_resource = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource.resource, settings.couchdb_auth)
       await db_resource.info()
       if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
-        if (resource.gnap && resource.fhir) {
-          const gnap_resource_all = {
-            "type": Case.title(resource.resource),
-            "actions": ["read", "write", "delete"],
-            "datatypes": ["json"],
-            "identifier": patient_id,
-            "locations": [base_url + "fhir/api/" + patient_id + "/" + Case.pascal(pluralize.singular(resource.resource))],
-            "privileges": [email],
-            "ro": email
-          }
-          const gnap_resource_read = {
-            "type": Case.title(resource.resource) + " - Read Only",
-            "actions": ["read"],
-            "datatypes": ["json"],
-            "identifier": patient_id,
-            "locations": [base_url + "fhir/api/" + patient_id + "/" + Case.pascal(pluralize.singular(resource.resource))],
-            "privileges": [email],
-            "ro": email
-          }
-          gnap_resources.push(gnap_resource_all)
-          gnap_resources.push(gnap_resource_read)
-        }
-        if (resource.gnap && !resource.fhir) {
-          if (resource.resource === 'timeline') {
-            const timeline_read = {
+        if (resource.gnap) {
+          if (resource.fhir) {
+            const gnap_resource_all = {
+              "type": Case.title(resource.resource),
+              "actions": ["read", "write", "delete"],
+              "datatypes": ["json"],
+              "identifier": patient_id,
+              "locations": [base_url + "fhir/api/" + patient_id + "/" + Case.pascal(pluralize.singular(resource.resource))],
+              "privileges": [email],
+              "ro": email
+            }
+            const gnap_resource_read = {
               "type": Case.title(resource.resource) + " - Read Only",
               "actions": ["read"],
-              "datatypes": ["text/plain"],
+              "datatypes": ["json"],
               "identifier": patient_id,
-              "locations": [base_url + "api/" + patient_id + "/" + Case.pascal(pluralize.singular(resource.resource))],
+              "locations": [base_url + "fhir/api/" + patient_id + "/" + Case.pascal(pluralize.singular(resource.resource))],
               "privileges": [email],
               "ro": email
             }
-            const markdown_post = {
-              "type": "Markdown - Write Only",
-              "actions": ["write"],
-              "datatypes": ["text/plain"],
-              "identifier": patient_id,
-              "locations": [base_url + "api/" + patient_id + "/md"],
-              "privileges": [email],
-              "ro": email
+            gnap_resources.push(gnap_resource_all)
+            gnap_resources.push(gnap_resource_read)
+          } else {
+            if (resource.resource === 'timeline') {
+              const timeline_read = {
+                "type": Case.title(resource.resource) + " - Read Only",
+                "actions": ["read"],
+                "datatypes": ["text/plain"],
+                "identifier": patient_id,
+                "locations": [base_url + "api/" + patient_id + "/" + Case.pascal(pluralize.singular(resource.resource))],
+                "privileges": [email],
+                "ro": email
+              }
+              const markdown_post = {
+                "type": "Markdown - Write Only",
+                "actions": ["write"],
+                "datatypes": ["text/plain"],
+                "identifier": patient_id,
+                "locations": [base_url + "api/" + patient_id + "/md"],
+                "privileges": [email],
+                "ro": email
+              }
+              gnap_resources.push(timeline_read)
+              gnap_resources.push(markdown_post)
             }
-            gnap_resources.push(timeline_read)
-            gnap_resources.push(markdown_post)
           }
         }
       }
