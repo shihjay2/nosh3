@@ -828,9 +828,8 @@ async function verifyJWT(req, res, next) {
     try {
       const a = await axios.get(urlFix(process.env.TRUSTEE_URL) + '/api/as/.well-known/gnap-as-rs')
       const err = new Error('You are not authenticated!')
-      console.log(a)
       res.setHeader('Access-Control-Expose-Headers', 'WWW-Authenticate');
-      res.setHeader('WWW-Authenticate', 'GNAP as_uri=' + a.grant_request_endpoint).status(401).send(err)
+      res.setHeader('WWW-Authenticate', 'GNAP as_uri=' + a.data.grant_request_endpoint).status(401).send(err)
     } catch (e) {
       console.log(e)
     }
