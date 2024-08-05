@@ -445,7 +445,7 @@ async function getPIN(patient_id) {
   
 }
 
-async function isMarkdown(text) {
+function isMarkdown(text) {
   const containsNonTextTokens = (tokens) =>{
     return tokens.some(token => {
       // change this as per your needs
@@ -461,6 +461,28 @@ async function isMarkdown(text) {
   }
   const tokens = marked.lexer(text)
   return containsNonTextTokens(tokens)
+}
+
+function markdownParse(text) {
+  const tokens = marked.lexer(text)
+  const arr = []
+  arr.push({h4: 'Document'})
+  for (const token of tokens) {
+    if (token.type === 'heading') {
+      arr.push({h5: token.text})
+    }
+    if (token.type === 'paragraph') {
+      arr.push({p: token.text})
+    }
+    if (token.type === 'list') {
+      const ul_arr = []
+      for (const item of token.items) {
+        ul_arr.push(item.text)
+      }
+      arr.push({ul: ul_arr})
+    }
+  }
+  return arr
 }
 
 async function pollSet(patient_id, new_resource) {
@@ -778,7 +800,7 @@ async function verifyJWT(req, res, next) {
   const authHeader = req.headers.authorization
   if (!authHeader) {
     try {
-      const a = await axios.get(urlFix(process.env.TRUSTEE_URL) + '.well-known/gnap-as-rs')
+      const a = await axios.get(urlFix(process.env.TRUSTEE_URL) + '/api/as/.well-known/gnap-as-rs')
       const err = new Error('You are not authenticated!')
       console.log(a)
       res.setHeader('WWW-Authenticate', 'GNAP as_uri=' + a.grant_request_endpoint).status(401).send(err)
@@ -838,4 +860,4 @@ async function verifyPIN(pin, patient_id) {
   }
 }
 
-export { couchdbConfig, couchdbDatabase, couchdbInstall, couchdbUpdate, createKeyPair, equals, eventAdd, eventUser, getKeys, getName, getNPI, getPIN, isMarkdown, pollSet, registerResources, signRequest, sleep, sync, urlFix, userAdd, verify, verifyJWT, verifyPIN }
+export { couchdbConfig, couchdbDatabase, couchdbInstall, couchdbUpdate, createKeyPair, equals, eventAdd, eventUser, getKeys, getName, getNPI, getPIN, isMarkdown, markdownParse, pollSet, registerResources, signRequest, sleep, sync, urlFix, userAdd, verify, verifyJWT, verifyPIN }

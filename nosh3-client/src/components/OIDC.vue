@@ -39,6 +39,7 @@ import Case from 'case'
 import Fuse from 'fuse.js'
 import objectPath from 'object-path'
 import pluralize from 'pluralize'
+import sortArray from 'sort-array'
 import {v4 as uuidv4} from 'uuid'
 import { useAuthStore } from '@/stores'
 
@@ -89,6 +90,7 @@ export default defineComponent({
             }
             state.data.push(synth_push)
           }
+          sortArray(state.data, {by: 'resource.name', order: 'asc'})
           emit('loading')
           state.epic = state.data
           state.loading = false

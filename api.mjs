@@ -8,7 +8,7 @@ import objectPath from 'object-path'
 import pluralize from 'pluralize'
 import PouchDB from 'pouchdb'
 import { v4 as uuidv4 } from 'uuid'
-import { eventAdd, eventUser, isMarkdown, pollSet, sync, verifyJWT } from './core.mjs'
+import { eventAdd, eventUser, isMarkdown, markdownParse, pollSet, sync, verifyJWT } from './core.mjs'
 
 const router = express.Router()
 import PouchDBFind from 'pouchdb-find'
@@ -41,6 +41,22 @@ async function getTimeline(req, res) {
           ul_arr.push('**' + Case.title(pluralize.singular(row.resource)) + '**: ' + row.title)
         } else {
           mdjs.push({h3: 'Patient Information'})
+        }
+        if (row.resource === 'document_references') {
+          const doc = row.doc
+          if (objectPath.has(doc, 'content')) {
+            for (var c in objectPath.get(doc, 'content')) {
+              if (objectPath.get(doc, 'content.' + c + '.attachment.contentType').includes('text/plain')) {
+                const md = atob(objectPath.get(doc, 'content.' + c + '.attachment.data'))
+                if (isMarkdown(md)) {
+                  const md_arr = markdownParse(md)
+                  for (var md_arr_row of md_arr) {
+                    mdjs.push(md_arr_row)
+                  }
+                }
+              }
+            }
+          }
         }
         for (var data of row.content) {
           if (row.style === 'p') {
