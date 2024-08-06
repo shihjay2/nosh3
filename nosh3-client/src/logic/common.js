@@ -521,6 +521,7 @@ export function common() {
   }
   const importFHIR = async(doc, resource, patient, origin) => {
     if (resource !== 'practitioners' && resource !== 'related_persons') {
+      console.log(doc)
       const id = 'nosh_' + uuidv4()
       objectPath.set(doc, 'sync_id', objectPath.get(doc, 'id'))
       objectPath.set(doc, 'id', id)
@@ -599,6 +600,7 @@ export function common() {
           objectPath.set(doc, 'subject.reference', 'Patient/' + patient)
         }
       }
+      console.log(doc)
       await sync(resource, false, patient, true, doc)
     }
   }
