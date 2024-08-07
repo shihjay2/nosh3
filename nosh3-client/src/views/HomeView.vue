@@ -1026,6 +1026,7 @@ export default defineComponent({
     }
     const clearAll = async() => {
       state.loading = true
+      state.sync_on = true
       var resources = await fetchJSON('resources', state.online)
       for (var a of resources.rows) {
         if (a.resource !== 'patients' && a.resource !== 'users') {
@@ -1035,6 +1036,7 @@ export default defineComponent({
       }
       clearSync()
       state.loading = false
+      state.sync_on = false
       $q.notify({
         message: 'Entire chart is cleared!',
         color: 'primary',
@@ -1302,6 +1304,7 @@ export default defineComponent({
     }
     const importAll = async() => {
       state.loading = true
+      state.sync_on = true
       for (var a in state.oidc) {
         if (objectPath.has(state, 'oidc.' + a + '.docs')) {
           for (var row of state.oidc[a].docs) {
@@ -1316,6 +1319,7 @@ export default defineComponent({
       }
       clearSync()
       state.loading = false
+      state.sync_on = false
       $q.notify({
         message: 'All synced external resources have been imported!',
         color: 'primary',
