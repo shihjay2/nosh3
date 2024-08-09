@@ -128,7 +128,6 @@ export default defineComponent({
       state.patient = props.patient
       if (auth.maia !== '') {
         state.maia = auth.maia + "?uri=" + encodeURIComponent(location.protocol + '//' + location.host + '/api/' + state.patient + '/Timeline')
-        state.maia = auth.maia
       }
       await updateToolbar(props.toolbarObject)
     })
