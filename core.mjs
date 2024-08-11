@@ -899,7 +899,9 @@ async function verifyJWT(req, res, next) {
         method = 'read'
       }
       try {
-        const a1 = await axios.get(urlFix(process.env.TRUSTEE_URL) + '/api/as/.well-known/gnap-as-rs')
+        // const a1 = await axios.get(urlFix(process.env.TRUSTEE_URL) + '/api/as/.well-known/gnap-as-rs')
+        const a1 = await fetch(urlFix(process.env.TRUSTEE_URL) + '/api/as/.well-known/gnap-as-rs')
+          .then((res) => res.json())
         const keys = await getAllKeys()
         const body = {
           "access_token": jwt,
@@ -911,12 +913,12 @@ async function verifyJWT(req, res, next) {
             }
           }
         }
-        console.log(a1.data.introspection_endpoint)
-        console.log(urlFix(a1.data.introspection_endpoint))
-        const signedRequest = await signRequest(body, urlFix(a1.data.introspection_endpoint), 'POST', req)
+        console.log(a1.introspection_endpoint)
+        console.log(urlFix(a1.introspection_endpoint))
+        const signedRequest = await signRequest(body, urlFix(a1.introspection_endpoint), 'POST', req)
         console.log(signedRequest)
         try {
-          const introspect = await fetch(urlFix(a1.data.introspection_endpoint), signedRequest)
+          const introspect = await fetch(urlFix(a1.introspection_endpoint), signedRequest)
             .then((res) => res.json())
           console.log(introspect)
           if (introspect.active) {
