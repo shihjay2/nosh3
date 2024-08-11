@@ -914,11 +914,10 @@ async function verifyJWT(req, res, next) {
           }
         }
         console.log(a1.introspection_endpoint)
-        console.log(urlFix(a1.introspection_endpoint))
-        const signedRequest = await signRequest(body, urlFix(a1.introspection_endpoint), 'POST', req)
+        const signedRequest = await signRequest(body, a1.introspection_endpoint, 'POST', req)
         console.log(signedRequest)
         try {
-          const introspect = await fetch(urlFix(a1.introspection_endpoint), signedRequest)
+          const introspect = await fetch(a1.introspection_endpoint, signedRequest)
             .then((res) => res.json())
           console.log(introspect)
           if (introspect.active) {
