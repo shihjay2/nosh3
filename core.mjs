@@ -107,8 +107,15 @@ async function couchdbDatabase(patient_id='', protocol='', hostname='', email=''
     }
   }
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    const keys = await getAllKeys()
     const body = {
-      "resources": gnap_resources,
+      "access": gnap_resources,
+      "resource_server": {
+        "key": {
+          "proof": "httpsig",
+          "jwk": keys.publicKey
+        }
+      }
     }
     const req = {
       hostname: hostname,
@@ -245,16 +252,21 @@ async function couchdbUpdate(patient_id='', protocol='', hostname='') {
   }
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     if (gnap_resources.length > 0) {
-      console.log('registering resources')
+      const keys = await getAllKeys()
       const body = {
-        "resources": gnap_resources,
+        "access": gnap_resources,
+        "resource_server": {
+          "key": {
+            "proof": "httpsig",
+            "jwk": keys.publicKey
+          }
+        }
       }
       const req = {
         hostname: hostname,
         protocol: protocol
       }
       const signedRequest = await signRequest(body, urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', 'POST', req)
-      console.log(signedRequest)
       try {
         const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', signedRequest)
           .then((res) => {
@@ -555,32 +567,64 @@ async function registerResources(patient_id='', protocol='', hostname='', email=
     await db_resource.info()
     if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
       if (resource.gnap) {
-        const gnap_resource_all = {
-          "type": Case.title(resource.resource),
-          "actions": ["read", "write", "delete"],
-          "datatypes": ["json"],
-          "identifier": patient_id,
-          "locations": [base_url + "fhir/api/" + patient_id + "/" + Case.pascal(pluralize.singular(resource.resource))],
-          "privileges": [email],
-          "ro": email
+        if (resource.fhir) {
+          const gnap_resource_all = {
+            "type": Case.title(resource.resource),
+            "actions": ["read", "write", "delete"],
+            "datatypes": ["json"],
+            "identifier": patient_id,
+            "locations": [base_url + "fhir/api/" + patient_id + "/" + Case.pascal(pluralize.singular(resource.resource))],
+            "privileges": [email],
+            "ro": email
+          }
+          const gnap_resource_read = {
+            "type": Case.title(resource.resource) + " - Read Only",
+            "actions": ["read"],
+            "datatypes": ["json"],
+            "identifier": patient_id,
+            "locations": [base_url + "fhir/api/" + patient_id + "/" + Case.pascal(pluralize.singular(resource.resource))],
+            "privileges": [email],
+            "ro": email
+          }
+          gnap_resources.push(gnap_resource_all)
+          gnap_resources.push(gnap_resource_read)
+        } else {
+          if (resource.resource === 'timeline') {
+            const timeline_read = {
+              "type": Case.title(resource.resource) + " - Read Only",
+              "actions": ["read"],
+              "datatypes": ["text/plain"],
+              "identifier": patient_id,
+              "locations": [base_url + "api/" + patient_id + "/" + Case.pascal(pluralize.singular(resource.resource))],
+              "privileges": [email],
+              "ro": email
+            }
+            const markdown_post = {
+              "type": "Markdown - Write Only",
+              "actions": ["write"],
+              "datatypes": ["text/plain"],
+              "identifier": patient_id,
+              "locations": [base_url + "api/" + patient_id + "/md"],
+              "privileges": [email],
+              "ro": email
+            }
+            gnap_resources.push(timeline_read)
+            gnap_resources.push(markdown_post)
+          }
         }
-        const gnap_resource_read = {
-          "type": Case.title(resource.resource) + " - Read Only",
-          "actions": ["read"],
-          "datatypes": ["json"],
-          "identifier": patient_id,
-          "locations": [base_url + "fhir/api/" + patient_id + "/" + Case.pascal(pluralize.singular(resource.resource))],
-          "privileges": [email],
-          "ro": email
-        }
-        gnap_resources.push(gnap_resource_all)
-        gnap_resources.push(gnap_resource_read)
       }
     }
   }
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    const keys = await getAllKeys()
     const body = {
-      "resources": gnap_resources,
+      "access": gnap_resources,
+      "resource_server": {
+        "key": {
+          "proof": "httpsig",
+          "jwk": keys.publicKey
+        }
+      }
     }
     const req = {
       hostname: hostname,
@@ -596,6 +640,7 @@ async function registerResources(patient_id='', protocol='', hostname='', email=
             return res.json()
           }
         })
+      console.log(doc)
       return body
     } catch (e) {
       return false
@@ -853,8 +898,48 @@ async function verifyJWT(req, res, next) {
       if (req.method === 'GET') {
         method = 'read'
       }
-      res.locals.payload = response.payload
-      next()
+      try {
+        const a1 = await axios.get(urlFix(process.env.TRUSTEE_URL) + '/api/as/.well-known/gnap-as-rs')
+        const keys = await getAllKeys()
+        const body = {
+          "access_token": jwt,
+          "proof": "httpsig",
+          "resource_server": {
+            "key": {
+              "proof": "httpsig",
+              "jwk": keys.publicKey
+            }
+          }
+        }
+        const signedRequest = await signRequest(body, urlFix(a1.data.introspection_endpoint), 'POST', req)
+        try {
+          const introspect = await fetch(urlFix(a1.data.introspection_endpoint), signedRequest)
+            .then((res) => res.json())
+          if (introspect.active) {
+            const location = req.protocol + '://' + req.hostname + req.baseUrl + req.path
+            var i = 0
+            for (var item of introspect.access) {
+              if (item.locations.includes(location)) {
+                if (item.actions.includes(method)) {
+                  i++
+                }
+              }
+            }
+            if (i > 0) {
+              res.locals.payload = response.payload
+              next()
+            } else {
+              res.status(401).json({error: "locations and actions do not match"})
+            }
+          } else {
+            res.status(401).json({error: "access token invalid"})
+          }
+        } catch (e) {
+          res.status(401).json({error: "unable to introspect"})
+        }
+      } catch (e) {
+        res.status(401).json({error: "unable to reach GNAP AS"})
+      }
     } else {
       res.status(401).json(response.error)
     }

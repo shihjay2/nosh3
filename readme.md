@@ -231,32 +231,69 @@ If the JWT presented is expired, the response will be:
 ```
 {"code":"ERR_JWT_EXPIRED","name":"JWTExpired","claim":"exp","reason":"check_failed"}
 ```
+or if the JWT doesn't match access permissions or the GNAP authorization server is down:
+```
+{"error": "locations and actions do not match"},
+{"error": "access token invalid"},
+{"error": "unable to introspect"},
+{"error": "unable to reach GNAP AS"}
+```
 and the client should redirect to the authentication workflow to present a new JWT.
 
-&nbsp;
+Below examples are where 
+- nosh_yyy is the patient ID
+- xxx is ID given by DigitalOcean app platform
+- zzz is the ID of the resource
 ### Read
 ```
-GET https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_xxx/Condition/yyy
+GET https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_yyy/Condition/zzz
 ```
-where yyy is the ID of the resource
 ### Read all
 ```
-GET https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_xxx/Condition
+GET https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_yyy/Condition
 ```
 ### Create
 ```
-POST https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_xxx/Condition
+POST https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_yyy/Condition
 ```
 ### Update
 ```
-PUT https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_xxx/Condition/yyy
+PUT https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_yyy/Condition/zzz
 ```
-where yyy is the ID of the resource
 ### Delete
 ```
-DELETE https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_xxx/Condition/yyy
+DELETE https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_yyy/Condition/zzz
 ```
-where yyy is the ID of the resource
+### Example GNAP access declarations
+Below examples are where 
+- nosh_yyy is the patient ID
+- xxx is ID given by DigitalOcean app platform
+```
+{
+  "type": "Timeline",
+  "actions": ["read"],
+  "locations": ["https://nosh-app-xxx.ondigitalocean.app/api/nosh_yyy/Timeline"],
+  "purpose": "Clinical - Routine"
+},
+{
+  "type": "Markdown",
+  "actions": ["write"],
+  "locations": ["https://nosh-app-xxx.ondigitalocean.app/api/nosh_yyy/md"],
+  "purpose": "Clinical - Routine"
+},
+{
+  "type": "App",
+  "actions": ["read, write"],
+  "locations": ["https://nosh-app-xxx.ondigitalocean.app/app/chart/nosh_yyy"],
+  "purpose": "Clinical - Routine"
+},
+{
+  "type": "Condition",
+  "actions": ["read, write, delete"],
+  "locations": ["https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_yyy/Condition"],
+  "purpose": "Clinical - Routine"
+}
+```
 
 ## Contributing To NOSH ChartingSystem
 

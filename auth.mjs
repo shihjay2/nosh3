@@ -240,7 +240,16 @@ async function gnapProxy(req, res) {
 
 async function gnapResource(req, res) {
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
-    const body = {resource: req.body.resource}
+    const keys = await getAllKeys()
+    const body = {
+      "access": req.body.resource,
+      "resource_server": {
+        "key": {
+          "proof": "httpsig",
+          "jwk": keys.publicKey
+        }
+      }
+    }
     try {
       const signedRequest = await signRequest(body, urlFix(process.env.TRUSTEE_URL) + 'api/as/resource', req.body.method, req, req.body.jwt)
       try {
