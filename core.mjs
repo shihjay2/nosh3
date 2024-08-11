@@ -913,9 +913,7 @@ async function verifyJWT(req, res, next) {
             }
           }
         }
-        console.log(a1.introspection_endpoint)
         const signedRequest = await signRequest(body, a1.introspection_endpoint, 'POST', req)
-        console.log(signedRequest)
         try {
           const introspect = await fetch(a1.introspection_endpoint, signedRequest)
             .then((res) => res.json())
