@@ -911,10 +911,13 @@ async function verifyJWT(req, res, next) {
             }
           }
         }
+        console.log(a1.data.introspection_endpoint)
+        console.log(urlFix(a1.data.introspection_endpoint))
         const signedRequest = await signRequest(body, urlFix(a1.data.introspection_endpoint), 'POST', req)
         try {
           const introspect = await fetch(urlFix(a1.data.introspection_endpoint), signedRequest)
             .then((res) => res.json())
+          console.log(introspect)
           if (introspect.active) {
             const location = req.protocol + '://' + req.hostname + req.baseUrl + req.path
             var i = 0
@@ -935,6 +938,7 @@ async function verifyJWT(req, res, next) {
             res.status(401).json({error: "access token invalid"})
           }
         } catch (e) {
+          console.log(e)
           res.status(401).json({error: "unable to introspect"})
         }
       } catch (e) {
