@@ -900,16 +900,16 @@ async function verifyJWT(req, res, next) {
       }
       try {
         const a1 = await axios.get(urlFix(process.env.TRUSTEE_URL) + '/api/as/.well-known/gnap-as-rs')
-        const keys = await getAllKeys()
+        // const keys = await getAllKeys()
         const body = {
           "access_token": jwt,
           "proof": "httpsig",
-          "resource_server": {
-            "key": {
-              "proof": "httpsig",
-              "jwk": keys.publicKey
-            }
-          }
+          // "resource_server": {
+          //   "key": {
+          //     "proof": "httpsig",
+          //     "jwk": keys.publicKey
+          //   }
+          // }
         }
         console.log(a1.data.introspection_endpoint)
         console.log(urlFix(a1.data.introspection_endpoint))
