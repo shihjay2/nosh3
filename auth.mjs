@@ -712,8 +712,10 @@ async function pinCheck (req, res, next) {
             objectPath.set(sync, 'status', 'sync')
             objectPath.set(sync, 'resources', result.docs[0].resources)
             await sync_db.remove(result.docs[0])
+            res.status(200).json({ response: 'OK', sync})
+          } else {
+            res.status(200).json({ response: 'OK', sync})
           }
-          res.status(200).json({ response: 'OK', sync})
         } catch (e) {
           console.log(e)
         }
