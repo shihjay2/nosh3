@@ -1941,6 +1941,7 @@ export default defineComponent({
         state.loading = false
         state.showPIN = true
       }
+      console.log(check)
       if (objectPath.has(check, 'data.sync.status')) {
         if (objectPath.get(check, 'data.sync.status') === 'sync') {
           for (var resource of objectPath.get(check, 'data.sync.resources')) {
