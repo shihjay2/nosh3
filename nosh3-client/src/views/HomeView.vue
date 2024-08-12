@@ -1305,19 +1305,22 @@ export default defineComponent({
     const importAll = async() => {
       state.loading = true
       state.sync_on = true
-      for (var a in state.oidc) {
-        if (objectPath.has(state, 'oidc.' + a + '.docs')) {
-          for (var row of state.oidc[a].docs) {
+      const oidc = state.oidc
+      for (var a in oidc) {
+        if (objectPath.has(oidc, a + '.docs')) {
+          for (var row of oidc[a].docs) {
+            var i = 0
             if (objectPath.has(row, 'rows')) {
               for (var doc of row.rows) {
-                await importFHIR(doc, row.resource, state.patient, state.oidc[a].origin)
+                await importFHIR(doc, row.resource, state.patient, oidc[a].origin)
+                removeOIDC(i, row.resource, oidc[a].origin)
+                i++
                 reloadDrawer(row.resource)
               }
             }
           }
         }
       }
-      clearSync()
       state.loading = false
       state.sync_on = false
       $q.notify({

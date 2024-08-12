@@ -11,7 +11,7 @@ import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
 import sortArray from "sort-array"
 import { v4 as uuidv4 } from 'uuid'
-import { couchdbDatabase, couchdbInstall, couchdbUpdate, createKeyPair, equals, getKeys, getName, getNPI, getPIN, registerResources, signRequest, sync, urlFix, verify, verifyPIN } from './core.mjs'
+import { couchdbDatabase, couchdbInstall, couchdbUpdate, createKeyPair, equals, getKeys, getName, getNPI, getPIN, introspect, registerResources, signRequest, sync, urlFix, verify, verifyPIN } from './core.mjs'
 const router = express.Router()
 import PouchDBFind from 'pouchdb-find'
 PouchDB.plugin(PouchDBFind)
@@ -340,166 +340,171 @@ async function gnapVerify(req, res) {
               const jwt = doc.access_token.value
               try {
                 const verify_results = await verify(jwt)
-                console.log(verify_results)
                 if (verify_results.status === 'isValid') {
-                  if (objectPath.has(verify_results, 'payload.vc')) {
-                    var name_obj = getName(objectPath.get(verify_results, 'payload.vc'))
-                    objectPath.set(nosh, 'display', name_obj.display)
-                    const npi = getNPI(objectPath.get(verify_results, 'payload.vc'))
-                    if (npi !== '') {
-                      objectPath.set(nosh, 'npi', getNPI(objectPath.get(verify_results, 'payload.vc')))
-                      objectPath.set(nosh, 'role', 'provider')
-                    }
-                  }
-                  // if (objectPath.has(verify_results, 'payload.vp') && npi !== '') {
-                  //   for (var b in objectPath.get(verify_results, 'payload.vp.verifiableCredential')) {
-                  //     if (npi !== '') {
-                  //       objectPath.set(nosh, 'npi', getNPI(objectPath.get(verify_results, 'payload.vp.verifiableCredential.' + b )))
-                  //       objectPath.set(nosh, 'role', 'provider')
-                  //     }
-                  //   }
-                  // }
-                  const db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
-                  const result_users = await db_users.find({selector: {'email': {"$eq": objectPath.get(verify_results, 'payload.sub')}}})
-                  objectPath.set(nosh, 'email', objectPath.get(verify_results, 'payload.sub'))
-                  const payload = {
-                    "_gnap": doc,
-                    "jwt": jwt,
-                    "_noshAPI": {
-                      "uspstf_key": process.env.USPSTF_KEY,
-                      "umls_key": process.env.UMLS_KEY,
-                      "mailgun_key": process.env.MAILGUN_API_KEY,
-                      "mailgun_domain": process.env.MAILGUN_DOMAIN,
-                      "oidc_relay_url": process.env.OIDC_RELAY_URL
-                    }
-                  }
-                  if (result_users.docs.length > 0) {
-                    if (!objectPath.has(result_users, 'docs.0.defaults')) {
-                      const user_doc = await db_users.get(result_users.docs[0]._id)
-                      const defaults = {
-                        "class": 'AMB',
-                        "type": '14736009',
-                        "serviceType": '124',
-                        "serviceCategory": ' 17',
-                        "appointmentType": 'ROUTINE',
-                        "category": '34109-9',
-                        "code": '34108-1'
-                      }
-                      objectPath.set(user_doc, 'defaults', defaults)
-                      await db_users.put(user_doc)
-                    }
-                    user_id = result_users.docs[0].id
-                    if (objectPath.has(verify_results, 'payload._nosh')) {
-                      // there is an updated user object from wallet, so sync to this instance
-                      if (!equals(objectPath.get(verify_results, 'payload._nosh'), result_users.docs[0])) {
-                        const new_user = await db_users.put(objectPath.get(verify_results, 'payload._nosh'))
-                        objectPath.set(nosh, '_id', new_user.id)
-                        objectPath.set(nosh, 'id', new_user.id)
-                        objectPath.set(nosh, '_rev', new_user.rev)
-                        const user_doc1 = await db_users.get(result_users.docs[0]._id)
-                        await db_users.delete(user_doc1)
+                  const location = urlFix(req.protocol + '://' + req.hostname + '/') + 'app/chart/' + req.params.patient
+                  const introspect_result = await introspect(req, jwt, 'read', location)
+                  if (objectPath.has(introspect_result, 'success')) {
+                    if (objectPath.has(verify_results, 'payload.vc')) {
+                      var name_obj = getName(objectPath.get(verify_results, 'payload.vc'))
+                      objectPath.set(nosh, 'display', name_obj.display)
+                      const npi = getNPI(objectPath.get(verify_results, 'payload.vc'))
+                      if (npi !== '') {
+                        objectPath.set(nosh, 'npi', getNPI(objectPath.get(verify_results, 'payload.vc')))
+                        objectPath.set(nosh, 'role', 'provider')
                       }
                     }
-                    objectPath.set(nosh, 'id', user_id)
-                    objectPath.set(nosh, 'display', result_users.docs[0].display)
-                  } else {
-                    // add new user - authorization server has already granted
-                    const new_user = JSON.parse(JSON.stringify(nosh))
-                    user_id = 'nosh_' + uuidv4()
-                    objectPath.set(new_user, '_id', user_id)
-                    objectPath.set(new_user, 'id', user_id)
-                    objectPath.set(new_user, 'templates', JSON.parse(fs.readFileSync('./assets/templates.json')))
-                    console.log(new_user)
-                    console.log(name_obj)
-                    if (!objectPath.has(new_user, 'role')) {
-                      objectPath.set(new_user, 'role', 'proxy')
-                      const related_person_id = 'nosh_' + uuidv4()
-                      const related_person = {
-                        "_id": related_person_id,
-                        "resourceType": "RelatedPerson",
-                        "id": related_person_id,
-                        "name": [
-                          {
-                            "family": name_obj.parsed.last,
-                            "use": "official",
-                            "given": [
-                              name_obj.parsed.first
-                            ],
-                            "suffix": [
-                              name_obj.parsed.suffix
-                            ]
-                          }
-                        ],
-                        "text": {
-                          "status": "generated",
-                          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">" + name_obj.display + "</div>"
+                    // if (objectPath.has(verify_results, 'payload.vp') && npi !== '') {
+                    //   for (var b in objectPath.get(verify_results, 'payload.vp.verifiableCredential')) {
+                    //     if (npi !== '') {
+                    //       objectPath.set(nosh, 'npi', getNPI(objectPath.get(verify_results, 'payload.vp.verifiableCredential.' + b )))
+                    //       objectPath.set(nosh, 'role', 'provider')
+                    //     }
+                    //   }
+                    // }
+                    const db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
+                    const result_users = await db_users.find({selector: {'email': {"$eq": objectPath.get(verify_results, 'payload.sub')}}})
+                    objectPath.set(nosh, 'email', objectPath.get(verify_results, 'payload.sub'))
+                    const payload = {
+                      "_gnap": doc,
+                      "jwt": jwt,
+                      "_noshAPI": {
+                        "uspstf_key": process.env.USPSTF_KEY,
+                        "umls_key": process.env.UMLS_KEY,
+                        "mailgun_key": process.env.MAILGUN_API_KEY,
+                        "mailgun_domain": process.env.MAILGUN_DOMAIN,
+                        "oidc_relay_url": process.env.OIDC_RELAY_URL
+                      }
+                    }
+                    if (result_users.docs.length > 0) {
+                      if (!objectPath.has(result_users, 'docs.0.defaults')) {
+                        const user_doc = await db_users.get(result_users.docs[0]._id)
+                        const defaults = {
+                          "class": 'AMB',
+                          "type": '14736009',
+                          "serviceType": '124',
+                          "serviceCategory": ' 17',
+                          "appointmentType": 'ROUTINE',
+                          "category": '34109-9',
+                          "code": '34108-1'
+                        }
+                        objectPath.set(user_doc, 'defaults', defaults)
+                        await db_users.put(user_doc)
+                      }
+                      user_id = result_users.docs[0].id
+                      if (objectPath.has(verify_results, 'payload._nosh')) {
+                        // there is an updated user object from wallet, so sync to this instance
+                        if (!equals(objectPath.get(verify_results, 'payload._nosh'), result_users.docs[0])) {
+                          const new_user = await db_users.put(objectPath.get(verify_results, 'payload._nosh'))
+                          objectPath.set(nosh, '_id', new_user.id)
+                          objectPath.set(nosh, 'id', new_user.id)
+                          objectPath.set(nosh, '_rev', new_user.rev)
+                          const user_doc1 = await db_users.get(result_users.docs[0]._id)
+                          await db_users.delete(user_doc1)
                         }
                       }
-                      console.log(related_person)
-                      await sync('related_persons', req.params.patient, true, related_person)
-                      objectPath.set(new_user, 'reference', 'RelatedPerson/' + related_person_id)
+                      objectPath.set(nosh, 'id', user_id)
+                      objectPath.set(nosh, 'display', result_users.docs[0].display)
                     } else {
-                      // this is a provider
-                      const practitioner_id = 'nosh_' + uuidv4()
-                      const practitioner = {
-                        "_id": practitioner_id,
-                        "resourceType": "Practitioner",
-                        "id": practitioner_id,
-                        "name": [
-                          {
-                            "family": name_obj.parsed.last,
-                            "use": "official",
-                            "given": [
-                              name_obj.parsed.first
-                            ],
-                            "suffix": [
-                              name_obj.parsed.suffix
-                            ]
+                      // add new user - authorization server has already granted
+                      const new_user = JSON.parse(JSON.stringify(nosh))
+                      user_id = 'nosh_' + uuidv4()
+                      objectPath.set(new_user, '_id', user_id)
+                      objectPath.set(new_user, 'id', user_id)
+                      objectPath.set(new_user, 'templates', JSON.parse(fs.readFileSync('./assets/templates.json')))
+                      console.log(new_user)
+                      console.log(name_obj)
+                      if (!objectPath.has(new_user, 'role')) {
+                        objectPath.set(new_user, 'role', 'proxy')
+                        const related_person_id = 'nosh_' + uuidv4()
+                        const related_person = {
+                          "_id": related_person_id,
+                          "resourceType": "RelatedPerson",
+                          "id": related_person_id,
+                          "name": [
+                            {
+                              "family": name_obj.parsed.last,
+                              "use": "official",
+                              "given": [
+                                name_obj.parsed.first
+                              ],
+                              "suffix": [
+                                name_obj.parsed.suffix
+                              ]
+                            }
+                          ],
+                          "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">" + name_obj.display + "</div>"
                           }
-                        ],
-                        "text": {
-                          "status": "generated",
-                          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">" + name_obj.display + "</div>"
                         }
+                        console.log(related_person)
+                        await sync('related_persons', req.params.patient, true, related_person)
+                        objectPath.set(new_user, 'reference', 'RelatedPerson/' + related_person_id)
+                      } else {
+                        // this is a provider
+                        const practitioner_id = 'nosh_' + uuidv4()
+                        const practitioner = {
+                          "_id": practitioner_id,
+                          "resourceType": "Practitioner",
+                          "id": practitioner_id,
+                          "name": [
+                            {
+                              "family": name_obj.parsed.last,
+                              "use": "official",
+                              "given": [
+                                name_obj.parsed.first
+                              ],
+                              "suffix": [
+                                name_obj.parsed.suffix
+                              ]
+                            }
+                          ],
+                          "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">" + name_obj.display + "</div>"
+                          }
+                        }
+                        await sync('practitioners', req.params.patient, true, practitioner)
+                        objectPath.set(new_user, 'reference', 'Practitioner/' + practitioner_id)
                       }
-                      await sync('practitioners', req.params.patient, true, practitioner)
-                      objectPath.set(new_user, 'reference', 'Practitioner/' + practitioner_id)
+                      await db_users.put(new_user)
                     }
-                    await db_users.put(new_user)
-                  }
-                  objectPath.set(payload, '_nosh', nosh)
-                  objectPath.set(payload, '_noshAuth', 'trustee')
-                  if (process.env.INSTANCE == 'dev') {
-                    objectPath.set(payload, '_noshDB', urlFix(req.protocol + '://' + req.hostname + '/couchdb'))
-                  } else {
-                    objectPath.set(payload, '_noshDB', urlFix(process.env.COUCHDB_URL))
-                  }
-                  if (process.env.NOSH_ROLE == 'patient') {
-                    await sync('patients', req.params.patient)
-                    const db_patients = new PouchDB(prefix + 'patients')
-                    const result_patients = await db_patients.find({selector: {_id: {$regex: '^nosh_*'}}})
-                    if (result_patients.docs.length > 0) {
+                    objectPath.set(payload, '_nosh', nosh)
+                    objectPath.set(payload, '_noshAuth', 'trustee')
+                    if (process.env.INSTANCE == 'dev') {
+                      objectPath.set(payload, '_noshDB', urlFix(req.protocol + '://' + req.hostname + '/couchdb'))
+                    } else {
+                      objectPath.set(payload, '_noshDB', urlFix(process.env.COUCHDB_URL))
+                    }
+                    if (process.env.NOSH_ROLE == 'patient') {
+                      await sync('patients', req.params.patient)
+                      const db_patients = new PouchDB(prefix + 'patients')
+                      const result_patients = await db_patients.find({selector: {_id: {$regex: '^nosh_*'}}})
+                      if (result_patients.docs.length > 0) {
+                        if (result.route === null) {
+                          objectPath.set(payload, '_noshRedirect','/app/chart/' + result_patients.docs[0]._id)
+                        } else {
+                          objectPath.set(payload, '_noshRedirect', result.route)
+                        }
+                        objectPath.set(payload, '_noshType', 'pnosh')
+                        objectPath.set(payload, '_nosh.patient', req.params.patient)
+                      } else {
+                        // not installed yet
+                        res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'start')
+                      }
+                    } else {
                       if (result.route === null) {
-                        objectPath.set(payload, '_noshRedirect','/app/chart/' + result_patients.docs[0]._id)
+                        objectPath.set(payload, '_noshRedirect', '/app/dashboard/')
                       } else {
                         objectPath.set(payload, '_noshRedirect', result.route)
                       }
-                      objectPath.set(payload, '_noshType', 'pnosh')
-                      objectPath.set(payload, '_nosh.patient', req.params.patient)
-                    } else {
-                      // not installed yet
-                      res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'start')
+                      objectPath.set(payload, '_noshType', 'mdnosh')
                     }
+                    const jwt_nosh = await createJWT(user_id, urlFix(req.protocol + '://' + req.hostname + '/'), urlFix(req.protocol + '://' + req.hostname + '/'), payload)
+                    res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/verify?token=' + jwt_nosh + '&patient=' + req.params.patient)
                   } else {
-                    if (result.route === null) {
-                      objectPath.set(payload, '_noshRedirect', '/app/dashboard/')
-                    } else {
-                      objectPath.set(payload, '_noshRedirect', result.route)
-                    }
-                    objectPath.set(payload, '_noshType', 'mdnosh')
+                    res.status(401).json(objectPath.get(introspect_result))
                   }
-                  const jwt_nosh = await createJWT(user_id, urlFix(req.protocol + '://' + req.hostname + '/'), urlFix(req.protocol + '://' + req.hostname + '/'), payload)
-                  res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'app/verify?token=' + jwt_nosh + '&patient=' + req.params.patient)
                 } else {
                   res.status(401).send('Unauthorized')
                 }

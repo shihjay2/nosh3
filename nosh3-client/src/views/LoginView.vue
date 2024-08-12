@@ -49,7 +49,7 @@
                 <q-btn v-if="!state.sending" class="full-width q-pa-md" push icon="login" color="primary" label="Sign in with Magic" type="submit" />
                 <q-btn v-if="state.sending" class="full-width q-pa-md" push icon="replay" color="primary" label="Request another Magic Link" @click="resubmit" />
               </div>
-              <div class="q-pa-md">
+              <div v-if="state.gnap" class="q-pa-md">
                 <q-btn class="full-width q-pa-md" push icon="vpn_key" color="primary" label="Trustee Authorization Server" @click="gnapSubmit" />
               </div>
               <div class="q-pa-md">
@@ -187,7 +187,8 @@ export default defineComponent({
       pin: '',
       showPIN: false,
       loading: true,
-      magic: true
+      magic: true,
+      gnap: true
     })
     var auth_status = null
     var magic = null
@@ -238,6 +239,9 @@ export default defineComponent({
           })
         }
       } else {
+        if (state.config.type !== 'pnosh') {
+          state.gnap = false
+        }
         state.loading = false
         state.login = true
       }

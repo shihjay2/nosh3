@@ -480,7 +480,52 @@ async function getPIN(patient_id) {
   } catch (e) {
     return false
   }
-  
+}
+
+async function introspect(req, jwt, method, location) {
+  try {
+    const a = await fetch(urlFix(process.env.TRUSTEE_URL) + '/api/as/.well-known/gnap-as-rs')
+      .then((res) => res.json())
+    const keys = await getAllKeys()
+    const body = {
+      "access_token": jwt,
+      "proof": "httpsig",
+      "resource_server": {
+        "key": {
+          "proof": "httpsig",
+          "jwk": keys.publicKey
+        }
+      }
+    }
+    const signedRequest = await signRequest(body, a.introspection_endpoint, 'POST', req)
+    try {
+      const introspect = await fetch(a.introspection_endpoint, signedRequest)
+        .then((res) => res.json())
+      if (introspect.active) {
+        var i = 0
+        for (var item of introspect.access) {
+          if (item.locations.includes(location)) {
+            if (item.actions.includes(method)) {
+              i++
+            }
+          }
+        }
+        if (i > 0) {
+          return {success: true}
+        } else {
+          return {error: "locations and actions do not match"}
+        }
+      } else {
+        return {error: "access token invalid"}
+      }
+    } catch (e) {
+      console.log(e)
+      return {error: "unable to introspect"}
+    }
+  } catch (e) {
+    console.log(e)
+    return {error: "unable to reach GNAP AS"}
+  }
 }
 
 function isMarkdown(text) {
@@ -898,51 +943,13 @@ async function verifyJWT(req, res, next) {
       if (req.method === 'GET') {
         method = 'read'
       }
-      try {
-        // const a1 = await axios.get(urlFix(process.env.TRUSTEE_URL) + '/api/as/.well-known/gnap-as-rs')
-        const a1 = await fetch(urlFix(process.env.TRUSTEE_URL) + '/api/as/.well-known/gnap-as-rs')
-          .then((res) => res.json())
-        const keys = await getAllKeys()
-        const body = {
-          "access_token": jwt,
-          "proof": "httpsig",
-          "resource_server": {
-            "key": {
-              "proof": "httpsig",
-              "jwk": keys.publicKey
-            }
-          }
-        }
-        const signedRequest = await signRequest(body, a1.introspection_endpoint, 'POST', req)
-        try {
-          const introspect = await fetch(a1.introspection_endpoint, signedRequest)
-            .then((res) => res.json())
-          console.log(introspect)
-          if (introspect.active) {
-            const location = req.protocol + '://' + req.hostname + req.baseUrl + req.path
-            var i = 0
-            for (var item of introspect.access) {
-              if (item.locations.includes(location)) {
-                if (item.actions.includes(method)) {
-                  i++
-                }
-              }
-            }
-            if (i > 0) {
-              res.locals.payload = response.payload
-              next()
-            } else {
-              res.status(401).json({error: "locations and actions do not match"})
-            }
-          } else {
-            res.status(401).json({error: "access token invalid"})
-          }
-        } catch (e) {
-          console.log(e)
-          res.status(401).json({error: "unable to introspect"})
-        }
-      } catch (e) {
-        res.status(401).json({error: "unable to reach GNAP AS"})
+      const location = req.protocol + '://' + req.hostname + req.baseUrl + req.path
+      const introspect_result = await introspect(req, jwt, method, location)
+      if (objectPath.has(introspect_result, 'success')) {
+        res.locals.payload = response.payload
+        next()
+      } else {
+        res.status(401).json(objectPath.get(introspect_result))
       }
     } else {
       res.status(401).json(response.error)
@@ -975,4 +982,4 @@ async function verifyPIN(pin, patient_id) {
   }
 }
 
-export { couchdbConfig, couchdbDatabase, couchdbInstall, couchdbUpdate, createKeyPair, equals, eventAdd, eventUser, getKeys, getName, getNPI, getPIN, isMarkdown, markdownParse, pollSet, registerResources, signRequest, sleep, sync, urlFix, userAdd, verify, verifyJWT, verifyPIN }
+export { couchdbConfig, couchdbDatabase, couchdbInstall, couchdbUpdate, createKeyPair, equals, eventAdd, eventUser, getKeys, getName, getNPI, getPIN, introspect, isMarkdown, markdownParse, pollSet, registerResources, signRequest, sleep, sync, urlFix, userAdd, verify, verifyJWT, verifyPIN }
