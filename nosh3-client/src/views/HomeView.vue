@@ -1491,6 +1491,7 @@ export default defineComponent({
               timeline.push(timelineItem)
             }
           } else {
+            console.log(result.docs)
             for (var f in result.docs) {
               const category = result.docs[f].category[0].coding[0].code
               const sub = base.categories.find(o => o.value === category)
