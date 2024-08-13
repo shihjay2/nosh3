@@ -1539,6 +1539,8 @@ export default defineComponent({
               }
               var objsItem = {}
               objectPath.set(objsItem, 'id', objectPath.get(result, 'docs.' + f + '.id'))
+              console.log(base)
+              console.log(result.docs[f])
               objectPath.set(objsItem, 'title', fhirReplace('title', base, result.docs[f], schema))
               objectPath.set(objsItem, 'subtitle', objectPath.get(result, 'docs.' + f + '.' + base.timelineDate) + ', ' + title)
               objectPath.set(objsItem, 'content', fhirReplace('content', base, result.docs[f], schema))
