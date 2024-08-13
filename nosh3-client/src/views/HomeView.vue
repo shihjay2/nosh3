@@ -1422,10 +1422,12 @@ export default defineComponent({
         var base = await import('@/assets/fhir/' + resource + '.json')
         var resource1 = drawer.find(item => item.resource === resource)
         var title = 'New ' + Case.title(pluralize.singular(resource))
-        if (resource !== 'encounters') {
-          var schema = base.uiSchema.flat()
-        } else {
-          var schema = base.new.uiSchema.flat()
+        if (resource !== 'observations') {
+          if (resource !== 'encounters') {
+            var schema = base.uiSchema.flat()
+          } else {
+            var schema = base.new.uiSchema.flat()
+          }
         }
         if (resource === 'immunizations') {
           state.actSites = await fetchJSON('actSites', state.online)
@@ -1449,10 +1451,6 @@ export default defineComponent({
           state.docClassCodes = await fetchJSON('docClassCodes', state.online)
           schema = addSchemaOptions('type', state.docTypeCodes, 'Code', 'Display', schema)
           schema = addSchemaOptions('category', state.docClassCodes, 'Code', 'Display', schema)
-        }
-        if (resource === 'observations') {
-          schema = addSchemaOptions('code', observationsCodes, 'code', 'display', schema)
-          schema = await loadSelect('practitioners', 'performer', schema)
         }
         const db = new PouchDB(prefix + resource)
         try {
@@ -1493,6 +1491,50 @@ export default defineComponent({
             }
           } else {
             for (var f in result.docs) {
+              const category = result.docs[f].category[0].coding[0].code
+              const sub = base.categories.find(o => o.value === category)
+              var schema = sub.uiSchema
+              schema = await loadSelect('practitioners', 'performer', schema)
+              if (category !== 'exam' && category !== 'vital-signs' && category !== 'social-history' && category !== 'all') {
+                var category1 = Case.camel(category)
+                var category2 = await fetchJSON(category1, online)
+                if (category === 'activity') {
+                  const a = []
+                  for (const b of category2) {
+                    a.push(b)
+                  }
+                  objectPath.set(select, category, a)
+                }
+                var observationsCodes = []
+                var c1 = 0
+                var d1 = ''
+                var f1 = []
+                for (var e1 of category2) {
+                  if (category === 'activity') {
+                    if (!f1.includes(objectPath.get(e1, 'CF_CODE10'))) {
+                      objectPath.set(observationsCodes, c1 + '.code', objectPath.get(e1, 'CF_CODE10'))
+                      f1.push(objectPath.get(e1, 'CF_CODE10'))
+                      if (objectPath.get(e1, 'Description') !== '') {
+                        d1 = objectPath.get(e1, 'Description') + ' | '
+                      } else {
+                        d1 = objectPath.get(e1, 'Common Term') + ' | '
+                      }
+                      d1 = d1 + objectPath.get(e1, 'REFID')
+                      objectPath.set(observationsCodes, c1 + '.display', d1)
+                      c1 = c1 + 1
+                    }
+                  } else {
+                    if (!objectPath.has(e1, 'span')) {
+                      if (objectPath.has(e1, 'a.small')) {
+                        objectPath.set(observationsCodes, c1 + '.code', objectPath.get(e1, 'a.small'))
+                        objectPath.set(observationsCodes, c1 + '.display', objectPath.get(e1, '#text'))
+                        c1 = c1 + 1
+                      }
+                    }
+                  }
+                }
+                schema = addSchemaOptions('code', observationsCodes, 'code', 'display', schema)
+              }
               var objsItem = {}
               objectPath.set(objsItem, 'id', objectPath.get(result, 'docs.' + f + '.id'))
               objectPath.set(objsItem, 'title', fhirReplace('title', base, result.docs[f], schema))
