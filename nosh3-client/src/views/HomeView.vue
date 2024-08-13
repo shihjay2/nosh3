@@ -1315,7 +1315,7 @@ export default defineComponent({
             if (objectPath.has(row, 'rows')) {
               for (var doc of row.rows) {
                 await importFHIR(doc, row.resource, state.patient, oidc[a].origin)
-                removeOIDC(i, row.resource, oidc[a].origin)
+                // removeOIDC(i, row.resource, oidc[a].origin)
                 i++
                 reloadDrawer(row.resource)
               }
@@ -1323,6 +1323,7 @@ export default defineComponent({
           }
         }
       }
+      clearSync()
       state.loading = false
       state.sync_on = false
       $q.notify({
