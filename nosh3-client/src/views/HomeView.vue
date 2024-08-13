@@ -381,7 +381,7 @@
             </q-card-section>
           </q-card>
         </div>
-        <q-card v-if="state.showTimeline" class="q-px-lg q-pb-md">
+        <q-card @scroll="timelineScroll" v-if="state.showTimeline" class="q-px-lg q-pb-md">
           <q-timeline color="secondary" layout="dense">
             <q-timeline-entry 
               v-for="row in state.timeline" 
@@ -713,6 +713,7 @@ export default defineComponent({
       searchResults: false,
       searchTerm: '',
       timeline_filter: [],
+      timeline_scroll: false,
       sort: 'alpha',
       within_page: false,
       openPageForm: false,
@@ -1409,6 +1410,7 @@ export default defineComponent({
     }
     const loadTimeline = async() => {
       state.loading = true
+      state.timeline_scroll = false
       state.timeline = []
       var resources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references']
       var drawer = []
@@ -1941,7 +1943,6 @@ export default defineComponent({
         state.loading = false
         state.showPIN = true
       }
-      console.log(check)
       if (objectPath.has(check, 'data.sync.status')) {
         if (objectPath.get(check, 'data.sync.status') === 'sync') {
           for (var resource of objectPath.get(check, 'data.sync.resources')) {
@@ -2290,13 +2291,18 @@ export default defineComponent({
           state.drawerReload = true
           state.sync_on = false
           if (state.showTimeline) {
-            await loadTimeline()
-            nextTick(() => {
-              qTimeline.value.focus()
-            })
+            if (!state.timeline_scroll) {
+              await loadTimeline()
+              nextTick(() => {
+                qTimeline.value.focus()
+              })
+            }
           }
         }
       }
+    }
+    const timelineScroll = () => {
+      state.timeline_scroll = true
     }
     const unset = (type) => {
       if (type == 'encounters') {
@@ -2448,6 +2454,7 @@ export default defineComponent({
       sync,
       syncAll,
       syncProcess,
+      timelineScroll,
       thread,
       threadEarlier,
       threadLater,
