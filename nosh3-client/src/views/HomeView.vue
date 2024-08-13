@@ -2302,6 +2302,7 @@ export default defineComponent({
       }
     }
     const timelineScroll = () => {
+      console.log('timeline scroll stopped')
       state.timeline_scroll = true
     }
     const unset = (type) => {
