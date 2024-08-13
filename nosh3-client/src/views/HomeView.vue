@@ -147,7 +147,7 @@
         :oidc="state.oidc"
       />
     </q-drawer>
-    <q-page-container @scroll="timelineScroll">
+    <q-page-container>
       <QFormTemplate
         v-if="state.showForm"
         @care-plan="setActiveCarePlan"
@@ -382,6 +382,7 @@
           </q-card>
         </div>
         <q-card v-if="state.showTimeline" class="q-px-lg q-pb-md">
+          <q-scroll-observer @scroll="timelineScroll" />
           <q-timeline color="secondary" layout="dense">
             <q-timeline-entry 
               v-for="row in state.timeline" 
