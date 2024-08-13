@@ -1498,7 +1498,7 @@ export default defineComponent({
               schema = await loadSelect('practitioners', 'performer', schema)
               if (category !== 'exam' && category !== 'vital-signs' && category !== 'social-history' && category !== 'all') {
                 var category1 = Case.camel(category)
-                var category2 = await fetchJSON(category1, online)
+                var category2 = await fetchJSON(category1, state.online)
                 if (category === 'activity') {
                   const a = []
                   for (const b of category2) {
