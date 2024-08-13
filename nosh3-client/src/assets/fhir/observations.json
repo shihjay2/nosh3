@@ -33,6 +33,7 @@
       "format": "YYYY-MM-DD HH:mm"
     }
   ],
+  "timelineDate": "effectiveDateTime",
   "uiListContent": {
     "title": "{category} - {display}",
     "subhead": "Date: {effectiveDateTime}, Interpretation: {interpretation}",

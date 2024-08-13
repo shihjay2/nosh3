@@ -2376,9 +2376,7 @@ export default defineComponent({
     }
     const timelineScroll = (info) => {
       if (state.showTimeline) {
-        console.log(info.position.top)
         if (info.position.top > 0) {
-          console.log('timeline scroll stopped')
           state.timeline_scroll = true
         } else {
           state.timeline_scroll = false
