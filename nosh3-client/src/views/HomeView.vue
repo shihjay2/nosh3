@@ -1495,6 +1495,7 @@ export default defineComponent({
               const category = result.docs[f].category[0].coding[0].code
               const sub = base.categories.find(o => o.value === category)
               var schema = sub.uiSchema
+              console.log(schema)
               schema = await loadSelect('practitioners', 'performer', schema)
               if (category !== 'exam' && category !== 'vital-signs' && category !== 'social-history' && category !== 'all') {
                 var category1 = Case.camel(category)
