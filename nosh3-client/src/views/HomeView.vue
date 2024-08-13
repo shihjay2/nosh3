@@ -1494,8 +1494,7 @@ export default defineComponent({
             for (var f in result.docs) {
               const category = result.docs[f].category[0].coding[0].code
               const sub = base.categories.find(o => o.value === category)
-              var schema = sub.uiSchema
-              console.log(schema)
+              var schema = sub.uiSchema.flat()
               schema = await loadSelect('practitioners', 'performer', schema)
               if (category !== 'exam' && category !== 'vital-signs' && category !== 'social-history' && category !== 'all') {
                 var category1 = Case.camel(category)
@@ -1539,8 +1538,6 @@ export default defineComponent({
               }
               var objsItem = {}
               objectPath.set(objsItem, 'id', objectPath.get(result, 'docs.' + f + '.id'))
-              console.log(base)
-              console.log(result.docs[f])
               objectPath.set(objsItem, 'title', fhirReplace('title', base, result.docs[f], schema))
               objectPath.set(objsItem, 'subtitle', objectPath.get(result, 'docs.' + f + '.' + base.timelineDate) + ', ' + title)
               objectPath.set(objsItem, 'content', fhirReplace('content', base, result.docs[f], schema))

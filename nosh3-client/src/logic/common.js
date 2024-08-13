@@ -387,7 +387,6 @@ export function common() {
       }
       for (var g in found) {
         field = uiSchema.find(({ id }) => id === found[g])
-        console.log(field)
         model = fhirModel(field)
         if (objectPath.has(result, model)) {
           replaceWith[g] = objectPath.get(result, model)
