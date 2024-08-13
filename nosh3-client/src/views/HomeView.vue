@@ -1590,9 +1590,18 @@ export default defineComponent({
       })
       if (result.rows.length > 0) {
         const doc = objectPath.get(result, 'rows.0.doc')
-        if (JSON.stringify(objectPath.get(doc, 'timeline')) !== JSON.stringify(timeline) || JSON.stringify(objectPath.get(doc, 'observations')) !== JSON.stringify(observations)) {
+        var sync_doc = false
+        if (JSON.stringify(objectPath.get(doc, 'timeline')) !== JSON.stringify(timeline)) {
           objectPath.set(doc, 'timeline', timeline)
+          sync_doc = true
+        }
+        console.log(objectPath.get(doc, 'observations'))
+        console.log(observations)
+        if (JSON.stringify(objectPath.get(doc, 'observations')) !== JSON.stringify(observations)) {
           objectPath.set(doc, 'observations', observations)
+          sync_doc = true
+        }
+        if (sync_doc) {
           await sync('timeline', false, state.patient, true, doc)
         }
       } else {
