@@ -33,45 +33,65 @@ async function getTimeline(req, res) {
   if (timeline_result.rows.length > 0) {
     const timeline = objectPath.get(timeline_result, 'rows.0.doc.timeline')
     const mdjs = []
-      for (var row of timeline) {
-        const ul_arr = []
-        if (row.id !== 'intro') {
-          mdjs.push({h3: Case.title(pluralize.singular(row.resource)) + ' Details'})
-          ul_arr.push('**Date**: ' + moment(row.date).format('MMMM DD, YYYY'))
-          ul_arr.push('**' + Case.title(pluralize.singular(row.resource)) + '**: ' + row.title)
-        } else {
-          mdjs.push({h3: 'Patient Information'})
-        }
-        if (row.resource === 'document_references') {
-          const doc = row.doc
-          if (objectPath.has(doc, 'content')) {
-            for (var c in objectPath.get(doc, 'content')) {
-              if (objectPath.get(doc, 'content.' + c + '.attachment.contentType').includes('text/plain')) {
-                const md = atob(objectPath.get(doc, 'content.' + c + '.attachment.data'))
-                if (isMarkdown(md)) {
-                  const md_arr = markdownParse(md)
-                  for (var md_arr_row of md_arr) {
-                    mdjs.push(md_arr_row)
-                  }
+    for (var row of timeline) {
+      const ul_arr = []
+      if (row.id !== 'intro') {
+        mdjs.push({h3: Case.title(pluralize.singular(row.resource)) + ' Details'})
+        ul_arr.push('**Date**: ' + moment(row.date).format('MMMM DD, YYYY'))
+        ul_arr.push('**' + Case.title(pluralize.singular(row.resource)) + '**: ' + row.title)
+      } else {
+        mdjs.push({h3: 'Patient Information'})
+      }
+      if (row.resource === 'document_references') {
+        const doc = row.doc
+        if (objectPath.has(doc, 'content')) {
+          for (var c in objectPath.get(doc, 'content')) {
+            if (objectPath.get(doc, 'content.' + c + '.attachment.contentType').includes('text/plain')) {
+              const md = atob(objectPath.get(doc, 'content.' + c + '.attachment.data'))
+              if (isMarkdown(md)) {
+                const md_arr = markdownParse(md)
+                for (var md_arr_row of md_arr) {
+                  mdjs.push(md_arr_row)
                 }
               }
             }
           }
         }
-        for (var data of row.content) {
-          if (row.style === 'p') {
-            ul_arr.push('**' + data.key + '**: ' + data.value)
-          }
-          if (row.style === 'list') {
-            ul_arr.push('**Display**: ' + data)
-          }
-        }
-        mdjs.push({ul: ul_arr})
       }
-      res.status(200)
-      res.setHeader('Content-type', "text/markdown")
-      res.setHeader('Content-disposition', 'attachment; filename=nosh_timeline_'  + Date.now() + '.md')
-      res.send(json2md(mdjs))
+      for (var data of row.content) {
+        if (row.style === 'p') {
+          ul_arr.push('**' + data.key + '**: ' + data.value)
+        }
+        if (row.style === 'list') {
+          ul_arr.push('**Display**: ' + data)
+        }
+      }
+      mdjs.push({ul: ul_arr})
+    }
+    // get observations
+    const observations = objectPath.get(timeline_result, 'rows.0.doc.observations')
+    if (observations.length > 0) {
+      mdjs.push({h2: 'Observations'})
+    }
+    for (var row1 of observations) {
+      const ul_arr1 = []
+      mdjs.push({h3: Case.title(pluralize.singular(row1.resource)) + ' Details'})
+      ul_arr1.push('**Date**: ' + moment(row1.date).format('MMMM DD, YYYY'))
+      ul_arr1.push('**' + Case.title(pluralize.singular(row1.resource)) + '**: ' + row1.title)
+      for (var data1 of row1.content) {
+        if (row1.style === 'p') {
+          ul_arr1.push('**' + data1.key + '**: ' + data1.value)
+        }
+        if (row1.style === 'list') {
+          ul_arr1.push('**Display**: ' + data1)
+        }
+      }
+      mdjs.push({ul: ul_arr1})
+    }
+    res.status(200)
+    res.setHeader('Content-type', "text/markdown")
+    res.setHeader('Content-disposition', 'attachment; filename=nosh_timeline_'  + Date.now() + '.md')
+    res.send(json2md(mdjs))
   } else {
     res.status(404)
   }
