@@ -1491,7 +1491,6 @@ export default defineComponent({
               timeline.push(timelineItem)
             }
           } else {
-            console.log(result.docs)
             for (var f in result.docs) {
               const category = result.docs[f].category[0].coding[0].code
               const sub = base.categories.find(o => o.value === category)
@@ -1550,8 +1549,8 @@ export default defineComponent({
               objectPath.set(objsItem, 'doc', objectPath.get(result, 'docs.' + f))
               objectPath.set(objsItem, 'keys', base.fuse)
               objectPath.set(objsItem, 'style', base.uiListContent.contentStyle)
+              observations.push(objsItem)
             }
-            observations.push(objsItem)
           }
         } catch (err) {
           console.log(err)
@@ -1591,20 +1590,13 @@ export default defineComponent({
       })
       if (result.rows.length > 0) {
         const doc = objectPath.get(result, 'rows.0.doc')
-        var sync_doc = false
-        if (JSON.stringify(objectPath.get(doc, 'timeline')) !== JSON.stringify(timeline)) {
+        if (JSON.stringify(objectPath.get(doc, 'timeline')) !== JSON.stringify(timeline) || JSON.stringify(objectPath.get(doc, 'observations')) !== JSON.stringify(observations)) {
           objectPath.set(doc, 'timeline', timeline)
-          sync_doc = true
+          objectPath.set(doc, 'observations', observations)
+          await sync('timeline', false, state.patient, true, doc)
         }
         console.log(objectPath.get(doc, 'observations'))
         console.log(observations)
-        if (JSON.stringify(objectPath.get(doc, 'observations')) !== JSON.stringify(observations)) {
-          objectPath.set(doc, 'observations', observations)
-          sync_doc = true
-        }
-        if (sync_doc) {
-          await sync('timeline', false, state.patient, true, doc)
-        }
       } else {
         const id = 'nosh_' + uuidv4()
         const doc1 = {
