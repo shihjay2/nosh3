@@ -997,7 +997,7 @@ export default defineComponent({
       }
     })
     const addendumEncounter = async() => {
-      var id = state.bundleDoc.entry[0].resource.encounter.reference.split('/').slice(-1).join('')
+      const id = state.bundleDoc.entry[0].resource.encounter.reference.split('/').slice(-1).join('')
       closeAll()
       await nextTick()
       state.resource = 'encounters'
@@ -1029,8 +1029,8 @@ export default defineComponent({
     const clearAll = async() => {
       state.loading = true
       state.sync_on = true
-      var resources = await fetchJSON('resources', state.online)
-      for (var a of resources.rows) {
+      const resources = await fetchJSON('resources', state.online)
+      for (const a of resources.rows) {
         if (a.resource !== 'patients' && a.resource !== 'users') {
           await sync(a.resource, true, state.patient, false, {}, true)
           reloadDrawer(a.resource)
@@ -1155,8 +1155,8 @@ export default defineComponent({
           if (state.resource == 'compositions') {
             if (state.user.reference === doc.author[0].reference) {
               const encounterDB = new PouchDB(prefix + 'encounters')
-              var encounter = await encounterDB.get(doc.encounter.reference.split('/').slice(-1).join(''))
-              var unsigned = {
+              const encounter = await encounterDB.get(doc.encounter.reference.split('/').slice(-1).join(''))
+              const unsigned = {
                 name: encounter.reasonCode[0].text,
                 url: location.protocol + '//' + location.host + location.pathname + '?encounter=' + encounter.id,
                 id: encounter.id,
@@ -1174,8 +1174,8 @@ export default defineComponent({
           openPage(id, state.resource, state.category)
         }
       } else if (state.resource == 'medication_statements' && id !== '' && state.new_medication_request === true) {
-        var a = await import('@/assets/fhir/medication_requests.json')
-        var doc1 = a.fhir
+        const a = await import('@/assets/fhir/medication_requests.json')
+        const doc1 = a.fhir
         objectPath.set(doc1, 'medicationCodeableConcept.coding.0.display', objectPath.get(doc, 'medicationCodeableConcept.coding.0.display'))
         objectPath.set(doc1, 'medicationCodeableConcept.coding.0.code', objectPath.get(doc, 'medicationCodeableConcept.coding.0.code'))
         objectPath.set(doc1, 'medicationCodeableConcept.coding.0.system', objectPath.get(doc, 'medicationCodeableConcept.coding.0.system'))
@@ -1220,7 +1220,7 @@ export default defineComponent({
         objectPath.set(doc1, 'dispenseRequest.expectedSupplyDuration.unit', 'days')
         objectPath.set(doc1, 'dispenseRequest.expectedSupplyDuration.code', 'd')
         objectPath.set(doc1, 'dispenseRequest.expectedSupplyDuration.system', 'http://unitsofmeasure.org')
-        var div = removeTags(doc.text.div)
+        const div = removeTags(doc.text.div)
         state.new_medication_request = false
         openForm('add', 'medication_requests', 'all', '', {}, false, doc1, div)
       } else if (state.resource === 'medication_requests' && id !== '') {
@@ -1265,7 +1265,7 @@ export default defineComponent({
     }
     const completeTask = async(id) => {
       const localDB = new PouchDB(prefix + 'tasks')
-      var a = await localDB.get(id)
+      const a = await localDB.get(id)
       objectPath.set(a, 'status', 'completed')
       await sync('tasks', false, state.patient, true, a)
       $q.notify({
@@ -1280,17 +1280,17 @@ export default defineComponent({
       const bundleDoc = {}
       const id = 'nosh_' + uuidv4()
       const time = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
-      var entries = []
+      const entries = []
       objectPath.set(bundleDoc, 'resourceType', 'Bundle')
       objectPath.set(bundleDoc, 'id', id)
       objectPath.set(bundleDoc, '_id', id)
       objectPath.set(bundleDoc, 'type', 'collection')
       objectPath.set(bundleDoc, 'timestamp', time)
-      for (var a in state.oidc) {
+      for (const a in state.oidc) {
         if (objectPath.has(state, 'oidc.' + a + '.docs')) {
-          for (var b of state.oidc[a].docs) {
-            for (var c of b.rows) {
-              var entry = {}
+          for (const b of state.oidc[a].docs) {
+            for (const c of b.rows) {
+              const entry = {}
               objectPath.set(entry, 'resource', c)
               entries.push(entry)
             }
@@ -1308,11 +1308,11 @@ export default defineComponent({
       state.loading = true
       state.sync_on = true
       const oidc = state.oidc
-      for (var a in oidc) {
+      for (const a in oidc) {
         if (objectPath.has(oidc, a + '.docs')) {
-          for (var row of oidc[a].docs) {
+          for (const row of oidc[a].docs) {
             if (objectPath.has(row, 'rows')) {
-              for (var doc of row.rows) {
+              for (const doc of row.rows) {
                 await importFHIR(doc, row.resource, state.patient, oidc[a].origin)
                 reloadDrawer(row.resource)
               }
@@ -1336,7 +1336,7 @@ export default defineComponent({
       const c = state.oidc[a].docs.findIndex(d => d.resource == resource)
       const e = state.oidc[a].docs[c].rows.findIndex(f => f.id == reference_id)
       if (e !== -1) {
-        var reference_doc = objectPath.get(state, 'oidc.' + a + '.docs.' + c + '.rows.' + e)
+        const reference_doc = objectPath.get(state, 'oidc.' + a + '.docs.' + c + '.rows.' + e)
         const reference_new_id = 'nosh_' + uuidv4()
         objectPath.set(reference_doc, 'sync_id', objectPath.get(reference_doc, 'id'))
         objectPath.set(reference_doc, 'id', reference_new_id)
@@ -1365,7 +1365,7 @@ export default defineComponent({
         state.search = state.base.uiSearchBars
       } else {
         if (resource === 'observations' || resource === 'service_requests') {
-          var sub = state.base.categories.find(o => o.value === category)
+          const sub = state.base.categories.find(o => o.value === category)
           state.options = state.base.categories
           state.schema = sub.uiSchema
           state.divContent = sub.divContent
@@ -1376,7 +1376,7 @@ export default defineComponent({
           state.search = state.base[category].uiSearchBars
         }
       }
-      var resource_obj = await loadSchema(resource, category, state.schema, state.online, state.options)
+      const resource_obj = await loadSchema(resource, category, state.schema, state.online, state.options)
       state.schema = resource_obj.schema
       state.options = resource_obj.options
       state.states = resource_obj.states
@@ -1386,7 +1386,7 @@ export default defineComponent({
     }
     const loadMarkdown = () => {
       const mdjs = []
-      for (var row of state.timeline) {
+      for (const row of state.timeline) {
         const ul_arr = []
         if (row.id !== 'intro') {
           mdjs.push({h3: Case.title(pluralize.singular(row.resource)) + ' Details'})
@@ -1395,7 +1395,7 @@ export default defineComponent({
         } else {
           mdjs.push({h3: 'Patient Information'})
         }
-        for (var data of row.content) {
+        for (const data of row.content) {
           if (row.style === 'p') {
             ul_arr.push('**' + data.key + '**: ' + data.value)
           }
@@ -1411,16 +1411,16 @@ export default defineComponent({
       state.loading = true
       state.timeline_scroll = false
       state.timeline = []
-      var resources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references', 'observations']
-      var drawer = []
-      var json = await import('@/assets/ui/drawer.json')
+      const resources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references', 'observations']
+      const drawer = []
+      const json = await import('@/assets/ui/drawer.json')
       drawer = json.rows
-      var timeline = []
-      var observations = []
-      for (var resource of resources) {
-        var base = await import('@/assets/fhir/' + resource + '.json')
-        var resource1 = drawer.find(item => item.resource === resource)
-        var title = 'New ' + Case.title(pluralize.singular(resource))
+      const timeline = []
+      const observations = []
+      for (const resource of resources) {
+        const base = await import('@/assets/fhir/' + resource + '.json')
+        const resource1 = drawer.find(item => item.resource === resource)
+        const title = 'New ' + Case.title(pluralize.singular(resource))
         if (resource !== 'observations') {
           if (resource !== 'encounters') {
             var schema = base.uiSchema.flat()
@@ -1455,8 +1455,8 @@ export default defineComponent({
         try {
           const result = await db.find({selector: {[base.patientField]: {$eq: 'Patient/' + state.patient }, _id: {"$gte": null}}})
           if (resource !== 'observations') {
-            for (var a in result.docs) {
-              var timelineItem = {}
+            for (const a in result.docs) {
+              const timelineItem = {}
               objectPath.set(timelineItem, 'id', objectPath.get(result, 'docs.' + a + '.id'))
               objectPath.set(timelineItem, 'title', fhirReplace('title', base, result.docs[a], schema))
               objectPath.set(timelineItem, 'subtitle', objectPath.get(result, 'docs.' + a + '.' + base.timelineDate) + ', ' + title)
@@ -1474,8 +1474,8 @@ export default defineComponent({
                 const bundle_result = await bundle_db.find({selector: {'entry': {"$elemMatch": {"resource.encounter.reference": 'Encounter/' + objectPath.get(result, 'docs.' + a + '.doc.id')}}, _id: {"$gte": null}}})
                 if (bundle_result.docs.length > 0) {
                   bundle_result.docs.sort((a1, b1) => moment(b1.timestamp) - moment(a1.timestamp))
-                  var history = []
-                  for (var b in bundle_result.docs) {
+                  const history = []
+                  for (const b in bundle_result.docs) {
                     if (!objectPath.has(timelineItem, 'bundle')) {
                       objectPath.set(timelineItem, 'bundle', objectPath.get(bundle_result, 'docs.' + b))
                       history.push(objectPath.get(bundle_result, 'docs.' + b))
@@ -1489,14 +1489,14 @@ export default defineComponent({
               timeline.push(timelineItem)
             }
           } else {
-            for (var f in result.docs) {
+            for (const f in result.docs) {
               const category = result.docs[f].category[0].coding[0].code
               const sub = base.categories.find(o => o.value === category)
               var schema = sub.uiSchema.flat()
               schema = await loadSelect('practitioners', 'performer', schema)
               if (category !== 'exam' && category !== 'vital-signs' && category !== 'social-history' && category !== 'all') {
-                var category1 = Case.camel(category)
-                var category2 = await fetchJSON(category1, state.online)
+                const category1 = Case.camel(category)
+                const category2 = await fetchJSON(category1, state.online)
                 if (category === 'activity') {
                   const a = []
                   for (const b of category2) {
@@ -1504,11 +1504,11 @@ export default defineComponent({
                   }
                   objectPath.set(select, category, a)
                 }
-                var observationsCodes = []
+                const observationsCodes = []
                 var c1 = 0
                 var d1 = ''
-                var f1 = []
-                for (var e1 of category2) {
+                const f1 = []
+                for (const e1 of category2) {
                   if (category === 'activity') {
                     if (!f1.includes(objectPath.get(e1, 'CF_CODE10'))) {
                       objectPath.set(observationsCodes, c1 + '.code', objectPath.get(e1, 'CF_CODE10'))
@@ -1534,7 +1534,7 @@ export default defineComponent({
                 }
                 schema = addSchemaOptions('code', observationsCodes, 'code', 'display', schema)
               }
-              var objsItem = {}
+              const objsItem = {}
               objectPath.set(objsItem, 'id', objectPath.get(result, 'docs.' + f + '.id'))
               objectPath.set(objsItem, 'title', fhirReplace('title', base, result.docs[f], schema))
               objectPath.set(objsItem, 'subtitle', objectPath.get(result, 'docs.' + f + '.' + base.timelineDate) + ', ' + title)
@@ -1609,9 +1609,9 @@ export default defineComponent({
     }
     const lockThread = async(id) => {
       const localDB = new PouchDB(prefix + 'communications')
-      var a = await localDB.get(id)
+      const a = await localDB.get(id)
       const arr = await thread(a, state.online, state.patient)
-      for (var b in arr) {
+      for (const b in arr) {
         objectPath.set(arr, b + '.status', 'completed')
         await localDB.put(arr[b])
       }
@@ -1653,8 +1653,8 @@ export default defineComponent({
       state.resource = resource
       state.bundleDoc = doc
       state.bundleHistory = history
-      for (var a in history) {
-        var b = {
+      for (const a in history) {
+        const b = {
           value: a,
           label: history[a].timestamp
         }
@@ -1713,13 +1713,13 @@ export default defineComponent({
       const bundleDoc = {}
       const id = 'nosh_' + uuidv4()
       const time = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
-      var entries = []
+      const entries = []
       objectPath.set(bundleDoc, 'resourceType', 'Bundle')
       objectPath.set(bundleDoc, 'id', id)
       objectPath.set(bundleDoc, '_id', id)
       objectPath.set(bundleDoc, 'type', 'collection')
       objectPath.set(bundleDoc, 'timestamp', time)
-      for (var resource of resources.rows) {
+      for (const resource of resources.rows) {
         const db = new PouchDB(prefix + resource.resource)
         const result = await db.allDocs({
           include_docs: true,
@@ -1727,8 +1727,8 @@ export default defineComponent({
           startkey: 'nosh_'
         })
         if (result.rows.length > 0) {
-          for (var a of result.rows) {
-            var entry = {}
+          for (const a of result.rows) {
+            const entry = {}
             objectPath.set(entry, 'resource', a.doc)
             entries.push(entry)
           }
@@ -1962,9 +1962,9 @@ export default defineComponent({
           state.pulldown_category = 'tobacco'
           state.pulldown_title = 'Set Smoking Status'
         }
-        var sub = state.pulldown_base.categories.find(o => o.value === state.pulldown_category)
+        const sub = state.pulldown_base.categories.find(o => o.value === state.pulldown_category)
         state.pulldown_schema = sub.uiSchema
-        var old_val = await observationStatusRaw(type, state.patient)
+        const old_val = await observationStatusRaw(type, state.patient)
         if (objectPath.has(old_val, 'code')) {
           state.pulldown_defaults = {
             value: old_val.code
@@ -2049,7 +2049,7 @@ export default defineComponent({
       state.registration.waiting.postMessage({ type: 'SKIP_WAITING' })
     }
     const refreshPatient = async(drawer = true) => {
-      var doc = await patientDB.get(state.patient)
+      const doc = await patientDB.get(state.patient)
       state.patientDoc = doc
       state.patientName = doc.name[0].given[0] + ' ' + doc.name[0].family
       state.patientAge = '' + moment().diff(doc.birthDate, 'years')
@@ -2060,7 +2060,7 @@ export default defineComponent({
       } else {
         state.patientPhoto = ''
       }
-      var nickname = doc.name.find(name => name.use === 'nickname')
+      const nickname = doc.name.find(name => name.use === 'nickname')
       if (nickname !== undefined) {
         state.patientNickname = nickname.given[0]
       }
@@ -2123,8 +2123,8 @@ export default defineComponent({
     }
     const removeOIDC = (index, resource, origin) => {
       state.oidc = auth.oidc
-      var a = state.oidc.findIndex(b => b.origin == origin)
-      var c = state.oidc[a].docs.findIndex(d => d.resource == resource)
+      const a = state.oidc.findIndex(b => b.origin == origin)
+      const c = state.oidc[a].docs.findIndex(d => d.resource == resource)
       objectPath.del(state, 'oidc.' + a + '.docs.' + c + '.rows.' + index)
       auth.setOIDC(state.oidc)
     }
@@ -2133,15 +2133,15 @@ export default defineComponent({
     }
     const setCompositionSection = async(resource) => {
       if (objectPath.has(state, 'compositionDoc.id')) {
-        var doc = state.compositionDoc
-        var section = {}
+        const doc = state.compositionDoc
+        const section = {}
         var text = ''
-        var sections_arr = []
+        const sections_arr = []
         const a = new PouchDB(prefix + resource)
-        var b = await import('@/assets/fhir/' + resource + '.json')
+        const b = await import('@/assets/fhir/' + resource + '.json')
         const result = await a.find({selector: {[b.activeField]: {$ne: 'inactive'}, _id: {"$gte": null}}})
         text = '<ul>'
-        for (var c in result.docs) {
+        for (const c in result.docs) {
           text += '<li>' + removeTags(result.docs[c].text.div) + '</li>'
         }
         text += '</ul>'
@@ -2149,26 +2149,26 @@ export default defineComponent({
         objectPath.set(section, 'text.div', text)
         objectPath.set(section, 'coding.coding.0.system', 'http://loinc.org')
         objectPath.set(section, 'text.status', 'generated')
-        var sections = await fetchJSON('compSection', state.online)
-        for (var d in sections) {
+        const sections = await fetchJSON('compSection', state.online)
+        for (const d in sections) {
           if (sections[d].Code !== undefined) {
             sections_arr.push(sections[d])
           }
         }
-        var f = sections_arr.find(e => e.resource === resource)
+        const f = sections_arr.find(e => e.resource === resource)
         objectPath.set(section, 'coding.coding.0.code', f.Code)
         objectPath.set(section, 'coding.coding.0.display', f.Display)
         objectPath.set(section, 'title', f.Display)
         objectPath.set(section, 'author.0.reference', state.user.reference)
         objectPath.set(section, 'author.0.display', state.user.display)
-        var g = doc.section.findIndex((h) => h.title === f.Display)
+        const g = doc.section.findIndex((h) => h.title === f.Display)
         if (g !== -1) {
           doc.section.splice(g,1)
         }
         doc.section.push(section)
         await sync('compositions', false, state.patient, true, doc)
         const h = new PouchDB(prefix + 'compositions')
-        var doc1 = await h.get(doc.id)
+        const doc1 = await h.get(doc.id)
         state.compositionDoc = doc1
         $q.notify({
           message: 'The ' + Case.capital(resource) + ' are now acknowledged in the encounter.',
@@ -2180,18 +2180,18 @@ export default defineComponent({
       }
     }
     const searchTimeline = (searchTerm) => {
-      var resources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references']
-      var arr2 = []
-      var arr3 = []
+      const resources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references']
+      const arr2 = []
+      const arr3 = []
       state.timeline_filter = []
-      for (var resource of resources) {
-        var arr = state.timeline.filter(a => a.resource === resource)
+      for (const resource of resources) {
+        const arr = state.timeline.filter(a => a.resource === resource)
         if (arr.length > 0) {
           var all_keys = require('all-object-keys')
-          var keys = all_keys(arr[0])
-          var arr1 = []
-          var keys1 = []
-          for (var b in arr) {
+          const keys = all_keys(arr[0])
+          const arr1 = []
+          const keys1 = []
+          for (const b in arr) {
             if (resource === 'encounters') {
               if (objectPath.has(arr[b], 'bundle')) {
                 arr3.push({encounter_id: arr[b].id, doc: arr[b].bundle, keys: all_keys(arr[b].bundle)})
@@ -2206,18 +2206,18 @@ export default defineComponent({
           const fuse = new Fuse(arr1, {keys: keys, includeScore: true})
           const result = fuse.search(searchTerm)
           const shortresult = result.slice(0,20)
-          for (var i in shortresult) {
-            var j = {}
+          for (const i in shortresult) {
+            const j = {}
             j.id = result[i].item.id
             j.score = result[i].score
             arr2.push(j)
           }
-          var keys2 = [...new Set(keys1)]
+          const keys2 = [...new Set(keys1)]
           const fuse1 = new Fuse(arr3, {keys: keys2, includeScore: true})
           const result1 = fuse1.search(searchTerm)
           const shortresult1 = result1.slice(0,20)
-          for (var k in shortresult1) {
-            var l = {}
+          for (const k in shortresult1) {
+            const l = {}
             l.id = result1[k].item.id
             l.score = result1[k].score
             arr2.push(j)
@@ -2225,7 +2225,7 @@ export default defineComponent({
         }
       }
       arr2.sort((k, l) => l.score - k.score)
-      for (var m in arr2) {
+      for (const m in arr2) {
         state.timeline_filter.push(state.timeline.find(n => n.id === arr2[m].id))
       }
       state.searchResults = true
@@ -2235,12 +2235,12 @@ export default defineComponent({
       state.id = id
     }
     const signEncounter = async() => {
-      var resources = ['compositions', 'observations', 'care_plans']
-      var entries = []
-      var references = []
-      var bundleDoc = {}
-      var id = 'nosh_' + uuidv4()
-      var time = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
+      const resources = ['compositions', 'observations', 'care_plans']
+      const entries = []
+      const references = []
+      const bundleDoc = {}
+      const id = 'nosh_' + uuidv4()
+      const time = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
       objectPath.set(bundleDoc, 'resourceType', 'Bundle')
       objectPath.set(bundleDoc, 'id', id)
       objectPath.set(bundleDoc, '_id', id)
@@ -2254,85 +2254,85 @@ export default defineComponent({
       objectPath.set(bundleDoc, 'sigFormat', 'application/jws')
       objectPath.set(bundleDoc, 'data', 'ewogICJhbGciOiAiUlMyNTYiLAogICJraWQiOiAiMTMzNzQ3MTQxMjU1IiwKICAiaWF0IjogMCwKICAiaXNzIjogIkM9R0IsIEw9TG9uZG9uLCBPVT1OdWFwYXkgQVBJLCBPPU51YXBheSwgQ049eWJvcXlheTkycSIsCiAgImI2NCI6IGZhbHNlLAogICJjcml0IjogWwogICAgImlhdCIsCiAgICAiaXNzIiwKICAgICJiNjQiCiAgXQp9..d_cZ46lwNiaFHAu_saC-Zz4rSzNbevWirO94EmBlbOwkB1L78vGbAnNjUsmFSU7t_HhL-cyMiQUDyRWswsEnlDljJsRi8s8ft48ipy2SMuZrjPpyYYMgink8nZZK7l-eFJcTiS9ZWezAAXF_IJFXSTO5ax9z6xty3zTNPNMV9W7aH8fEAvbUIiueOhH5xNHcsuqlOGygKdFz2rbjTGffoE_6zS4Dry-uX5mts2duLorobUimGsdlUcSM6P6vZEtcXaJCdjrT9tuFMh4CkX9nqk19Bq2z3i-SX4JCPvhD2r3ghRmX0gG08UcvyFVbrnVZJnpl4MU8V4Nr3-2M5URZOg')
       var base = ''
-      for (var resource of resources) {
+      for (const resource of resources) {
         base = await import('@/assets/fhir/' + resource + '.json')
         const db = new PouchDB(prefix + resource)
         const results = await db.find({selector: {[base.indexField]: {$eq: [base.indexRoot] + '/' + state.encounter}, _id: {"$gte": null}}})
-        for (var a in results.docs) {
-          var resource1 = Case.snake(pluralize(results.docs[a].resourceType))
-          var item = {}
-          var entry = {}
+        for (const a in results.docs) {
+          const resource1 = Case.snake(pluralize(results.docs[a].resourceType))
+          const item = {}
+          const entry = {}
           if (resource1 !== 'observations') {
             item = base.uiSchema.flat().find((b) => b.id === base.activeField)
           } else {
             item = base.categories[0].uiSchema.flat().find((b) => b.id === base.activeField)
           }
           if (resource1 === 'compositions') {
-            var subject = {}
+            const subject = {}
             objectPath.set(subject, 'resource', Case.snake(pluralize(results.docs[a].subject.reference.split('/').slice(0,-1).join(''))))
             objectPath.set(subject, 'id', results.docs[a].subject.reference.split('/').slice(-1).join(''))
             references.push(subject)
-            for (var c in results.docs[a].author) {
-              var author = {}
+            for (const c in results.docs[a].author) {
+              const author = {}
               objectPath.set(author, 'resource', Case.snake(pluralize(results.docs[a].author[c].reference.split('/').slice(0,-1).join(''))))
               objectPath.set(author, 'id', results.docs[a].author[c].reference.split('/').slice(-1).join(''))
               references.push(author)
             }
-            var encounter = {}
+            const encounter = {}
             objectPath.set(encounter, 'resource', Case.snake(pluralize(results.docs[a].encounter.reference.split('/').slice(0,-1).join(''))))
             objectPath.set(encounter, 'id', results.docs[a].encounter.reference.split('/').slice(-1).join(''))
             references.push(encounter)
           }
           if (resource1 === 'care_plans') {
-            for (var d in results.docs[a].activity) {
-              var activity = {}
+            for (const d in results.docs[a].activity) {
+              const activity = {}
               objectPath.set(activity, 'resource', Case.snake(pluralize(results.docs[a].activity[d].reference.split('/').slice(0,-1).join(''))))
               objectPath.set(activity, 'id', results.docs[a].activity[d].reference.split('/').slice(-1).join(''))
               references.push(activity)
             }
-            for (var d1 in results.docs[a].addresses) {
-              var addresses = {}
+            for (const d1 in results.docs[a].addresses) {
+              const addresses = {}
               objectPath.set(addresses, 'resource', Case.snake(pluralize(results.docs[a].addresses[d1].reference.split('/').slice(0,-1).join(''))))
               objectPath.set(addresses, 'id', results.docs[a].addresses[d1].reference.split('/').slice(-1).join(''))
               references.push(addresses)
             }
-            for (var e in results.docs[a].author) {
-              var author1 = {}
+            for (const e in results.docs[a].author) {
+              const author1 = {}
               objectPath.set(author1, 'resource', Case.snake(pluralize(results.docs[a].author[e].reference.split('/').slice(0,-1).join(''))))
               objectPath.set(author1, 'id', results.docs[a].author[e].reference.split('/').slice(-1).join(''))
-              var e2 = references.findIndex(e1 => {return e1.id == author1.id && e1.resource == author1.resource})
+              const e2 = references.findIndex(e1 => {return e1.id == author1.id && e1.resource == author1.resource})
               if (e2 == -1) {
                 references.push(author1)
               }
             }
           }
           if (resource1 === 'observations') {
-            for (var f in results.docs[a].performer) {
-              var performer = {}
+            for (const f in results.docs[a].performer) {
+              const performer = {}
               objectPath.set(performer, 'resource', Case.snake(pluralize(results.docs[a].performer[f].reference.split('/').slice(0,-1).join(''))))
               objectPath.set(performer, 'id', results.docs[a].performer[f].reference.split('/').slice(-1).join(''))
-              var f2 = references.findIndex(f1 => {return f1.id == performer.id && f1.resource == performer.resource})
+              const f2 = references.findIndex(f1 => {return f1.id == performer.id && f1.resource == performer.resource})
               if (f2 == -1) {
                 references.push(performer)
               }
             }
           }
-          var doc = results.docs[a]
+          const doc = results.docs[a]
           objectPath.set(doc, item.model, base.finalStatus)
           await sync(resource1, false, state.patient, true, doc)
           objectPath.set(entry, 'resource', doc)
           entries.push(entry)
         }
       }
-      for (var reference of references) {
+      for (const reference of references) {
         const db1 = new PouchDB(prefix + reference.resource)
-        var results1 = await db1.get(reference.id)
+        const results1 = await db1.get(reference.id)
         entries.push({resource: results1})
       }
       objectPath.set(bundleDoc, 'entry', entries)
       await sync('bundles', false, state.couchdb, state.auth, state.pin, state.patient, true, bundleDoc)
       // remove from unsigned
-      var h = state.user.unsigned.map(g => g.id).indexOf(state.encounter)
+      const h = state.user.unsigned.map(g => g.id).indexOf(state.encounter)
       if (h !== -1) {
         state.user.unsigned.splice(h, 1)
         auth.update(state.user)
@@ -2391,7 +2391,7 @@ export default defineComponent({
     }
     const unset = (type) => {
       if (type == 'encounters') {
-        var a = state.encounter
+        const a = state.encounter
         state.encounter = ''
         state.careplanDoc = {}
         state.compositionDoc = {}
@@ -2406,7 +2406,7 @@ export default defineComponent({
           ]
         })
       } else {
-        var b = state.careplanDoc
+        const b = state.careplanDoc
         state.careplanDoc = {}
         $q.notify({
           message: 'The Care Plan for ' + b.contained[0].code.coding[0].display + ' is now unset from the workspace!',
@@ -2418,12 +2418,12 @@ export default defineComponent({
       }
     }
     const updateInbox = async(user) => {
-      var a = [
+      const a = [
         {state: 'messages', resource: 'communications'},
         {state: 'tasks', resource: 'tasks'}
       ]
-      for (var b of a) {
-        var c = await inbox(b.resource, user)
+      for (const b of a) {
+        const c = await inbox(b.resource, user)
         if (objectPath.has(c, 'docs')) {
           objectPath.set(state, b.state, c.docs.length)
         }
@@ -2431,9 +2431,9 @@ export default defineComponent({
       var oidc = 0
       if (Array.isArray(state.oidc)) {
         if (state.oidc.length > 0) {
-          for (var d of state.oidc) {
+          for (const d of state.oidc) {
             if (d.docs.length > 0) {
-              for (var e of d.docs) {
+              for (const e of d.docs) {
                 if (objectPath.has(e, 'rows')) {
                   if (e.rows.length > 0) {
                     oidc = oidc + e.rows.length
