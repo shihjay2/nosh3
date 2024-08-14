@@ -727,7 +727,7 @@ export default defineComponent({
         await checkUser(state.rows)
       }
       if (props.oidc !== null && props.oidc.length > 0) {
-        const a1 = state.rows.length
+        let a1 = state.rows.length
         for (const e in props.oidc) {
           if (objectPath.has(props, 'oidc.' + e + '.docs')) {
             const oidc_results = props.oidc[e].docs.find(f => f.resource === props.resource)
