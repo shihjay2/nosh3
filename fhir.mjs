@@ -25,7 +25,7 @@ router.delete('/api/:pid/:type/:id', verifyJWT, deleteSecuredResource) //delete
 router.get('/api/:pid/:type/:id/_history/:vid', verifyJWT, getSecuredResourceVersion) //vread
 
 async function deleteSecuredResource(req, res) {
-  var prefix = ''
+  let prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.pid + '_'
   }
@@ -35,7 +35,7 @@ async function deleteSecuredResource(req, res) {
   try {
     const doc = await db.get(req.params.id)
     const result = await db.remove(doc)
-    var opts = {
+    const opts = {
       doc_db: Case.snake(pluralize(req.params.type)),
       doc_id: result.id,
       diff: null
@@ -63,7 +63,7 @@ async function deleteSecuredResource(req, res) {
 }
 
 async function getSecuredResource(req, res) {
-  var prefix = ''
+  let prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.pid + '_'
   }
@@ -79,7 +79,7 @@ async function getSecuredResource(req, res) {
 }
 
 async function getSecuredResourceVersion(req, res) {
-  var prefix = ''
+  let prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.pid + '_'
   }
@@ -94,20 +94,20 @@ async function getSecuredResourceVersion(req, res) {
 }
 
 async function postSecuredResource(req, res) {
-  var prefix = ''
+  let prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.pid + '_'
   }
   await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
   const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
   try {
-    var id = 'nosh_' + uuidv4()
+    const id = 'nosh_' + uuidv4()
     objectPath.set(req, 'body.id', id)
     objectPath.set(req, 'body._id', id)
     objectPath.set(req, 'body.subject.reference', 'Patient/' + req.params.pid)
     const body = await db.put(req.body)
     await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
-    var opts = {
+    const opts = {
       doc_db: Case.snake(pluralize(req.params.type)),
       doc_id: body.id,
       diff: null
@@ -123,15 +123,15 @@ async function postSecuredResource(req, res) {
 }
 
 async function putSecuredResource(req, res) {
-  var prefix = ''
+  let prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.pid + '_'
   }
   await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
   const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
   try {
-    var prev_data = ''
-    var diff = null
+    let prev_data = ''
+    let diff = null
     try {
       const prev = await db.get(req.body._id)
       prev_data = JSON.stringify(prev)
@@ -141,11 +141,11 @@ async function putSecuredResource(req, res) {
     const body = await db.put(req.body)
     await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
     if (prev_data !== '') {
-      var diff_result = fastDiff(JSON.stringify(req.body), prev_data)
+      const diff_result = fastDiff(JSON.stringify(req.body), prev_data)
       console.log(diff_result)
       diff = diff_result.join(',')
     }
-    var opts = {
+    const opts = {
       doc_db: Case.snake(pluralize(req.params.type)),
       doc_id: body.id,
       diff: diff
@@ -161,17 +161,17 @@ async function putSecuredResource(req, res) {
 }
 
 async function querySecuredResource(req, res) {
-  var prefix = ''
+  let prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.pid + '_'
   }
   await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
   const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
-  var entries = []
-  var selector = []
-  var reference_arr = ['subject','patient','encounter','asserter','requester','author']
-  for (var [key, value] of Object.entries(req.query)) {
-    var key1 = ''
+  const entries = []
+  const selector = []
+  const reference_arr = ['subject','patient','encounter','asserter','requester','author']
+  for (const [key, value] of Object.entries(req.query)) {
+    let key1 = ''
     if (key == 'patient') {
       key = 'subject'
     }
@@ -184,16 +184,16 @@ async function querySecuredResource(req, res) {
   }
   selector.push({_id: {"$gte": null}})
   const result = await db.find({selector: {$and: selector}})
-  var i = 0
-  for (var a in result.docs) {
+  let i = 0
+  for (const a in result.docs) {
     entries.push({
       resource: result.docs[a],
       search: {mode: 'match'}
     })
     i++
   }
-  var id = 'nosh_' + uuidv4()
-  var time = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
+  const id = 'nosh_' + uuidv4()
+  const time = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
   res.status(200).json({
     resourceType: 'Bundle',
     id: id,

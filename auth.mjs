@@ -60,10 +60,10 @@ function config(req, res) {
 async function authenticate(req, res) {
   if (req.get('referer') === req.protocol + '://' + req.hostname + '/app/login') {
     if (req.body.auth === 'magic') {
-      var email = req.body.email
+      const email = req.body.email
     }
-    var pin = process.env.COUCHDB_ENCRYPT_PIN
-    var prefix = ''
+    const pin = process.env.COUCHDB_ENCRYPT_PIN
+    let prefix = ''
     if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
       prefix = req.body.patient + '_'
       pin = await getPIN(req.body.patient)
@@ -74,7 +74,7 @@ async function authenticate(req, res) {
       const db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
       const result_users = await db_users.find({selector: {'email': {$eq: email}}})
       if (result_users.docs.length > 0) {
-        var payload = {
+        const payload = {
           "_auth": req.body,
           "_nosh": {
             "email": email,
@@ -157,8 +157,8 @@ async function authenticate(req, res) {
 }
 
 async function gnapAuth(req, res) {
-  var pin = process.env.COUCHDB_ENCRYPT_PIN
-  var prefix = ''
+  const pin = process.env.COUCHDB_ENCRYPT_PIN
+  let prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.body.patient + '_'
     pin = await getPIN(req.body.patient)
@@ -191,7 +191,7 @@ async function gnapAuth(req, res) {
     try {
       const doc = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/tx', signedRequest)
         .then((res) => res.json())
-      var db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'gnap', settings.couchdb_auth)
+      const db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'gnap', settings.couchdb_auth)
       objectPath.set(doc, '_id', doc.interact.redirect.substring(doc.interact.redirect.lastIndexOf('/') + 1))
       objectPath.set(doc, 'nonce', objectPath.get(body, 'interact.finish.nonce'))
       objectPath.set(doc, 'route', req.body.route)
@@ -205,8 +205,8 @@ async function gnapAuth(req, res) {
 }
 
 async function gnapProxy(req, res) {
-  var pin = process.env.COUCHDB_ENCRYPT_PIN
-  var prefix = ''
+  const pin = process.env.COUCHDB_ENCRYPT_PIN
+  let prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.body.patient + '_'
     pin = await getPIN(req.body.patient)
@@ -295,8 +295,8 @@ async function gnapResources(req, res) {
 }
 
 async function gnapVerify(req, res) {
-  var pin = process.env.COUCHDB_ENCRYPT_PIN
-  var prefix = ''
+  const pin = process.env.COUCHDB_ENCRYPT_PIN
+  let prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.patient + '_'
     pin = await getPIN(req.params.patient)
@@ -304,9 +304,9 @@ async function gnapVerify(req, res) {
   if (!pin) {
     res.status(401).send('Unauthorized - No PIN set')
   } else {
-    var db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'gnap', settings.couchdb_auth)
+    const db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'gnap', settings.couchdb_auth)
     try {
-      var result = await db.get(req.query.interact_ref)
+      const result = await db.get(req.query.interact_ref)
       const hash = crypto.createHash('sha256')
       hash.update(result.nonce + '\n')
       hash.update(result.interact.finish + '\n')
@@ -335,7 +335,7 @@ async function gnapVerify(req, res) {
                 maia: urlFix(process.env.MAIA_URL) || '',
                 prefix: prefix
               }
-              var user_id = ''
+              let user_id = ''
               // assume access token is JWT that contains verifiable credentials and if valid, attach to payload
               const jwt = doc.access_token.value
               try {
@@ -345,7 +345,7 @@ async function gnapVerify(req, res) {
                   const introspect_result = await introspect(req, jwt, 'read', location)
                   if (objectPath.has(introspect_result, 'success')) {
                     if (objectPath.has(verify_results, 'payload.vc')) {
-                      var name_obj = getName(objectPath.get(verify_results, 'payload.vc'))
+                      const name_obj = getName(objectPath.get(verify_results, 'payload.vc'))
                       objectPath.set(nosh, 'display', name_obj.display)
                       const npi = getNPI(objectPath.get(verify_results, 'payload.vc'))
                       if (npi !== '') {
@@ -529,9 +529,9 @@ async function gnapVerify(req, res) {
 
 async function createJWT(sub, aud, iss, payload=null) {
   // aud is audience - base url of this server
-  var keys = await getKeys()
+  const keys = await getKeys()
   if (keys.length === 0) {
-    var pair = await createKeyPair()
+    const pair = await createKeyPair()
     keys.push(pair)
   }
   const rsaPrivateKey = await jose.importJWK(keys[0].privateKey, 'RS256')
@@ -542,15 +542,16 @@ async function createJWT(sub, aud, iss, payload=null) {
       "role": "provider" // provider, patient, support, proxy
     }
   }
+  let payload_final = {}
   if (payload !== null) {
-    var payload_final = {
+    payload_final = {
       ...payload_vc,
       ...payload
     }
   } else {
-    var payload_final = payload_vc
+    payload_final = payload_vc
   }
-  var header = { alg: 'RS256' }
+  const header = { alg: 'RS256' }
   const jwt = await new jose.SignJWT(payload_final)
     .setProtectedHeader(header)
     .setIssuedAt()
@@ -568,9 +569,9 @@ async function verifyJWTEndpoint(req, res) {
 }
 
 async function exportJWT(req, res) {
-  var keys = await getKeys()
+  const keys = await getKeys()
   if (keys.length === 0) {
-    var pair = await createKeyPair()
+    const pair = await createKeyPair()
     keys.push(pair)
   }
   const key = await jose.importJWK(keys[0].publicKey)
@@ -579,10 +580,10 @@ async function exportJWT(req, res) {
 }
 
 async function jwks(req, res) {
-  var keys_arr = []
-  var keys = await getKeys()
+  const keys_arr = []
+  const keys = await getKeys()
   if (keys.length === 0) {
-    var pair = await createKeyPair()
+    const pair = await createKeyPair()
     keys.push(pair)
   }
   keys_arr.push(keys[0].publicKey)
@@ -592,15 +593,15 @@ async function jwks(req, res) {
 }
 
 async function addPatient(req, res, next) {
-  var opts = JSON.parse(JSON.stringify(settings.couchdb_auth))
+  const opts = JSON.parse(JSON.stringify(settings.couchdb_auth))
   objectPath.set(opts, 'skip_setup', true)
   const check = new PouchDB(urlFix(settings.couchdb_uri) + 'users', opts)
-  var b = false
+  let b = false
   try {
     const info = await check.info()
     if (objectPath.has(info, 'error')) {
       await couchdbInstall()
-      var c = 0
+      let c = 0
       while (!b && c < 40) {
         b = await isReachable(settings.couchdb_uri)
         if (b || c === 39) {
@@ -625,7 +626,7 @@ async function addPatient(req, res, next) {
       role: 'patient',
       did: req.body.user.did
     }
-    var patient_id = 'nosh_' + uuidv4()
+    const patient_id = 'nosh_' + uuidv4()
     const patient = {
       "_id": patient_id,
       "resourceType": "Patient",

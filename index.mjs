@@ -56,15 +56,16 @@ app.get('/app/verify', (req, res) => {
 })
 
 app.get('/fetch/:file/:type?', (req, res) => {
-  var type = 'json'
+  let type = 'json'
   if (req.params.type == 'txt') {
-    var type = 'txt'
+    type = 'txt'
   }
+  let raw = {}
   if (type === 'json') {
-    var raw = fs.readFileSync('./assets/' + req.params.file + '.' + type)
+    raw = fs.readFileSync('./assets/' + req.params.file + '.' + type)
     res.status(200).json(JSON.parse(raw))
   } else {
-    var raw = fs.readFileSync('./assets/' + req.params.file + '.' + type, 'utf-8')
+    raw = fs.readFileSync('./assets/' + req.params.file + '.' + type, 'utf-8')
     res.status(200).send(raw)
   }
 })
@@ -89,7 +90,7 @@ app.post('/oidc', async(req, res) => {
 })
 
 app.get('/presentation/:pid/:id', async(req, res) => {
-  var prefix = ''
+  let prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.pid + '_'
   }
@@ -104,7 +105,7 @@ app.get('/presentation/:pid/:id', async(req, res) => {
 })
 
 app.get('/ready', async(req, res) => {
-  var b = false
+  let b = false
   for (let a = 0; a < 20; a++) {
     if (!b) {
       b = await isReachable(settings.couchdb_uri)
@@ -117,16 +118,16 @@ app.get('/start', async(req, res) => {
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     res.status(200).send('Invalid URL for this instance')
   }
-  var opts = JSON.parse(JSON.stringify(settings.couchdb_auth))
+  const opts = JSON.parse(JSON.stringify(settings.couchdb_auth))
   objectPath.set(opts, 'skip_setup', true)
   const check = new PouchDB(urlFix(settings.couchdb_uri) + 'users', opts)
   try {
     const info = await check.info()
     if (objectPath.has(info, 'error')) {
-      var b = false
+      let b = false
       if (info.error == 'not_found') {
         await couchdbInstall()
-        var c = 0
+        let c = 0
         while (!b && c < 40) {
           b = await isReachable(settings.couchdb_uri)
           if (b || c === 39) {

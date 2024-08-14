@@ -23,11 +23,11 @@ PouchDB.plugin(comdb)
 // const jwksService = jose.createRemoteJWKSet(new URL(settings.jwks_uri))
 
 async function couchdbConfig(section, key, value) {
-  var opts = JSON.parse(JSON.stringify(settings.couchdb_auth))
+  const opts = JSON.parse(JSON.stringify(settings.couchdb_auth))
   objectPath.set(opts, 'headers', {'Content-Type': 'application/json'})
-  var data = JSON.stringify(value).replace(/\\/g, "\\\\")
+  const data = JSON.stringify(value).replace(/\\/g, "\\\\")
   try {
-    var res = await axios.put(settings.couchdb_uri + '/_node/_local/_config/' + section + '/' + key, data, opts)
+    const res = await axios.put(settings.couchdb_uri + '/_node/_local/_config/' + section + '/' + key, data, opts)
     return res.data
   } catch (e) {
     console.log(e.response.data)
@@ -37,11 +37,12 @@ async function couchdbConfig(section, key, value) {
 
 async function couchdbDatabase(patient_id='', protocol='', hostname='', email='') {
   const resources = JSON.parse(fs.readFileSync('./assets/resources.json'))
-  var prefix = ''
+  let prefix = ''
+  let gnap_resources = []
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = patient_id + '_'
-    var base_url = urlFix(protocol + '://' + hostname + '/')
-    var gnap_resources = [
+    const base_url = urlFix(protocol + '://' + hostname + '/')
+    gnap_resources = [
       {
         "type": "App",
         "actions": ["read", "write", "delete"],
@@ -53,7 +54,7 @@ async function couchdbDatabase(patient_id='', protocol='', hostname='', email=''
       }
     ]
   }
-  for (var resource of resources.rows) {
+  for (const resource of resources.rows) {
     const db_resource = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource.resource, settings.couchdb_auth)
     await db_resource.info()
     if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
@@ -140,14 +141,14 @@ async function couchdbDatabase(patient_id='', protocol='', hostname='', email=''
 }
 
 async function couchdbInstall() {
-  var keys = await getKeys()
+  const keys = await getKeys()
   if (keys.length === 0) {
-    var pair = await createKeyPair()
+    const pair = await createKeyPair()
     keys.push(pair)
   }
   const key = await jose.importJWK(keys[0].publicKey)
   const pem = await jose.exportSPKI(key)
-  var result = []
+  const result = []
   const commands = [
     // {section: 'httpd', key: 'enable_cors', value: 'true'},
     // {section: 'cors', key: 'credentials', value: 'true'},
@@ -157,8 +158,8 @@ async function couchdbInstall() {
     // {section: 'chttpd', key: 'authentication_handlers', value: '{chttpd_auth, cookie_authentication_handler}, {chttpd_auth, jwt_authentication_handler}, {chttpd_auth, default_authentication_handler}'},
     {section: 'jwt_keys', key: 'rsa:_default', value: pem}
   ]
-  for (var command of commands) {
-    var a = await couchdbConfig(command.section, command.key, command.value)
+  for (const command of commands) {
+    const a = await couchdbConfig(command.section, command.key, command.value)
     result.push({command: command, result: a})
   }
   await couchdbRestart()
@@ -167,10 +168,10 @@ async function couchdbInstall() {
 }
 
 async function couchdbRestart() {
-  var opts = settings.couchdb_auth
+  const opts = settings.couchdb_auth
   objectPath.set(opts, 'headers', {'Content-Type': 'application/json'})
   try {
-    var res = await axios.post(settings.couchdb_uri + '/_node/_local/_restart', '', opts)
+    const res = await axios.post(settings.couchdb_uri + '/_node/_local/_restart', '', opts)
     objectPath.del(opts, 'headers')
     return res.data
   } catch (e) {
@@ -181,21 +182,22 @@ async function couchdbRestart() {
 
 async function couchdbUpdate(patient_id='', protocol='', hostname='') {
   const resources = JSON.parse(fs.readFileSync('./assets/resources.json'))
-  var prefix = ''
-  var email = ''
-  var gnap_resources = []
+  let prefix = ''
+  let email = ''
+  let gnap_resources = []
+  let base_url = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = patient_id + '_'
-    var base_url = urlFix(protocol + '://' + hostname + '/')
+    base_url = urlFix(protocol + '://' + hostname + '/')
     const db_users = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'users', settings.couchdb_auth)
     const result_users = await db_users.find({selector: {'role': {"$eq": 'patient'}}})
     email = result_users.docs[0].email
   }
-  for (var resource of resources.rows) {
-    var opts = JSON.parse(JSON.stringify(settings.couchdb_auth))
+  for (const resource of resources.rows) {
+    const opts = JSON.parse(JSON.stringify(settings.couchdb_auth))
     objectPath.set(opts, 'skip_setup', true)
     const check = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource.resource, opts)
-    var info = await check.info()
+    const info = await check.info()
     if (objectPath.has(info, 'error')) {
       const db_resource = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource.resource, settings.couchdb_auth)
       await db_resource.info()
@@ -289,21 +291,22 @@ async function couchdbUpdate(patient_id='', protocol='', hostname='') {
 
 async function createKeyPair(alg='RS256') {
   const { publicKey, privateKey } = await jose.generateKeyPair(alg)
-  var public_key = await jose.exportJWK(publicKey)
+  const public_key = await jose.exportJWK(publicKey)
   const kid = uuidv4()
   objectPath.set(public_key, 'kid', kid)
   objectPath.set(public_key, 'alg', alg)
-  var private_key = await jose.exportJWK(privateKey)
+  const private_key = await jose.exportJWK(privateKey)
   objectPath.set(private_key, 'kid', kid)
   objectPath.set(private_key, 'alg', alg)
-  var id = 'nosh_' + uuidv4()
-  var keys = await getKeys()
+  const id = 'nosh_' + uuidv4()
+  const keys = await getKeys()
+  let doc = {}
   if (keys.length > 0) {
-    var doc = keys[0]
+    doc = keys[0]
     objectPath.set(doc, 'publicKey', public_key)
     objectPath.set(doc, 'privateKey', private_key)
   } else {
-    var doc = {_id: id, publicKey: public_key, privateKey: private_key}
+    doc = {_id: id, publicKey: public_key, privateKey: private_key}
   }
   const db = new PouchDB(urlFix(settings.couchdb_uri) + 'keys', settings.couchdb_auth)
   await db.put(doc)
@@ -331,7 +334,7 @@ function equals (a, b) {
 }
 
 async function eventAdd(event, opts, patient_id='') {
-  var prefix = ''
+  let prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = patient_id + '_'
   }
@@ -339,7 +342,7 @@ async function eventAdd(event, opts, patient_id='') {
   // check if old version and destroy
   const check = await db.allDocs({include_docs: true})
   if (check.rows.length > 0) {
-    for (var a of check.rows) {
+    for (const a of check.rows) {
       if (objectPath.has(a, 'doc.diff')) {
         db.destroy()
         const destroy_remote= new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'activities', settings.couchdb_auth)
@@ -352,10 +355,11 @@ async function eventAdd(event, opts, patient_id='') {
   const datetime = moment().startOf('day').unix()
   const datetime_formal = moment().startOf('day').format('YYYY-MM-DDTHH:mm:ss.SSSZ')
   const check1 = await db1.find({selector: {'datetime': {"$eq": datetime}}})
+  let doc = {}
   if (check1.docs.length > 0) {
-    var doc = check1.docs[0]
+    doc = check1.docs[0]
   } else {
-    var doc = {
+    doc = {
       _id: 'nosh_' + uuidv4(),
       datetime: datetime,
       datetime_formal: datetime_formal,
@@ -390,19 +394,19 @@ async function eventUser(res, opts, prefix) {
 }
 
 async function getAllKeys() {
-  var keys = []
-  var publicKey = ''
-  var trustee_key = null
+  const keys = []
+  let publicKey = ''
+  let trustee_key = null
   // Trustee key
   try {
-    var trustee_key = await axios.get(urlFix(process.env.TRUSTEE_URL) + 'api/as/jwks')
+    trustee_key = await axios.get(urlFix(process.env.TRUSTEE_URL) + 'api/as/jwks')
     if (trustee_key !== null && trustee_key.status === 200 && objectPath.has(trustee_key, 'data.key')) {
       keys.push(trustee_key.data.key)
     }
     // Local key
     const db = new PouchDB(urlFix(settings.couchdb_uri) + 'keys', settings.couchdb_auth)
     const result = await db.find({selector: {_id: {"$gte": null}}})
-    for (var a in result.docs) {
+    for (const a in result.docs) {
       keys.push(result.docs[a].publicKey)
       if (objectPath.has(result, 'docs.' + a + '.privateKey')) {
         publicKey = result.docs[a].publicKey
@@ -422,8 +426,8 @@ async function getKeys() {
 
 function getName(vc) {
   const name = {display: ''}
-  var ret = {}
-  for (var a of vc) {
+  let ret = {}
+  for (const a of vc) {
     if (objectPath.has(a, 'vc.credentialSubject.name')) {
       objectPath.set(name, 'display', objectPath.get(a, 'vc.credentialSubject.name'))
       const parsed = parseFullName(objectPath.get(a, 'vc.credentialSubject.name'))
@@ -445,8 +449,8 @@ function getName(vc) {
 }
 
 function getNPI(vc) {
-  var npi = ''
-  for (var a of vc) {
+  let npi = ''
+  for (const a of vc) {
     if (npi === '') {
       if (objectPath.has(a, 'vc.credentialSubject.npi')) {
         npi = a.vc.credentialSubject.npi
@@ -470,7 +474,7 @@ function getNPI(vc) {
 
 async function getPIN(patient_id) {
   const db = new PouchDB('pins', {skip_setup: true})
-  var info = await db.info()
+  const info = await db.info()
   if (objectPath.has(info, 'error')) {
     return false
   }
@@ -502,8 +506,8 @@ async function introspect(req, jwt, method, location) {
       const introspect = await fetch(a.introspection_endpoint, signedRequest)
         .then((res) => res.json())
       if (introspect.active) {
-        var i = 0
-        for (var item of introspect.access) {
+        let i = 0
+        for (const item of introspect.access) {
           if (item.locations.includes(location)) {
             if (item.actions.includes(method)) {
               i++
@@ -571,10 +575,10 @@ function markdownParse(text) {
 async function pollSet(patient_id, new_resource) {
   const db = new PouchDB('sync')
   const resources = []
-  var doc = {}
+  let doc = {}
   const result = await db.find({selector: {'_id': {$eq: patient_id}}})
   if (result.docs.length > 0) {
-    for (var resource of result.docs[0].resources) {
+    for (const resource of result.docs[0].resources) {
       resources.push(resource)
     }
     doc = result.docs[0]
@@ -588,14 +592,16 @@ async function pollSet(patient_id, new_resource) {
 }
 
 async function registerResources(patient_id='', protocol='', hostname='', email='') {
-  var prefix = ''
+  let prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = patient_id + '_'
   }
   const resources = JSON.parse(fs.readFileSync('./assets/resources.json'))
+  let base_url = ''
+  let gnap_resources = []
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
-    var base_url = urlFix(protocol + '://' + hostname + '/')
-    var gnap_resources = [
+    base_url = urlFix(protocol + '://' + hostname + '/')
+    gnap_resources = [
       {
         "type": "App",
         "actions": ["read", "write", "delete"],
@@ -607,7 +613,7 @@ async function registerResources(patient_id='', protocol='', hostname='', email=
       }
     ]
   }
-  for (var resource of resources.rows) {
+  for (const resource of resources.rows) {
     const db_resource = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource.resource, settings.couchdb_auth)
     await db_resource.info()
     if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
@@ -696,7 +702,7 @@ async function registerResources(patient_id='', protocol='', hostname='', email=
 async function signRequest(doc, urlinput, method, req, auth='') {
   const keys = await getKeys()
   if (keys.length === 0) {
-    var pair = await createKeyPair()
+    const pair = await createKeyPair()
     keys.push(pair)
   }
   const key_jose = await jose.importJWK(keys[0].privateKey, keys[0].privateKey.alg)
@@ -760,8 +766,8 @@ async function sleep(seconds) {
 }
 
 async function sync(resource, patient_id='', save=false, data={}) {
-  var prefix = ''
-  var pin = process.env.COUCHDB_ENCRYPT_PIN
+  let prefix = ''
+  const pin = process.env.COUCHDB_ENCRYPT_PIN
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = patient_id + '_'
     pin = await getPIN(patient_id)
@@ -775,7 +781,7 @@ async function sync(resource, patient_id='', save=false, data={}) {
     await eventAdd('Updated ' + pluralize.singular(resource.replace('_statements', '')), {id: 'system', display: 'System', doc_db: resource, doc_id: result.id, diff: null}, patient_id)
   }
   if (resource !== 'users') {
-    var info = await local.info()
+    const info = await local.info()
     if (info.doc_count > 0) {
       try {
         await local.loadDecrypted()
@@ -790,7 +796,7 @@ async function sync(resource, patient_id='', save=false, data={}) {
       console.log(e)
     }
   } else {
-    var remote = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource, settings.couchdb_auth)
+    const remote = new PouchDB(urlFix(settings.couchdb_uri) + prefix + resource, settings.couchdb_auth)
     try {
       await local.sync(remote).on('complete', () => {
         console.log('PouchDB sync complete for DB: ' + resource)
@@ -886,11 +892,11 @@ async function userAdd() {
 }
 
 async function verify(jwt) {
-  var keys = await getAllKeys()
-  var response = {}
-  var found = 0
+  const keys = await getAllKeys()
+  const response = {}
+  let found = 0
   if (keys.keys.length > 0) {
-    for (var a in keys.keys) {
+    for (const a in keys.keys) {
       const jwk = await jose.importJWK(keys.keys[a])
       try {
         const { payload, protectedHeader } = await jose.jwtVerify(jwt, jwk)
@@ -932,7 +938,7 @@ async function verifyJWT(req, res, next) {
     }
     const jwt = authHeader.split(' ')[1]
     const response = await verify(jwt)
-    var method = 'write'
+    let method = 'write'
     if (response.status === 'isValid') {
       // if (objectPath.has(response, 'payload.vc') || objectPath.has(response, 'payload.vp')) {
         // has verfiable credential or verifiable presentation (multiple vc's)
