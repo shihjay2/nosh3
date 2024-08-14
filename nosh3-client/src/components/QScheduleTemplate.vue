@@ -356,7 +356,7 @@ export default defineComponent({
       return s
     }
     const changeStatus = async(status) => {
-      var doc = await localDB.get(state.chosenEvent.id)
+      const doc = await localDB.get(state.chosenEvent.id)
       objectPath.set(state, 'fhir', doc)
       objectPath.set(state, 'fhir.status', status)
       emit('loading')
@@ -373,7 +373,7 @@ export default defineComponent({
       if (status == 'fulfilled') {
         // create encounter
         const defaults = {}
-        var userDB = new PouchDB(prefix + 'users')
+        const userDB = new PouchDB(prefix + 'users')
         const result = await userDB.find({selector: {'reference': {$eq: state.fhir.participant[1].actor[0].reference }, _id: {"$gte": null}}})
         if (result.docs.length > 0) {
           objectPath.set(defaults, 'class', result.docs[0].defaults.class)
@@ -429,15 +429,15 @@ export default defineComponent({
       return tm.date
     }
     const getDuration = (a, b) => {
-      var c = moment(b)
-      var d = moment(a)
+      const c = moment(b)
+      const d = moment(a)
       return c.diff(d, 'minutes')
     }
     const getEvents = async(dt) => {
       // pull events from specific day from PouchDB
       state.eventsMapped = []
-      var start = moment(dt).format('YYYY-MM-DD HH:mm')
-      var end = moment(dt).add(1, 'd').format('YYYY-MM-DD HH:mm')
+      const start = moment(dt).format('YYYY-MM-DD HH:mm')
+      const end = moment(dt).add(1, 'd').format('YYYY-MM-DD HH:mm')
       const result = await localDB.find({
         selector: {
           $and: [
@@ -447,8 +447,8 @@ export default defineComponent({
         }
       })
       if (result.docs.length > 0) {
-        for (var a in result.docs) {
-          var b = {
+        for (const a in result.docs) {
+          const b = {
             id: result.docs[a].id,
             title: getTitle(result.docs[a].participant),
             details: result.docs[a].reasonCode[0].text,
@@ -459,7 +459,7 @@ export default defineComponent({
             icon: 'fas fa-user-injured',
             status: result.docs[a].status
           }
-          for (var c in state.base.types) {
+          for (const c in state.base.types) {
             if (state.base.types[c].codes.includes(result.docs[a].serviceType[0].coding[0].code)) {
               b.bgcolor = state.base.types[c].color
               b.icon = 'fas fa-' + state.base.types[c].icon
@@ -494,8 +494,8 @@ export default defineComponent({
       }
     }
     const getTitle = (data) => {
-      for (var a in data) {
-        var b = data[a].actor[0].reference.split('/')
+      for (const a in data) {
+        const b = data[a].actor[0].reference.split('/')
         if (b[0] == 'Patient' && props.provider == true) {
           return data[a].actor[0].display
         }

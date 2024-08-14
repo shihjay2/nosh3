@@ -36,7 +36,7 @@
       >
         <template v-slot:top>
           <q-btn-group>
-            <q-btn size="xs" padding="xs" color="primary" :disable="card.loading" icon="add" clickable @click="addRow(card.category, card.section)">
+            <q-btn size="xs" padding="xs" color="primary" :disable="card.loading" icon="add" clickable @click="addRow(card.section)">
               <q-tooltip>Add</q-tooltip>
             </q-btn>
             <q-btn size="xs" padding="xs" color="primary" :disable="card.loading" icon="delete" clickable @click="removeRow(card.id)">
@@ -118,15 +118,15 @@ export default defineComponent({
       }
     })
     watch(() => state.section, (newVal) => {
-      var defaults = {}
+      const defaults = {}
       if (newVal.value === 'survey') {
         objectPath.set(defaults, 'codeValue', '{score}')
       }
       
       onFormOpen('add', newVal.value, '', defaults)
     })
-    const addRow = (label, value) => {
-      var defaults = {}
+    const addRow = (value) => {
+      const defaults = {}
       if (value === 'survey') {
         objectPath.set(defaults, 'codeValue', '{score}')
       }
@@ -139,7 +139,7 @@ export default defineComponent({
       })
     }
     const getItem = (schema, index, fhir) => {
-      var model = ''
+      let model = ''
       if (typeof schema.modelParent !== 'undefined') {
         model = schema.modelParent + '.' + index + '.'
       }
@@ -153,14 +153,14 @@ export default defineComponent({
         model += schema.model
       }
       if (schema.type == 'tags' || schema.multiple == true) {
-        var a = []
+        const a = []
         if (schema.modelRoot !== undefined) {
           if (schema.modelParent !== undefined) {
-            for (var b in objectPath.get(fhir, schema.modelParent + '.' + index + '.' + schema.modelRoot)) {
+            for (const b in objectPath.get(fhir, schema.modelParent + '.' + index + '.' + schema.modelRoot)) {
               a[b] = objectPath.get(fhir, schema.modelParent + '.' + index + '.' + schema.modelRoot + '.' + b  + '.' + schema.model)
             }
           } else {
-            for (var b1 in objectPath.get(fhir, schema.modelRoot)) {
+            for (const b1 in objectPath.get(fhir, schema.modelRoot)) {
               a[b1] = objectPath.get(fhir, schema.modelRoot + '.' + b1  + '.' + schema.model)
             }
           }
@@ -171,7 +171,7 @@ export default defineComponent({
           return objectPath.get(state, 'fhir.' + model)
         }
       } else if (schema.modelOne !== undefined) {
-        var c = ''
+        let c = ''
         if (objectPath.has(fhir, model + '.' + schema.modelOne + '.' + schema.modelEnd)) {
           c = objectPath.get(fhir, model + '.' + schema.modelOne + '.' + schema.modelEnd)
         } else {
@@ -183,8 +183,8 @@ export default defineComponent({
         }
         return c
       } else if (schema.modelChoice !== undefined) {
-        var d = ''
-        for (var e in schema.modelChoice) {
+        let d = ''
+        for (const e in schema.modelChoice) {
           if (objectPath.has(fhir, model + '.' + schema.modelChoice[e] + '.' + schema.modelEnd)) {
             d = objectPath.get(fhir, model + '.' + schema.modelChoice[e] + '.' + schema.modelEnd)
           }
@@ -218,7 +218,7 @@ export default defineComponent({
     }
     const removeRow = async(id) => {
       state.cards[id].loading = true
-      var doc = await localDB.get(state.selected[0].id)
+      const doc = await localDB.get(state.selected[0].id)
       const result = await localDB.remove(doc)
       const opts = {
         doc_db: props.resource,
@@ -237,30 +237,30 @@ export default defineComponent({
       }
     }
     const tableMap = async() => {
-      for (var a in state.base.categories) {
+      for (const a in state.base.categories) {
         objectPath.set(state, 'cards.' + a + '.category', state.base.categories[a].label)
         objectPath.set(state, 'cards.' + a + '.section', state.base.categories[a].value)
         objectPath.set(state, 'cards.' + a + '.visibleColumns', state.base.categories[a].visibleColumns)
         objectPath.set(state, 'cards.' + a + '.filter', '')
         objectPath.set(state, 'cards.' + a + '.id', a)
         objectPath.set(state, 'cards.' + a + '.loading', false)
-        var schema = state.base.categories[a].docSchema
-        for (var b in schema) {
-          var colrow = {}
+        const schema = state.base.categories[a].docSchema
+        for (const b in schema) {
+          const colrow = {}
           objectPath.set(colrow, 'name', objectPath.get(schema, b + '.id'))
           objectPath.set(colrow, 'label', objectPath.get(schema, b + '.label'))
           objectPath.set(colrow, 'field', objectPath.get(schema, b + '.id'))
           objectPath.set(colrow, 'align', 'left')
           objectPath.set(state, 'cards.' + a + '.columns.' + b, colrow)
         }
-        var sub = state.result.filter(c => {
+        const sub = state.result.filter(c => {
           let d = c.category.some(({ coding }) => coding.some(({ code }) => code === state.base.categories[a].value))
           return d
         })
         if (sub.length !== 0) {
-          for (var e in sub) {
-            var docrow = {}
-            for (var f in schema) {
+          for (const e in sub) {
+            const docrow = {}
+            for (const f in schema) {
               objectPath.set(docrow, objectPath.get(schema, f + '.id'), getItem(schema[f], '0', sub[e]))
             }
             objectPath.set(docrow, 'resourceName', state.base.categories[a].label)

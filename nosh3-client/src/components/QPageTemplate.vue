@@ -446,7 +446,7 @@ export default defineComponent({
       state.oidc = props.oidc
       state.base = await import('@/assets/fhir/' + props.resource + '.json')
       if (props.resource !== 'encounters' && props.resource !== 'service_requests' && props.resource !== 'observations') {
-        var doc = await localDB.get(props.id)
+        const doc = await localDB.get(props.id)
         objectPath.set(state, 'fhir', doc)
         await fhirMap()
         if (typeof props.category !== 'undefined' && props.category == '') {
@@ -472,7 +472,7 @@ export default defineComponent({
     },{deep: true})
     watch(() => props.reload, async(newVal) => {
       if (newVal) {
-        var doc = await localDB.get(props.id)
+        const doc = await localDB.get(props.id)
         objectPath.set(state, 'fhir', doc)
         await fhirMap()
         emit('reload-complete')
@@ -484,7 +484,7 @@ export default defineComponent({
       }
     })
     watch(() => props.openPageForm, (newVal) => {
-      var category = state.category
+      let category = state.category
       if (state.resource == 'compositions') {
         category = 'all'
       }
@@ -514,10 +514,10 @@ export default defineComponent({
       closeAll()
       emit('load-timeline')
       if (state.careplan == true) {
-        var defaults = {}
+        const defaults = {}
         state.careplan = false
         if (id !== '') {
-          var doc = await conditionsDB.get(id)
+          const doc = await conditionsDB.get(id)
           objectPath.set(defaults, 'contained', doc)
           objectPath.set(defaults, 'addresses', 'Condition/' + id)
           objectPath.set(defaults, 'conditionICD10', doc.code.coding[0].code)
@@ -529,8 +529,8 @@ export default defineComponent({
           if (id !== '') {
             if (state.user.reference === doc.author[0].reference) {
               const encounterDB = new PouchDB(prefix + 'encounters')
-              var encounter = await encounterDB.get(doc.encounter.reference.split('/').slice(-1).join(''))
-              var unsigned = {
+              const encounter = await encounterDB.get(doc.encounter.reference.split('/').slice(-1).join(''))
+              const unsigned = {
                 name: encounter.reasonCode[0].text,
                 url: location.protocol + '//' + location.host + location.pathname + '?encounter=' + encounter.id,
                 id: encounter.id,
@@ -545,8 +545,8 @@ export default defineComponent({
           if (id !== '') {
             if (doc.code.coding[0].code === '29463-7' || doc.code.coding[0].code === '8302-2') {
               const checkDB = new PouchDB(prefix + state.resource)
-              var weight = 0
-              var height = 0
+              let weight = 0
+              let height = 0
               if (doc.code.coding[0].code === '29463-7') {
                 if (doc.valueQuantity.unit === 'lbs') {
                   weight = convert(parseFloat(doc.valueQuantity.value), 'lb').to('kg')
@@ -577,14 +577,15 @@ export default defineComponent({
                 }
               }
               if (weight !== 0 && height !== 0) {
-                var bmi = (weight / Math.pow( (height/100), 2 )).toFixed(1)
+                let bmi_doc = {}
+                const bmi = (weight / Math.pow( (height/100), 2 )).toFixed(1)
                 const check1 = await checkDB.find({selector: {'encounter.reference': {$eq: 'Encounter/' + props.encounter}, 'code.coding.0.code': {$eq: '39156-5'}, _id: {"$gte": null}}})
                 if (check1.docs.length > 0) {
-                  var bmi_doc = check1.docs[0]
+                  bmi_doc = check1.docs[0]
                 } else {
-                  var bmi_id = 'nosh_' + uuidv4()
-                  var observation_base = await import('@/assets/fhir/observations.json')
-                  var bmi_doc = JSON.parse(JSON.stringify(observation_base.fhir))
+                  const bmi_id = 'nosh_' + uuidv4()
+                  const observation_base = await import('@/assets/fhir/observations.json')
+                  bmi_doc = JSON.parse(JSON.stringify(observation_base.fhir))
                   objectPath.set(bmi_doc, 'id', bmi_id)
                   objectPath.set(bmi_doc, '_id', bmi_id)
                   objectPath.set(bmi_doc, 'subject.reference', 'Patient/' + props.patient)
@@ -639,8 +640,8 @@ export default defineComponent({
             const taskDB = new PouchDB(prefix + 'tasks')
             const task = await taskDB.find({selector: {'basedOn.0.reference': {$eq: 'ServiceRequest/' + id}, _id: {"$gte": null}}})
             if (task.docs.length === 0) {
-              var task_id = 'nosh_' + uuidv4()
-              var task_doc = JSON.parse(JSON.stringify(state.formbase.fhir))
+              const task_id = 'nosh_' + uuidv4()
+              const task_doc = JSON.parse(JSON.stringify(state.formbase.fhir))
               objectPath.set(task_doc, '_id', task_id)
               objectPath.set(task_doc, 'id', task_id)
               objectPath.set(task_doc, 'basedOn.0.reference', 'ServiceRequest/' + id)
@@ -666,7 +667,7 @@ export default defineComponent({
         if (state.template == 'mixed' || state.template == 'list') {
           state.tabReload = true
         } else {
-          var doc = await localDB.get(props.id)
+          const doc = await localDB.get(props.id)
           objectPath.set(state, 'fhir', doc)
           await fhirMap()
           state.tabReload = true
@@ -679,9 +680,9 @@ export default defineComponent({
     const fhirMap = async() => {
       state.data = []
       if (props.resource !== 'encounters') {
-        for (var a in state.base.tabs) {
-          var category = state.base.tabs[a].category
-          var resource_obj = await loadSchema(props.resource, category, state.base[category].uiSchema, props.online, [])
+        for (const a in state.base.tabs) {
+          const category = state.base.tabs[a].category
+          const resource_obj = await loadSchema(props.resource, category, state.base[category].uiSchema, props.online, [])
           state.base[category].uiSchema = resource_obj.schema
           if (!objectPath.has(state, 'data.' + category)) {
             objectPath.set(state, 'data.' + category, [])
@@ -700,9 +701,9 @@ export default defineComponent({
             objectPath.set(state, 'data.' + category + '.resourceName', state.base.resourceName)
             objectPath.set(state, 'data.' + category + '.id', state.id)
           }
-          var uiSchema = state.base[category].uiSchema.flat()
-          for (var b in uiSchema) {
-            var model = uiSchema[b].model
+          const uiSchema = state.base[category].uiSchema.flat()
+          for (const b in uiSchema) {
+            let model = uiSchema[b].model
             if (typeof uiSchema[b].modelRoot !== 'undefined') {
               if (uiSchema[b].modelArray == false) {
                 model = uiSchema[b].modelRoot + '.' + uiSchema[b].model
@@ -714,13 +715,13 @@ export default defineComponent({
                 }
               }
             }
-            var obj = {}
+            const obj = {}
             if (typeof uiSchema[b].modelRoot !== 'undefined' && uiSchema[b].modelArray !== false) {
               if (objectPath.has(state, 'fhir.' + uiSchema[b].modelRoot)) {
-                var c = objectPath.get(state, 'fhir.' + uiSchema[b].modelRoot)
+                const c = objectPath.get(state, 'fhir.' + uiSchema[b].modelRoot)
                 obj['key'] = uiSchema[b].label
                 obj['value'] = ''
-                for (var d in c) {
+                for (const d in c) {
                   if (objectPath.has(state, 'fhir.' + uiSchema[b].modelRoot + '.' + d + '.' + uiSchema[b].display)) {
                     if (d > 0) {
                       obj['value'] += '<br/>'
@@ -752,7 +753,7 @@ export default defineComponent({
                 }
               }
               if (typeof uiSchema[b].modelChoice !== 'undefined') {
-                for (var f in uiSchema[b].modelChoice) {
+                for (const f in uiSchema[b].modelChoice) {
                   if (objectPath.has(state, 'fhir.' + model + '.' + uiSchema[b].modelChoice[f] + '.' + uiSchema[b].modelEnd)) {
                     obj['value'] = objectPath.get(state, 'fhir.' + model + '.' + uiSchema[b].modelChoice[f] + '.' + uiSchema[b].modelEnd)
                   }
@@ -766,9 +767,9 @@ export default defineComponent({
               if (obj['value'] !== undefined && obj['value'] !== null) {
                 if (typeof uiSchema[b].options !== 'undefined') {
                   if (uiSchema[b].multiple === true) {
-                    var value = ''
-                    for (var g in obj['value']) {
-                      var h = uiSchema[b].options.find(({ value }) => value === obj['value'][c][uiSchema[b].model])
+                    let value = ''
+                    for (const g in obj['value']) {
+                      const h = uiSchema[b].options.find(({ value }) => value === obj['value'][c][uiSchema[b].model])
                       if (g !== '0') {
                         value += '; '
                       }
@@ -776,7 +777,7 @@ export default defineComponent({
                     }
                     obj['value'] = value
                   } else {
-                    var i = uiSchema[b].options.find(({ value }) => value === obj['value'])
+                    const i = uiSchema[b].options.find(({ value }) => value === obj['value'])
                     obj['value'] = i.label
                   }
                 }
@@ -802,7 +803,7 @@ export default defineComponent({
           if (category == 'objective') {
             category = 'vital-signs'
           }
-          var sub = state.formbase.categories.find(o => o.value === category)
+          const sub = state.formbase.categories.find(o => o.value === category)
           state.options = state.formbase.categories
           state.schema = sub.uiSchema
           state.divContent = sub.divContent
@@ -813,7 +814,7 @@ export default defineComponent({
           state.search = state.formbase[category].uiSearchBars
         }
       }
-      var resource_obj = await loadSchema(resource, category, state.schema, state.online, state.options)
+      const resource_obj = await loadSchema(resource, category, state.schema, state.online, state.options)
       state.schema = resource_obj.schema
       state.options = resource_obj.options
       state.states = resource_obj.states
@@ -913,7 +914,7 @@ export default defineComponent({
       if (state.updateTabLock == false) {
         state.updateTabLock = true
         closeAll()
-        var sub = state.base.tabs.find(o => o.category === val)
+        const sub = state.base.tabs.find(o => o.category === val)
         if (typeof sub.resource !== 'undefined') {
           if (sub.template !== 'graph') {
             state.resource = sub.resource

@@ -111,8 +111,8 @@ export default defineComponent({
               if (status) {
                 // verify hash
                 if (objectPath.has(signature_obj, 'hash')) {
-                  var comp_doc = null
-                  var comp_doc_type = ''
+                  let comp_doc = null
+                  let comp_doc_type = ''
                   const medication_request = doc.entry.find(b => b.resource.resourceType == 'MedicationRequest')
                   const service_request = doc.entry.find(c => c.resource.resourceType == 'ServiceRequest')
                   if (medication_request !== undefined) {

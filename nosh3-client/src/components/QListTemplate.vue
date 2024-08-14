@@ -381,7 +381,7 @@ export default defineComponent({
   emits: ['care-plan', 'complete-task', 'composition', 'loading', 'lock-thread', 'new-prescription', 'open-bundle', 'open-chat', 'open-form', 'open-file', 'open-page', 'open-qr', 'reload-complete', 'remove-oidc', 'set-composition-section'],
   setup (props, { emit }) {
     const $q = useQuasar()
-    const { addSchemaOptions, divBuild, eventAdd, fetchJSON, fhirModel, fhirReplace, getPrefix, groupItems, importFHIR, inbox, loadSelect, referenceSearch, removeTags, sync } = common()
+    const { addSchemaOptions, eventAdd, fetchJSON, fhirModel, fhirReplace, getPrefix, groupItems, importFHIR, inbox, loadSelect, removeTags, sync } = common()
     const state = reactive({
       auth: {},
       online: false,
@@ -531,7 +531,7 @@ export default defineComponent({
     })
     watch(() => state.selected, (newVal) => {
       if (newVal !== '') {
-        onSelect(newVal.value, newVal.resource, newVal.doc)
+        onSelect(newVal.value, newVal.doc)
         state.selected = ''
       }
     })
@@ -1161,7 +1161,7 @@ export default defineComponent({
         }
       }
     }
-    const onSelect = async(value, resource, doc) => {
+    const onSelect = async(value, doc) => {
       const defaults = {}
       if (props.resource === 'care_plans') {
         if (value == 'add') {
