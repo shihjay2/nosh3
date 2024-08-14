@@ -556,6 +556,7 @@ export default defineComponent({
         if (state.search.length > 0 && props.id == 'add') {
           mySearchInput.value[0]._.props.focus = true
         } else {
+          console.log(myInput.value)
           const k = myInput.value.find(l => l._.props.readonly !== true)
           k._.props.focus = true
         }
