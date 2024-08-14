@@ -1504,8 +1504,8 @@ export default defineComponent({
                   objectPath.set(select, category, a)
                 }
                 const observationsCodes = []
-                var c1 = 0
-                var d1 = ''
+                let c1 = 0
+                let d1 = ''
                 const f1 = []
                 for (const e1 of category2) {
                   if (category === 'activity') {
@@ -2085,7 +2085,7 @@ export default defineComponent({
       }
       state.oidc.push(doc)
       auth.setOIDC(state.oidc)
-      var complete = false
+      let complete = false
       if (localStorage.getItem("oidc_access_token") !== null) {
         complete = true
       }
@@ -2134,7 +2134,7 @@ export default defineComponent({
       if (objectPath.has(state, 'compositionDoc.id')) {
         const doc = state.compositionDoc
         const section = {}
-        var text = ''
+        let text = ''
         const sections_arr = []
         const a = new PouchDB(prefix + resource)
         const b = await import('@/assets/fhir/' + resource + '.json')
@@ -2186,7 +2186,7 @@ export default defineComponent({
       for (const resource of resources) {
         const arr = state.timeline.filter(a => a.resource === resource)
         if (arr.length > 0) {
-          var all_keys = require('all-object-keys')
+          const all_keys = require('all-object-keys')
           const keys = all_keys(arr[0])
           const arr1 = []
           const keys1 = []
@@ -2252,7 +2252,7 @@ export default defineComponent({
       // objectPath.set(bundleDoc, 'sigFormat', 'image/jpg')
       objectPath.set(bundleDoc, 'sigFormat', 'application/jws')
       objectPath.set(bundleDoc, 'data', 'ewogICJhbGciOiAiUlMyNTYiLAogICJraWQiOiAiMTMzNzQ3MTQxMjU1IiwKICAiaWF0IjogMCwKICAiaXNzIjogIkM9R0IsIEw9TG9uZG9uLCBPVT1OdWFwYXkgQVBJLCBPPU51YXBheSwgQ049eWJvcXlheTkycSIsCiAgImI2NCI6IGZhbHNlLAogICJjcml0IjogWwogICAgImlhdCIsCiAgICAiaXNzIiwKICAgICJiNjQiCiAgXQp9..d_cZ46lwNiaFHAu_saC-Zz4rSzNbevWirO94EmBlbOwkB1L78vGbAnNjUsmFSU7t_HhL-cyMiQUDyRWswsEnlDljJsRi8s8ft48ipy2SMuZrjPpyYYMgink8nZZK7l-eFJcTiS9ZWezAAXF_IJFXSTO5ax9z6xty3zTNPNMV9W7aH8fEAvbUIiueOhH5xNHcsuqlOGygKdFz2rbjTGffoE_6zS4Dry-uX5mts2duLorobUimGsdlUcSM6P6vZEtcXaJCdjrT9tuFMh4CkX9nqk19Bq2z3i-SX4JCPvhD2r3ghRmX0gG08UcvyFVbrnVZJnpl4MU8V4Nr3-2M5URZOg')
-      var base = ''
+      let base = ''
       for (const resource of resources) {
         base = await import('@/assets/fhir/' + resource + '.json')
         const db = new PouchDB(prefix + resource)
@@ -2427,7 +2427,7 @@ export default defineComponent({
           objectPath.set(state, b.state, c.docs.length)
         }
       }
-      var oidc = 0
+      let oidc = 0
       if (Array.isArray(state.oidc)) {
         if (state.oidc.length > 0) {
           for (const d of state.oidc) {
