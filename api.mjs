@@ -69,27 +69,27 @@ async function getTimeline(req, res) {
       mdjs.push({ul: ul_arr})
     }
     // get observations
-    const observations = objectPath.get(timeline_result, 'rows.0.doc.observations')
-    if (observations.length > 0) {
-      mdjs.push({h2: 'Observations'})
-    }
-    for (const row1 of observations) {
-      if (row1.doc.category[0].coding[0].code !== 'vital-signs') {
-        const ul_arr1 = []
-        mdjs.push({h3: Case.title(pluralize.singular(row1.resource)) + ' Details'})
-        ul_arr1.push('**Date**: ' + moment(row1.date).format('MMMM DD, YYYY'))
-        ul_arr1.push('**' + Case.title(pluralize.singular(row1.resource)) + '**: ' + row1.title)
-        for (const data1 of row1.content) {
-          if (row1.style === 'p') {
-            ul_arr1.push('**' + data1.key + '**: ' + data1.value)
-          }
-          if (row1.style === 'list') {
-            ul_arr1.push('**Display**: ' + data1)
-          }
-        }
-        mdjs.push({ul: ul_arr1})
-      }
-    }
+    // const observations = objectPath.get(timeline_result, 'rows.0.doc.observations')
+    // if (observations.length > 0) {
+    //   mdjs.push({h2: 'Observations'})
+    // }
+    // for (const row1 of observations) {
+    //   if (row1.doc.category[0].coding[0].code !== 'vital-signs') {
+    //     const ul_arr1 = []
+    //     mdjs.push({h3: Case.title(pluralize.singular(row1.resource)) + ' Details'})
+    //     ul_arr1.push('**Date**: ' + moment(row1.date).format('MMMM DD, YYYY'))
+    //     ul_arr1.push('**' + Case.title(pluralize.singular(row1.resource)) + '**: ' + row1.title)
+    //     for (const data1 of row1.content) {
+    //       if (row1.style === 'p') {
+    //         ul_arr1.push('**' + data1.key + '**: ' + data1.value)
+    //       }
+    //       if (row1.style === 'list') {
+    //         ul_arr1.push('**Display**: ' + data1)
+    //       }
+    //     }
+    //     mdjs.push({ul: ul_arr1})
+    //   }
+    // }
     res.status(200)
     res.setHeader('Content-type', "text/markdown")
     res.setHeader('Content-disposition', 'attachment; filename=nosh_timeline_'  + Date.now() + '.md')
