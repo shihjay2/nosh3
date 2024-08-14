@@ -666,9 +666,9 @@ export default defineComponent({
           const b = await axios.get('https://rxnav.nlm.nih.gov/REST/RxTerms/rxcui/' + data.rxcui + '/allinfo.json')
           if (b.data.rxtermsProperties !== null) {
             const fuse1 = new Fuse(state.drugform.concept, {keys: ['code','display']})
-            const result1 = fuse1.search(b.data.rxtermsProperties.rxtermsDoseForm)
+            let result1 = fuse1.search(b.data.rxtermsProperties.rxtermsDoseForm)
             const fuse2 = new Fuse(props.routesArray, {keys: ['value','label']})
-            const result2 = fuse2.search(b.data.rxtermsProperties.route)
+            let result2 = fuse2.search(b.data.rxtermsProperties.route)
             if (result1.length > 0) {
               result1 = result1.slice(0,1)
               result2 = result2.slice(0,1)
