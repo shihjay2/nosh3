@@ -875,62 +875,62 @@ export default defineComponent({
       state.pin = auth.pin
       const userDB = new PouchDB(prefix + 'users')
       try {
-        var user = await userDB.get(auth.user.id)
+        const user = await userDB.get(auth.user.id)
+        const [ user_type ] = user.reference.split('/')
+        if (user_type == 'Practitioner') {
+          state.provider = true
+        }
+        state.patientList = await patientList(user)
+        if (route.params.id !== 'new') {
+          try {
+            const result = await patientDB.find({selector: {_id: {$eq: route.params.id}}})
+            if (result.docs.length > 0) {
+              state.patient = result.docs[0].id
+              auth.setPatient(state.patient)
+              await refreshPatient(false)
+              state.showDrawer = true
+              state.showMenu = true
+              const chart = {
+                name: removeTags(result.docs[0].text.div),
+                url: location.protocol + '//' + location.host + location.pathname,
+                id: result.docs[0].id,
+                date: moment().unix()
+              }
+              state.user = await updateUser(user, 'charts', chart)
+              if (route.query.encounter !== undefined) {
+                openPage(route.query.encounter, 'encounters', 'subjective')
+              } else if (route.query.oidc !== undefined) {
+                openOIDC(route.query.oidc, localStorage.getItem('oidc_name'))
+              } else {
+                state.showTimelineParent = true
+                state.showTimeline = true
+                if (auth.oidc !== null) {
+                  state.oidc = auth.oidc
+                }
+              }
+            } else {
+              if (prefix === '') {
+                state.menuVisible = false
+                openForm('add', 'patients', 'new')
+              } else {
+                auth.setMessage('wrong patient')
+                auth.returnUrl = route.fullPath
+                return auth.logout()
+              }
+            }
+          } catch (e) {
+            auth.setMessage('no patient')
+            auth.returnUrl = route.fullPath
+            return auth.logout()
+          }
+        } else {
+          state.menuVisible = false
+          openForm('add', 'patients', 'new')
+        }
       } catch (e) {
         auth.setMessage('user not found')
         auth.returnUrl = route.fullPath
         return auth.logout()
-      }
-      var user_arr = user.reference.split('/')
-      if (user_arr[0] == 'Practitioner') {
-        state.provider = true
-      }
-      state.patientList = await patientList(user)
-      if (route.params.id !== 'new') {
-        try {
-          const result = await patientDB.find({selector: {_id: {$eq: route.params.id}}})
-          if (result.docs.length > 0) {
-            state.patient = result.docs[0].id
-            auth.setPatient(state.patient)
-            await refreshPatient(false)
-            state.showDrawer = true
-            state.showMenu = true
-            var chart = {
-              name: removeTags(result.docs[0].text.div),
-              url: location.protocol + '//' + location.host + location.pathname,
-              id: result.docs[0].id,
-              date: moment().unix()
-            }
-            state.user = await updateUser(user, 'charts', chart)
-            if (route.query.encounter !== undefined) {
-              openPage(route.query.encounter, 'encounters', 'subjective')
-            } else if (route.query.oidc !== undefined) {
-              openOIDC(route.query.oidc, localStorage.getItem('oidc_name'))
-            } else {
-              state.showTimelineParent = true
-              state.showTimeline = true
-              if (auth.oidc !== null) {
-                state.oidc = auth.oidc
-              }
-            }
-          } else {
-            if (prefix === '') {
-              state.menuVisible = false
-              openForm('add', 'patients', 'new')
-            } else {
-              auth.setMessage('wrong patient')
-              auth.returnUrl = route.fullPath
-              return auth.logout()
-            }
-          }
-        } catch (e) {
-          auth.setMessage('no patient')
-          auth.returnUrl = route.fullPath
-          return auth.logout()
-        }
-      } else {
-        state.menuVisible = false
-        openForm('add', 'patients', 'new')
       }
       nextTick(() => {
         qTimeline.value.focus()
@@ -1311,12 +1311,9 @@ export default defineComponent({
       for (var a in oidc) {
         if (objectPath.has(oidc, a + '.docs')) {
           for (var row of oidc[a].docs) {
-            var i = 0
             if (objectPath.has(row, 'rows')) {
               for (var doc of row.rows) {
                 await importFHIR(doc, row.resource, state.patient, oidc[a].origin)
-                // removeOIDC(i, row.resource, oidc[a].origin)
-                i++
                 reloadDrawer(row.resource)
               }
             }
@@ -1996,13 +1993,22 @@ export default defineComponent({
     }
     const openTimelineEntry = async(id) => {
       if (id !== 'intro') {
-        var b = state.timeline.find(a => a.id == id)
+        const b = state.timeline.find(a => a.id == id)
         if (b.resource === 'encounters') {
           if (objectPath.has(b, 'bundle')) {
             openBundle('bundles', b.bundle, b.bundle_history)
           } else {
             await loadResource(b.resource, 'all')
             openPage(id, b.resource, 'subjective')
+          }
+        } else {
+          const json = await import('@/assets/ui/drawer.json')
+          const c = json.rows.find(d => d.resource == b.resource)
+          if (c.type === 'list') {
+            openList(b.resource, c.category)
+          }
+          if (c.type === 'page') {
+            openPage(b.resource, c.category)
           }
         }
       }
@@ -2011,14 +2017,14 @@ export default defineComponent({
       state.showTrustee = true
     }
     const pinCheck = async() => {
-      var check = await axios.post(window.location.origin + '/auth/pinCheck', {patient: state.patient})
+      const check = await axios.post(window.location.origin + '/auth/pinCheck', {patient: state.patient})
       if (check.data.response === 'Error') {
         state.loading = false
         state.showPIN = true
       }
       if (objectPath.has(check, 'data.sync.status')) {
         if (objectPath.get(check, 'data.sync.status') === 'sync') {
-          for (var resource of objectPath.get(check, 'data.sync.resources')) {
+          for (const resource of objectPath.get(check, 'data.sync.resources')) {
             auth.setSyncResource(resource)
           }
           await syncProcess('some')
