@@ -90,7 +90,7 @@ export default {
     })
     const ascvd = async() => {
       if (props.patientAge >= 40 && props.patientAge <= 79) {
-        var patientParams = {}
+        const patientParams = {}
         patientParams.sex = props.patientGender.toLowerCase()
         patientParams.race = await patientStatus('race', props.patient)
         patientParams.age = props.patientAge
@@ -116,10 +116,10 @@ export default {
     }
     const hedisAudit = async() => {
       var dxBundles = []
-      var hedis = await fetchJSON('hedis', props.online)
-      for (var a of hedis.rows) {
+      const hedis = await fetchJSON('hedis', props.online)
+      for (const a of hedis.rows) {
         // build includes
-        var includes_arr = []
+        const includes_arr = []
         if (objectPath.has(a, 'includes.min_age')) {
           if (props.patientAge >= objectPath.get(a, 'includes.min_age')) {
             includes_arr.push(true)
@@ -163,11 +163,11 @@ export default {
             includes_arr.push(false)
           }
         }
-        var not_goal = 'Goal not met'
-        var goal = 'Goal met'
+        const not_goal = 'Goal not met'
+        const goal = 'Goal met'
         if (eval(includes_arr.join('&&'))) {
           // proceed with audit
-          var hedis_obj = {}
+          const hedis_obj = {}
           objectPath.set(hedis_obj, 'id', objectPath.get(a, 'type'))
           objectPath.set(hedis_obj, 'title', objectPath.get(a, 'title'))
           if (dxBundles.length > 0) {
@@ -175,11 +175,11 @@ export default {
           } else {
             var bundles = await getSignedEncounters(a.years)
           }
-          for (var bundle of bundles) {
+          for (const bundle of bundles) {
             if (objectPath.has(a, 'query')) {
-              var query_count = 0
-              for (var b of objectPath.get(a, 'query')) {
-                var c = bundle.entry.filter(bundle1 => bundle1.resource.resourceType === b.resource)
+              let query_count = 0
+              for (const b of objectPath.get(a, 'query')) {
+                const c = bundle.entry.filter(bundle1 => bundle1.resource.resourceType === b.resource)
                 if (c.length > 0) {
                   var needle_arr = []
                   if (objectPath.has(b, 'needle_fetch')) {
@@ -187,8 +187,8 @@ export default {
                   } else {
                     needle_arr = objectPath.get(b, 'needle_arr')
                   }
-                  for (var d of needle_arr) {
-                    var f = c.find(e => objectPath.get(e, 'resource.' + objectPath.get(b, 'model')).toLowerCase().includes(d.toLowerCase()))
+                  for (const d of needle_arr) {
+                    const f = c.find(e => objectPath.get(e, 'resource.' + objectPath.get(b, 'model')).toLowerCase().includes(d.toLowerCase()))
                     if (f !== undefined) {
                       if (objectPath.get(b, 'outcome') == 'percent' || objectPath.get(b, 'outcome') == 'score' || objectPath.get(b, 'outcome') == 'count') {
                         objectPath.set(b, 'result', objectPath.get(b, 'result') + 1)
@@ -228,14 +228,14 @@ export default {
               }
             }
             if (objectPath.has(a, 'post_query')) {
-              for (var g of objectPath.get(a, 'post_query')) {
-                var arr = []
-                for (var h of objectPath.get(g, 'items')) {
-                  var j = a.query.find(i => i.name == h)
+              for (const g of objectPath.get(a, 'post_query')) {
+                const arr = []
+                for (const h of objectPath.get(g, 'items')) {
+                  const j = a.query.find(i => i.name == h)
                   if (j !== undefined) {
                     arr.push(j.result)
                   }
-                  var j1 = a.post_query.find(i1 => i1.name == h)
+                  const j1 = a.post_query.find(i1 => i1.name == h)
                   if (j1 !== undefined) {
                     arr.push(j1.result)
                   }
@@ -283,9 +283,9 @@ export default {
               }
             }
             if (objectPath.has(a, 'observationResult')) {
-              for (var k of objectPath.get(a, 'observationResult')) {
-                for (var l of objectPath.get(a, 'observationResult.type')) {
-                  var m = observationResult(l, props.patient)
+              for (const k of objectPath.get(a, 'observationResult')) {
+                for (const l of objectPath.get(a, 'observationResult.type')) {
+                  const m = observationResult(l, props.patient)
                   if (m !== '') {
                     if (objectPath.has(k, 'max_goal')) {
                       if (m <= objectPath.get(k, 'max_goal')) {
@@ -330,7 +330,7 @@ export default {
       const result = await axios.get('https://data.uspreventiveservicestaskforce.org/api/json', opts)
       if (objectPath.has(result, 'data.specificRecommendations')) {
         state.uspstf_specific_recommendations = objectPath.get(result,'data.specificRecommendations')
-        for (var a in state.uspstf_specific_recommendations) {
+        for (const a in state.uspstf_specific_recommendations) {
           if (state.uspstf_specific_recommendations[a].grade == 'A' || state.uspstf_specific_recommendations[a].grade == 'B') {
             objectPath.set(state, 'uspstf_specific_recommendations.' + a + '.class', 'bg-positive text-white')
           }

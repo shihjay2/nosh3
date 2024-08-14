@@ -93,7 +93,7 @@ export default {
       tableMap()
     })
     const checkForDue = (vac, dose_number) => {
-      var ret = ''
+      let ret = ''
       if (typeof vac.dose_age_recommendation !== 'undefined' && typeof vac.dose_age_recommendation[dose_number-1] !== 'undefined') {
         if (state.patientAgeMonths) {
           if (state.patientAgeMonths > vac.dose_age_recommendation[dose_number-1]['month_span'][0]) {
@@ -132,7 +132,7 @@ export default {
     }
     const populatePatientImmunization = (vac, dose_number) => {
       var ret = null
-      var immunization = vac.patientImmunizations[dose_number-1]
+      const immunization = vac.patientImmunizations[dose_number-1]
       if (vac.patientImmunizations.length > 0) {
         if(typeof immunization !== 'undefined') {
           ret = {}
@@ -153,9 +153,9 @@ export default {
     }
     const query = async() => {
       const localDB = new PouchDB(prefix + 'immunizations')
-      var result = await localDB.find({selector: {'patient.reference': {$eq: 'Patient/' + props.patient }, _id: {"$gte": null}}})
+      const result = await localDB.find({selector: {'patient.reference': {$eq: 'Patient/' + props.patient }, _id: {"$gte": null}}})
       if (result.docs.length > 0) {
-        for (var a in result.docs) {
+        for (const a in result.docs) {
           state.patientImmunizationHistory.push({
             date: result.docs[a].occurrenceDateTime,
             product: {
@@ -185,31 +185,31 @@ export default {
       })
     }
     const tableMap = async() => {
-      var visible = []
+      const visible = []
       objectPath.set(state, 'table.columns.0', {name: 'vaccine', label: 'Vaccine', field: 'vaccine', align: 'left'})
       visible.push('vaccine')
-      for (var i = 1; i <= state.vacSched.max_dose_count; i++) {
+      for (let i = 1; i <= state.vacSched.max_dose_count; i++) {
         objectPath.set(state, 'table.columns.' + i, {name: 'dose' + i, label: 'Dose ' + i, field: 'dose' + i, align: 'left'})
         visible.push('dose' + i)
       }
       objectPath.set(state, 'table.visibleColumns', visible)
       state.vacSched.immunizations.map((vac, idx) => {
-        var row = {}
-        var css = {}
+        const row = {}
+        const css = {}
         objectPath.set(row, 'vaccine', vac.name)
         objectPath.set(css, 'vaccine', 'main-cell')
-        for (var i = 1; i <= state.vacSched.max_dose_count; i++) {
+        for (let i = 1; i <= state.vacSched.max_dose_count; i++) {
           if (i > vac.total_doses) {
             objectPath.set(row, 'dose' + i, '')
             objectPath.set(css, 'dose' + i, 'disabledCell')
           } else {
             objectPath.set(css, 'dose' + i , checkForDue(vac, i))
-            var req = populateRecommendedAgeText(vac, i)
+            const req = populateRecommendedAgeText(vac, i)
             if (req !== null) {
               objectPath.set(css, 'dose' + i, req.class)
               objectPath.set(row, 'dose' + i , req.text)
             }
-            var req1 = populatePatientImmunization(vac, i)
+            const req1 = populatePatientImmunization(vac, i)
             if (req1 !== null) {
               objectPath.set(css, 'dose' + i, req1.class)
               objectPath.set(row, 'dose' + i, req1.text)

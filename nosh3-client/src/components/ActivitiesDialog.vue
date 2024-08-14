@@ -96,7 +96,7 @@ export default {
     watch(() => state.expanded, async(newVal, oldVal) => {
       if (newVal) {
         if (newVal.length === 2 || oldVal.length === 0) {
-          var update = false
+          let update = false
           if (newVal.length === 2) {
             newVal.splice(newVal.indexOf(oldVal[0]),1)
             update = true
@@ -122,13 +122,13 @@ export default {
     }
     const query = async() => {
       const localDB = new PouchDB(prefix + 'activities')
-      var result = await localDB.allDocs({
+      const result = await localDB.allDocs({
         include_docs: true,
         attachments: true
       })
       if (result.rows.length > 0) {
-        for (var a of result.rows) {
-          for (var b of a.doc.events) {
+        for (const a of result.rows) {
+          for (const b of a.doc.events) {
             state.activities.push(b)
           }
         }

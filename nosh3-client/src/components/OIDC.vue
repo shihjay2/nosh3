@@ -76,11 +76,11 @@ export default defineComponent({
         state.loading = true
         try {
           emit('loading')
-          var result = await axios.post(window.location.origin + '/oidc', {url: 'https://open.epic.com/Endpoints/R4'})
+          const result = await axios.post(window.location.origin + '/oidc', {url: 'https://open.epic.com/Endpoints/R4'})
           const data_build = result.data.entry
           // synthetic records
           const result_synth = await axios.get('https://api.github.com/repos/agropper/Challenge/contents/synthetic?ref=main')
-          for (var synth_row of result_synth.data) {
+          for (const synth_row of result_synth.data) {
             const synth_push = {
               resource: {
                 address: synth_row.download_url,
@@ -100,7 +100,7 @@ export default defineComponent({
         }
       } else {
         emit('loading')
-        var a = JSON.parse(localStorage.getItem('oidc'))
+        // var a = JSON.parse(localStorage.getItem('oidc'))
         open(props.type, props.name)
       }
     })
@@ -110,8 +110,8 @@ export default defineComponent({
         state.bluebutton = false
         const keys = ['resource.name']
         const fuse = new Fuse(state.epic, {keys: keys})
-        var result = fuse.search(newVal)
-        for (var a of result) {
+        const result = fuse.search(newVal)
+        for (const a of result) {
           state.data.push(a.item)
         }
       } else {
@@ -127,11 +127,11 @@ export default defineComponent({
       }
     })
     const open = async(type, name, origin) => {
-      var oidc_state = uuidv4()
+      const oidc_state = uuidv4()
       if (props.type === '') {
         if (origin !== 'synthea') {
-          var relay_url = auth.api.oidc_relay_url + '/oidc_relay'
-          var body = {
+          const relay_url = auth.api.oidc_relay_url + '/oidc_relay'
+          const body = {
             origin_uri: location.protocol + '//' + location.host + location.pathname + '?oidc=' + type,
             response_uri: location.protocol + '//' + location.host + location.pathname + '?oidc=' + type,
             type: type,
@@ -155,25 +155,25 @@ export default defineComponent({
           localStorage.setItem('oidc_url', state.base_url)
           localStorage.setItem('oidc_state', oidc_state)
           localStorage.setItem('oidc_name', name)
-          var response = await axios.post(window.location.origin + '/oidc', {url: relay_url, body: body})
+          const response = await axios.post(window.location.origin + '/oidc', {url: relay_url, body: body})
           localStorage.setItem('oidc_response', response.data)
           window.location.href = auth.api.oidc_relay_url + '/oidc_relay_start/' + oidc_state
         } else {
           objectPath.set(state, 'oidc.origin', name)
           try {
-            var oidc_response2 = await axios.get(type)
-            var resources2 = await fetchJSON('resources', props.online)
+            const oidc_response2 = await axios.get(type)
+            const resources2 = await fetchJSON('resources', props.online)
             state.resources = resources2.rows
-            var c1_synthea = 0
-            for (var c_synthea of resources2.rows) {
-              var rows2 = []
+            let c1_synthea = 0
+            for (const c_synthea of resources2.rows) {
+              const rows2 = []
               if (c_synthea.resource !== 'patients') {
-                for (var c2_synthea of oidc_response2.data.entry) {
+                for (const c2_synthea of oidc_response2.data.entry) {
                   if (c2_synthea.resource.resourceType === Case.pascal(pluralize.singular(c_synthea.resource))) {
                     rows2.push(c2_synthea.resource)
                   }
                 }
-                var docs_synthea = {
+                const docs_synthea = {
                   resource: c_synthea.resource,
                   rows: rows2
                 }
@@ -188,8 +188,8 @@ export default defineComponent({
         }
       } else {
         objectPath.set(state, 'oidc.origin', name)
-        var relay_url1 = auth.api.oidc_relay_url + '/oidc_relay/' + localStorage.getItem('oidc_state')
-        var response1 = await axios.post(window.location.origin + '/oidc', {url: relay_url1})
+        const relay_url1 = auth.api.oidc_relay_url + '/oidc_relay/' + localStorage.getItem('oidc_state')
+        const response1 = await axios.post(window.location.origin + '/oidc', {url: relay_url1})
         localStorage.setItem('oidc_access_token', response1.data.access_token)
         state.access_token = response1.data.access_token
         if (objectPath.has(response1, 'data.refresh_token')) {
@@ -205,23 +205,23 @@ export default defineComponent({
           state.patient = response1.data.patient
         }
         if (type !== 'cms_bluebutton' && type !== 'cms_bluebutton_sandbox') {
-          var resources = await fetchJSON('resources', props.online)
+          const resources = await fetchJSON('resources', props.online)
           state.resources = resources.rows
-          var c1 = 0
-          for (var c of resources.rows) {
+          let c1 = 0
+          for (const c of resources.rows) {
             if (c.resource !== 'patients') {
-              var oidc_url = localStorage.getItem('oidc_url') + Case.pascal(pluralize.singular(c.resource)) + '?patient=' + state.patient_token
-              var opts = {headers: {Authorization: 'Bearer ' + state.access_token, Accept: 'application/json'}}
+              const oidc_url = localStorage.getItem('oidc_url') + Case.pascal(pluralize.singular(c.resource)) + '?patient=' + state.patient_token
+              const opts = {headers: {Authorization: 'Bearer ' + state.access_token, Accept: 'application/json'}}
               try {
-                var oidc_response = await axios.get(oidc_url, opts)
-                var rows = []
+                const oidc_response = await axios.get(oidc_url, opts)
+                const rows = []
                 console.log(oidc_response.data)
-                for (var c2 of oidc_response.data.entry) {
+                for (const c2 of oidc_response.data.entry) {
                   if (c2.resource.resourceType === Case.pascal(pluralize.singular(c.resource))) {
                     rows.push(c2.resource)
                   }
                 }
-                var docs = {
+                const docs = {
                   resource: c.resource,
                   rows: rows
                 }
@@ -233,32 +233,32 @@ export default defineComponent({
             }
           }
         } else {
-          var cms_resources = [
+          const cms_resources = [
             {label: 'Summary', path: 'v1/connect/userinfo'},
             {label: 'EOB', path: 'v1/fhir/ExplanationOfBenefit/?patient=' + state.patient, resource: 'ExplanationOfBenefit'},
             {label: 'Coverage', path: 'v1/fhir/Coverage/?patient=' + state.patient, resource: 'Coverage'}
           ]
-          var d1 = 0
-          for (var d of cms_resources) {
-            var oidc_url1 = state.base_url + d.path
-            var opts1 = {headers: { Authorization: 'Bearer ' + state.access_token}}
+          let d1 = 0
+          for (const d of cms_resources) {
+            const oidc_url1 = state.base_url + d.path
+            const opts1 = {headers: { Authorization: 'Bearer ' + state.access_token}}
             try {
-              var oidc_response1 = await axios.get(oidc_url1, opts1)
+              const oidc_response1 = await axios.get(oidc_url1, opts1)
               if (d.label !== 'Summary') {
-                var rows1 = []
-                for (var d2 of oidc_response1.data.entry) {
+                const rows1 = []
+                for (const d2 of oidc_response1.data.entry) {
                   if (d2.resource.resourceType === d.resource) {
-                    rows.push(d2.resource)
+                    rows1.push(d2.resource)
                   }
                 }
-                var docs1 = {
+                const docs1 = {
                   resource: d.label,
                   rows: rows1
                 }
                 objectPath.set(state, 'oidc.docs.' + d1, docs1)
                 d1++
               } else {
-                var docs1 = {
+                const docs1 = {
                   resource: d.label,
                   rows: oidc_response1.data
                 }
