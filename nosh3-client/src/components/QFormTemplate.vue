@@ -524,7 +524,7 @@ export default defineComponent({
         if (objectPath.has(props, 'doc._id')) {
           doc = props.doc
         } else {
-          await sync(props.resource, props.online, props.patient, false)
+          // await sync(props.resource, props.online, props.patient, false)
           doc = await localDB.get(props.id)
         }
         objectPath.set(state, 'fhir', doc)
@@ -556,7 +556,6 @@ export default defineComponent({
         if (state.search.length > 0 && props.id == 'add') {
           mySearchInput.value[0]._.props.focus = true
         } else {
-          console.log(myInput.value)
           const k = myInput.value.find(l => l._.props.readonly !== true)
           k._.props.focus = true
         }
