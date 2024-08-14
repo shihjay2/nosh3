@@ -19,7 +19,7 @@ router.get('/:pid/Timeline', verifyJWT, getTimeline) //get
 router.put('/:pid/md', verifyJWT, putMarkdown) //post
 
 async function getTimeline(req, res) {
-  var prefix = ''
+  let prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.pid + '_'
   }
@@ -33,7 +33,7 @@ async function getTimeline(req, res) {
   if (timeline_result.rows.length > 0) {
     const timeline = objectPath.get(timeline_result, 'rows.0.doc.timeline')
     const mdjs = []
-    for (var row of timeline) {
+    for (const row of timeline) {
       const ul_arr = []
       if (row.id !== 'intro') {
         mdjs.push({h3: Case.title(pluralize.singular(row.resource)) + ' Details'})
@@ -45,12 +45,12 @@ async function getTimeline(req, res) {
       if (row.resource === 'document_references') {
         const doc = row.doc
         if (objectPath.has(doc, 'content')) {
-          for (var c in objectPath.get(doc, 'content')) {
+          for (const c in objectPath.get(doc, 'content')) {
             if (objectPath.get(doc, 'content.' + c + '.attachment.contentType').includes('text/plain')) {
               const md = atob(objectPath.get(doc, 'content.' + c + '.attachment.data'))
               if (isMarkdown(md)) {
                 const md_arr = markdownParse(md)
-                for (var md_arr_row of md_arr) {
+                for (const md_arr_row of md_arr) {
                   mdjs.push(md_arr_row)
                 }
               }
@@ -58,7 +58,7 @@ async function getTimeline(req, res) {
           }
         }
       }
-      for (var data of row.content) {
+      for (const data of row.content) {
         if (row.style === 'p') {
           ul_arr.push('**' + data.key + '**: ' + data.value)
         }
@@ -73,20 +73,22 @@ async function getTimeline(req, res) {
     if (observations.length > 0) {
       mdjs.push({h2: 'Observations'})
     }
-    for (var row1 of observations) {
-      const ul_arr1 = []
-      mdjs.push({h3: Case.title(pluralize.singular(row1.resource)) + ' Details'})
-      ul_arr1.push('**Date**: ' + moment(row1.date).format('MMMM DD, YYYY'))
-      ul_arr1.push('**' + Case.title(pluralize.singular(row1.resource)) + '**: ' + row1.title)
-      for (var data1 of row1.content) {
-        if (row1.style === 'p') {
-          ul_arr1.push('**' + data1.key + '**: ' + data1.value)
+    for (const row1 of observations) {
+      if (row1.doc.category[0].coding[0].code !== 'vital-signs') {
+        const ul_arr1 = []
+        mdjs.push({h3: Case.title(pluralize.singular(row1.resource)) + ' Details'})
+        ul_arr1.push('**Date**: ' + moment(row1.date).format('MMMM DD, YYYY'))
+        ul_arr1.push('**' + Case.title(pluralize.singular(row1.resource)) + '**: ' + row1.title)
+        for (const data1 of row1.content) {
+          if (row1.style === 'p') {
+            ul_arr1.push('**' + data1.key + '**: ' + data1.value)
+          }
+          if (row1.style === 'list') {
+            ul_arr1.push('**Display**: ' + data1)
+          }
         }
-        if (row1.style === 'list') {
-          ul_arr1.push('**Display**: ' + data1)
-        }
+        mdjs.push({ul: ul_arr1})
       }
-      mdjs.push({ul: ul_arr1})
     }
     res.status(200)
     res.setHeader('Content-type', "text/markdown")
@@ -98,7 +100,7 @@ async function getTimeline(req, res) {
 }
 
 async function putMarkdown(req, res) {
-  var prefix = ''
+  let prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.pid + '_'
   }
@@ -154,7 +156,7 @@ async function putMarkdown(req, res) {
     try {
       const body = await db.put(doc)
       await sync('document_references', req.params.pid)
-      var opts = {
+      const opts = {
         doc_db: 'document_references',
         doc_id: id,
         diff: null
