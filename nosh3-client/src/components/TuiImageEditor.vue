@@ -19,7 +19,7 @@
             <q-btn push color="primary" icon="crop" size="sm" clickable @click="imageCrop()">
               <q-tooltip>Crop</q-tooltip>
             </q-btn>
-            <q-btn push color="primary" icon="approval" size="sm" clickable @click="imageInovke('stamp')">
+            <q-btn push color="primary" icon="approval" size="sm" clickable @click="imageStamp()">
               <q-tooltip>Stamp</q-tooltip>
             </q-btn>
           </q-btn-group>
