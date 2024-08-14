@@ -296,7 +296,7 @@ async function gnapResources(req, res) {
 }
 
 async function gnapVerify(req, res) {
-  const pin = process.env.COUCHDB_ENCRYPT_PIN
+  let pin = process.env.COUCHDB_ENCRYPT_PIN
   let prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.patient + '_'
