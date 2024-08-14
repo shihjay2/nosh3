@@ -1412,9 +1412,8 @@ export default defineComponent({
       state.timeline_scroll = false
       state.timeline = []
       const resources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references', 'observations']
-      var drawer = []
       const json = await import('@/assets/ui/drawer.json')
-      drawer = json.rows
+      const drawer = json.rows
       const timeline = []
       const observations = []
       for (const resource of resources) {
