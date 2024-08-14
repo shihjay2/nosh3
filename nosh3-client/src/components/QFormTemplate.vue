@@ -336,7 +336,7 @@ export default defineComponent({
         state.defaultDate = state.base.defaultDate
       } else {
         if (props.resource === 'observations' || props.resource === 'service_requests') {
-          var sub = state.base.categories.find(o => o.value === props.category)
+          const sub = state.base.categories.find(o => o.value === props.category)
           state.resourceName = sub.resourceName
           state.defaultDate = sub.defaultDate
         } else {
@@ -491,7 +491,7 @@ export default defineComponent({
         }
         // default dates
         if (typeof state.defaultDate !== 'undefined') {
-          for (var c in state.defaultDate) {
+          for (const c in state.defaultDate) {
             state.form[state.defaultDate[c].id] = moment().format(state.defaultDate[c].format)
           }
         }
@@ -520,11 +520,12 @@ export default defineComponent({
         fhirMap()
         state.fhir1 = JSON.stringify(state.fhir, null, "  ")
       } else {
+        let doc = {}
         if (objectPath.has(props, 'doc._id')) {
-          var doc = props.doc
+          doc = props.doc
         } else {
           await sync(props.resource, props.online, props.patient, false)
-          var doc = await localDB.get(props.id)
+          doc = await localDB.get(props.id)
         }
         objectPath.set(state, 'fhir', doc)
         state.fhir1 = JSON.stringify(state.fhir, null, "  ")
@@ -546,8 +547,8 @@ export default defineComponent({
         }
       }
       // search bars
-      for (var i in state.search) {
-        var j = state.search[i].bar
+      for (const i in state.search) {
+        const j = state.search[i].bar
         state[j] = true
       }
       state.showForm = true
@@ -555,7 +556,7 @@ export default defineComponent({
         if (state.search.length > 0 && props.id == 'add') {
           mySearchInput.value[0]._.props.focus = true
         } else {
-          var k = myInput.value.find(l => l._.props.readonly !== true)
+          const k = myInput.value.find(l => l._.props.readonly !== true)
           k._.props.focus = true
         }
       })
@@ -563,7 +564,7 @@ export default defineComponent({
       window.scrollTo({top: 0, behavior: 'smooth'})
     })
     const catchTemplate = (id, type)  => {
-      var str = state.form[id]
+      const str = state.form[id]
       if (state.catch !== true) {
         if(/\.+$/.test(str)) {
           state.catch = true
@@ -574,7 +575,7 @@ export default defineComponent({
       } else {
         if(/(\s|&nbsp;)+$/.test(str)) {
           state.catch = false
-          var sub = str.split('.').pop().split(' ')[0]
+          const sub = str.split('.').pop().split(' ')[0]
           if (sub !== str) {
             if (sub !== '') {
               state.template.text = sub
@@ -597,7 +598,7 @@ export default defineComponent({
         state.fhir = props.medication_request_doc
       }
       if (props.resource == 'service_requests' && props.id == 'add') {
-        var sub = state.base.categories.find(o => o.value === props.category)
+        const sub = state.base.categories.find(o => o.value === props.category)
         state.fhir = sub.doc
       }
       state.form = {}
@@ -615,12 +616,12 @@ export default defineComponent({
     }
     const copySelected = (data, search) => {
       if (data !== null) {
-        var a = state.search.find(({ bar }) => bar === search)
+        const a = state.search.find(({ bar }) => bar === search)
         if (a) {
           for (const [key, value] of Object.entries(a)) {
             if (key !== "bar" && key !== "label") {
               if (data.value[key] !== undefined) {
-                var b = data.value[key]
+                const b = data.value[key]
                 if (typeof data.value[key] == 'string') {
                   String(b.trim())
                 }
@@ -643,9 +644,9 @@ export default defineComponent({
     }
     const divMap = () => {
       if (state.divMap == true) {
-        var value = '<div xmlns="http://www.w3.org/1999/xhtml">'
-        var uiSchema = state.schema.flat()
-        var str = props.div_content
+        let value = '<div xmlns="http://www.w3.org/1999/xhtml">'
+        const uiSchema = state.schema.flat()
+        const str = props.div_content
         var found = []
         var rxp = /{([^}]+)}/g
         var curMatch
@@ -655,13 +656,13 @@ export default defineComponent({
         while((curMatch = rxp.exec(str))) {
           found.push(curMatch[1])
         }
-        for (var a in found) {
+        for (const a in found) {
           field = uiSchema.find(({ id }) => id === found[a])
           if (field !== undefined) {
             if (objectPath.has(state, 'form.' + field.id)) {
               replaceWith[a] = objectPath.get(state, 'form.' + field.id)
               if (typeof field.display !== 'undefined' && typeof field.options !== 'undefined') {
-                var b = field.options.find(({ value }) => value === replaceWith[a])
+                const b = field.options.find(({ value }) => value === replaceWith[a])
                 replaceWith[a] = b.label
               }
             } else {
@@ -676,8 +677,8 @@ export default defineComponent({
         value += str
         if (props.resource === 'compositions' && props.category === 'section') {
           if (objectPath.has(state, 'fhir.section')) {
-            var c = ''
-            for (var d in objectPath.get(state, 'fhir.section')) {
+            let c = ''
+            for (const d in objectPath.get(state, 'fhir.section')) {
               c += '<p><b>Title</b>: ' + objectPath.get(state, 'fhir.section.' + d + '.title') + '</p>'
               c += '<p><b>Text</b>: ' + objectPath.get(state, 'fhir.section.' + d + '.text.div') + '</p>'
             }
@@ -691,9 +692,9 @@ export default defineComponent({
     }
     const fhirMap = () => {
       if (!state.fhirProcess) {
-        for (var i in state.schema) {
+        for (const i in state.schema) {
           if (Array.isArray(state.schema[i])) {
-            for (var j in state.schema[i]) {
+            for (const j in state.schema[i]) {
               fhirMapItem(state.schema[i][j])
             }
           } else {
@@ -711,9 +712,9 @@ export default defineComponent({
       }
     }
     const fhirMapItem = (schema) => {
-      var id = schema.id
+      const id = schema.id
       if (typeof state.form[id] !== 'undefined') {
-        var modelRoot = ''
+        let modelRoot = ''
         if (typeof schema.modelParent !== 'undefined') {
           modelRoot = schema.modelParent + '.' + state.index + '.'
         }
@@ -725,12 +726,12 @@ export default defineComponent({
               modelRoot += schema.modelRoot
               objectPath.del(state, 'fhir.' + modelRoot)
               if (state.form[id].length !== 0) {
-                for (var a in state.form[id]) {
+                for (const a in state.form[id]) {
                   if (Array.isArray(state.form[id][a])) {
-                    for (var b in state.form[id][a]) {
+                    for (const b in state.form[id][a]) {
                       objectPath.set(state, 'fhir.' + modelRoot + '.' + b + '.' + schema.model, state.form[id][a][b])
                       if (typeof schema.display !== 'undefined' && typeof schema.options !== 'undefined') {
-                        var c = schema.options.find(({ value }) => value === value)
+                        const c = schema.options.find(({ value }) => value === value)
                         objectPath.set(state, 'fhir.' + modelRoot + '.' + b + '.' + schema.display, c.label)
                       }
                       if (typeof schema.system !== 'undefined') {
@@ -740,7 +741,7 @@ export default defineComponent({
                   } else if (schema.model !== '') {
                     objectPath.set(state, 'fhir.' + modelRoot + '.' + a + '.' + schema.model, state.form[id][a])
                     if (typeof schema.display !== 'undefined' && typeof schema.options !== 'undefined') {
-                      var d = schema.options.find(({ value }) => value === state.form[id][a])
+                      const d = schema.options.find(({ value }) => value === state.form[id][a])
                       objectPath.set(state, 'fhir.' + modelRoot + '.' + a + '.' + schema.display, d.label)
                     }
                     if (typeof schema.system !== 'undefined') {
@@ -756,8 +757,8 @@ export default defineComponent({
             }
           }
         } else {
-          var val = state.form[id]
-          var modelRoot1 = modelRoot
+          const val = state.form[id]
+          let modelRoot1 = modelRoot
           if (typeof schema.modelRoot !== 'undefined') {
             if (schema.modelArray == false) {
               modelRoot += schema.modelRoot + '.' + schema.model
@@ -774,13 +775,13 @@ export default defineComponent({
           }
           if (val !== '') {
             if (typeof schema.modelRange !== 'undefined') {
-              var matches = val.match(/\d+/g)
+              const matches = val.match(/\d+/g)
               if (matches.length > 1) {
                 matches.sort()
-                for (var m in matches) {
+                for (const m in matches) {
                   objectPath.set(state, 'fhir.' + modelRoot + '.' + schema.modelRange[m] + '.' + schema.modelEnd, matches[m])
                   if (typeof schema.display !== 'undefined' && typeof schema.options !== 'undefined') {
-                    var m1 = schema.options.find(({ value }) => value === val)
+                    const m1 = schema.options.find(({ value }) => value === val)
                     objectPath.set(state, 'fhir.' + modelRoot + '.' + schema.modelRange[m] + '.' + schema.display, m1.label)
                   }
                   if (typeof schema.system !== 'undefined') {
@@ -792,7 +793,7 @@ export default defineComponent({
                 }
               } else {
                 objectPath.set(state, 'fhir.' + modelRoot + '.' + schema.modelOne + '.' + schema.modelEnd, val)
-                var modelRange1 = schema.modelRange[0]
+                let modelRange1 = schema.modelRange[0]
                 modelRange1 = modelRange1.split('.').slice(0,-1).join('.')
                 if (objectPath.has(state, 'fhir.' + modelRoot + '.' + modelRange1)) {
                   objectPath.del(state, 'fhir.' + modelRoot + '.' + modelRange1)
@@ -807,11 +808,11 @@ export default defineComponent({
                 // }
               }
             } else if (typeof schema.modelChoice !== 'undefined') {
-              for (var s in schema.modelChoice) {
+              for (const s in schema.modelChoice) {
                 if (objectPath.has(state, 'fhir.' + modelRoot + '.' + schema.modelChoice[s])) {
                   objectPath.set(state, 'fhir.' + modelRoot + '.' + schema.modelChoice[s] + '.' + schema.modelEnd, val)
                   if (typeof schema.display !== 'undefined' && typeof schema.options !== 'undefined') {
-                    var t = schema.options.find(({ value }) => value === val)
+                    const t = schema.options.find(({ value }) => value === val)
                     objectPath.set(state, 'fhir.' + modelRoot + '.' + schema.modelChoice[s] + '.' + schema.display, t.label)
                   }
                 }
@@ -820,9 +821,9 @@ export default defineComponent({
               if (typeof schema.text !== 'undefined') {
                 objectPath.set(state, 'fhir.' + modelRoot + '.' + schema.text, val)
                 if (typeof schema.repeat !== 'undefined') {
-                  var repeat = parseSig(val)
+                  const repeat = parseSig(val)
                   if (typeof repeat.frequency !== 'undefined') {
-                    for (var key in repeat) {
+                    for (const key in repeat) {
                       objectPath.set(state, 'fhir.' + modelRoot + '.' + schema.repeat + '.' + key, repeat[key])
                     }
                   }
@@ -833,12 +834,12 @@ export default defineComponent({
                 }
                 if (typeof schema.div !== 'undefined') {
                   val = '<div xmlns="http://www.w3.org/1999/xhtml">' + val + '</div>'
-                  var status = modelRoot.replace('.div', '.status')
+                  const status = modelRoot.replace('.div', '.status')
                   objectPath.set(state, 'fhir.' + status, 'generated')
                 }
                 objectPath.set(state, 'fhir.' + modelRoot, val)
                 if (typeof schema.display !== 'undefined' && typeof schema.options !== 'undefined') {
-                  var j = schema.options.find(({ value }) => value === val)
+                  const j = schema.options.find(({ value }) => value === val)
                   if (typeof j !== 'undefined') {
                     objectPath.set(state, 'fhir.' + modelRoot1 + '.' + schema.display, j.label)
                   } else {
@@ -847,7 +848,7 @@ export default defineComponent({
                   }
                 }
                 if (typeof schema.code !== 'undefined') {
-                  var k = schema.options.find(({ label }) => label === val)
+                  const k = schema.options.find(({ label }) => label === val)
                   objectPath.set(state, 'fhir.' + modelRoot1 + '.' + schema.code, k.value)
                 }
                 if (typeof schema.system !== 'undefined') {
@@ -862,9 +863,9 @@ export default defineComponent({
                   objectPath.set(state, 'fhir.' + schema.use.model, schema.use.value)
                 }
                 if (typeof schema.copy !== 'undefined' && typeof schema.options !== 'undefined') {
-                  var l = schema.options.find(({ value }) => value === val)
+                  const l = schema.options.find(({ value }) => value === val)
                   objectPath.set(state, 'form.' + schema.copy.id, l.label)
-                  var n = state.schema.flat().find(o => o.id === schema.copy.id)
+                  const n = state.schema.flat().find(o => o.id === schema.copy.id)
                   fhirMapItem(n)
                 }
               }
@@ -879,9 +880,9 @@ export default defineComponent({
     }
     const getForm = (index) => {
       state.fhirProcess = true
-      for (var i in state.schema) {
+      for (const i in state.schema) {
         if (Array.isArray(state.schema[i])) {
-          for (var j in state.schema[i]) {
+          for (const j in state.schema[i]) {
             getFormItem(state.schema[i][j], index)
           }
         } else {
@@ -891,8 +892,8 @@ export default defineComponent({
       state.fhirProcess = false
     }
     const getFormItem = async(schema, index) => {
-      var id = schema.id
-      var model = ''
+      const id = schema.id
+      let model = ''
       if (typeof schema.modelParent !== 'undefined') {
         model = schema.modelParent + '.' + index + '.'
       }
@@ -906,14 +907,14 @@ export default defineComponent({
         model += schema.model
       }
       if (schema.type == 'tags' || schema.multiple == true) {
-        var a = []
+        const a = []
         if (schema.modelRoot !== undefined) {
           if (schema.modelParent !== undefined) {
-            for (var b in objectPath.get(state, 'fhir.' + schema.modelParent + '.' + index + '.' + schema.modelRoot)) {
+            for (const b in objectPath.get(state, 'fhir.' + schema.modelParent + '.' + index + '.' + schema.modelRoot)) {
               a[b] = objectPath.get(state, 'fhir.' + schema.modelParent + '.' + index + '.' + schema.modelRoot + '.' + b  + '.' + schema.model)
             }
           } else {
-            for (var b1 in objectPath.get(state, 'fhir.' + schema.modelRoot)) {
+            for (const b1 in objectPath.get(state, 'fhir.' + schema.modelRoot)) {
               a[b1] = objectPath.get(state, 'fhir.' + schema.modelRoot + '.' + b1  + '.' + schema.model)
             }
           }
@@ -924,7 +925,7 @@ export default defineComponent({
           objectPath.set(state, 'form.' + id, objectPath.get(state, 'fhir.' + model))
         }
       } else if (schema.modelOne !== undefined) {
-        var c = ''
+        let c = ''
         if (objectPath.has(state, 'fhir.' + model + '.' + schema.modelOne + '.' + schema.modelEnd)) {
           c = objectPath.get(state, 'fhir.' + model + '.' + schema.modelOne + '.' + schema.modelEnd)
         } else {
@@ -936,8 +937,8 @@ export default defineComponent({
         }
         objectPath.set(state, 'form.' + id, c)
       } else if (schema.modelChoice !== undefined) {
-        var d = ''
-        for (var e in schema.modelChoice) {
+        let d = ''
+        for (const e in schema.modelChoice) {
           if (objectPath.has(state, 'fhir.' + model + '.' + schema.modelChoice[e] + '.' + schema.modelEnd)) {
             d = objectPath.get(state, 'fhir.' + model + '.' + schema.modelChoice[e] + '.' + schema.modelEnd)
           }
@@ -964,12 +965,13 @@ export default defineComponent({
       }
     }
     const getIndex = () => {
+      let a = ''
       if (Array.isArray(state.schema[0])) {
-        var a = objectPath.get(state, 'schema.0.0.modelParent')
+        a = objectPath.get(state, 'schema.0.0.modelParent')
       } else {
-        var a = objectPath.get(state, 'schema.0.modelParent')
+        a = objectPath.get(state, 'schema.0.modelParent')
       }
-      var b = objectPath.get(state, 'fhir.' + a)
+      const b = objectPath.get(state, 'fhir.' + a)
       if (b == undefined) {
         return 0
       } else {
@@ -986,7 +988,7 @@ export default defineComponent({
     const onDetails = () => {
       if (props.resource == 'immunizations') {
         state.dialogVaccine = true
-        var json = {
+        const json = {
           code: state.form.immunizationCode,
           text: state.form.immunizationText,
           publicationDate: '',
@@ -995,17 +997,17 @@ export default defineComponent({
           protocol: state.form.protocol,
           shortname: ''
         }
-        var a = state.cvx_vis.findIndex(item => item.includes(json.code.padEnd(10)))
+        const a = state.cvx_vis.findIndex(item => item.includes(json.code.padEnd(10)))
         if (a !== -1) {
-          var b = state.vis_barcode_lookup.data.findIndex(item => item.includes(state.cvx_vis[a][2]))
+          const b = state.vis_barcode_lookup.data.findIndex(item => item.includes(state.cvx_vis[a][2]))
           json.publicationDate = state.vis_barcode_lookup.data[b][1]
           if (b !== -1) {
-            var c = state.vis_url.data.findIndex(item => item.includes(state.vis_barcode_lookup.data[b][3]))
+            const c = state.vis_url.data.findIndex(item => item.includes(state.vis_barcode_lookup.data[b][3]))
             json.vis_url = state.vis_url.data[c][2]
             json.vis = state.vis_url.data[c][0]
           }
         }
-        var d = state.cvx.findIndex(item => item.includes(json.code.padEnd(10)))
+        const d = state.cvx.findIndex(item => item.includes(json.code.padEnd(10)))
         if (d !== -1) {
           json.shortname = state.cvx[d][1]
         }
@@ -1013,7 +1015,7 @@ export default defineComponent({
       }
     }
     const parseSig = (str) => {
-      var ret = {}
+      const ret = {}
       str = str.toLowerCase()
       if (str.startsWith('qd')) {
         ret.frequency = 1
@@ -1066,7 +1068,7 @@ export default defineComponent({
       }
       if (typeof ret.frequency == 'undefined') {
         if (/^\d/.test(str)) {
-          var matches = str.match(/^\d/)
+          const matches = str.match(/^\d/)
           ret.frequency = matches[0]
           ret.period = 1
           str = str.replace(matches[0],'').trim()
@@ -1077,17 +1079,17 @@ export default defineComponent({
             ret.frequency = 1
             str = str.replace('every','').trim()
             if (/^\d/.test(str)) {
-              var matches1 = str.match(/^\d/)
+              const matches1 = str.match(/^\d/)
               ret.period = matches1[0]
               str = str.replace(matches1[0],'').trim()
               if (str.startsWith('to')) {
                 str = str.replace('to','').trim()
-                var matches1a = str.match(/^\d/)
+                const matches1a = str.match(/^\d/)
                 ret['periodMax'] = matches1a[0]
               }
               if (str.startsWith('-')) {
                 str = str.replace('-','').trim()
-                var matches1b = str.match(/^\d/)
+                const matches1b = str.match(/^\d/)
                 ret['periodMax'] = matches1b[0]
               }
             } else {
@@ -1101,17 +1103,17 @@ export default defineComponent({
             ret.frequency = 1
             str = str.replace('q','').trim()
             if (/^\d/.test(str)) {
-              var matches2 = str.match(/^\d/)
+              const matches2 = str.match(/^\d/)
               ret.period = matches2[0]
               str = str.replace(matches2[0],'').trim()
               if (str.startsWith('to')) {
                 str = str.replace('to','').trim()
-                var matches2a = str.match(/^\d/)
+                const matches2a = str.match(/^\d/)
                 ret['periodMax'] = matches2a[0]
               }
               if (str.startsWith('-')) {
                 str = str.replace('-','').trim()
-                var matches2b = str.match(/^\d/)
+                const matches2b = str.match(/^\d/)
                 ret['periodMax'] = matches2b[0]
               }
             } else {
@@ -1180,7 +1182,7 @@ export default defineComponent({
       state.sending = true
       await sync(props.resource, false, props.patient, true, state.fhir)
       if (props.resource === 'compositions') {
-        var doc0 = await localDB.get(state.fhir.id)
+        const doc0 = await localDB.get(state.fhir.id)
         emit('composition', doc0)
         $q.notify({
           message: 'The ' + Case.lower(pluralize.singular(props.resource)) + ' is now acknowledged in the encounter.',
@@ -1230,8 +1232,8 @@ export default defineComponent({
         objectPath.set(subject, 'resource', Case.snake(pluralize(composition_doc.subject.reference.split('/').slice(0,-1).join(''))))
         objectPath.set(subject, 'id', composition_doc.subject.reference.split('/').slice(-1).join(''))
         references.push(subject)
-        for (var a in composition_doc.author) {
-          var author = {}
+        for (const a in composition_doc.author) {
+          const author = {}
           objectPath.set(author, 'resource', Case.snake(pluralize(composition_doc.author[a].reference.split('/').slice(0,-1).join(''))))
           objectPath.set(author, 'id', composition_doc.author[a].reference.split('/').slice(-1).join(''))
           references.push(author)
@@ -1239,9 +1241,9 @@ export default defineComponent({
         const entry = {}
         objectPath.set(entry, 'resource', state.fhir)
         entries.push(entry)
-        for (var reference of references) {
+        for (const reference of references) {
           const db1 = new PouchDB(prefix + reference.resource)
-          var results1 = await db1.get(reference.id)
+          const results1 = await db1.get(reference.id)
           entries.push({resource: results1})
         }
         const signature_data = await ssxService(props.resource, state.fhir)
@@ -1254,15 +1256,15 @@ export default defineComponent({
           ]
         })
         if (objectPath.has(props, 'care_plan_doc.id')) {
-          var doc = props.care_plan_doc
+          const doc = props.care_plan_doc
           if (objectPath.has(doc, 'activity')) {
-            var a = doc.activity.length
+            const a = doc.activity.length
             objectPath.set(doc, 'activity.' + a + '.reference', Case.pascal(pluralize.singular(props.resource)) + '/' + state.fhir.id)
           } else {
             objectPath.set(doc, 'activity.0.reference', Case.pascal(pluralize.singular(props.resource)) + '/' + state.fhir.id)
           }
           await sync('care_plans', false, props.patient, true, doc)
-          var doc1 = await localDB1.get(doc.id)
+          const doc1 = await localDB1.get(doc.id)
           emit('care-plan', doc1)
           $q.notify({
             message: 'The ' + Case.lower(pluralize.singular(props.resource)) + ' is now associated with the active care plan.',
@@ -1289,8 +1291,8 @@ export default defineComponent({
     }
     const selectTemplate = (template) => {
       if (!template.clear) {
-        var text = state.form[template.target]
-        var n = text.lastIndexOf('.' + state.template.text)
+        const text = state.form[template.target]
+        const n = text.lastIndexOf('.' + state.template.text)
         if (template.type === 'textarea') {
           state.form[template.target] = text.slice(0, n) + text.slice(n).replace('.' + state.template.text, template.text)
         } else {
@@ -1304,7 +1306,7 @@ export default defineComponent({
       closeTemplate()
     }
     const selectVaccine = (data) => {
-      var json = {}
+      const json = {}
       json.value = data
       copySelected(json, "searchVaccine")
       closeVaccine()
@@ -1354,7 +1356,7 @@ export default defineComponent({
     }
     const updateSelect = async(field, val) => {
       if (field == 'country') {
-        var f = props.states.find(e => e.iso2 == val)
+        const f = props.states.find(e => e.iso2 == val)
         state.schema = addSchemaOptions('state', f.states, 'state_code', 'name', state.schema)
       }
       if (props.resource == 'observations' && props.category == 'vital-signs') {
@@ -1374,19 +1376,23 @@ export default defineComponent({
         }
         if (props.category == 'activity') {
           if (field == 'code') {
-            var a = objectPath.get(props, 'select.' + props.activity)
-            var b = a.filter((a) => {return a.CF_CODE10 == val})
+            const a = objectPath.get(props, 'select.' + props.activity)
+            const b = a.filter((a) => {return a.CF_CODE10 == val})
             objectPath.set(state, 'fhir.valueQuantity.unit', b[0].Vendor_UOM)
-            var params = {
+            const params = {
               sf: 'cs_code',
               maxList: 1,
               terms: b[0].Vendor_UOM
             }
-            var opt = {
+            const opt = {
               timeout: 500
             }
             try {
-              var d = await axios.get('https://clinicaltables.nlm.nih.gov/api/ucum/v3/search', {params}, {opt})
+              const d = await axios.get('https://clinicaltables.nlm.nih.gov/api/ucum/v3/search', {params}, {opt})
+              if (d.data[3].length == 1) {
+                objectPath.set(state, 'fhir.valueQuantity.code', d.data[3][0][0])
+                objectPath.set(state, 'fhir.valueQuantity.system', 'http://unitsofmeasure.org')
+              }
             } catch (e) {
               console.log(e)
               $q.notify({
@@ -1396,10 +1402,6 @@ export default defineComponent({
                   { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
                 ]
               })
-            }
-            if (d.data[3].length == 1) {
-              objectPath.set(state, 'fhir.valueQuantity.code', d.data[3][0][0])
-              objectPath.set(state, 'fhir.valueQuantity.system', 'http://unitsofmeasure.org')
             }
           }
         }

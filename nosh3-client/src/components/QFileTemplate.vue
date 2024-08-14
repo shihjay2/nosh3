@@ -317,9 +317,9 @@ export default defineComponent({
           state.model += '.' + state.subcategory
         }
         if (typeof state.base.defaultDate !== 'undefined') {
-          for (var a in state.base.defaultDate) {
-            var uiSchema = state.base.uiSchema.flat()
-            for (var b in uiSchema) {
+          for (const a in state.base.defaultDate) {
+            const uiSchema = state.base.uiSchema.flat()
+            for (const b in uiSchema) {
               if (uiSchema[b].id == state.base.defaultDate[a].id) {
                 objectPath.set(state, 'fhir.' + uiSchema[b].model, moment().format(state.base.defaultDate[a].format))
               }
@@ -334,7 +334,7 @@ export default defineComponent({
         state.add = true
       } else {
         state.id = props.id
-        var doc = await localDB.get(props.id)
+        const doc = await localDB.get(props.id)
         objectPath.set(state, 'fhir', doc)
         state.fhir1 = JSON.stringify(state.fhir, null, "  ")
         state.index = getIndex()
@@ -351,11 +351,11 @@ export default defineComponent({
           state.add = true
         } else {
           // existing file
-          var c = state.category + '.0'
+          let c = state.category + '.0'
           if (state.subcategory !== '') {
             c += '.' + state.subcategory
           }
-          var contentType = objectPath.get(state, 'fhir.' + c + '.contentType')
+          const contentType = objectPath.get(state, 'fhir.' + c + '.contentType')
           if (contentType == 'application/pdf') {
             state.pdfViewer = true
           } else if (contentType == 'text/plain; charset=utf-8') {
@@ -385,12 +385,12 @@ export default defineComponent({
       }
     })
     const addedFn = (files) => {
-      for (var i in files) {
+      for (const i in files) {
         getBase64(files[i]).then(data => {
           objectPath.set(state, 'fhir.' + state.model + '.contentType', data.substr(data.indexOf(':') + 1, data.indexOf(';') - data.indexOf(':') - 1))
           objectPath.set(state, 'fhir.' + state.model + '.data', data.substr(data.indexOf(',') + 1))
           state.fhir1 = JSON.stringify(state.fhir, null, "  ")
-          var contentType = objectPath.get(state, 'fhir.' + state.model + '.contentType')
+          const contentType = objectPath.get(state, 'fhir.' + state.model + '.contentType')
           if (contentType == 'application/pdf') {
             state.pdf = data
             state.editPdf = true
@@ -437,7 +437,7 @@ export default defineComponent({
         objectPath.del(state, 'fhir.' + state.category)
         state.fhir1 = JSON.stringify(state.fhir, null, "  ")
         await sync(props.resource, false, props.patient, true, state.fhir)
-        var doc = await localDB.get(props.id)
+        const doc = await localDB.get(props.id)
         objectPath.set(state, 'fhir', doc)
         $q.notify({
           message: 'The image was removed!',
@@ -478,7 +478,7 @@ export default defineComponent({
       })
     }
     const getIndex = () => {
-      var a = objectPath.get(state, 'fhir.' + state.category)
+      const a = objectPath.get(state, 'fhir.' + state.category)
       if (a == undefined) {
         return 0
       } else {
@@ -550,7 +550,7 @@ export default defineComponent({
         objectPath.set(state, 'pagePng.' + state.page, data)
         const img0 = new Image
         img0.onload = () => {
-          var doc = new jsPDF("p", "px", [img0.height, img0.width])
+          const doc = new jsPDF("p", "px", [img0.height, img0.width])
           for (const [key, value] of Object.entries(state.pagePng)) {
             const img = new Image
             img.onload = () => {
@@ -579,7 +579,7 @@ export default defineComponent({
         await sync(props.resource, false, props.patient, true, state.fhir)
         state.sending = false
         const contentType = objectPath.get(state, 'fhir.' + state.model + '.contentType')
-        var notify = ''
+        let notify = ''
         if (contentType === 'application/pdf') {
           notify = 'PDF document'
         } else if (contentType === 'text/plain; charset=utf-8'){
