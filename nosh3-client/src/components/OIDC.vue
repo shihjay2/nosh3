@@ -100,7 +100,6 @@ export default defineComponent({
         }
       } else {
         emit('loading')
-        // var a = JSON.parse(localStorage.getItem('oidc'))
         open(props.type, props.name)
       }
     })

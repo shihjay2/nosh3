@@ -75,7 +75,7 @@ export default defineComponent({
       }
     })
     const getItem = (schema, index, fhir) => {
-      var model = ''
+      let model = ''
       if (typeof schema.modelParent !== 'undefined') {
         model = schema.modelParent + '.' + index + '.'
       }
@@ -89,14 +89,14 @@ export default defineComponent({
         model += schema.model
       }
       if (schema.type == 'tags' || schema.multiple == true) {
-        var a = []
+        let a = []
         if (schema.modelRoot !== undefined) {
           if (schema.modelParent !== undefined) {
-            for (var b in objectPath.get(fhir, schema.modelParent + '.' + index + '.' + schema.modelRoot)) {
+            for (const b in objectPath.get(fhir, schema.modelParent + '.' + index + '.' + schema.modelRoot)) {
               a[b] = objectPath.get(fhir, schema.modelParent + '.' + index + '.' + schema.modelRoot + '.' + b  + '.' + schema.model)
             }
           } else {
-            for (var b1 in objectPath.get(fhir, schema.modelRoot)) {
+            for (const b1 in objectPath.get(fhir, schema.modelRoot)) {
               a[b1] = objectPath.get(fhir, schema.modelRoot + '.' + b1  + '.' + schema.model)
             }
           }
@@ -107,7 +107,7 @@ export default defineComponent({
           return objectPath.get(state, 'fhir.' + model)
         }
       } else if (schema.modelOne !== undefined) {
-        var c = ''
+        let c = ''
         if (objectPath.has(fhir, model + '.' + schema.modelOne + '.' + schema.modelEnd)) {
           c = objectPath.get(fhir, model + '.' + schema.modelOne + '.' + schema.modelEnd)
         } else {
@@ -119,8 +119,8 @@ export default defineComponent({
         }
         return c
       } else if (schema.modelChoice !== undefined) {
-        var d = ''
-        for (var e in schema.modelChoice) {
+        let d = ''
+        for (const e in schema.modelChoice) {
           if (objectPath.has(fhir, model + '.' + schema.modelChoice[e] + '.' + schema.modelEnd)) {
             d = objectPath.get(fhir, model + '.' + schema.modelChoice[e] + '.' + schema.modelEnd)
           }
@@ -138,8 +138,8 @@ export default defineComponent({
     }
     const query = () => {
       state.cards = []
-      var results = props.doc.entry.filter(a => a.resource.resourceType == Case.pascal(pluralize.singular(props.resource)))
-      for (var b in results) {
+      const results = props.doc.entry.filter(a => a.resource.resourceType == Case.pascal(pluralize.singular(props.resource)))
+      for (const b in results) {
         objectPath.set(state, 'result.' + b + '.doc', results[b].resource)
       }
       tableMap()
@@ -153,30 +153,30 @@ export default defineComponent({
       }
     }
     const tableMap = async() => {
-      for (var a in state.base.categories) {
+      for (const a in state.base.categories) {
         objectPath.set(state, 'cards.' + a + '.category', state.base.categories[a].label)
         objectPath.set(state, 'cards.' + a + '.section', state.base.categories[a].value)
         objectPath.set(state, 'cards.' + a + '.visibleColumns', state.base.categories[a].visibleColumns)
         objectPath.set(state, 'cards.' + a + '.filter', '')
         objectPath.set(state, 'cards.' + a + '.id', a)
         objectPath.set(state, 'cards.' + a + '.loading', false)
-        var schema = state.base.categories[a].docSchema
-        for (var b in schema) {
-          var colrow = {}
+        const schema = state.base.categories[a].docSchema
+        for (const b in schema) {
+          const colrow = {}
           objectPath.set(colrow, 'name', objectPath.get(schema, b + '.id'))
           objectPath.set(colrow, 'label', objectPath.get(schema, b + '.label'))
           objectPath.set(colrow, 'field', objectPath.get(schema, b + '.id'))
           objectPath.set(colrow, 'align', 'left')
           objectPath.set(state, 'cards.' + a + '.columns.' + b, colrow)
         }
-        var sub = state.result.filter(c => {
+        const sub = state.result.filter(c => {
           let d = c.doc.category.some(({ coding }) => coding.some(({ code }) => code === state.base.categories[a].value))
           return d
         })
         if (sub.length !== 0) {
-          for (var e in sub) {
-            var docrow = {}
-            for (var f in schema) {
+          for (const e in sub) {
+            const docrow = {}
+            for (const f in schema) {
               objectPath.set(docrow, objectPath.get(schema, f + '.id'), getItem(schema[f], '0', sub[e].doc))
             }
             objectPath.set(docrow, 'resourceName', state.base.categories[a].label)

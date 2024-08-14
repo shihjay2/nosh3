@@ -169,17 +169,17 @@ export default defineComponent({
       state.patientNickname = props.patientNickname
       state.patient = props.patient
       state.encounter = props.encounter
-      var resources = await import('@/assets/ui/drawer.json')
+      const resources = await import('@/assets/ui/drawer.json')
       state.ui = resources.rows
-      for (var a in state.ui) {
+      for (const a in state.ui) {
         if (typeof state.ui[a].resource !== 'undefined') {
           state.base[a] = await import('@/assets/fhir/' + state.ui[a].resource + '.json')
           state.resources.push(state.ui[a].resource)
-          var count = await query(state.ui[a].resource, a)
+          const count = await query(state.ui[a].resource, a)
           objectPath.set(state, 'ui.' + a + '.count', count)
-          for (var e in props.oidc) {
+          for (const e in props.oidc) {
             if (objectPath.has(props, 'oidc.' + e + '.docs')) {
-              var oidc_results = props.oidc[e].docs.find(f => f.resource === state.ui[a].resource)
+              const oidc_results = props.oidc[e].docs.find(f => f.resource === state.ui[a].resource)
               if (oidc_results !== undefined) {
                 if (objectPath.has(oidc_results, 'rows')) {
                   if (oidc_results.rows.length > 0) {
@@ -195,12 +195,12 @@ export default defineComponent({
     watch(() => props.drawerReload, async(newVal) => {
       if (newVal) {
         await encounterCheck()
-        for (var a in state.ui) {
-          var count = await query(state.ui[a].resource, a)
+        for (const a in state.ui) {
+          const count = await query(state.ui[a].resource, a)
           objectPath.set(state, 'ui.' + a + '.count', count)
-          for (var e in props.oidc) {
+          for (const e in props.oidc) {
             if (objectPath.has(props, 'oidc.' + e + '.docs')) {
-              var oidc_results = props.oidc[e].docs.find(f => f.resource === state.ui[a].resource)
+              const oidc_results = props.oidc[e].docs.find(f => f.resource === state.ui[a].resource)
               if (oidc_results !== undefined) {
                 if (objectPath.has(oidc_results, 'rows')) {
                   if (oidc_results.rows.length > 0) {
@@ -215,11 +215,11 @@ export default defineComponent({
       }
     })
     watch(() => props.oidc, async(newVal) => {
-      for (var a in state.ui) {
+      for (const a in state.ui) {
         objectPath.del(state, 'ui.' + a + '.oidc')
-        for (var e in newVal) {
+        for (const e in newVal) {
           if (objectPath.has(newVal, e + '.docs')) {
-            var oidc_results = newVal[e].docs.find(f => f.resource === state.ui[a].resource)
+            const oidc_results = newVal[e].docs.find(f => f.resource === state.ui[a].resource)
             if (oidc_results !== undefined) {
               if (objectPath.has(oidc_results, 'rows')) {
                 if (oidc_results.rows.length > 0) {
@@ -277,18 +277,18 @@ export default defineComponent({
       } else {
         state.careplanCheck = false
       }
-      var pregnancy_arr = [{val: 'Y', label: 'Pregnant'},{val: 'N', label: 'Not Pregnant'},{val: 'U', label: 'Pregnancy ???'}]
-      var tobacco_arr = [{val: 'Y', label: 'Smoker'},{val: 'N', label: 'Nonsmoker'},{val: 'U', label: 'Smoking Status ???'}]
+      const pregnancy_arr = [{val: 'Y', label: 'Pregnant'},{val: 'N', label: 'Not Pregnant'},{val: 'U', label: 'Pregnancy ???'}]
+      const tobacco_arr = [{val: 'Y', label: 'Smoker'},{val: 'N', label: 'Nonsmoker'},{val: 'U', label: 'Smoking Status ???'}]
       if (props.patientDoc.extension[2].valueCode === 'F') {
-        var a = await observationStatus('pregnancy', props.patient, false, true)
-        var b = pregnancy_arr.find(c => c.val === a)
+        const a = await observationStatus('pregnancy', props.patient, false, true)
+        const b = pregnancy_arr.find(c => c.val === a)
         state.pregnancyStatus = b.label
         state.pregnancyCheck = true
       }
-      var d = await observationStatus('tobacco', props.patient, false, true)
-      var e = tobacco_arr.find(f => f.val === d)
+      const d = await observationStatus('tobacco', props.patient, false, true)
+      const e = tobacco_arr.find(f => f.val === d)
       state.smokingStatus = e.label
-      var g = await observationStatusRaw('tobacco', props.patient)
+      const g = await observationStatusRaw('tobacco', props.patient)
       if (objectPath.has(g, 'display')) {
         state.smokingStatusTooltip = g.display
       }

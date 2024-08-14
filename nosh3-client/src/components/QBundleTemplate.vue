@@ -94,7 +94,7 @@ export default defineComponent({
       state.doc = props.doc
       state.online = props.online
       state.base = await import('@/assets/fhir/bundles.json')
-      for (var a in state.base.tabs) {
+      for (const a in state.base.tabs) {
         if (typeof state.base.tabs[a].resource !== 'undefined') {
           if (state.base.tabs[a].resource === 'compositions' || state.base.tabs[a].resource === 'care_plans') {
             await loadResource(a, state.base.tabs[a].resource, 'all')
@@ -102,7 +102,7 @@ export default defineComponent({
             await loadResource(a, state.base.tabs[a].resource, 'vital-signs')
           } else if (state.base.tabs[a].resource === 'encounters') {
             await loadResource(a, state.base.tabs[a].resource, 'new')
-            var d = props.doc.entry.find(b => b.resource.resourceType == Case.pascal(pluralize.singular(state.base.tabs[a].resource)))
+            const d = props.doc.entry.find(b => b.resource.resourceType == Case.pascal(pluralize.singular(state.base.tabs[a].resource)))
             fhirMap(d.resource, state.base.tabs[a].category)
           } else {
             await loadResource(a, state.base.tabs[a].resource, state.base.tabs[a].category)
@@ -115,13 +115,13 @@ export default defineComponent({
       emit('open-bundle', 'bundles', 'Bundle', props.history[newVal.value], props.history)
     })
     const fhirMap = (fhir, category) => {
-      var a = state.base.tabs.find(b => b.category == category)
+      const a = state.base.tabs.find(b => b.category == category)
       if (!objectPath.has(state, 'data.' + category)) {
         objectPath.set(state, 'data.' + category, [])
       }
-      var uiSchema = a.schema.flat()
-      for (var b in uiSchema) {
-        var model = uiSchema[b].model
+      const uiSchema = a.schema.flat()
+      for (const b in uiSchema) {
+        let model = uiSchema[b].model
         if (typeof uiSchema[b].modelRoot !== 'undefined') {
           if (uiSchema[b].modelArray == false) {
             model = uiSchema[b].modelRoot + '.' + uiSchema[b].model
@@ -133,13 +133,13 @@ export default defineComponent({
             }
           }
         }
-        var obj = {}
+        const obj = {}
         if (typeof uiSchema[b].modelRoot !== 'undefined' && uiSchema[b].modelArray !== false) {
           if (objectPath.has(fhir, uiSchema[b].modelRoot)) {
-            var c = objectPath.get(fhir, uiSchema[b].modelRoot)
+            const c = objectPath.get(fhir, uiSchema[b].modelRoot)
             obj['key'] = uiSchema[b].label
             obj['value'] = ''
-            for (var d in c) {
+            for (const d in c) {
               if (objectPath.has(fhir, uiSchema[b].modelRoot + '.' + d + '.' + uiSchema[b].display)) {
                 if (d > 0) {
                   obj['value'] += '<br/>'
@@ -163,7 +163,7 @@ export default defineComponent({
             }
           }
           if (typeof uiSchema[b].modelChoice !== 'undefined') {
-            for (var f in uiSchema[b].modelChoice) {
+            for (const f in uiSchema[b].modelChoice) {
               if (objectPath.has(fhir, model + '.' + uiSchema[b].modelChoice[f] + '.' + uiSchema[b].modelEnd)) {
                 obj['value'] = objectPath.get(fhir, model + '.' + uiSchema[b].modelChoice[f] + '.' + uiSchema[b].modelEnd)
               }
@@ -177,9 +177,9 @@ export default defineComponent({
           if (obj['value'] !== undefined) {
             if (typeof uiSchema[b].options !== 'undefined') {
               if (uiSchema[b].multiple === true) {
-                var value = ''
-                for (var g in obj['value']) {
-                  var h = uiSchema[b].options.find(({ value }) => value === obj['value'][c][uiSchema[b].model])
+                let value = ''
+                for (const g in obj['value']) {
+                  const h = uiSchema[b].options.find(({ value }) => value === obj['value'][c][uiSchema[b].model])
                   if (g !== '0') {
                     value += '; '
                   }
@@ -187,7 +187,7 @@ export default defineComponent({
                 }
                 obj['value'] = value
               } else {
-                var i = uiSchema[b].options.find(({ value }) => value === obj['value'])
+                const i = uiSchema[b].options.find(({ value }) => value === obj['value'])
                 obj['value'] = i.label
               }
             }
@@ -197,7 +197,7 @@ export default defineComponent({
       }
     }
     const loadResource = async(index, resource, category) => {
-      var a = await import('@/assets/fhir/' + resource + '.json')
+      const a = await import('@/assets/fhir/' + resource + '.json')
       objectPath.set(state, 'base.tabs.' + index + '.base', a)
       if (category === 'all') {
         objectPath.set(state, 'base.tabs.' + index + '.schema', a.uiSchema)
@@ -205,11 +205,11 @@ export default defineComponent({
         if (resource !== 'observations') {
           objectPath.set(state, 'base.tabs.' + index + '.schema', objectPath.get(a, category + '.uiSchema'))
         } else {
-          var sub = a.categories.find(o => o.value === category)
+          const sub = a.categories.find(o => o.value === category)
           objectPath.set(state, 'base.tabs.' + index + '.schema', sub.uiSchema)
         }
       }
-      var resource_obj = await loadSchema(resource, category, objectPath.get(state, 'base.tabs.' + index + '.schema'), props.online, [])
+      const resource_obj = await loadSchema(resource, category, objectPath.get(state, 'base.tabs.' + index + '.schema'), props.online, [])
       objectPath.set(state, 'base.tabs.' + index + '.schema', resource_obj.schema)
     }
     const qOptions = ref(props.options)

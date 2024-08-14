@@ -209,12 +209,12 @@ export default defineComponent({
       // state.virtual_index = index
     }
     const query = async() => {
-      var arr = []
-      var chat = []
-      var a = await localDB.get(props.id)
+      let arr = []
+      const chat = []
+      const a = await localDB.get(props.id)
       arr = await thread(a, props.online, props.patient)
-      for (var b in arr) {
-        var chatItem = {}
+      for (const b in arr) {
+        const chatItem = {}
         objectPath.set(chatItem, 'id', arr[b]._id)
         objectPath.set(chatItem, 'doc', arr[b])
         objectPath.set(chatItem, 'date', new Date(arr[b].sent))
@@ -224,9 +224,9 @@ export default defineComponent({
         } else {
           objectPath.set(chatItem, 'sent', false)
         }
-        var name_arr = arr[b].sender.reference.split('/')
+        const name_arr = arr[b].sender.reference.split('/')
         const namedb = new PouchDB(prefix + Case.snake(pluralize(name_arr[0])))
-        var name_doc = await namedb.get(name_arr[1])
+        const name_doc = await namedb.get(name_arr[1])
         objectPath.set(chatItem, 'name', removeTags(name_doc.text.div))
         objectPath.set(chatItem, 'text', arr[b].payload[0].contentString.split('\n'))
         // objectPath.set(chatItem, 'text', [arr[b].payload[0].contentString])
@@ -241,12 +241,12 @@ export default defineComponent({
       state.virtual_index = state.messages.length - 1
       state.last = chat.slice(-1)[0].doc
       state.topic = chat.slice(-1)[0].doc.topic.text
-      var recipients = state.last.recipient
-      var index = recipients.findIndex(e => e.reference === props.user.reference)
+      const recipients = state.last.recipient
+      const index = recipients.findIndex(e => e.reference === props.user.reference)
       recipients.splice(index,1)
       recipients.push(state.last.sender)
-      var recipients_arr = []
-      for (var f of recipients) {
+      const recipients_arr = []
+      for (const f of recipients) {
         recipients_arr.push(f.reference)
       }
       state.recipients = recipients_arr
@@ -256,10 +256,10 @@ export default defineComponent({
       state.form.recipients = state.recipients
     }
     const recipientNames = () => {
-      var arr = []
-      var opts = state.schema.find(row => row.id == 'recipients')
-      for (var a of state.recipients) {
-        var d = opts.options.find(e => e.value === a)
+      const arr = []
+      const opts = state.schema.find(row => row.id == 'recipients')
+      for (const a of state.recipients) {
+        const d = opts.options.find(e => e.value === a)
         arr.push(d.label)
       }
       state.recipient_names = arr.join(', ')
@@ -273,13 +273,13 @@ export default defineComponent({
       }
     }
     const sendMessage = async() => {
-      var fhir = state.base.fhir
-      var id = 'nosh_' + uuidv4()
+      const fhir = state.base.fhir
+      const id = 'nosh_' + uuidv4()
       objectPath.set(fhir, '_id', id)
       objectPath.set(fhir, 'id', id)
       objectPath.set(fhir, 'subject.reference', 'Patient/' + props.patient)
       objectPath.set(fhir, 'sender.reference', props.user.reference)
-      for (var a in state.recipients) {
+      for (const a in state.recipients) {
         objectPath.set(fhir, 'recipient.' + a + '.reference', state.recipients[a])
       }
       objectPath.set(fhir, 'topic.text', state.topic)

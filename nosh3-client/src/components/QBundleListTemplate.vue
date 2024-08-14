@@ -122,7 +122,7 @@ export default defineComponent({
     onMounted(async() => {
       state.base = props.base
       state.title = Case.title(props.resource)
-      var resources = await fetchJSON('resources', props.online)
+      const resources = await fetchJSON('resources', props.online)
       state.resources = resources.rows
       if (props.within_page == true) {
         state.within_page = 'q-gutter-md'
@@ -149,7 +149,7 @@ export default defineComponent({
       }
     })
     const fhirMap = async() => {
-      for (var a in state.result) {
+      for (const a in state.result) {
         objectPath.set(state, 'rows.' + a + '.id', objectPath.get(state, 'result.' + a + '.doc.id'))
         objectPath.set(state, 'rows.' + a + '.title', fhirReplace('title', state.base, state.result[a].doc, props.schema.flat()))
         objectPath.set(state, 'rows.' + a + '.subhead', fhirReplace('subhead', state.base, state.result[a].doc, props.schema.flat()))
@@ -159,16 +159,16 @@ export default defineComponent({
         objectPath.set(state, 'rows.' + a + '.doc', objectPath.get(state, 'result.' + a + '.doc'))
       }
       if (props.resource === 'care_plans') {
-        for (var b in state.rows) {
+        for (const b in state.rows) {
           if (objectPath.has(state, 'rows.' + b + '.doc.activity')) {
-            await getActivity(b, objectPath.get(state, 'rows.' + b + '.doc.activity'))
+            getActivity(b, objectPath.get(state, 'rows.' + b + '.doc.activity'))
           }
         }
       }
       if (props.resource === 'compositions') {
-        for (var c in state.rows) {
+        for (const c in state.rows) {
           if (objectPath.has(state, 'rows.' + c + '.doc.section')) {
-            for (var d in objectPath.get(state, 'rows.' + c + '.doc.section')) {
+            for (const d in objectPath.get(state, 'rows.' + c + '.doc.section')) {
               objectPath.set(state, 'rows.' + c + '.section.' + d + '.title', objectPath.get(state, 'rows.' + c + '.doc.section.' + d + '.title'))
               objectPath.set(state, 'rows.' + c + '.section.' + d + '.text', objectPath.get(state, 'rows.' + c + '.doc.section.' + d + '.text.div'))
               objectPath.set(state, 'rows.' + c + '.section.' + d + '.icon', 'note_alt')
@@ -178,12 +178,12 @@ export default defineComponent({
       }
     }
     const getActivity = (a, activity) => {
-      var progress = []
-      var outcome = []
-      var results = []
-      for (var b of activity) {
-        var resource = b.reference.split('/').slice(0,-1).join('')
-        var id = b.reference.split('/').slice(-1).join('')
+      const progress = []
+      const outcome = []
+      const results = []
+      for (const b of activity) {
+        const resource = b.reference.split('/').slice(0,-1).join('')
+        const id = b.reference.split('/').slice(-1).join('')
         if (objectPath.has(b, 'progress')) {
           progress.push('Progress: ' + objectPath.get(b, 'progress.text'))
         } else {
@@ -198,16 +198,16 @@ export default defineComponent({
         } else {
           outcome.push('')
         }
-        var list = props.doc.entry.filter(a1 => a1.resource.resourceType == Case.pascal(pluralize.singular(resource)))
-        var item = list.find(a2 => a2.resource.id == id)
+        const list = props.doc.entry.filter(a1 => a1.resource.resourceType == Case.pascal(pluralize.singular(resource)))
+        const item = list.find(a2 => a2.resource.id == id)
         results.push(item.resource)
       }
-      for (var c in results) {
+      for (const c in results) {
         objectPath.set(state, 'rows.' + a + '.activity.' + c + '.id', results[c].id)
-        var d = Case.snake(pluralize(results[c].resourceType))
-        var e = state.resources.find(({resource}) => resource === d)
+        const d = Case.snake(pluralize(results[c].resourceType))
+        const e = state.resources.find(({resource}) => resource === d)
         objectPath.set(state, 'rows.' + a + '.activity.' + c + '.icon', e.icon)
-        var f = Case.capital(pluralize.singular(d))
+        let f = Case.capital(pluralize.singular(d))
         if (f == 'Medication Statement') {
           f = 'Continue Medication'
         }
@@ -259,8 +259,8 @@ export default defineComponent({
       // })
     }
     const loadList = async() => {
-      var results = props.doc.entry.filter(a => a.resource.resourceType == Case.pascal(pluralize.singular(props.resource)))
-      for (var b in results) {
+      const results = props.doc.entry.filter(a => a.resource.resourceType == Case.pascal(pluralize.singular(props.resource)))
+      for (const b in results) {
         objectPath.set(state, 'result.' + b + '.doc', results[b].resource)
       }
       await fhirMap()

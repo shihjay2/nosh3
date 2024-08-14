@@ -100,7 +100,7 @@ export default defineComponent({
       await syncEmailToUser(state.data.resource, state.data.category, state.result, props.patient)
     }
     const fhirMap = () => {
-      for (var a in state.result[state.data.category]) {
+      for (const a in state.result[state.data.category]) {
         objectPath.set(state, 'rows.' + a + '.id', a)
         objectPath.set(state, 'rows.' + a + '.title', fhirReplace('title', a))
         objectPath.set(state, 'rows.' + a + '.subhead', fhirReplace('subhead', a))
@@ -120,7 +120,7 @@ export default defineComponent({
       }
     }
     const fhirModel = (field, index) => {
-      var model = field.modelParent + '.' + index + '.' + field.model
+      let model = field.modelParent + '.' + index + '.' + field.model
       if (typeof field.modelRoot !== 'undefined') {
         if (field.modelArray == false) {
           model = field.modelParent + '.' + index + '.' + field.modelRoot + '.' + field.model
@@ -135,26 +135,26 @@ export default defineComponent({
       return model
     }
     const fhirReplace = (key, index) => {
-      var uiSchema = state.schema.flat()
-      var row = state.base[state.data.category].uiListContent[key]
-      var str = ''
-      var field = ''
-      var model = ''
-      var value = ''
+      const uiSchema = state.schema.flat()
+      const row = state.base[state.data.category].uiListContent[key]
+      let str = ''
+      let field = ''
+      let model = ''
+      let value = ''
       if (key === 'content') {
-        var models = []
-        for (var a in state.base[state.data.category].uiListContent.contentFields) {
+        const models = []
+        for (const a in state.base[state.data.category].uiListContent.contentFields) {
           if (state.base[state.data.category].uiListContent.contentFields[a] == 'state') {
-            var c_field = uiSchema.find(({ id }) => id === 'country')
-            var c_model = fhirModel(c_field, index)
+            const c_field = uiSchema.find(({ id }) => id === 'country')
+            const c_model = fhirModel(c_field, index)
             if (objectPath.has(state, 'result.' + c_model)) {
-              var stateRow = props.states.find(state1 => state1.iso2 == objectPath.get(state, 'result.' + c_model))
+              const stateRow = props.states.find(state1 => state1.iso2 == objectPath.get(state, 'result.' + c_model))
               state.schema = addSchemaOptions('state', stateRow.states, 'state_code', 'name', state.schema)
             }
           }
           field = uiSchema.find(({ id }) => id === state.base[state.data.category].uiListContent.contentFields[a])
           model = fhirModel(field, index)
-          var obj = {}
+          const obj = {}
           if (objectPath.has(state, 'result.' + model)) {
             obj['key'] = field.label
             obj['value'] = objectPath.get(state, 'result.' + model)
@@ -169,7 +169,7 @@ export default defineComponent({
               }
             }
             if (typeof field.modelChoice !== 'undefined') {
-              for (var b in field.modelChoice) {
+              for (const b in field.modelChoice) {
                 if (objectPath.has(state, 'result.' + model + '.' + field.modelChoice[b] + '.' + field.modelEnd)) {
                   obj['value'] = objectPath.get(state, 'result.' + model + '.' + field.modelChoice[b] + '.' + field.modelEnd)
                 }
@@ -184,8 +184,8 @@ export default defineComponent({
               if (typeof field.options !== 'undefined') {
                 if (field.multiple === true) {
                   if (Array.isArray(obj['value'])) {
-                    for (var c in obj['value']) {
-                      var d = {}
+                    for (const c in obj['value']) {
+                      let d = {}
                       if (typeof field.modelRoot !== 'undefined') {
                         d = field.options.find(({ value }) => value === obj['value'][c][field.model])
                       } else {
@@ -198,11 +198,11 @@ export default defineComponent({
                     }
                     obj['value'] = value
                   } else {
-                    var e = field.options.find(({ value }) => value === obj['value'])
+                    const e = field.options.find(({ value }) => value === obj['value'])
                     obj['value'] = e.label
                   }
                 } else {
-                  var f = field.options.find(({ value }) => value === obj['value'])
+                  const f = field.options.find(({ value }) => value === obj['value'])
                   obj['value'] = f.label
                 }
               }
@@ -221,7 +221,7 @@ export default defineComponent({
         while((curMatch = rxp.exec(str))) {
           found.push(curMatch[1])
         }
-        for (var g in found) {
+        for (const g in found) {
           field = uiSchema.find(({ id }) => id === found[g])
           model = fhirModel(field, index)
           if (objectPath.has(state, 'result.' + model)) {
@@ -229,8 +229,8 @@ export default defineComponent({
             if (typeof field.options !== 'undefined') {
               if (field.multiple === true) {
                 if (Array.isArray(obj['value'])) {
-                  for (var h in obj['value']) {
-                    var i = {}
+                  for (const h in obj['value']) {
+                    let i = {}
                     if (typeof field.modelRoot !== 'undefined') {
                       i = field.options.find(({ value }) => value === obj['value'][h][field.model])
                     } else {
@@ -243,11 +243,11 @@ export default defineComponent({
                   }
                   replaceWith[g] = value
                 } else {
-                  var j = field.options.find(({ value }) => value === replaceWith[g])
+                  const j = field.options.find(({ value }) => value === replaceWith[g])
                   replaceWith[g] = j.label
                 }
               } else {
-                var k = field.options.find(({ value }) => value === replaceWith[g])
+                const k = field.options.find(({ value }) => value === replaceWith[g])
                 replaceWith[g] = k.label
               }
             }
@@ -259,7 +259,6 @@ export default defineComponent({
             }
           }
         }
-
         found.forEach((e,i) => mapping[`{${e}}`] = replaceWith[i])
         str = str.replace(/\{\w+\}/ig, n => mapping[n])
         return str

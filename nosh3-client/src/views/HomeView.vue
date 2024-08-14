@@ -1592,8 +1592,6 @@ export default defineComponent({
           objectPath.set(doc, 'observations', observations)
           await sync('timeline', false, state.patient, true, doc)
         }
-        console.log(objectPath.get(doc, 'observations'))
-        console.log(observations)
       } else {
         const id = 'nosh_' + uuidv4()
         const doc1 = {
