@@ -767,7 +767,7 @@ async function sleep(seconds) {
 
 async function sync(resource, patient_id='', save=false, data={}) {
   let prefix = ''
-  const pin = process.env.COUCHDB_ENCRYPT_PIN
+  let pin = process.env.COUCHDB_ENCRYPT_PIN
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = patient_id + '_'
     pin = await getPIN(patient_id)

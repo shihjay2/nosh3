@@ -59,10 +59,11 @@ function config(req, res) {
 
 async function authenticate(req, res) {
   if (req.get('referer') === req.protocol + '://' + req.hostname + '/app/login') {
+    let email = ''
     if (req.body.auth === 'magic') {
-      const email = req.body.email
+      email = req.body.email
     }
-    const pin = process.env.COUCHDB_ENCRYPT_PIN
+    let pin = process.env.COUCHDB_ENCRYPT_PIN
     let prefix = ''
     if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
       prefix = req.body.patient + '_'
@@ -157,7 +158,7 @@ async function authenticate(req, res) {
 }
 
 async function gnapAuth(req, res) {
-  const pin = process.env.COUCHDB_ENCRYPT_PIN
+  let pin = process.env.COUCHDB_ENCRYPT_PIN
   let prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.body.patient + '_'
@@ -205,7 +206,7 @@ async function gnapAuth(req, res) {
 }
 
 async function gnapProxy(req, res) {
-  const pin = process.env.COUCHDB_ENCRYPT_PIN
+  let pin = process.env.COUCHDB_ENCRYPT_PIN
   let prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.body.patient + '_'
