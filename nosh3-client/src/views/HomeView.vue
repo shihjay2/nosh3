@@ -881,6 +881,10 @@ export default defineComponent({
           state.provider = true
         }
         state.patientList = await patientList(user)
+        inboxTimer = setInterval(async() => {
+          await updateInbox(user)
+          console.log('Inbox updated')
+        }, 5000)
         if (route.params.id !== 'new') {
           try {
             const result = await patientDB.find({selector: {_id: {$eq: route.params.id}}})
@@ -942,10 +946,6 @@ export default defineComponent({
         await syncProcess()
         auth.unsetSync()
       }
-      inboxTimer = setInterval(async() => {
-        await updateInbox(user)
-        console.log('Inbox updated')
-      }, 5000)
       syncTimer = setInterval(async() => {
         await syncProcess('some')
       }, 15000)
