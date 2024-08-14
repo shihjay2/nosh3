@@ -360,7 +360,6 @@ export default defineComponent({
     const state = reactive({
       recent_charts: [],
       showDashboard: true,
-
       menuVisible: false,
       showDrawer: false,
       showMenu: false,
@@ -510,22 +509,21 @@ export default defineComponent({
       state.default_med_category = 'outpatient'
       state.couchdb = auth.db
       state.pin = auth.pin
-      var userDB = new PouchDB('users')
-      var user = await userDB.get(auth.user.id)
-      var user_arr = user.reference.split('/')
-      if (user_arr[0] == 'Practitioner') {
+      const userDB = new PouchDB('users')
+      const user = await userDB.get(auth.user.id)
+      const [ user_type ] = user.reference.split('/')
+      if (user_type == 'Practitioner') {
         state.provider = true
       }
       loadDashboard()
       state.showMenu = true
-      var user_arr = state.user.reference.split('/')
+      const user_arr = state.user.reference.split('/')
       if (user_arr[0] == 'Practitioner') {
         state.provider = true
       }
       state.patientList = await patientList(state.user)
       inboxTimer = setInterval(async() => {
         await updateInbox(user)
-        console.log('boom')
       }, 5000)
       syncTimer = setInterval(async() => {
         if (state.online) {
@@ -639,9 +637,9 @@ export default defineComponent({
           }
           if (state.resource == 'compositions') {
             if (state.user.reference === doc.author[0].reference) {
-              var encounterDB = new PouchDB('encounters')
-              var encounter = await encounterDB.get(doc.encounter.reference.split('/').slice(-1).join(''))
-              var unsigned = {
+              const encounterDB = new PouchDB('encounters')
+              const encounter = await encounterDB.get(doc.encounter.reference.split('/').slice(-1).join(''))
+              const unsigned = {
                 name: encounter.reasonCode[0].text,
                 url: location.protocol + '//' + location.host + location.pathname + '?encounter=' + encounter.id,
                 id: encounter.id,
@@ -659,8 +657,8 @@ export default defineComponent({
           openPage(id, state.resource, state.category)
         }
       } else if (state.resource == 'medication_statements' && id !== '' && state.new_medication_request === true) {
-        var a = await import('@/assets/fhir/medication_requests.json')
-        var doc1 = a.fhir
+        const a = await import('@/assets/fhir/medication_requests.json')
+        const doc1 = a.fhir
         objectPath.set(doc1, 'medicationCodeableConcept.coding.0.display', objectPath.get(doc, 'medicationCodeableConcept.coding.0.display'))
         objectPath.set(doc1, 'medicationCodeableConcept.coding.0.code', objectPath.get(doc, 'medicationCodeableConcept.coding.0.code'))
         objectPath.set(doc1, 'medicationCodeableConcept.coding.0.system', objectPath.get(doc, 'medicationCodeableConcept.coding.0.system'))
@@ -705,7 +703,7 @@ export default defineComponent({
         objectPath.set(doc1, 'dispenseRequest.expectedSupplyDuration.unit', 'days')
         objectPath.set(doc1, 'dispenseRequest.expectedSupplyDuration.code', 'd')
         objectPath.set(doc1, 'dispenseRequest.expectedSupplyDuration.system', 'http://unitsofmeasure.org')
-        var div = removeTags(doc.text.div)
+        const div = removeTags(doc.text.div)
         state.new_medication_request = false
         openForm('add', 'medication_requests', 'all', '', {}, false, doc1, div)
       } else if (state.resource === 'medication_requests' && id !== '') {
@@ -747,7 +745,7 @@ export default defineComponent({
       state.recent_charts = state.user.charts.slice(0, 10)
       if (objectPath.has(state, 'user.unsigned')) {
         if (state.user.unsigned.length > 0) {
-          for (var b in state.user.unsigned) {
+          for (const b in state.user.unsigned) {
             objectPath.set(state, 'user.unsigned.' + b + '.date1', 'Date Started: ' + moment.unix(state.user.unsigned[b].date).format('YYYY-MM-DD HH:mm'))
           }
         }
@@ -769,7 +767,7 @@ export default defineComponent({
         state.search = state.base.uiSearchBars
       } else {
         if (resource === 'observations' || resource === 'service_requests') {
-          var sub = state.base.categories.find(o => o.value === category)
+          const sub = state.base.categories.find(o => o.value === category)
           state.options = state.base.categories
           state.schema = sub.uiSchema
           state.divContent = sub.divContent
@@ -780,7 +778,7 @@ export default defineComponent({
           state.search = state.base[category].uiSearchBars
         }
       }
-      var resource_obj = await loadSchema(resource, category, state.schema, state.online, state.options)
+      const resource_obj = await loadSchema(resource, category, state.schema, state.online, state.options)
       state.schema = resource_obj.schema
       state.options = resource_obj.options
       state.states = resource_obj.states
@@ -788,12 +786,11 @@ export default defineComponent({
       state.select = resource_obj.select
       state.loading = false
     }
-    
     const lockThread = async(id) => {
-      var localDB = new PouchDB('communications')
-      var a = await localDB.get(id)
+      const localDB = new PouchDB('communications')
+      const a = await localDB.get(id)
       arr = await thread(a, state.online, state.patient)
-      for (var b in arr) {
+      for (const b in arr) {
         objectPath.set(arr, b + '.status', 'completed')
         await localDB.put(arr[b])
       }
@@ -937,7 +934,7 @@ export default defineComponent({
         } else {
           state.patientPhoto = ''
         }
-        var nickname = doc.name.find(name => name.use === 'nickname')
+        const nickname = doc.name.find(name => name.use === 'nickname')
         if (nickname !== undefined) {
           state.patientNickname = nickname.given[0]
         }
@@ -968,12 +965,12 @@ export default defineComponent({
       clearInterval(syncTimer)
     }
     const updateInbox = async(user) => {
-      var a = [
+      const a = [
         {state: 'messages', resource: 'communications'},
         {state: 'tasks', resource: 'tasks'}
       ]
-      for (var b of a) {
-        var c = await inbox(b.resource, user)
+      for (const b of a) {
+        const c = await inbox(b.resource, user)
         if (objectPath.has(c, 'docs')) {
           objectPath.set(state, b.state, c.docs.length)
         }

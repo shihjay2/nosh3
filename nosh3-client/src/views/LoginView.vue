@@ -140,7 +140,7 @@ export default defineComponent({
     Form,
     QInputWithValidation
   },
-  setup (props) {
+  setup () {
     const $q = useQuasar()
     const auth = useAuthStore()
     const myInput = ref(null)
@@ -199,7 +199,7 @@ export default defineComponent({
       if (auth.message !== null) {
         console.log('Message: ' + auth.message)
       }
-      var config = await axios.get(window.location.origin + '/auth/config')
+      const config = await axios.get(window.location.origin + '/auth/config')
       state.config = config.data
       if (state.config.auth === 'magic') {
         magic = new Magic(state.config.key)
@@ -209,7 +209,7 @@ export default defineComponent({
         state.magic = false
         if (auth.returnUrl !== null) {
           state.patient = auth.returnUrl.replace('/app/chart/', '')
-          var check = await axios.post(window.location.origin + '/auth/pinCheck', {patient: state.patient})
+          const check = await axios.post(window.location.origin + '/auth/pinCheck', {patient: state.patient})
           if (check.data.response === 'Error') {
             state.loading = false
             state.showPIN = true
@@ -247,7 +247,7 @@ export default defineComponent({
       }
       if (state.login && state.magic) {
         nextTick(() => {
-          var a = myInput.value.find(b => b._.props.readonly !== true)
+          const a = myInput.value.find(b => b._.props.readonly !== true)
           a._.props.focus = true
         })
       }
@@ -267,9 +267,67 @@ export default defineComponent({
       state.login = false
       state.verifying = true
       try {
-        var jwt_result = await axios.post(window.location.origin + '/auth/authenticate', body)
-        var jwt = jwt_result.data
+        const jwt_result = await axios.post(window.location.origin + '/auth/authenticate', body)
+        const jwt = jwt_result.data
         state.progress = 'Token received and being processed...'
+        if (state.progress !== '') {
+          const keys = await axios.get(window.location.origin + '/auth/jwks')
+          const jwk = await jose.importJWK(keys.data.keys[0])
+          try {
+            const { payload, protectedHeader } = await jose.jwtVerify(jwt_result.data, jwk)
+            objectPath.set(state, 'payload', payload)
+            objectPath.set(state, 'protectedHeader', protectedHeader)
+            state.progress += '<br/>Token successfully read...'
+          } catch (e) {
+            console.log(e)
+            $q.notify({
+              message: 'Unauthorized access!',
+              color: 'red',
+              actions: [
+                { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+              ]
+            })
+            resubmit()
+          }
+          state.auth = {fetch: (url, opts) => {
+            opts.headers.set('Authorization', 'Bearer ' + jwt)
+            return PouchDB.fetch(url, opts)
+          }}
+          state.couchdb = state.payload._noshDB
+          state.pin = state.payload._nosh.pin
+          state.patient = state.payload._nosh.patient
+          state.progress += '<br/>Setting user...'
+          const prefix = state.payload._nosh.prefix
+          const users = new PouchDB(state.couchdb + prefix + 'users', state.auth)
+          const selector = {'email': {$eq: state.payload._nosh.email}, _id: {"$gte": null}}
+            // {'did': {$eq: state.payload._nosh.did}, _id: {"$gte": null}}
+          const result = await users.find({
+            // selector: {$or: selector}
+            selector: selector
+          })
+          if (result.docs.length > 0) {
+            auth.login(result.docs[0], state.payload, jwt)
+            await eventAdd('Logged in', state.patient)
+            const localDB = new PouchDB(prefix + 'users')
+            const localinfo = await localDB.info()
+            if (localinfo.doc_count == 0 && localinfo.update_seq == 0) {
+              state.progress += '<br/>Syncing data for the first time...'
+              await syncAll(true, state.patient, true)
+              state.progress += '<br/>Complete!'
+            }
+            // redirect to previous url or default to home page
+            router.push(auth.returnUrl || state.payload._noshRedirect)
+          } else {
+          $q.notify({
+              message: 'Unauthorized access!',
+              color: 'red',
+              actions: [
+                { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+              ]
+            })
+            resubmit()
+          }
+        }
       } catch (e) {
         console.log(e)
         $q.notify({
@@ -281,67 +339,9 @@ export default defineComponent({
         })
         resubmit()
       }
-      if (state.progress !== '') {
-        const keys = await axios.get(window.location.origin + '/auth/jwks')
-        const jwk = await jose.importJWK(keys.data.keys[0])
-        try {
-          const { payload, protectedHeader } = await jose.jwtVerify(jwt_result.data, jwk)
-          objectPath.set(state, 'payload', payload)
-          objectPath.set(state, 'protectedHeader', protectedHeader)
-          state.progress += '<br/>Token successfully read...'
-        } catch (e) {
-          console.log(e)
-          $q.notify({
-            message: 'Unauthorized access!',
-            color: 'red',
-            actions: [
-              { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
-            ]
-          })
-          resubmit()
-        }
-        state.auth = {fetch: (url, opts) => {
-          opts.headers.set('Authorization', 'Bearer ' + jwt)
-          return PouchDB.fetch(url, opts)
-        }}
-        state.couchdb = state.payload._noshDB
-        state.pin = state.payload._nosh.pin
-        state.patient = state.payload._nosh.patient
-        state.progress += '<br/>Setting user...'
-        var prefix = state.payload._nosh.prefix
-        var users = new PouchDB(state.couchdb + prefix + 'users', state.auth)
-        var selector = {'email': {$eq: state.payload._nosh.email}, _id: {"$gte": null}}
-          // {'did': {$eq: state.payload._nosh.did}, _id: {"$gte": null}}
-        const result = await users.find({
-          // selector: {$or: selector}
-          selector: selector
-        })
-        if (result.docs.length > 0) {
-          auth.login(result.docs[0], state.payload, jwt)
-          await eventAdd('Logged in', state.patient)
-          const localDB = new PouchDB(prefix + 'users')
-          const localinfo = await localDB.info()
-          if (localinfo.doc_count == 0 && localinfo.update_seq == 0) {
-            state.progress += '<br/>Syncing data for the first time...'
-            await syncAll(true, state.patient, true)
-            state.progress += '<br/>Complete!'
-          }
-          // redirect to previous url or default to home page
-          router.push(auth.returnUrl || state.payload._noshRedirect)
-        } else {
-        $q.notify({
-            message: 'Unauthorized access!',
-            color: 'red',
-            actions: [
-              { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
-            ]
-          })
-          resubmit()
-        }
-      }
     }
     const gnapSubmit = async() => {
-      var url = auth.returnUrl
+      const url = auth.returnUrl
       state.sending = false
       state.loading = true
       const body = {route: url, patient: state.patient}
@@ -360,11 +360,11 @@ export default defineComponent({
     }
     const onSubmit = async(values) => {
       const { email } = values
-      var url = auth.returnUrl
+      const url = auth.returnUrl
       state.timeout = 30
       if (state.config.auth === 'magic') {
         state.sending = true
-        var data = {}
+        let data = {}
         auth_status = setInterval(async() => {
           if (state.timeout < 0) {
             clearInterval(auth_status)

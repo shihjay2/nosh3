@@ -118,13 +118,13 @@ export default defineComponent({
       if (auth.user !== null) {
         auth.logout()
       }
-      var config = await axios.get(window.location.origin + '/auth/config')
+      const config = await axios.get(window.location.origin + '/auth/config')
       state.config = config.data
       if (state.config.instance === 'digitalocean' && state.config.type === 'pnosh') {
         if (route.query.patient !== null) {
           state.patient = route.query.patient
           // state.patient = auth.returnUrl.replace('/app/chart/', '')
-          var check = await axios.post(window.location.origin + '/auth/pinCheck', {patient: state.patient})
+          const check = await axios.post(window.location.origin + '/auth/pinCheck', {patient: state.patient})
           if (check.data.response === 'Error') {
             state.loading = false
             state.showPIN = true
@@ -185,9 +185,9 @@ export default defineComponent({
         state.pin = state.payload._nosh.pin
         state.patient = state.payload._nosh.patient
         state.progress += '<br/>Setting user...'
-        var prefix = state.payload._nosh.prefix
-        var users = new PouchDB(state.couchdb + prefix + 'users', state.auth)
-        var selector = {'email': {$eq: state.payload._nosh.email}, _id: {"$gte": null}}
+        const prefix = state.payload._nosh.prefix
+        const users = new PouchDB(state.couchdb + prefix + 'users', state.auth)
+        const selector = {'email': {$eq: state.payload._nosh.email}, _id: {"$gte": null}}
         // var selector = [
         //   {'email': {$eq: state.payload._nosh.email}, _id: {"$gte": null}},
         //   {'did': {$eq: state.payload._nosh.did}, _id: {"$gte": null}}
