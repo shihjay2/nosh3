@@ -646,7 +646,7 @@ export default defineComponent({
       if (state.divMap == true) {
         let value = '<div xmlns="http://www.w3.org/1999/xhtml">'
         const uiSchema = state.schema.flat()
-        const str = props.div_content
+        let str = props.div_content
         var found = []
         var rxp = /{([^}]+)}/g
         var curMatch
