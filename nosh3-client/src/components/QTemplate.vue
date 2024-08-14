@@ -38,13 +38,13 @@ export default defineComponent({
       templates: [],
     })
     onMounted(async() => {
-      var results = []
-      var templates = props.user.templates
-      var needle = props.template.text.replace('&nbsp;', '')
+      const results = []
+      const templates = props.user.templates
+      const needle = props.template.text.replace('&nbsp;', '')
       const fuse = new Fuse(templates, {keys: ['id', 'text']})
       const result = fuse.search(needle)
       const shortresult = result.slice(0,20)
-      for (var i in shortresult) {
+      for (const i in shortresult) {
         results.push(result[i].item)
       }
       state.templates = results

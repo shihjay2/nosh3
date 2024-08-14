@@ -66,15 +66,15 @@ export default defineComponent({
     })
     onMounted(() => {
       state.updated_vaccine = props.vaccine
-      for (var i in state.updated_vaccine.protocol) {
-        var target = ''
-        for (var j in state.updated_vaccine.protocol[i].targetDisease) {
+      for (const i in state.updated_vaccine.protocol) {
+        let target = ''
+        for (const j in state.updated_vaccine.protocol[i].targetDisease) {
           if (j !== '0') {
             target += ', '
           }
           target += state.updated_vaccine.protocol[i].targetDisease[j].display
         }
-        var k = {}
+        const k = {}
         k.id = i
         k.name = k.id
         k.type = 'text'
@@ -91,7 +91,7 @@ export default defineComponent({
       emit('close-vaccine')
     }
     const selectVaccine = () => {
-      for (var i in state.updated_vaccine.protocol) {
+      for (const i in state.updated_vaccine.protocol) {
         state.updated_vaccine.protocol[i].doseNumberPositiveInt = Number(state.form[i])
       }
       emit('select-vaccine', state.updated_vaccine)

@@ -122,7 +122,7 @@ export default defineComponent({
       maia: ''
     })
     onMounted(async() => {
-      var resources = await fetchJSON('resources', props.online)
+      const resources = await fetchJSON('resources', props.online)
       state.resources = resources.rows
       state.provider = props.provider
       state.patient = props.patient
@@ -167,7 +167,7 @@ export default defineComponent({
           emit('open-page', id, state.resource)
         } else {
           if (state.resource === 'encounters' || state.resource === 'practitioners' || state.resource === 'related_persons') {
-            var defaults = {}
+            const defaults = {}
             if (state.resource === 'encounters') {
               if (objectPath.has(props, 'user.defaults')) {
                 objectPath.set(defaults, 'class', props.user.defaults.class)
@@ -259,7 +259,7 @@ export default defineComponent({
             }
           }
         }
-        var b = state.resources.find(a => a.resource == toolbar.resource)
+        const b = state.resources.find(a => a.resource == toolbar.resource)
         state.iconResource = b.icon
         if (objectPath.has(toolbar, 'subresource')) {
           state.titleResource = Case.title(pluralize.singular(toolbar.resource))
@@ -267,7 +267,7 @@ export default defineComponent({
           if (toolbar.type == 'list' || toolbar.type == 'card') {
             state.titleSubResource = Case.title(toolbar.subresource)
           }
-          var d = state.resources.find(c => c.resource == toolbar.subresource)
+          const d = state.resources.find(c => c.resource == toolbar.subresource)
           state.iconSubResource = d.icon
           if (state.resource !== 'encounters') {
             state.add = state.titleSubResource
@@ -279,7 +279,7 @@ export default defineComponent({
           state.category = toolbar.category
           if (toolbar.category !== 'all') {
             if (state.resource === 'service_requests') {
-              var f = state.base.tabs.find(e => e.category === state.category)
+              const f = state.base.tabs.find(e => e.category === state.category)
               state.titleCategory = f.label
             } else {
               state.titleCategory = Case.title(toolbar.category)

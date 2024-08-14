@@ -328,8 +328,8 @@ export default defineComponent({
       const result = fuse.search(searchTerm)
       const shortresult = result.slice(0,10)
       state.options = []
-      for (var i in shortresult) {
-        var j = {}
+      for (const i in shortresult) {
+        const j = {}
         j.label = result[i].item.name
         j.value = {
           code: result[i].item.sourceUi,
@@ -339,17 +339,44 @@ export default defineComponent({
       }
     }
     const getConcept = async(searchTerm) => {
-      var params = {
+      const params = {
         apiKey: state.apiKey,
         string: searchTerm,
         sabs: 'SNOMEDCT_US',
         returnIdType: 'code'
       }
-      var opt = {
+      const opt = {
         timeout: 500
       }
       try {
-        var d = await axios.get('https://uts-ws.nlm.nih.gov/rest/search/current', {params}, {opt})
+        const d = await axios.get('https://uts-ws.nlm.nih.gov/rest/search/current', {params}, {opt})
+        for (const i in d.data.result.results) {
+          const j = {}
+          j.label = d.data.result.results[i].name
+          j.value = {
+            code: d.data.result.results[i].ui,
+            codeText: d.data.result.results[i].name,
+            codeSystem: 'http://snomed.info/sct'
+          }
+          if (state.options.length > 0) {
+            const k = jsqry.query(state.options, '<<value[_.code=="' + j.value.code +'"]>>')
+            if (k.length === 0 && j.value.code !== 'NONE') {
+              state.options.push(j)
+            }
+          } else {
+            if (j.value.code !== 'NONE') {
+              state.options.push(j)
+            }
+          }
+          if (state.options.length > 0) {
+            const fuse = new Fuse(state.options, {keys: ['label']})
+            const result = fuse.search(searchTerm)
+            state.options = []
+            for (const l in result) {
+              state.options.push(result[l].item)
+            }
+          }
+        }
       } catch (e) {
         console.log(e)
         $q.notify({
@@ -360,45 +387,28 @@ export default defineComponent({
           ]
         })
       }
-      for (var i in d.data.result.results) {
-        var j = {}
-        j.label = d.data.result.results[i].name
-        j.value = {
-          code: d.data.result.results[i].ui,
-          codeText: d.data.result.results[i].name,
-          codeSystem: 'http://snomed.info/sct'
-        }
-        if (state.options.length > 0) {
-          var k = jsqry.query(state.options, '<<value[_.code=="' + j.value.code +'"]>>')
-          if (k.length === 0 && j.value.code !== 'NONE') {
-            state.options.push(j)
-          }
-        } else {
-          if (j.value.code !== 'NONE') {
-            state.options.push(j)
-          }
-        }
-        if (state.options.length > 0) {
-          const fuse = new Fuse(state.options, {keys: ['label']})
-          var result = fuse.search(searchTerm)
-          state.options = []
-          for (var l in result) {
-            state.options.push(result[l].item)
-          }
-        }
-      }
     }
     const getCondition = async(searchTerm) => {
-      var params = {
+      const params = {
         sf: 'code,name',
         maxList: 100,
         terms: searchTerm
       }
-      var opt = {
+      const opt = {
         timeout: 500
       }
       try {
-        var d = await axios.get('https://clinicaltables.nlm.nih.gov/api/icd10cm/v3/search', {params}, {opt})
+        const d = await axios.get('https://clinicaltables.nlm.nih.gov/api/icd10cm/v3/search', {params}, {opt})
+        state.options = []
+        for (const i in d.data[3]) {
+          const j = {}
+          j.label = d.data[3][i][1] + ' [' + d.data[3][i][0] + ']'
+          j.value = {
+            code: d.data[3][i][0],
+            text: d.data[3][i][1]
+          }
+          state.options.push(j)
+        }
       } catch (e) {
         console.log(e)
         $q.notify({
@@ -409,16 +419,6 @@ export default defineComponent({
           ]
         })
       }
-      state.options = []
-      for (var i in d.data[3]) {
-        var j = {}
-        j.label = d.data[3][i][1] + ' [' + d.data[3][i][0] + ']'
-        j.value = {
-          code: d.data[3][i][0],
-          text: d.data[3][i][1]
-        }
-        state.options.push(j)
-      }
     }
     const getImaging = async(searchTerm) => {
       state.imaging = await fetchJSON('imaging', props.online)
@@ -426,8 +426,8 @@ export default defineComponent({
       const result = fuse.search(searchTerm)
       const shortresult = result.slice(0,10)
       state.options = []
-      for (var i in shortresult) {
-        var j = {}
+      for (const i in shortresult) {
+        const j = {}
         j.label = result[i].item.name
         j.value = {
           code: result[i].item.loinc,
@@ -442,8 +442,8 @@ export default defineComponent({
       const result = fuse.search(searchTerm)
       const shortresult = result.slice(0,10)
       state.options = []
-      for (var i in shortresult) {
-        var j = {}
+      for (const i in shortresult) {
+        const j = {}
         j.label = result[i].item.LCN
         j.value = {
           code: result[i].item.LOINC,
@@ -455,17 +455,28 @@ export default defineComponent({
       }
     }
     const getLOINC = async(searchTerm) => {
-      var params = {
+      const params = {
         df: 'text,LOINC_NUM',
         sf: 'text,LONG_COMMON_NAME,LOINC_NUM',
         maxList: 100,
         terms: searchTerm
       }
-      var opt = {
+      const opt = {
         timeout: 500
       }
       try {
-        var d = await axios.get('https://clinicaltables.nlm.nih.gov/api/loinc_items/v3/search', {params}, {opt})
+        const d = await axios.get('https://clinicaltables.nlm.nih.gov/api/loinc_items/v3/search', {params}, {opt})
+        state.options = []
+        for (const i in d.data[3]) {
+          const j = {}
+          j.label = d.data[3][i][0] + ' [' + d.data[3][i][1] + ']'
+          j.value = {
+            code: d.data[3][i][1],
+            text: d.data[3][i][0],
+            system: "http://loinc.org"
+          }
+          state.options.push(j)
+        }
       } catch (e) {
         console.log(e)
         $q.notify({
@@ -476,28 +487,29 @@ export default defineComponent({
           ]
         })
       }
-      state.options = []
-      for (var i in d.data[3]) {
-        var j = {}
-        j.label = d.data[3][i][0] + ' [' + d.data[3][i][1] + ']'
-        j.value = {
-          code: d.data[3][i][1],
-          text: d.data[3][i][0],
-          system: "http://loinc.org"
-        }
-        state.options.push(j)
-      }
     }
     const getMedication = async(searchTerm) => {
-      var params = {
+      const params = {
         ef: 'DISPLAY_NAME,STRENGTHS_AND_FORMS,RXCUIS',
         terms: searchTerm
       }
-      var opt = {
+      const opt = {
         timeout: 500
       }
       try {
-        var d = await axios.get('https://clinicaltables.nlm.nih.gov/api/rxterms/v3/search', {params}, {opt})
+        const d = await axios.get('https://clinicaltables.nlm.nih.gov/api/rxterms/v3/search', {params}, {opt})
+        state.options = []
+        for (const i in d.data[2].DISPLAY_NAME) {
+          const j = {}
+          j.label = d.data[2].DISPLAY_NAME[i]
+          j.value = {
+            name: d.data[2].DISPLAY_NAME[i],
+            strength: d.data[2].STRENGTHS_AND_FORMS[i],
+            rxcui: d.data[2].RXCUIS[i],
+            index: i
+          }
+          state.options.push(j)
+        }
       } catch (e) {
         console.log(e)
         $q.notify({
@@ -508,18 +520,6 @@ export default defineComponent({
           ]
         })
       }
-      state.options = []
-      for (var i in d.data[2].DISPLAY_NAME) {
-        var j = {}
-        j.label = d.data[2].DISPLAY_NAME[i]
-        j.value = {
-          name: d.data[2].DISPLAY_NAME[i],
-          strength: d.data[2].STRENGTHS_AND_FORMS[i],
-          rxcui: d.data[2].RXCUIS[i],
-          index: i
-        }
-        state.options.push(j)
-      }
     }
     const getVaccine = (searchTerm) => {
       const term = String(searchTerm).toLowerCase()
@@ -527,10 +527,10 @@ export default defineComponent({
       const result = fuse.search(term)
       const shortresult = result.slice(0,10)
       state.options = []
-      for (var i in shortresult) {
-        var j = {}
+      for (const i in shortresult) {
+        const j = {}
         j.label = shortresult[i].item[2]
-        var json = {
+        const json = {
           code: shortresult[i].item[0].trim(),
           text: shortresult[i].item[2].trim(),
           publicationDate: '',
@@ -539,26 +539,26 @@ export default defineComponent({
           protocol: [],
           shortname: shortresult[i].item[1].trim()
         }
-        var a = state.cvx_vis.findIndex(item => item.includes(shortresult[i].item[0]))
+        const a = state.cvx_vis.findIndex(item => item.includes(shortresult[i].item[0]))
         if (a !== -1) {
-          var b = state.vis_barcode_lookup.data.findIndex(item => item.includes(state.cvx_vis[a][2]))
+          const b = state.vis_barcode_lookup.data.findIndex(item => item.includes(state.cvx_vis[a][2]))
           json.publicationDate = state.vis_barcode_lookup.data[b][1]
           if (b !== -1) {
-            var c = state.vis_url.data.findIndex(item => item.includes(state.vis_barcode_lookup.data[b][3]))
+            const c = state.vis_url.data.findIndex(item => item.includes(state.vis_barcode_lookup.data[b][3]))
             json.vis_uri = state.vis_url.data[c][2]
             json.vis = state.vis_url.data[c][0]
-            var d = jsqry.query(state.vacSched.immunizations, '<<codes[_.system=="CVX" && _.code==' + json.code +']>>')
+            const d = jsqry.query(state.vacSched.immunizations, '<<codes[_.system=="CVX" && _.code==' + json.code +']>>')
             if (d !== null) {
-              for (var e in d) {
-                var f = {}
+              for (const e in d) {
+                const f = {}
                 f.series = d[e].total_doses + '-dose'
                 f.doseNumberPositiveInt = ''
                 f.targetDisease = []
-                for (var g in d[e].targetDisease) {
-                  var h = {}
+                for (const g in d[e].targetDisease) {
+                  const h = {}
                   h.system = 'http://snomed.info/sct'
                   h.code = d[e].targetDisease[g]
-                  var k = state.targetDiseases.compose.include[0].concept.find(({ code }) => code === h.code)
+                  const k = state.targetDiseases.compose.include[0].concept.find(({ code }) => code === h.code)
                   h.display = k.display
                   f.targetDisease.push(h)
                 }
@@ -572,15 +572,28 @@ export default defineComponent({
       }
     }
     const onLazyLoad = ({ node, key, done }) => {
-      var params = {
+      const params = {
         apiKey: state.apiKey,
         pageSize: 100
       }
-      var c = []
+      const c = []
       console.log(key)
       setTimeout(async() => {
         try {
-          var a = await axios.get('https://uts-ws.nlm.nih.gov/rest/content/current/source/' + state.pulldown_type + '/' + node.value + '/children', {params})
+          const a = await axios.get('https://uts-ws.nlm.nih.gov/rest/content/current/source/' + state.pulldown_type + '/' + node.value + '/children', {params})
+          if (a.data.result.length > 0) {
+            for (const b in a.data.result) {
+              c.push({
+                label: a.data.result[b].name,
+                value: a.data.result[b].ui,
+                lazy: true
+              })
+            }
+          }
+          c.sort(firstBy('label', {ignoreCase:true, direction:'asc'}))
+          const e = state.pulldown_nodes.findIndex(d => d.value == node.value)
+          objectPath.set(state, 'pulldown_nodes.' + e + '.children', c)
+          done(c)
         } catch (e) {
           done([])
           console.log(e)
@@ -592,19 +605,7 @@ export default defineComponent({
             ]
           })
         }
-        if (a.data.result.length > 0) {
-          for (var b in a.data.result) {
-            c.push({
-              label: a.data.result[b].name,
-              value: a.data.result[b].ui,
-              lazy: true
-            })
-          }
-        }
-        c.sort(firstBy('label', {ignoreCase:true, direction:'asc'}))
-        var e = state.pulldown_nodes.findIndex(d => d.value == node.value)
-        objectPath.set(state, 'pulldown_nodes.' + e + '.children', c)
-        done(c)
+        
       }, 1000)
     }
     const openTree = async() => {
@@ -612,7 +613,7 @@ export default defineComponent({
       state.pulldown_tree = true
       state.pulldown_tree_wait = true
       state.pulldown_tree_final = false
-      var params = {
+      const params = {
         apiKey: state.apiKey,
         pageSize: 100
       }
@@ -620,7 +621,22 @@ export default defineComponent({
       state.pulldown_selected = ''
       qSelectRef.value.hidePopup()
       try {
-        var a = await axios.get('https://uts-ws.nlm.nih.gov/rest/content/current/source/' + state.pulldown_type + '/' + state.pulldown_start + '/children', {params})
+        const a = await axios.get('https://uts-ws.nlm.nih.gov/rest/content/current/source/' + state.pulldown_type + '/' + state.pulldown_start + '/children', {params})
+        if (a.data.result.length > 0) {
+          for (const b in a.data.result) {
+            state.pulldown_nodes.push({
+              label: a.data.result[b].name,
+              value: a.data.result[b].ui,
+              lazy: true
+            })
+          }
+          state.pulldown_nodes.sort(firstBy('label', {ignoreCase:true, direction:'asc'}))
+          state.pulldown_bar = 'SNOMED CT - Tree'
+          state.pulldown_filter = ''
+          state.pulldown_tree_wait = false
+          state.pulldown_tree_final = true
+          qSelectRef.value.hidePopup()
+        }
       } catch (e) {
         console.log(e)
         $q.notify({
@@ -631,21 +647,6 @@ export default defineComponent({
           ]
         })
       }
-      if (a.data.result.length > 0) {
-        for (var b in a.data.result) {
-          state.pulldown_nodes.push({
-            label: a.data.result[b].name,
-            value: a.data.result[b].ui,
-            lazy: true
-          })
-        }
-        state.pulldown_nodes.sort(firstBy('label', {ignoreCase:true, direction:'asc'}))
-        state.pulldown_bar = 'SNOMED CT - Tree'
-        state.pulldown_filter = ''
-        state.pulldown_tree_wait = false
-        state.pulldown_tree_final = true
-        qSelectRef.value.hidePopup()
-      }
     }
     const qSelectRef = ref(null)
     const resetFilter = () => {
@@ -653,7 +654,7 @@ export default defineComponent({
       filterRef.value.focus()
     }
     const selectDosage = async(data) => {
-      var json = {}
+      const json = {}
       json.value = {
         name: data.name + ', ' + data.strength,
         rxcui: data.rxcui,
@@ -662,7 +663,20 @@ export default defineComponent({
       }
       if (props.search == 'searchMedication') {
         try {
-          var b = await axios.get('https://rxnav.nlm.nih.gov/REST/RxTerms/rxcui/' + data.rxcui + '/allinfo.json')
+          const b = await axios.get('https://rxnav.nlm.nih.gov/REST/RxTerms/rxcui/' + data.rxcui + '/allinfo.json')
+          if (b.data.rxtermsProperties !== null) {
+            const fuse1 = new Fuse(state.drugform.concept, {keys: ['code','display']})
+            const result1 = fuse1.search(b.data.rxtermsProperties.rxtermsDoseForm)
+            const fuse2 = new Fuse(props.routesArray, {keys: ['value','label']})
+            const result2 = fuse2.search(b.data.rxtermsProperties.route)
+            if (result1.length > 0) {
+              result1 = result1.slice(0,1)
+              result2 = result2.slice(0,1)
+              objectPath.set(json, 'value.doseUnit', result1[0].item.code)
+              objectPath.set(json, 'value.route', result2[0].item.value)
+            }
+          }
+          emit('copy-selected', json, props.search)
         } catch (e) {
           console.log(e)
           $q.notify({
@@ -673,27 +687,15 @@ export default defineComponent({
             ]
           })
         }
-        if (b.data.rxtermsProperties !== null) {
-          const fuse1 = new Fuse(state.drugform.concept, {keys: ['code','display']})
-          var result1 = fuse1.search(b.data.rxtermsProperties.rxtermsDoseForm)
-          const fuse2 = new Fuse(props.routesArray, {keys: ['value','label']})
-          var result2 = fuse2.search(b.data.rxtermsProperties.route)
-          if (result1.length > 0) {
-            result1 = result1.slice(0,1)
-            result2 = result2.slice(0,1)
-            objectPath.set(json, 'value.doseUnit', result1[0].item.code)
-            objectPath.set(json, 'value.route', result2[0].item.value)
-          }
-        }
-        emit('copy-selected', json, props.search)
+        
       } else {
         emit('copy-selected', json, props.search)
       }
       closeDosage()
     }
     const selectTree = () => {
-      var json = {}
-      var a = findItemNested(state.pulldown_nodes, state.pulldown_selected, 'children')
+      const json = {}
+      const a = findItemNested(state.pulldown_nodes, state.pulldown_selected, 'children')
       objectPath.set(json, 'value.code', a.value)
       objectPath.set(json, 'value.codeText', a.label)
       objectPath.set(json, 'label', a.label)
@@ -708,7 +710,7 @@ export default defineComponent({
       state.pulldown_tree = false
     }
     const selectVaccine = (data) => {
-      var json = {}
+      const json = {}
       json.value = data
       emit('copy-selected', json, props.search)
       closeVaccine()

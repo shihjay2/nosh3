@@ -525,9 +525,9 @@ export default defineComponent({
       }
     }
     const base64ToBlob = (data) => {
-      var rImageType = /data:(image\/.+);base64,/;
-      var mimeString = ''
-      var raw, uInt8Array, i, rawLength
+      const rImageType = /data:(image\/.+);base64,/;
+      let mimeString = ''
+      let raw, uInt8Array, i, rawLength
       raw = data.replace(rImageType, function (header, imageType) {
         mimeString = imageType
         return ''
@@ -600,10 +600,10 @@ export default defineComponent({
       return tuiImageEditor.value
     }
     const hexToRGBa = (hex, alpha) => {
-      var r = parseInt(hex.slice(1, 3), 16)
-      var g = parseInt(hex.slice(3, 5), 16)
-      var b = parseInt(hex.slice(5, 7), 16)
-      var a = alpha || 1
+      const r = parseInt(hex.slice(1, 3), 16)
+      const g = parseInt(hex.slice(3, 5), 16)
+      const b = parseInt(hex.slice(5, 7), 16)
+      const a = alpha || 1
       return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')'
     }
     const imageApplyCrop = () => {
@@ -632,8 +632,8 @@ export default defineComponent({
       editorInstance.rotate(deg)
     }
     const imageStamp = () => {
-      var file
-      var imgUrl
+      let file
+      let imgUrl
       file = event.target.files[0]
       if (file) {
         imgUrl = URL.createObjectURL(file)
@@ -654,14 +654,14 @@ export default defineComponent({
     }
     const onSave = () => {
       state.sending = true
-      var base64 = editorInstance.toDataURL()
+      const base64 = editorInstance.toDataURL()
       emit('on-save', base64)
     }
     const resizeEditor = () => {
-      var editor = document.querySelector('.tui-image-editor')
-      var container = document.querySelector('.tui-image-editor-canvas-container')
-      var height = parseFloat(container.style.maxHeight)
-      var width = parseFloat(container.style.maxWidth)
+      const editor = document.querySelector('.tui-image-editor')
+      const container = document.querySelector('.tui-image-editor-canvas-container')
+      const height = parseFloat(container.style.maxHeight)
+      const width = parseFloat(container.style.maxWidth)
       editor.style.height = height + 'px'
       editor.style.width = width + 'px'
     }
