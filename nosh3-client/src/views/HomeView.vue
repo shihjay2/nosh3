@@ -1420,11 +1420,12 @@ export default defineComponent({
         const base = await import('@/assets/fhir/' + resource + '.json')
         const resource1 = drawer.find(item => item.resource === resource)
         const title = 'New ' + Case.title(pluralize.singular(resource))
+        let schema = []
         if (resource !== 'observations') {
           if (resource !== 'encounters') {
-            var schema = base.uiSchema.flat()
+            schema = base.uiSchema.flat()
           } else {
-            var schema = base.new.uiSchema.flat()
+            schema = base.new.uiSchema.flat()
           }
         }
         if (resource === 'immunizations') {
@@ -1491,7 +1492,7 @@ export default defineComponent({
             for (const f in result.docs) {
               const category = result.docs[f].category[0].coding[0].code
               const sub = base.categories.find(o => o.value === category)
-              var schema = sub.uiSchema.flat()
+              let schema = sub.uiSchema.flat()
               schema = await loadSelect('practitioners', 'performer', schema)
               if (category !== 'exam' && category !== 'vital-signs' && category !== 'social-history' && category !== 'all') {
                 const category1 = Case.camel(category)

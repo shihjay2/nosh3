@@ -212,11 +212,11 @@ export default defineComponent({
         }
         return models
       } else {
-        var found = []
-        var rxp = /{([^}]+)}/g
-        var curMatch
-        var replaceWith = []
-        var mapping = {}
+        const found = []
+        let rxp = /{([^}]+)}/g
+        let curMatch
+        let replaceWith = []
+        let mapping = {}
         str = row
         while((curMatch = rxp.exec(str))) {
           found.push(curMatch[1])

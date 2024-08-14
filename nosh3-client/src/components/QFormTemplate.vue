@@ -647,12 +647,12 @@ export default defineComponent({
         let value = '<div xmlns="http://www.w3.org/1999/xhtml">'
         const uiSchema = state.schema.flat()
         let str = props.div_content
-        var found = []
-        var rxp = /{([^}]+)}/g
-        var curMatch
-        var replaceWith = []
-        var mapping = {}
-        var field = {}
+        const found = []
+        let rxp = /{([^}]+)}/g
+        let curMatch
+        let replaceWith = []
+        let mapping = {}
+        let field = {}
         while((curMatch = rxp.exec(str))) {
           found.push(curMatch[1])
         }

@@ -44,7 +44,7 @@ export const useAuthStore = defineStore({
       this.maia = payload._nosh.maia
     },
     logout() {
-      var route = '/app/login'
+      let route = '/app/login'
       if (this.instance === 'digitalocean' && this.type === 'pnosh') {
         route = '/app/chart/' + this.patient
       }
