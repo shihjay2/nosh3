@@ -452,7 +452,7 @@ export default defineComponent({
       state.encounter = props.encounters
       state.provider = props.provider
       state.resource = props.resource
-      var resources = await fetchJSON('resources', props.online)
+      const resources = await fetchJSON('resources', props.online)
       state.resources = resources.rows
       if (props.resource === 'care_plans') {
         state.select = true
@@ -566,12 +566,12 @@ export default defineComponent({
       })
     }
     const checkUser = async(rows) => {
-      for (var a in rows) {
+      for (const a in rows) {
         // check if email exists
-        var add_user = true
-        var magic_link = false
+        let add_user = true
+        let magic_link = false
         if (objectPath.has(rows, a + '.doc.telecom')) {
-          var email = rows[a].doc.telecom.find((a) => a.system === 'email')
+          const email = rows[a].doc.telecom.find((a) => a.system === 'email')
           if (email !== undefined) {
             // check if user exists
             const result_users = await localDB5.find({selector: {'email': {$eq: email.value}, _id: {"$gte": null}}})
@@ -625,8 +625,8 @@ export default defineComponent({
       await eventAdd('Deleted ' + pluralize.singular(props.resource.replace('_statements', '')), props.patient, opts)
       if (props.resource === 'conditions') {
         if (state.rows[index].history) {
-          for (var a in state.rows[index].history) {
-            var b = localDB1.get(state.rows[index].history[a].id)
+          for (const a in state.rows[index].history) {
+            const b = await localDB1.get(state.rows[index].history[a].id)
             const result_b = await localDB1.remove(b)
             const opts_b = {
               doc_db: props.resource,
@@ -670,7 +670,7 @@ export default defineComponent({
       await reloadList(state.selected.value)
     }
     const fhirMap = async() => {
-      for (var a in state.result) {
+      for (const a in state.result) {
         objectPath.set(state, 'rows.' + a + '.id', objectPath.get(state, 'result.' + a + '.doc.id'))
         objectPath.set(state, 'rows.' + a + '.title', fhirReplace('title', state.base, state.result[a].doc, props.schema.flat()))
         objectPath.set(state, 'rows.' + a + '.subhead', fhirReplace('subhead', state.base, state.result[a].doc, props.schema.flat()))
@@ -682,7 +682,7 @@ export default defineComponent({
         objectPath.set(state, 'rows.' + a + '.delete', 'y')
       }
       if (props.resource === 'care_plans') {
-        for (var b in state.rows) {
+        for (const b in state.rows) {
           if (objectPath.has(state, 'rows.' + b + '.doc.activity')) {
             await getActivity(b, objectPath.get(state, 'rows.' + b + '.doc.activity'))
           }
@@ -692,9 +692,9 @@ export default defineComponent({
         await getCarePlans(state.rows)
       }
       if (props.resource === 'compositions') {
-        for (var c in state.rows) {
+        for (const c in state.rows) {
           if (objectPath.has(state, 'rows.' + c + '.doc.section')) {
-            for (var d in objectPath.get(state, 'rows.' + c + '.doc.section')) {
+            for (const d in objectPath.get(state, 'rows.' + c + '.doc.section')) {
               objectPath.set(state, 'rows.' + c + '.section.' + d + '.title', objectPath.get(state, 'rows.' + c + '.doc.section.' + d + '.title'))
               objectPath.set(state, 'rows.' + c + '.section.' + d + '.text', objectPath.get(state, 'rows.' + c + '.doc.section.' + d + '.text.div'))
               objectPath.set(state, 'rows.' + c + '.section.' + d + '.icon', 'note_alt')
@@ -703,7 +703,7 @@ export default defineComponent({
         }
       }
       if (props.resource === 'communications') {
-        for (var d in state.rows) {
+        for (const d in state.rows) {
           objectPath.set(state, 'rows.' + d + '.lock', true)
           if (objectPath.get(state, 'rows.' + d + '.doc.status') === 'completed') {
             objectPath.set(state, 'rows.' + d + '.lock_icon', 'lock')
@@ -727,17 +727,17 @@ export default defineComponent({
         await checkUser(state.rows)
       }
       if (props.oidc !== null && props.oidc.length > 0) {
-        var a1 = state.rows.length
-        for (var e in props.oidc) {
+        const a1 = state.rows.length
+        for (const e in props.oidc) {
           if (objectPath.has(props, 'oidc.' + e + '.docs')) {
-            var oidc_results = props.oidc[e].docs.find(f => f.resource === props.resource)
+            const oidc_results = props.oidc[e].docs.find(f => f.resource === props.resource)
             if (oidc_results !== undefined) {
-              var g1 = 0
+              let g1 = 0
               if (objectPath.has(oidc_results, 'rows')) {
                 if (oidc_results.rows.length > 0) {
-                  for (var g of oidc_results.rows) {
-                    var comp_category = false
-                    var comp = state.rows.find(h => objectPath.get(h, 'doc.' + state.base.compField) === objectPath.get(g, state.base.compField))
+                  for (const g of oidc_results.rows) {
+                    let comp_category = false
+                    const comp = state.rows.find(h => objectPath.get(h, 'doc.' + state.base.compField) === objectPath.get(g, state.base.compField))
                     if (props.resource === 'observations' || props.resource === 'service_requests') {
                       if (g.category[0].coding[0].code === props.category) {
                         comp_category = true
@@ -768,12 +768,12 @@ export default defineComponent({
       }
     }
     const getActivity = async(a, activity) => {
-      var progress = []
-      var outcome = []
-      var results = []
-      for (var b of activity) {
-        var resource = b.reference.split('/').slice(0,-1).join('')
-        var id = b.reference.split('/').slice(-1).join('')
+      const progress = []
+      const outcome = []
+      const results = []
+      for (const b of activity) {
+        const resource = b.reference.split('/').slice(0,-1).join('')
+        const id = b.reference.split('/').slice(-1).join('')
         if (objectPath.has(b, 'progress')) {
           progress.push('Progress: ' + objectPath.get(b, 'progress.text'))
         } else {
@@ -789,15 +789,15 @@ export default defineComponent({
           outcome.push('')
         }
         const db = new PouchDB(prefix + Case.snake(pluralize(resource)))
-        var row = await db.get(id)
+        const row = await db.get(id)
         results.push(row)
       }
-      for (var c in results) {
+      for (const c in results) {
         objectPath.set(state, 'rows.' + a + '.activity.' + c + '.id', results[c].id)
-        var d = Case.snake(pluralize(results[c].resourceType))
-        var e = state.resources.find(({resource}) => resource === d)
+        const d = Case.snake(pluralize(results[c].resourceType))
+        const e = state.resources.find(({resource}) => resource === d)
         objectPath.set(state, 'rows.' + a + '.activity.' + c + '.icon', e.icon)
-        var f = Case.capital(pluralize.singular(d))
+        const f = Case.capital(pluralize.singular(d))
         if (f == 'Medication Statement') {
           f = 'Continue Medication'
         }
@@ -850,7 +850,7 @@ export default defineComponent({
       // })
     }
     const getAuthor = (doc) => {
-      var a = ''
+      let a = ''
       if (props.resource === 'conditions' ||
           props.resource === 'allergy_intolerances') {
         if (objectPath.has(doc, 'asserter.reference')) {
@@ -869,31 +869,31 @@ export default defineComponent({
       }
     }
     const getBundle = async(rows) => {
-      var results = []
-      for (var b of rows) {
+      const results = []
+      for (const b of rows) {
         const result = await localDB3.find({selector: {'entry.0.resource.encounter.reference': {$eq: 'Encounter/' + b.id}, _id: {"$gte": null}}})
         if (result.docs.length > 0) {
           result.docs.sort((a1, b1) => moment(b1.timestamp) - moment(a1.timestamp))
         }
         results.push(result)
       }
-      for (var c in results) {
+      for (const c in results) {
         objectPath.set(state, 'rows.' + c + '.lock', true)
         objectPath.set(state, 'rows.' + c + '.lock_icon', 'lock_open')
         objectPath.set(state, 'rows.' + c + '.lock_color', 'positive')
         if (objectPath.has(results, c + '.docs.0')) {
-          for (var d in objectPath.get(results, c + '.docs')) {
-            var comp = objectPath.get(results, c + '.docs.' + d + '.entry.0.resource.encounter.reference')
-            var index = rows.findIndex((element) => element.id === comp.replace('Encounter/', ''))
+          for (const d in objectPath.get(results, c + '.docs')) {
+            const comp = objectPath.get(results, c + '.docs.' + d + '.entry.0.resource.encounter.reference')
+            const index = rows.findIndex((element) => element.id === comp.replace('Encounter/', ''))
             if (!objectPath.has(state, 'rows.' + index + '.bundle')) {
               objectPath.set(state, 'rows.' + index + '.bundle', objectPath.get(results, c + '.docs.' + d))
               objectPath.set(state, 'rows.' + index + '.lock_icon', 'lock')
               objectPath.set(state, 'rows.' + index + '.lock_color', 'negative')
-              var history = []
+              const history = []
               history.push(objectPath.get(results, c + '.docs.' + d))
               objectPath.set(state, 'rows.' + index + '.bundle_history', history)
             } else {
-              var history1 = objectPath.get(state, 'rows.' + index + '.bundle_history')
+              const history1 = objectPath.get(state, 'rows.' + index + '.bundle_history')
               history1.push(objectPath.get(results, c + '.docs.' + d))
               objectPath.set(state, 'rows.' + index + '.bundle_history', history1)
             }
@@ -940,7 +940,7 @@ export default defineComponent({
       // })
     }
     const getCarePlans = async(rows) => {
-      for (var index in rows) {
+      for (const index in rows) {
         const result = await localDB1.find({selector: {'contained.0.id': {$eq: rows[index].id}, _id: {"$gte": null}}})
         if (objectPath.has(result, 'docs.0')) {
           result.docs.sort((a1, b1) => moment(b1.created) - moment(a1.created))
@@ -950,7 +950,7 @@ export default defineComponent({
             await getActivity(index + '.careplan', objectPath.get(result, 'docs.0.activity'))
           }
         }
-        for (var d in objectPath.get(result, 'docs')) {
+        for (const d in objectPath.get(result, 'docs')) {
           objectPath.set(state, 'rows.' + index + '.history.' + d + '.description', objectPath.get(result, 'docs.' + d + '.description'))
           objectPath.set(state, 'rows.' + index + '.history.' + d + '.created', objectPath.get(result, 'docs.' + d + '.created'))
           objectPath.set(state, 'rows.' + index + '.history.' + d + '.id', objectPath.get(result, 'docs.' + d + '.id'))
@@ -962,14 +962,14 @@ export default defineComponent({
       }
     }
     const getMedicationCarePlan = async(rows) => {
-      for (var index in rows) {
+      for (const index in rows) {
         const result = await localDB1.find({selector: {'activity': {"$elemMatch": {"reference": "MedicationStatement/" + rows[index].id}}, _id: {"$gte": null}}})
         if (objectPath.has(result, 'docs.0')) {
-          for (var d in objectPath.get(result, 'docs')) {
-            var e = objectPath.get(result, 'docs.' + d + '.activity')
-            for (var f in e) {
-              var id = e[f].reference.split('/').slice(-1).join('')
-              var index1 = rows.findIndex((element) => element.id === id)
+          for (const d in objectPath.get(result, 'docs')) {
+            const e = objectPath.get(result, 'docs.' + d + '.activity')
+            for (const f in e) {
+              const id = e[f].reference.split('/').slice(-1).join('')
+              const index1 = rows.findIndex((element) => element.id === id)
               objectPath.set(state, 'rows.' + index1 + '.delete', 'n')
             }
           }
@@ -977,12 +977,12 @@ export default defineComponent({
       }
     }
     const getMedicationRequests = async(rows) => {
-      for (var index in rows) {
+      for (const index in rows) {
         if (objectPath.has(rows, index + '.doc.medicationCodeableConcept.coding.0.code')) {
           const result = await localDB4.find({selector: {'medicationCodeableConcept.coding.0.code': {$eq: rows[index].doc.medicationCodeableConcept.coding[0].code}, _id: {"$gte": null}}})
           if (objectPath.has(result, 'docs.0')) {
             result.docs.sort((a1, b1) => moment(b1.authoredOn) - moment(a1.authoredOn))
-            for (var d in objectPath.get(result, 'docs')) {
+            for (const d in objectPath.get(result, 'docs')) {
               objectPath.set(state, 'rows.' + index + '.history.' + d + '.description', removeTags(objectPath.get(result, 'docs.' + d + '.text.div')))
               objectPath.set(state, 'rows.' + index + '.history.' + d + '.created', objectPath.get(result, 'docs.' + d + '.authoredOn'))
               objectPath.set(state, 'rows.' + index + '.history.' + d + '.id', objectPath.get(result, 'docs.' + d + '.id'))
@@ -997,8 +997,8 @@ export default defineComponent({
     const loadList = async(status = 'all') => {
       state.rows = []
       state.result = []
-      var selector = {}
-      var result = null
+      let selector = {}
+      let result = null
       if (props.resource === 'compositions' ||
           props.resource === 'care_plans') {
         selector = {[state.base.indexField]: {$eq: [state.base.indexRoot] + '/' + props.encounter}, _id: {"$gte": null}}
@@ -1014,7 +1014,7 @@ export default defineComponent({
         } else if (props.category === 'inbox') {
           result = await inbox(props.resource, props.user)
         } else {
-          var docs_arr1 = []
+          const docs_arr1 = []
           const a1 = await localDB.query((doc, emit) => {
             if (doc.status !== 'in-progress') {
               for (let recipient of doc.recipient) {
@@ -1024,14 +1024,14 @@ export default defineComponent({
               }
             }
           })
-          for (var b1 of a1.rows) {
-            var c1 = await localDB.get(b1.id)
+          for (const b1 of a1.rows) {
+            const c1 = await localDB.get(b1.id)
             docs_arr1.push(c1)
           }
-          var withReply1 = docs_arr.filter(d1 => d1.inResponseTo !== undefined)
-          var single1 = docs_arr.filter(e1 => e1.inResponseTo === undefined)
-          var grouped1 = groupItems(withReply1, 'inResponseTo.reference')
-          var keys1 = Object.keys(grouped1)
+          const withReply1 = docs_arr1.filter(d1 => d1.inResponseTo !== undefined)
+          const single1 = docs_arr1.filter(e1 => e1.inResponseTo === undefined)
+          const grouped1 = groupItems(withReply1, 'inResponseTo.reference')
+          const keys1 = Object.keys(grouped1)
           keys1.forEach(key1 => {
             grouped1[key1].sort((h, i) => moment(i.sent) - moment(h.sent))
             single1.push(grouped1[key1][0])
@@ -1065,7 +1065,7 @@ export default defineComponent({
       }
       if (props.resource === 'compositions') {
         if (result.docs.length == 0) {
-          var defaults = {
+          const defaults = {
             category: props.user.defaults.category,
             code: props.user.defaults.code
           }
@@ -1075,7 +1075,7 @@ export default defineComponent({
           emit('composition', result.docs[0])
         }
       }
-      for (var j in result.docs) {
+      for (const j in result.docs) {
         objectPath.set(state, 'result.' + j + '.doc', result.docs[j])
       }
       await fhirMap()
@@ -1089,7 +1089,7 @@ export default defineComponent({
         if (status === 'all') {
           state.rows.sort(firstBy('status', {ignoreCase:true, direction:'asc'}).thenBy('title', {ignoreCase:true, direction:'asc'}))
         }
-        var active_arr = ['Active']
+        let active_arr = ['Active']
         if (props.resource === 'conditions') {
           active_arr = ['Active', 'Recurrence', 'Relapse']
         }
@@ -1136,7 +1136,7 @@ export default defineComponent({
             emit('open-page', id, props.resource, '')
           }
         } else {
-          var b = state.rows.find(a => a.id == id)
+          const b = state.rows.find(a => a.id == id)
           if (props.resource === 'encounters') {
             if (objectPath.has(b, 'bundle')) {
               emit('open-bundle', 'bundles', b.bundle, b.bundle_history)
@@ -1162,7 +1162,7 @@ export default defineComponent({
       }
     }
     const onSelect = async(value, resource, doc) => {
-      var defaults = {}
+      const defaults = {}
       if (props.resource === 'care_plans') {
         if (value == 'add') {
           emit('open-form', value, 'conditions', 'all', '', {}, true)
@@ -1182,7 +1182,7 @@ export default defineComponent({
         state.section_schema = state.base.section.uiSchema
         state.section_divContent = state.base.divContent
         state.compositionDoc = objectPath.get(state, 'rows.0.doc')
-        var compSection = await fetchJSON('compSection', props.online)
+        const compSection = await fetchJSON('compSection', props.online)
         state.section_schema = addSchemaOptions('section_code', compSection, 'Code', 'Display', state.section_schema)
         state.section_schema = await loadSelect('practitioners', 'section_author', state.section_schema)
         if (value !== 'other') {
@@ -1221,14 +1221,14 @@ export default defineComponent({
       emit('open-qr', window.location.href)
     }
     const openSection = async(index) => {
-      var sections_arr = []
-      var compSection = await fetchJSON('compSection', props.online)
-      for (var a in compSection) {
+      const sections_arr = []
+      const compSection = await fetchJSON('compSection', props.online)
+      for (const a in compSection) {
         if (compSection[a].Code !== undefined) {
           sections_arr.push(compSection[a])
         }
       }
-      var b = sections_arr.find(c => c.Code === objectPath.get(state, 'compositionDoc.section.' + index + '.coding.coding.0.code'))
+      const b = sections_arr.find(c => c.Code === objectPath.get(state, 'compositionDoc.section.' + index + '.coding.coding.0.code'))
       if (!objectPath.has(b, 'resource')) {
         state.section_id = objectPath.get(state, 'rows.0.id')
         state.section_resource = 'compositions'
@@ -1271,7 +1271,7 @@ export default defineComponent({
       doc.activity.splice(index1,1)
       state.rows[index].activity.splice(index1,1)
       await sync('care_plans', false, props.patient, true, doc)
-      var doc2 = await localDB1.get(doc.id)
+      const doc2 = await localDB1.get(doc.id)
       state.careplanDoc = doc2
       emit('care-plan', doc2)
       state.rows[index].doc = doc2
@@ -1287,7 +1287,7 @@ export default defineComponent({
       doc.section.splice(index1,1)
       state.rows[index].section.splice(index1,1)
       await sync('compositions', false, props.patient, true, doc)
-      var doc2 = await localDB2.get(doc.id)
+      const doc2 = await localDB2.get(doc.id)
       state.compositionDoc = doc2
       emit('composition', doc2)
       state.rows[index].doc = doc2
@@ -1306,16 +1306,16 @@ export default defineComponent({
       emit('composition', doc)
     }
     const setActivity = async(doc) => {
-      var doc1 = state.careplanDoc
+      const doc1 = state.careplanDoc
       if (objectPath.has(doc1, 'activity')) {
-        var a = doc1.activity.length
+        const a = doc1.activity.length
         objectPath.set(doc1, 'activity.' + a + '.reference', Case.pascal(pluralize.singular(props.resource)) + '/' + doc.id)
       } else {
         objectPath.set(doc1, 'activity.0.reference', Case.pascal(pluralize.singular(props.resource)) + '/' + doc.id)
       }
       emit('loading')
       await sync('care_plans', false, props.patient, true, doc1)
-      var doc2 = await localDB1.get(state.careplanDoc.id)
+      const doc2 = await localDB1.get(state.careplanDoc.id)
       state.careplanDoc = doc2
       emit('care-plan', doc2)
       emit('loading')
@@ -1336,7 +1336,7 @@ export default defineComponent({
       }
     }
     const setDiagnosis = (doc) => {
-      var defaults = {}
+      const defaults = {}
       objectPath.set(defaults, 'contained', doc)
       objectPath.set(defaults, 'addresses', 'Condition/' + doc.id)
       objectPath.set(defaults, 'conditionICD10', doc.code.coding[0].code)
@@ -1356,7 +1356,7 @@ export default defineComponent({
     }
     const setNew = (doc, resource, category='all') => {
       emit('care-plan', doc)
-      var defaults = {}
+      const defaults = {}
       if (resource === 'service_requests') {
         objectPath.set(defaults, 'priority', 'routine')
         objectPath.set(defaults, 'intent', 'order')
@@ -1366,8 +1366,8 @@ export default defineComponent({
       emit('open-form', 'add', resource, category, '', defaults)
     }
     const setPrescription = async(doc) => {
-      var a = await import('@/assets/fhir/medication_requests.json')
-      var doc1 = a.fhir
+      const a = await import('@/assets/fhir/medication_requests.json')
+      const doc1 = a.fhir
       objectPath.set(doc1, 'medicationCodeableConcept.coding.0.display', objectPath.get(doc, 'medicationCodeableConcept.coding.0.display'))
       objectPath.set(doc1, 'medicationCodeableConcept.coding.0.code', objectPath.get(doc, 'medicationCodeableConcept.coding.0.code'))
       objectPath.set(doc1, 'medicationCodeableConcept.coding.0.system', objectPath.get(doc, 'medicationCodeableConcept.coding.0.system'))
@@ -1412,14 +1412,14 @@ export default defineComponent({
       objectPath.set(doc1, 'dispenseRequest.expectedSupplyDuration.unit', 'days')
       objectPath.set(doc1, 'dispenseRequest.expectedSupplyDuration.code', 'd')
       objectPath.set(doc1, 'dispenseRequest.expectedSupplyDuration.system', 'http://unitsofmeasure.org')
-      var div = removeTags(doc.text.div)
+      const div = removeTags(doc.text.div)
       emit('open-form', 'add', 'medication_requests', 'all', '', {}, false, doc1, div)
     }
     const setUser = async(doc) => {
-      var id = 'nosh_' + uuidv4()
-      var message = 'The ' + pluralize.singular(props.resource.replace('_statements', '')) + ' has been added as a user.'
-      var email = doc.telecom.find(a => a.system === 'email')
-      var user = {
+      const id = 'nosh_' + uuidv4()
+      const message = 'The ' + pluralize.singular(props.resource.replace('_statements', '')) + ' has been added as a user.'
+      const email = doc.telecom.find(a => a.system === 'email')
+      const user = {
         display: removeTags(doc.text.div),
         id: id,
         _id: id,
@@ -1431,18 +1431,18 @@ export default defineComponent({
       }
       if (doc.resourceType === 'Practitioner') {
         if (objectPath.has(doc, 'identifier')) {
-          var npi = doc.identifier.find(b => b.system === 'http://hl7.org/fhir/sid/us-npi')
+          const npi = doc.identifier.find(b => b.system === 'http://hl7.org/fhir/sid/us-npi')
           if (npi !== undefined) {
             objectPath.set(user, 'role', 'provider')
           }
-          var defaults = {
+          const defaults = {
             "class": "AMB",
             "type": "14736009",
             "serviceType": "349",
             "appointmentType": "ROUTINE",
             "serviceCategory": " 17"
           }
-          var templates = await fetchJSON('templates', props.online)
+          const templates = await fetchJSON('templates', props.online)
           objectPath.set(user, 'defaults', defaults)
           objectPath.set(user, 'charts', [])
           objectPath.set(user, 'unsigned', [])

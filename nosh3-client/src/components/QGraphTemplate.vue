@@ -107,11 +107,11 @@ export default defineComponent({
       emit('close-graph')
     }
     const dft = async(observation) => {
-      var series = []
+      const series = []
       const result = await db.find({selector: {'code.coding.code': {$eq: observation}, _id: {"$gte": null}}})
-      var data1 = []
+      const data1 = []
       result.docs.sort((a1, b1) => moment(a1.effectivePeriod.start) - moment(b1.effectivePeriod.start))
-      for (var d in result.docs) {
+      for (const d in result.docs) {
         data1.push([new Date(result.docs[d].effectivePeriod.start).getTime(), parseFloat(result.docs[d].valueQuantity.value)])
       }
       series.push({name: result.docs[0].code.coding.display, type: 'line', data: data1})
@@ -161,15 +161,15 @@ export default defineComponent({
       }
     }
     const gc = async(type) => {
-      var typeSub = gcType.find(a => a.type === type)
-      var gender = props.patientGender.charAt(0).toLowerCase()
+      const typeSub = gcType.find(a => a.type === type)
+      const gender = props.patientGender.charAt(0).toLowerCase()
       state[type + '_' + gender] = await fetchJSON(type + '_' + gender, props.online)
-      var splines = ['P95', 'P90', 'P75', 'P50', 'P25', 'P10', 'P5']
-      var series = []
-      var categories = []
-      for (var b in splines) {
-        var data = []
-        for (var b1 in state[type + '_' + gender]) {
+      const splines = ['P95', 'P90', 'P75', 'P50', 'P25', 'P10', 'P5']
+      const series = []
+      const categories = []
+      for (const b in splines) {
+        const data = []
+        for (const b1 in state[type + '_' + gender]) {
           if (type !== 'wfh' && type !== 'wfl') {
             data.push(objectPath.get(state[type + '_' + gender][b1], splines[b]))
             categories.push(objectPath.get(state[type + '_' + gender][b1], 'Age'))
@@ -183,16 +183,18 @@ export default defineComponent({
         }
         series.push({name: splines[b].substring(1) + '%', type: 'spline', data: data})
       }
-      var selector = []
-      for (var c in typeSub.selector) {
+      const selector = []
+      for (const c in typeSub.selector) {
         selector.push({'code.coding.0.code': {$eq: typeSub.selector[c]}, _id: {"$gte": null}})
       }
       const result = await db.find({selector: {$or: selector}})
-      var data1 = []
-      var data2 = []
+      const data1 = []
+      const data2 = []
       result.docs.sort((a1, b1) => moment(a1.effectivePeriod.start) - moment(b1.effectivePeriod.start))
-      for (var d in result.docs) {
-        var compare = typeSub.y_title
+      for (const d in result.docs) {
+        let compare = typeSub.y_title
+        let d_unit = ''
+        let d_val = ''
         if (type === 'wfh' || type === 'wfl') {
           if (result.docs[d].code.coding.code !== '29463-7') {
             compare = typeSub.x_title
@@ -200,13 +202,13 @@ export default defineComponent({
         }
         if (result.docs[d].valueQuantity.unit !== compare) {
           if (result.docs[d].valueQuantity.unit == 'lbs') {
-            var d_unit = 'lb'
+            d_unit = 'lb'
           } else {
-            var d_unit = result.docs[d].valueQuantity.unit
+            d_unit = result.docs[d].valueQuantity.unit
           }
-          var d_val = convert(parseFloat(result.docs[d].valueQuantity.value), d_unit).to(compare)
+          d_val = convert(parseFloat(result.docs[d].valueQuantity.value), d_unit).to(compare)
         } else {
-          var d_val = parseFloat(result.docs[d].valueQuantity.value)
+          d_val = parseFloat(result.docs[d].valueQuantity.value)
         }
         if (type !== 'wfh' && type !== 'wfl') {
           data1.push([moment(result.docs[d].effectivePeriod.start).diff(props.patientDOB, 'days'), d_val])
@@ -215,16 +217,16 @@ export default defineComponent({
         }
       }
       if (type === 'wfh' || type === 'wfl') {
-        var d3 = data2.reduce((r, arr) => {
+        const d3 = data2.reduce((r, arr) => {
           r[arr.age] = [...r[arr.age] || [], arr]
           return r
         }, {})
-        var d4 = Object.values(d3)
-        for (var d5 in d4) {
-          var w = ''
-          var l = ''
+        const d4 = Object.values(d3)
+        for (const d5 in d4) {
+          let w = ''
+          let l = ''
           if (d4[d5].length > 1) {
-            for (var d6 in d4[d5]) {
+            for (const d6 in d4[d5]) {
               if (d4[d5][d6].code !== '29463-7') {
                 l = d4[d5][d6].val
               } else {
@@ -241,8 +243,8 @@ export default defineComponent({
       series.push({name: props.patientName, type: 'line', data: data1})
       // get percentiles
       if (data1.length > 0) {
-        var lms = null
-        var e = data1.slice(-1).pop()
+        let lms = null
+        const e = data1.slice(-1).pop()
         if (type !== 'wfh' && type !== 'wfl') {
           lms = state[type + '_' + gender].find(g => g.Age == e[0])
         } else {
@@ -253,14 +255,15 @@ export default defineComponent({
           }
         }
         if (lms !== undefined) {
-          var val1 = e[1] / lms.M
+          const val1 = e[1] / lms.M
+          let zscore = null
           if (lms.L !== '0') {
-            var val2 = Math.pow(val1, lms.L) - 1
-            var val3 = lms.L * lms.S
-            var zscore = val2 / val3
+            const val2 = Math.pow(val1, lms.L) - 1
+            const val3 = lms.L * lms.S
+            zscore = val2 / val3
           } else {
-            var val4 = Math.log($val1)
-            var zscore = val4 / lms.S
+            const val4 = Math.log($val1)
+            zscore = val4 / lms.S
           }
           state.percentile = Math.round(gc_cdf(zscore) * 100)
         }
@@ -334,14 +337,14 @@ export default defineComponent({
       }
     }
     const gc_erf = (x) => {
-      var pi = 3.1415927
-      var a = (8 * (pi - 3))/(3 * pi * (4 - pi))
-      var x2 = x * x
-      var ax2 = a * x2
-      var num = (4/pi) + ax2
-      var denom = 1 + ax2
-      var inner = (-x2) * num / denom
-      var erf2 = 1 - Math.exp(inner)
+      const pi = 3.1415927
+      const a = (8 * (pi - 3))/(3 * pi * (4 - pi))
+      const x2 = x * x
+      const ax2 = a * x2
+      const num = (4/pi) + ax2
+      const denom = 1 + ax2
+      const inner = (-x2) * num / denom
+      const erf2 = 1 - Math.exp(inner)
       return Math.sqrt(erf2)
     }
     return {
