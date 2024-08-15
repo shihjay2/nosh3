@@ -100,7 +100,7 @@ export default defineComponent({
       pdf = await pdfjsLib.getDocument(props.pdf).promise
       state.numberOfPages = pdf.numPages
       state.pagination = true
-      var pages = [...Array(pdf.numPages + 1).keys()].slice(1)
+      const pages = [...Array(pdf.numPages + 1).keys()].slice(1)
       await Promise.all(
         pages.map(async (page) => {
           const pdfpage = await pdf.getPage(page)

@@ -131,7 +131,7 @@ export default {
       }
     }
     const populatePatientImmunization = (vac, dose_number) => {
-      var ret = null
+      let ret = null
       const immunization = vac.patientImmunizations[dose_number-1]
       if (vac.patientImmunizations.length > 0) {
         if(typeof immunization !== 'undefined') {
@@ -143,7 +143,7 @@ export default {
       return ret
     }
     const populateRecommendedAgeText = (vac, dose_number) => {
-      var ret = null
+      let ret = null
       if (typeof vac.dose_age_recommendation !== "undefined") {
         ret = {}
         objectPath.set(ret, 'class', '')

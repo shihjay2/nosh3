@@ -233,7 +233,7 @@ export default defineComponent({
   },
   emits: ['update-model', 'update-template'],
   setup(props, { emit }) {
-    var validationRef = ref(props.rules)
+    const validationRef = ref(props.rules)
     const {
       value: inputValue,
       errorMessage,
@@ -264,7 +264,7 @@ export default defineComponent({
       }
       emit('update-model', event, props.name, props.type)
     }
-    var qOptions = ref(props.options)
+    const qOptions = ref(props.options)
     const filterFn = (val, update) => {
       update(() => {
         const needle = val.toLocaleLowerCase()

@@ -115,7 +115,7 @@ export default {
       emit('close-care-opportunties')
     }
     const hedisAudit = async() => {
-      var dxBundles = []
+      let dxBundles = []
       const hedis = await fetchJSON('hedis', props.online)
       for (const a of hedis.rows) {
         // build includes
@@ -170,10 +170,11 @@ export default {
           const hedis_obj = {}
           objectPath.set(hedis_obj, 'id', objectPath.get(a, 'type'))
           objectPath.set(hedis_obj, 'title', objectPath.get(a, 'title'))
+          let bundles = []
           if (dxBundles.length > 0) {
-            var bundles = dxBundles
+            bundles = dxBundles
           } else {
-            var bundles = await getSignedEncounters(a.years)
+            bundles = await getSignedEncounters(a.years)
           }
           for (const bundle of bundles) {
             if (objectPath.has(a, 'query')) {
@@ -181,7 +182,7 @@ export default {
               for (const b of objectPath.get(a, 'query')) {
                 const c = bundle.entry.filter(bundle1 => bundle1.resource.resourceType === b.resource)
                 if (c.length > 0) {
-                  var needle_arr = []
+                  let needle_arr = []
                   if (objectPath.has(b, 'needle_fetch')) {
                     needle_arr = await fetchJSON(objectPath.get(b, 'needle_fetch'), props.online)
                   } else {
@@ -241,10 +242,9 @@ export default {
                   }
                 }
                 if (g.process == 'subtract' || g.process == 'sum') {
+                  let process = (accumulator, number) => accumulator + number
                   if (g.process == 'subtract') {
-                    var process = (accumulator, number) => accumulator - number
-                  } else {
-                    var process = (accumulator, number) => accumulator + number
+                    process = (accumulator, number) => accumulator - number
                   }
                   objectPath.set(g, 'result', arr.reduce(process))
                 }
