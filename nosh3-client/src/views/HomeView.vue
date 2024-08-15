@@ -949,6 +949,7 @@ export default defineComponent({
         await syncProcess()
       }, 3600000)
       inboxTimer = setInterval(async() => {
+        console.log(state.user)
         if (objectPath.has(state, 'user.id')) {
           await updateInbox(state.user)
           console.log('Inbox updated')
