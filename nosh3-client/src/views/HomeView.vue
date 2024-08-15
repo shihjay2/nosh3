@@ -881,10 +881,6 @@ export default defineComponent({
           state.provider = true
         }
         state.patientList = await patientList(user)
-        inboxTimer = setInterval(async() => {
-          await updateInbox(user)
-          console.log('Inbox updated')
-        }, 5000)
         if (route.params.id !== 'new') {
           try {
             const result = await patientDB.find({selector: {_id: {$eq: route.params.id}}})
@@ -952,6 +948,12 @@ export default defineComponent({
       syncallTimer = setInterval(async() => {
         await syncProcess()
       }, 3600000)
+      inboxTimer = setInterval(async() => {
+        if (objectPath.has(state, 'user.id')) {
+          await updateInbox(state.user)
+          console.log('Inbox updated')
+        }
+      }, 5000)
       if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
         pinTimer = setInterval(async() => {
           await pinCheck()
