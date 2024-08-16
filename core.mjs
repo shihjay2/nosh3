@@ -930,35 +930,37 @@ async function verifyJWT(req, res, next) {
       console.log(e)
     }
   } else {
+    let pin = true
     if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
-      const pin = await getPIN(req.params.pid)
-      if (!pin) {
-        res.status(401).json({status: 'awaiting resource to be available'})
-      }
+      pin = await getPIN(req.params.pid)
     }
-    const jwt = authHeader.split(' ')[1]
-    const response = await verify(jwt)
-    let method = 'write'
-    if (response.status === 'isValid') {
-      // if (objectPath.has(response, 'payload.vc') || objectPath.has(response, 'payload.vp')) {
-        // has verfiable credential or verifiable presentation (multiple vc's)
-        // res.status(200).json(response.payload.vc)
-      // } else {
-        // res.status(200).json(payload)
-      // }
-      if (req.method === 'GET') {
-        method = 'read'
-      }
-      const location = req.protocol + '://' + req.hostname + req.baseUrl + req.path
-      const introspect_result = await introspect(req, jwt, method, location)
-      if (objectPath.has(introspect_result, 'success')) {
-        res.locals.payload = response.payload
-        next()
+    if (pin) {
+      const jwt = authHeader.split(' ')[1]
+      const response = await verify(jwt)
+      let method = 'write'
+      if (response.status === 'isValid') {
+        // if (objectPath.has(response, 'payload.vc') || objectPath.has(response, 'payload.vp')) {
+          // has verfiable credential or verifiable presentation (multiple vc's)
+          // res.status(200).json(response.payload.vc)
+        // } else {
+          // res.status(200).json(payload)
+        // }
+        if (req.method === 'GET') {
+          method = 'read'
+        }
+        const location = req.protocol + '://' + req.hostname + req.baseUrl + req.path
+        const introspect_result = await introspect(req, jwt, method, location)
+        if (objectPath.has(introspect_result, 'success')) {
+          res.locals.payload = response.payload
+          next()
+        } else {
+          res.status(401).json(objectPath.get(introspect_result))
+        }
       } else {
-        res.status(401).json(objectPath.get(introspect_result))
+        res.status(401).json(response.error)
       }
     } else {
-      res.status(401).json(response.error)
+      res.status(401).json({status: 'awaiting resource to be available'})
     }
   }
 }
