@@ -1469,7 +1469,6 @@ export default defineComponent({
               objectPath.set(timelineItem, 'date', new Date(objectPath.get(result, 'docs.' + a + '.' + base.timelineDate)))
               objectPath.set(timelineItem, 'icon', resource1.icon)
               objectPath.set(timelineItem, 'resource', resource)
-              objectPath.set(timelineItem, 'doc', objectPath.get(result, 'docs.' + a))
               objectPath.set(timelineItem, 'keys', base.fuse)
               objectPath.set(timelineItem, 'style', base.uiListContent.contentStyle)
               if (resource === 'encounters') {
@@ -1489,6 +1488,12 @@ export default defineComponent({
                   objectPath.set(timelineItem, 'bundle_history', history)
                 }
               }
+              if (resource === 'document_references') {
+                if (objectPath.get(result, 'docs.' + a + '.contentType') === 'application/pdf') {
+                  objectPath.del(result, 'docs.' + a + '.data')
+                }
+              }
+              objectPath.set(timelineItem, 'doc', objectPath.get(result, 'docs.' + a))
               timeline.push(timelineItem)
             }
           } else {
