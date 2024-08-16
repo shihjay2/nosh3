@@ -1225,18 +1225,20 @@ export function common() {
   const syncSome = async(online, patient_id) => {
     const auth_store = useAuthStore()
     const resources = auth_store.sync_resource
+    let count = 0
     if (resources.length > 0) {
       if (online) {
         for (const resource of resources) {
           if (resource !== undefined) {
             objectPath.set(syncTooltip, 'text', 'Syncing ' + Case.title(resource) + '...')
             await sync(resource, online, patient_id, false, {})
+            count++
           }
         }
         auth_store.setSyncResource([])
       }
     }
-    return resources.length
+    return count
   }
   const syncState = reactive({ total: 0, complete: 0 })
   const syncTooltip = reactive({ text: '' })
