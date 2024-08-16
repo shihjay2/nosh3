@@ -942,9 +942,9 @@ export default defineComponent({
         await syncProcess()
         auth.unsetSync()
       }
-      // syncTimer = setInterval(async() => {
-      //   await syncProcess('some')
-      // }, 15000)
+      syncTimer = setInterval(async() => {
+        await syncProcess('some')
+      }, 15000)
       // syncallTimer = setInterval(async() => {
       //   await syncProcess()
       // }, 3600000)
