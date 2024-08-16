@@ -2361,22 +2361,27 @@ export default defineComponent({
       clearInterval(syncallTimer)
     }
     const syncProcess = async(type='all') => {
+      let sync_res = 0
       if (state.online) {
         if (!state.sync_on) {
           state.sync_on = true
           if (type === 'all') {
             await syncAll(true, state.patient, true)
+            sync_res = 1
           } else {
-            await syncSome(state.online, state.patient)
+            sync_res = await syncSome(state.online, state.patient)
+            console.log(sync_res)
           }
           state.drawerReload = true
           state.sync_on = false
           if (state.showTimeline) {
             if (!state.timeline_scroll) {
-              await loadTimeline()
-              nextTick(() => {
-                qTimeline.value.focus()
-              })
+              if (sync_res > 0) {
+                await loadTimeline()
+                nextTick(() => {
+                  qTimeline.value.focus()
+                })
+              }
             }
           }
         }

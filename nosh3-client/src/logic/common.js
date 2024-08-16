@@ -1236,6 +1236,7 @@ export function common() {
         auth_store.setSyncResource([])
       }
     }
+    return resources.length
   }
   const syncState = reactive({ total: 0, complete: 0 })
   const syncTooltip = reactive({ text: '' })
