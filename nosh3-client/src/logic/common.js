@@ -1145,10 +1145,12 @@ export function common() {
           const info = await local.info()
           try {
             if (info.doc_count > 0) {
-              await local.loadDecrypted({batch_size: 20})
+              await local.loadDecrypted()
+              // await local.loadDecrypted({batch_size: 20})
             }
             try {
-              await local.loadEncrypted({batch_size: 20, batches_limit: 2})
+              await local.loadEncrypted()
+              // await local.loadEncrypted({batch_size: 20, batches_limit: 2})
               console.log('PouchDB encrypted sync complete for DB: ' + resource )
             } catch (e) {
               console.log(e)
@@ -1317,7 +1319,7 @@ export function common() {
       const jwk = await jose.importJWK(keys.data.keys[0])
       const jwt = auth_store.jwt
       try {
-        const { payload, protectedHeader } = await jose.jwtVerify(jwt, jwk)
+        await jose.jwtVerify(jwt, jwk)
         return true
       } catch (e) {
         throw new Error(e)

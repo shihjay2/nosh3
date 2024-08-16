@@ -577,9 +577,6 @@ export default defineComponent({
             const result_users = await localDB5.find({selector: {'email': {$eq: email.value}, _id: {"$gte": null}}})
             if (result_users.docs.length > 0) {
               add_user = false
-              if (auth.auth === 'mojoauth') {
-                magic_link = true
-              }
             }
           } else {
             add_user = false

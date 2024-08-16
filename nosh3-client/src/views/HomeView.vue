@@ -948,12 +948,12 @@ export default defineComponent({
       // syncallTimer = setInterval(async() => {
       //   await syncProcess()
       // }, 3600000)
-      // inboxTimer = setInterval(async() => {
-      //   if (objectPath.has(state, 'user.id')) {
-      //     await updateInbox(state.user)
-      //     console.log('Inbox updated')
-      //   }
-      // }, 5000)
+      inboxTimer = setInterval(async() => {
+        if (objectPath.has(state, 'user.id')) {
+          await updateInbox(state.user)
+          console.log('Inbox updated')
+        }
+      }, 5000)
       if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
         pinTimer = setInterval(async() => {
           await pinCheck()
