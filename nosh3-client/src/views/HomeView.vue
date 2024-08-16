@@ -949,7 +949,6 @@ export default defineComponent({
         await syncProcess()
       }, 3600000)
       inboxTimer = setInterval(async() => {
-        console.log(state.user)
         if (objectPath.has(state, 'user.id')) {
           await updateInbox(state.user)
           console.log('Inbox updated')
@@ -1414,11 +1413,12 @@ export default defineComponent({
       state.loading = true
       state.timeline_scroll = false
       state.timeline = []
-      const resources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references', 'observations']
+      // const resources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references', 'observations']
+      const resources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references']
       const json = await import('@/assets/ui/drawer.json')
       const drawer = json.rows
       const timeline = []
-      const observations = []
+      // const observations = []
       for (const resource of resources) {
         const base = await import('@/assets/fhir/' + resource + '.json')
         const resource1 = drawer.find(item => item.resource === resource)
@@ -1492,66 +1492,66 @@ export default defineComponent({
               timeline.push(timelineItem)
             }
           } else {
-            for (const f in result.docs) {
-              const category = result.docs[f].category[0].coding[0].code
-              const sub = base.categories.find(o => o.value === category)
-              let schema = sub.uiSchema.flat()
-              schema = await loadSelect('practitioners', 'performer', schema)
-              if (category !== 'exam' && category !== 'vital-signs' && category !== 'social-history' && category !== 'all') {
-                const category1 = Case.camel(category)
-                const category2 = await fetchJSON(category1, state.online)
-                if (category === 'activity') {
-                  const a = []
-                  for (const b of category2) {
-                    a.push(b)
-                  }
-                  objectPath.set(select, category, a)
-                }
-                const observationsCodes = []
-                let c1 = 0
-                let d1 = ''
-                const f1 = []
-                for (const e1 of category2) {
-                  if (category === 'activity') {
-                    if (!f1.includes(objectPath.get(e1, 'CF_CODE10'))) {
-                      objectPath.set(observationsCodes, c1 + '.code', objectPath.get(e1, 'CF_CODE10'))
-                      f1.push(objectPath.get(e1, 'CF_CODE10'))
-                      if (objectPath.get(e1, 'Description') !== '') {
-                        d1 = objectPath.get(e1, 'Description') + ' | '
-                      } else {
-                        d1 = objectPath.get(e1, 'Common Term') + ' | '
-                      }
-                      d1 = d1 + objectPath.get(e1, 'REFID')
-                      objectPath.set(observationsCodes, c1 + '.display', d1)
-                      c1 = c1 + 1
-                    }
-                  } else {
-                    if (!objectPath.has(e1, 'span')) {
-                      if (objectPath.has(e1, 'a.small')) {
-                        objectPath.set(observationsCodes, c1 + '.code', objectPath.get(e1, 'a.small'))
-                        objectPath.set(observationsCodes, c1 + '.display', objectPath.get(e1, '#text'))
-                        c1 = c1 + 1
-                      }
-                    }
-                  }
-                }
-                schema = addSchemaOptions('code', observationsCodes, 'code', 'display', schema)
-              }
-              const objsItem = {}
-              objectPath.set(objsItem, 'id', objectPath.get(result, 'docs.' + f + '.id'))
-              objectPath.set(objsItem, 'title', fhirReplace('title', base, result.docs[f], schema))
-              objectPath.set(objsItem, 'subtitle', objectPath.get(result, 'docs.' + f + '.' + base.timelineDate) + ', ' + title)
-              objectPath.set(objsItem, 'content', fhirReplace('content', base, result.docs[f], schema))
-              objectPath.set(objsItem, 'extended', fhirReplace('extended', base, result.docs[f], schema))
-              objectPath.set(objsItem, 'status', fhirReplace('status', base, result.docs[f], schema))
-              objectPath.set(objsItem, 'date', new Date(objectPath.get(result, 'docs.' + f + '.' + base.timelineDate)))
-              objectPath.set(objsItem, 'icon', resource1.icon)
-              objectPath.set(objsItem, 'resource', resource)
-              objectPath.set(objsItem, 'doc', objectPath.get(result, 'docs.' + f))
-              objectPath.set(objsItem, 'keys', base.fuse)
-              objectPath.set(objsItem, 'style', base.uiListContent.contentStyle)
-              observations.push(objsItem)
-            }
+            // for (const f in result.docs) {
+            //   const category = result.docs[f].category[0].coding[0].code
+            //   const sub = base.categories.find(o => o.value === category)
+            //   let schema = sub.uiSchema.flat()
+            //   schema = await loadSelect('practitioners', 'performer', schema)
+            //   if (category !== 'exam' && category !== 'vital-signs' && category !== 'social-history' && category !== 'all') {
+            //     const category1 = Case.camel(category)
+            //     const category2 = await fetchJSON(category1, state.online)
+            //     if (category === 'activity') {
+            //       const a = []
+            //       for (const b of category2) {
+            //         a.push(b)
+            //       }
+            //       objectPath.set(select, category, a)
+            //     }
+            //     const observationsCodes = []
+            //     let c1 = 0
+            //     let d1 = ''
+            //     const f1 = []
+            //     for (const e1 of category2) {
+            //       if (category === 'activity') {
+            //         if (!f1.includes(objectPath.get(e1, 'CF_CODE10'))) {
+            //           objectPath.set(observationsCodes, c1 + '.code', objectPath.get(e1, 'CF_CODE10'))
+            //           f1.push(objectPath.get(e1, 'CF_CODE10'))
+            //           if (objectPath.get(e1, 'Description') !== '') {
+            //             d1 = objectPath.get(e1, 'Description') + ' | '
+            //           } else {
+            //             d1 = objectPath.get(e1, 'Common Term') + ' | '
+            //           }
+            //           d1 = d1 + objectPath.get(e1, 'REFID')
+            //           objectPath.set(observationsCodes, c1 + '.display', d1)
+            //           c1 = c1 + 1
+            //         }
+            //       } else {
+            //         if (!objectPath.has(e1, 'span')) {
+            //           if (objectPath.has(e1, 'a.small')) {
+            //             objectPath.set(observationsCodes, c1 + '.code', objectPath.get(e1, 'a.small'))
+            //             objectPath.set(observationsCodes, c1 + '.display', objectPath.get(e1, '#text'))
+            //             c1 = c1 + 1
+            //           }
+            //         }
+            //       }
+            //     }
+            //     schema = addSchemaOptions('code', observationsCodes, 'code', 'display', schema)
+            //   }
+            //   const objsItem = {}
+            //   objectPath.set(objsItem, 'id', objectPath.get(result, 'docs.' + f + '.id'))
+            //   objectPath.set(objsItem, 'title', fhirReplace('title', base, result.docs[f], schema))
+            //   objectPath.set(objsItem, 'subtitle', objectPath.get(result, 'docs.' + f + '.' + base.timelineDate) + ', ' + title)
+            //   objectPath.set(objsItem, 'content', fhirReplace('content', base, result.docs[f], schema))
+            //   objectPath.set(objsItem, 'extended', fhirReplace('extended', base, result.docs[f], schema))
+            //   objectPath.set(objsItem, 'status', fhirReplace('status', base, result.docs[f], schema))
+            //   objectPath.set(objsItem, 'date', new Date(objectPath.get(result, 'docs.' + f + '.' + base.timelineDate)))
+            //   objectPath.set(objsItem, 'icon', resource1.icon)
+            //   objectPath.set(objsItem, 'resource', resource)
+            //   objectPath.set(objsItem, 'doc', objectPath.get(result, 'docs.' + f))
+            //   objectPath.set(objsItem, 'keys', base.fuse)
+            //   objectPath.set(objsItem, 'style', base.uiListContent.contentStyle)
+            //   observations.push(objsItem)
+            // }
           }
         } catch (err) {
           console.log(err)
@@ -1578,7 +1578,7 @@ export default defineComponent({
         timeline.push(timelineIntro)
       }
       timeline.sort((c, d) => d.date - c.date)
-      observations.sort((g, h) => h.date - g.date)
+      // observations.sort((g, h) => h.date - g.date)
       if (activitiesResult.docs.length == 0) {
         timeline.push(timelineIntro)
       }
@@ -1591,9 +1591,10 @@ export default defineComponent({
       })
       if (result.rows.length > 0) {
         const doc = objectPath.get(result, 'rows.0.doc')
-        if (JSON.stringify(objectPath.get(doc, 'timeline')) !== JSON.stringify(timeline) || JSON.stringify(objectPath.get(doc, 'observations')) !== JSON.stringify(observations)) {
+        if (JSON.stringify(objectPath.get(doc, 'timeline')) !== JSON.stringify(timeline)) {
+        // if (JSON.stringify(objectPath.get(doc, 'timeline')) !== JSON.stringify(timeline) || JSON.stringify(objectPath.get(doc, 'observations')) !== JSON.stringify(observations)) {
           objectPath.set(doc, 'timeline', timeline)
-          objectPath.set(doc, 'observations', observations)
+          // objectPath.set(doc, 'observations', observations)
           await sync('timeline', false, state.patient, true, doc)
         }
       } else {
@@ -1602,7 +1603,7 @@ export default defineComponent({
           '_id': id,
           'id': id,
           'timeline': timeline,
-          'observations': observations
+          // 'observations': observations
         }
         await sync('timeline', state.online, state.patient, true, doc1)
       }
