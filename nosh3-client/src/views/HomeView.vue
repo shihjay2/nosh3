@@ -548,7 +548,7 @@
     <q-card>
       <q-card-section>
         <q-list>
-          <q-item clickable @click="openQR(window.location.href)">
+          <q-item clickable @click="openQR()">
             <q-item-section>
               <q-item-label>Health Record Access QR Code</q-item-label>
             </q-item-section>
@@ -1987,7 +1987,7 @@ export default defineComponent({
       }
       state.pulldown_form = true
     }
-    const openQR = (value) => {
+    const openQR = (value=window.location.href) => {
       state.qr_value = value
       state.qr = true
     }
