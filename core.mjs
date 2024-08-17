@@ -20,8 +20,6 @@ PouchDB.plugin(PouchDBFind)
 import comdb from 'comdb'
 PouchDB.plugin(comdb)
 
-// const jwksService = jose.createRemoteJWKSet(new URL(settings.jwks_uri))
-
 async function couchdbConfig(section, key, value) {
   const opts = JSON.parse(JSON.stringify(settings.couchdb_auth))
   objectPath.set(opts, 'headers', {'Content-Type': 'application/json'})
@@ -150,12 +148,6 @@ async function couchdbInstall() {
   const pem = await jose.exportSPKI(key)
   const result = []
   const commands = [
-    // {section: 'httpd', key: 'enable_cors', value: 'true'},
-    // {section: 'cors', key: 'credentials', value: 'true'},
-    // {section: 'cors', key: 'headers', value: 'accept, authorization, content-type, origin, referer'},
-    // {section: 'cors', key: 'methods', value: 'GET, PUT, POST, HEAD, DELETE'},
-    // {section: 'cors', key: 'origins', value: '*'},
-    // {section: 'chttpd', key: 'authentication_handlers', value: '{chttpd_auth, cookie_authentication_handler}, {chttpd_auth, jwt_authentication_handler}, {chttpd_auth, default_authentication_handler}'},
     {section: 'jwt_keys', key: 'rsa:_default', value: pem}
   ]
   for (const command of commands) {

@@ -5,7 +5,6 @@ import express from 'express'
 import fs from 'fs'
 import isReachable from 'is-reachable'
 import * as jose from 'jose'
-// const Mailgun = require('mailgun.js')
 import objectPath from 'object-path'
 import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
@@ -18,7 +17,7 @@ PouchDB.plugin(PouchDBFind)
 export default router
 
 router.post('/verifyJWT', verifyJWTEndpoint)
-router.get('/jwks', jwks) // endpoint to share public key
+router.get('/jwks', jwks)
 router.get('/config', config)
 router.post('/authenticate', authenticate)
 router.get('/exportJWT', exportJWT)

@@ -66,7 +66,6 @@
             v-if="state.showMenu"
             @open-list="openList"
             @open-page="openPage"
-            @open-qr="openQR"
             @open-qr-reader="openQRReader"
             @open-schedule="openSchedule"
             @stop-inbox-timer="stopInboxTimer"

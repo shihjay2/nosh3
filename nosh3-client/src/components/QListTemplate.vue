@@ -803,48 +803,6 @@ export default defineComponent({
         objectPath.set(state, 'rows.' + a + '.activity.' + c + '.outcome', outcome[c])
         objectPath.set(state, 'rows.' + a + '.delete', 'n')
       }
-      // return new Promise((resolve) => {
-      //   var progress = []
-      //   var outcome = []
-      //   Promise.all(activity.map((b) => {
-      //     var resource = b.reference.split('/').slice(0,-1).join('')
-      //     var id = b.reference.split('/').slice(-1).join('')
-      //     if (objectPath.has(b, 'progress')) {
-      //       progress.push('Progress: ' + objectPath.get(b, 'progress.text'))
-      //     } else {
-      //       progress.push('')
-      //     }
-      //     if (objectPath.has(b, 'outcomeCodeableConcept.0.coding.0.display')) {
-      //       if (objectPath.has(b, 'progress')) {
-      //         outcome.push(', Outcome: ' + objectPath.get(b, 'outcomeCodeableConcept.0.coding.0.display'))
-      //       } else {
-      //         outcome.push('Outcome: ' + objectPath.get(b, 'outcomeCodeableConcept.0.coding.0.display'))
-      //       }
-      //     } else {
-      //       outcome.push('')
-      //     }
-      //     var db = new PouchDB(Case.snake(pluralize(resource)))
-      //     return db.get(id)
-      //   })).then((results) => {
-      //     for (var c in results) {
-      //       objectPath.set(state, 'rows.' + a + '.activity.' + c + '.id', results[c].id)
-      //       var d = Case.snake(pluralize(results[c].resourceType))
-      //       var e = state.resources.find(({resource}) => resource === d)
-      //       objectPath.set(state, 'rows.' + a + '.activity.' + c + '.icon', e.icon)
-      //       var f = Case.capital(pluralize.singular(d))
-      //       if (f == 'Medication Statement') {
-      //         f = 'Continue Medication'
-      //       }
-      //       objectPath.set(state, 'rows.' + a + '.activity.' + c + '.label', f + ': ' + removeTags(results[c].text.div))
-      //       objectPath.set(state, 'rows.' + a + '.activity.' + c + '.progress', progress[c])
-      //       objectPath.set(state, 'rows.' + a + '.activity.' + c + '.outcome', outcome[c])
-      //       objectPath.set(state, 'rows.' + a + '.delete', 'n')
-      //     }
-      //     resolve()
-      //   }).catch(function (err) {
-      //     console.log(err)
-      //   })
-      // })
     }
     const getAuthor = (doc) => {
       let a = ''
@@ -897,44 +855,6 @@ export default defineComponent({
           }
         }
       }
-      // return new Promise((resolve) => {
-      //   Promise.all(rows.map((b) => {
-      //     localDB3.createIndex({
-      //       index: {fields: ['timestamp', 'entry.0.resource.encounter.reference', '_id']}
-      //     })
-      //     return localDB3.find({
-      //       selector: {timestamp: {"$gte": null}, 'entry.0.resource.encounter.reference': {$eq: 'Encounter/' + b.id}, _id: {"$gte": null}},
-      //       sort: [{timestamp: 'desc'}]
-      //     })
-      //   })).then(async(results) => {
-      //     for (var c in results) {
-      //       objectPath.set(state, 'rows.' + c + '.lock', true)
-      //       objectPath.set(state, 'rows.' + c + '.lock_icon', 'lock_open')
-      //       objectPath.set(state, 'rows.' + c + '.lock_color', 'positive')
-      //       if (objectPath.has(results, c + '.docs.0')) {
-      //         for (var d in objectPath.get(results, c + '.docs')) {
-      //           var comp = objectPath.get(results, c + '.docs.' + d + '.entry.0.resource.encounter.reference')
-      //           var index = rows.findIndex((element) => element.id === comp.replace('Encounter/', ''))
-      //           if (!objectPath.has(state, 'rows.' + index + '.bundle')) {
-      //             objectPath.set(state, 'rows.' + index + '.bundle', objectPath.get(results, c + '.docs.' + d))
-      //             objectPath.set(state, 'rows.' + index + '.lock_icon', 'lock')
-      //             objectPath.set(state, 'rows.' + index + '.lock_color', 'negative')
-      //             var history = []
-      //             history.push(objectPath.get(results, c + '.docs.' + d))
-      //             objectPath.set(state, 'rows.' + index + '.bundle_history', history)
-      //           } else {
-      //             var history1 = objectPath.get(state, 'rows.' + index + '.bundle_history')
-      //             history1.push(objectPath.get(results, c + '.docs.' + d))
-      //             objectPath.set(state, 'rows.' + index + '.bundle_history', history1)
-      //           }
-      //         }
-      //       }
-      //     }
-      //     resolve()
-      //   }).catch(function (err) {
-      //     console.log(err)
-      //   })
-      // })
     }
     const getCarePlans = async(rows) => {
       for (const index in rows) {
@@ -1215,7 +1135,7 @@ export default defineComponent({
       state.dialogHistory = true
     }
     const openQR = () => {
-      emit('open-qr', window.location.href)
+      emit('open-qr')
     }
     const openSection = async(index) => {
       const sections_arr = []

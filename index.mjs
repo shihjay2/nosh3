@@ -41,12 +41,6 @@ app.use('/app/chart', (req, res) => {
 app.get('/app/dashboard', (req, res) => {
   res.sendFile(client + "index.html")
 })
-// app.use('/app/chart', verifyJWT, (req,res) => {
-//   res.sendFile(client + "index.html")
-// })
-// app.get('/app/dashboard', verifyJWT, (req, res) => {
-//   res.sendFile(client + "index.html")
-// })
 app.get('/app/login', (req, res) => {
   res.sendFile(client + "index.html")
 })

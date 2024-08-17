@@ -75,7 +75,6 @@ async function getSecuredResource(req, res) {
   } catch(err) {
     res.status(200).json(err)
   }
-  // res.status(200).json({ data: "Some data from secured endpoint.", user: req.claims.sub });
 }
 
 async function getSecuredResourceVersion(req, res) {
