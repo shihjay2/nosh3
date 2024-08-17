@@ -73,7 +73,6 @@
             @open-activities="openActivities"
             @open-list="openList"
             @open-page="openPage"
-            @open-qr="openQR"
             @open-qr-reader="openQRReader"
             @open-schedule="openSchedule"
             @open-share="openShare"
@@ -549,9 +548,17 @@
     <q-card>
       <q-card-section>
         <q-list>
+          <q-item clickable @click="openQR(window.location.href)">
+            <q-item-section>
+              <q-item-label>Health Record Access QR Code</q-item-label>
+            </q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" style="font-size: 1.5em" name="qr_code_2" />
+            </q-item-section>
+          </q-item>
           <q-item clickable @click="openList('bundles', 'MedicationRequest')">
             <q-item-section>
-              <q-item-label>Prescriptions to Share</q-item-label>
+              <q-item-label>Prescriptions</q-item-label>
             </q-item-section>
             <q-item-section avatar>
               <q-icon color="primary" style="font-size: 1.5em" name="medication" />
@@ -559,7 +566,7 @@
           </q-item>
           <q-item clickable @click="openList('bundles', 'ServiceRequest')">
             <q-item-section>
-              <q-item-label>Orders to Share</q-item-label>
+              <q-item-label>Orders</q-item-label>
             </q-item-section>
             <q-item-section avatar>
               <q-icon color="primary" style="font-size: 1.5em" name="medical_services" />

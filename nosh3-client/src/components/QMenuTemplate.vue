@@ -35,18 +35,10 @@
       </q-item>
       <q-item dense clickable @click="openQRReader()">
         <q-item-section>
-          <q-item-label>QR Code Reader for Prescriptions and Orders</q-item-label>
+          <q-item-label>QR Code Reader</q-item-label>
         </q-item-section>
         <q-item-section avatar>
           <q-icon color="primary" style="font-size: 1.5em" name="qr_code_scanner" />
-        </q-item-section>
-      </q-item>
-      <q-item dense clickable @click="openQR()">
-        <q-item-section>
-          <q-item-label>Health Record Access QR Code</q-item-label>
-        </q-item-section>
-        <q-item-section avatar>
-          <q-icon color="primary" style="font-size: 1.5em" name="qr_code_2" />
         </q-item-section>
       </q-item>
       <q-item v-if="state.type == 'pnosh' && state.user.role == 'patient'" dense clickable @click="openShare()">
@@ -101,7 +93,7 @@ export default defineComponent({
     },
     type: String
   },
-  emits: ['open-activities', 'open-list', 'open-page', 'open-qr', 'open-schedule', 'open-share', 'stop-inbox-timer'],
+  emits: ['open-activities', 'open-list', 'open-page', 'open-schedule', 'open-share', 'stop-inbox-timer'],
   setup (props, { emit }) {
     const auth = useAuthStore()
     const { eventAdd } = common()
@@ -144,9 +136,6 @@ export default defineComponent({
     const openMAIA = () => {
       window.open(state.maia)
     }
-    const openQR = () => {
-      emit('open-qr', window.location.href)
-    }
     const openQRReader = () => {
       emit('open-qr-reader')
     }
@@ -161,7 +150,6 @@ export default defineComponent({
       open,
       openActivity,
       openMAIA,
-      openQR,
       openQRReader,
       openSchedule,
       openShare,
