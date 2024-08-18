@@ -225,7 +225,7 @@ export default defineComponent({
         doc_id: result.id,
         diff: null
       }
-      await eventAdd('Deleted ' + pluralize.singular(props.resource.replace('_statements', '')), props.patient, opts)
+      await eventAdd('Deleted ' + pluralize.singular(props.resource.replace('_statements', '').replace('_references', '')), props.patient, opts)
       await query()
     }
     const removeTags = (str) => {

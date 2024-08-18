@@ -558,7 +558,7 @@ export default defineComponent({
       await sync(props.resource, false, props.patient, true, doc)
       await reloadList()
       $q.notify({
-        message: 'The ' + pluralize.singular(props.resource.replace('_statements', '')) + ' has been marked as confirmed.',
+        message: 'The ' + pluralize.singular(props.resource.replace('_statements', '').replace('_references', '')) + ' has been marked as confirmed.',
         color: 'primary',
         actions: [
           { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
@@ -605,7 +605,7 @@ export default defineComponent({
     const deleteOIDCRow = async(index, origin) => {
       emit('remove-oidc', index, props.resource, origin)
       $q.notify({
-        message: 'The ' + pluralize.singular(props.resource.replace('_statements', '')) + ' has been removed.',
+        message: 'The ' + pluralize.singular(props.resource.replace('_statements', '').replace('_references', '')) + ' has been removed.',
         color: 'primary',
         actions: [
           { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
@@ -619,7 +619,7 @@ export default defineComponent({
         doc_id: result.id,
         diff: null
       }
-      await eventAdd('Deleted ' + pluralize.singular(props.resource.replace('_statements', '')), props.patient, opts)
+      await eventAdd('Deleted ' + pluralize.singular(props.resource.replace('_statements', '').replace('_references', '')), props.patient, opts)
       if (props.resource === 'conditions') {
         if (state.rows[index].history) {
           for (const a in state.rows[index].history) {
@@ -636,7 +636,7 @@ export default defineComponent({
       }
       auth.setSyncResource(props.resource)
       $q.notify({
-        message: 'The ' + pluralize.singular(props.resource.replace('_statements', '')) + ' has been deleted.',
+        message: 'The ' + pluralize.singular(props.resource.replace('_statements', '').replace('_references', '')) + ' has been deleted.',
         color: 'primary',
         actions: [
           { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
@@ -649,7 +649,7 @@ export default defineComponent({
       await importFHIR(doc, props.resource, props.patient, origin)
       emit('remove-oidc', index, props.resource, origin)
       $q.notify({
-        message: 'The ' + pluralize.singular(props.resource.replace('_statements', '')) + ' has been imported.',
+        message: 'The ' + pluralize.singular(props.resource.replace('_statements', '').replace('_references', '')) + ' has been imported.',
         color: 'primary',
         actions: [
           { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
@@ -665,7 +665,7 @@ export default defineComponent({
       }
       await sync(props.resource, false, props.patient, true, doc)
       $q.notify({
-        message: 'The ' + pluralize.singular(props.resource.replace('_statements', '')) + ' has been inactivated.',
+        message: 'The ' + pluralize.singular(props.resource.replace('_statements', '').replace('_references', '')) + ' has been inactivated.',
         color: 'primary',
         actions: [
           { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
@@ -1179,7 +1179,7 @@ export default defineComponent({
       }
       await sync(props.resource, false, props.patient, true, doc)
       $q.notify({
-        message: 'The ' + pluralize.singular(props.resource.replace('_statements', '')) + ' has been reactivated.',
+        message: 'The ' + pluralize.singular(props.resource.replace('_statements', '').replace('_references', '')) + ' has been reactivated.',
         color: 'primary',
         actions: [
           { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
@@ -1341,7 +1341,7 @@ export default defineComponent({
     }
     const setUser = async(doc) => {
       const id = 'nosh_' + uuidv4()
-      const message = 'The ' + pluralize.singular(props.resource.replace('_statements', '')) + ' has been added as a user.'
+      const message = 'The ' + pluralize.singular(props.resource.replace('_statements', '').replace('_references', '')) + ' has been added as a user.'
       const email = doc.telecom.find(a => a.system === 'email')
       const user = {
         display: removeTags(doc.text.div),
