@@ -197,6 +197,7 @@
         @open-page="openPage"
         @open-qr="openQR"
         @reload-complete="reloadComplete"
+        @reload-drawer="reloadDrawer"
         @remove-oidc="removeOIDC"
         @care-plan="setActiveCarePlan"
         @composition="setActiveComposition"

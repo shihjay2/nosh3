@@ -378,7 +378,7 @@ export default defineComponent({
       default: function () { return []}
     }
   },
-  emits: ['care-plan', 'complete-task', 'composition', 'loading', 'lock-thread', 'new-prescription', 'open-bundle', 'open-chat', 'open-form', 'open-file', 'open-page', 'open-qr', 'reload-complete', 'remove-oidc', 'set-composition-section'],
+  emits: ['care-plan', 'complete-task', 'composition', 'loading', 'lock-thread', 'new-prescription', 'open-bundle', 'open-chat', 'open-form', 'open-file', 'open-page', 'open-qr', 'reload-drawer', 'reload-complete', 'remove-oidc', 'set-composition-section'],
   setup (props, { emit }) {
     const $q = useQuasar()
     const { addSchemaOptions, eventAdd, fetchJSON, fhirModel, fhirReplace, getPrefix, groupItems, importFHIR, inbox, loadSelect, removeTags, sync } = common()
@@ -642,7 +642,7 @@ export default defineComponent({
           { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
         ]
       })
-      // await sync(props.resource, false, props.patient, false)
+      emit('reload-drawer', props.resource)
       await reloadList()
     }
     const importRow = async(doc, index, origin) => {

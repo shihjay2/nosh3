@@ -196,6 +196,7 @@
         @open-form="openForm"
         @open-page="openPage"
         @reload-complete="reloadComplete"
+        @reload-drawer="reloadDrawer"
         :auth="state.auth"
         :online="state.online"
         :couchdb="state.couchdb"

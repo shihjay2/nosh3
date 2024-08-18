@@ -133,6 +133,7 @@
               @lock-thread="lockThread"
               @open-form="openForm"
               @reload-complete="reloadComplete"
+              @reload-drawer="reloadDrawer"
               @remove-oidc="removeOIDC"
               @care-plan="setActiveCarePlan"
               @composition="setActiveComposition"
