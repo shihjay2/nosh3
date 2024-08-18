@@ -635,6 +635,13 @@ export default defineComponent({
         }
       }
       auth.setSyncResource(props.resource)
+      $q.notify({
+        message: 'The ' + pluralize.singular(props.resource.replace('_statements', '')) + ' has been deleted.',
+        color: 'primary',
+        actions: [
+          { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+        ]
+      })
       // await sync(props.resource, false, props.patient, false)
       await reloadList()
     }
