@@ -413,7 +413,9 @@ export function common() {
                 replaceWith[g] = j.label
               }
             } else {
-             const k = field.options.find(({ value }) => value === replaceWith[g])
+              const k = field.options.find(({ value }) => value === replaceWith[g])
+              console.log(replaceWith[g])
+              console.log(k)
               replaceWith[g] = k.label
             }
           }
