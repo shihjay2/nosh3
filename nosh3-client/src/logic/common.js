@@ -410,13 +410,15 @@ export function common() {
                 replaceWith[g] = value
               } else {
                 const j = field.options.find(({ value }) => value === replaceWith[g])
-                replaceWith[g] = j.label
+                if (j !== undefined) {
+                  replaceWith[g] = j.label
+                }
               }
             } else {
               const k = field.options.find(({ value }) => value === replaceWith[g])
-              console.log(replaceWith[g])
-              console.log(k)
-              replaceWith[g] = k.label
+              if (k !== undefined) {
+                replaceWith[g] = k.label
+              }
             }
           }
         } else {
