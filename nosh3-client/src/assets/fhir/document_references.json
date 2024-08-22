@@ -83,20 +83,13 @@
       {
         "id": "status",
         "label": "Status",
-        "modelRoot": "status.coding",
-        "modelArray": true,
-        "model": "code",
+        "model": "status",
         "type": "select",
         "options": [
           {"value": "current", "label": "Current"},
           {"value": "superseded", "label": "Superseded"},
           {"value": "entered-in-error", "label": "Entered in Error"}
         ],
-        "display": "display",
-        "system": {
-          "model": "system",
-          "value": "http://hl7.org/fhir/document-reference-status"
-        },
         "rules": "required"
       },
       {

@@ -113,14 +113,7 @@ async function putMarkdown(req, res) {
       "_id": id,
       "resourceType": "DocumentReference",
       "id": id,
-      "status": {
-        "coding": [
-          {
-            "system": "http://hl7.org/fhir/document-reference-status",
-            "code": "current"
-          }
-        ]
-      },
+      "status": "current",
       "subject": {
         "reference": 'Patient/' + req.params.pid
       },

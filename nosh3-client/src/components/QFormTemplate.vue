@@ -1430,6 +1430,7 @@ export default defineComponent({
             model += '.system'
           }
           objectPath.set(state, 'fhir.' + model, val_obj.system)
+          fhirMap()
         }
       }
     }
