@@ -1420,7 +1420,9 @@ export default defineComponent({
       }
       if (props.resource == 'document_references') {
         if (field === 'category') {
+          console.log(state.schema)
           const schema = state.schema.find(row => row.id == field)
+          console.log(schema)
           const val_obj = schema.options.find(row1 => row1.value == val)
           let model = schema.modelRoot
           if (schema.multiple) {
