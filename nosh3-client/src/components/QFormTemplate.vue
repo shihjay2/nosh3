@@ -1422,8 +1422,6 @@ export default defineComponent({
         if (field === 'category') {
           const schema = state.schema.flat().find(row => row.id == field)
           const val_obj = schema.options.find(row1 => row1.value == val)
-          console.log(val)
-          console.log(val_obj)
           let model = schema.modelRoot
           if (schema.multiple) {
             const index = objectPath.get(state, 'form.' + field).findIndex(form_val => form_val == val)
@@ -1431,8 +1429,7 @@ export default defineComponent({
           } else {
             model += '.system'
           }
-          console.log(model)
-          objectPath.set(state, 'fhir.' + model, val_obj.system)
+          // objectPath.set(state, 'fhir.' + model, val_obj.system)
           fhirMap()
         }
       }
