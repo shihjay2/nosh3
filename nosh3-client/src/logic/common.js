@@ -409,7 +409,20 @@ export function common() {
                   if (h !== '0') {
                     value += '; '
                   }
-                  value += i.label
+                  if (i !== undefined) {
+                    value += i.label
+                  } else {
+                    display_model = fhirDisplay(field)
+                    if (objectPath.has(result, display_model)) {
+                      value = objectPath.get(result, display_model)
+                    } else {
+                      if (objectPath.has(field, 'alt_label_model')) {
+                        if (objectPath.has(result, objectPath.get(field, 'alt_label_model'))) {
+                          value = objectPath.get(result, objectPath.get(field, 'alt_label_model'))
+                        }
+                      }
+                    }
+                  }
                 }
                 replaceWith[g] = value
               } else {
