@@ -1425,11 +1425,11 @@ export default defineComponent({
           let model = schema.modelRoot
           if (schema.multiple) {
             const index = objectPath.get(state, 'form.' + field).findIndex(form_val => form_val == val)
-            model += '.' + index + '.system'
+            model += '.' + index + '.' + schema.system.model
           } else {
-            model += '.system'
+            model += '.' + schema.system.model
           }
-          // objectPath.set(state, 'fhir.' + model, val_obj.system)
+          objectPath.set(state, 'fhir.' + model, val_obj.system)
           fhirMap()
         }
       }

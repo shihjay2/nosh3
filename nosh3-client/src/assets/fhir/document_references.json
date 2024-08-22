@@ -45,7 +45,6 @@
         "model": "code",
         "type": "select",
         "options": [],
-        "multiple": true,
         "display": "display",
         "system": {
           "model": "system",
@@ -57,15 +56,15 @@
       {
         "id": "category",
         "label": "Category",
-        "modelRoot": "category.coding",
+        "modelRoot": "category",
         "modelArray": true,
-        "model": "code",
+        "model": "coding.0.code",
         "type": "select",
         "options": [],
         "multiple": true,
-        "display": "display",
+        "display": "coding.0.display",
         "system": {
-          "model": "system",
+          "model": "coding.0.system",
           "value": "http://loinc.org"
         },
         "alt_label_model": "category.text",
