@@ -18,13 +18,16 @@ import {v4 as uuidv4} from 'uuid'
 import { useAuthStore } from '@/stores'
 
 export function common() {
-  const addSchemaOptions = (id, arr, val, label, schema) => {
+  const addSchemaOptions = (id, arr, val, label, schema, system='') => {
     const options = []
     for (const a of arr) {
       const b = {}
       if (a[val] !== undefined && a[val] !== 'notSelectable' ) {
         b.value = a[val]
         b.label = a[label]
+        if (system !== '') {
+          b.system = system
+        }
         options.push(b)
       }
     }
@@ -32,12 +35,12 @@ export function common() {
       if (Array.isArray(schema[c])) {
         for (const d in schema[c]) {
           if (id == schema[c][d].id) {
-            objectPath.set(schema, c + '.' + d + '.options', options)
+            objectPath.set(schema, c + '.' + d + '.options', objectPath.get(schema, c + '.' + d + '.options').concat(options))
           }
         }
       } else {
         if (id == schema[c].id) {
-          objectPath.set(schema, c + '.options', options)
+          objectPath.set(schema, c + '.options', objectPath.get(schema, c + '.options').concat(options))
         }
       }
     }
@@ -274,6 +277,7 @@ export function common() {
     let str = ''
     let field = ''
     let model = ''
+    let display_model = ''
     if (key === 'content') {
       const models = []
       for (const a in base.uiListContent.contentFields) {
@@ -412,12 +416,34 @@ export function common() {
                 const j = field.options.find(({ value }) => value === replaceWith[g])
                 if (j !== undefined) {
                   replaceWith[g] = j.label
+                } else {
+                  display_model = fhirDisplay(field)
+                  if (objectPath.has(result, display_model)) {
+                    replaceWith[g] = objectPath.get(result, display_model)
+                  } else {
+                    if (objectPath.has(field, 'alt_label_model')) {
+                      if (objectPath.has(result, objectPath.get(field, 'alt_label_model'))) {
+                        replaceWith[g] = objectPath.get(result, objectPath.get(field, 'alt_label_model'))
+                      }
+                    }
+                  }
                 }
               }
             } else {
               const k = field.options.find(({ value }) => value === replaceWith[g])
               if (k !== undefined) {
                 replaceWith[g] = k.label
+              } else {
+                display_model = fhirDisplay(field)
+                if (objectPath.has(result, display_model)) {
+                  replaceWith[g] = objectPath.get(result, display_model)
+                } else {
+                  if (objectPath.has(field, 'alt_label_model')) {
+                    if (objectPath.has(result, objectPath.get(field, 'alt_label_model'))) {
+                      replaceWith[g] = objectPath.get(result, objectPath.get(field, 'alt_label_model'))
+                    }
+                  }
+                }
               }
             }
           }
@@ -762,8 +788,9 @@ export function common() {
     if (resource === 'document_references') {
       const docTypeCodes = await fetchJSON('docTypeCodes', online)
       const docClassCodes = await fetchJSON('docClassCodes', online)
-      schema = addSchemaOptions('type', docTypeCodes, 'Code', 'Display', schema)
-      schema = addSchemaOptions('category', docClassCodes, 'Code', 'Display', schema)
+      schema = addSchemaOptions('type', docTypeCodes, 'Code', 'Display', schema, 'http://loinc.org')
+      schema = addSchemaOptions('category', docClassCodes, 'Code', 'Display', schema, 'http://loinc.org')
+      schema = addSchemaOptions('category', [{'Code': 'clinical-note', 'Display': 'Clinical Note'}], 'Code', 'Display', schema, 'http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category')
     }
     if (resource === 'users') {
       const encounterTypes = await fetchJSON('encounterTypes', online)

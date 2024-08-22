@@ -1418,6 +1418,20 @@ export default defineComponent({
           }
         }
       }
+      if (props.resource == 'document_references') {
+        if (field === 'category') {
+          const schema = state.schema.find(row => row.id == field)
+          const val_obj = schema.options.find(row1 => row1.value == val)
+          let model = schema.modelRoot
+          if (schema.multiple) {
+            const index = objectPath.get(state, 'form.' + field).findIndex(form_val => form_val == val)
+            model += '.' + index + '.system'
+          } else {
+            model += '.system'
+          }
+          objectPath.set(state, 'fhir.' + model, val_obj.system)
+        }
+      }
     }
     const updateTemplate = () => {
       state.templateSelected = false

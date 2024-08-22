@@ -274,8 +274,8 @@ export default defineComponent({
       // forms
       base: {},
       schema: {},
-      docTypeCodes: [],
-      docClassCodes: [],
+      // docTypeCodes: [],
+      // docClassCodes: [],
       // db
       auth: {},
       couchdb: '',
@@ -630,8 +630,9 @@ export default defineComponent({
       await nextTick()
       state.schema = state.base.uiSchema
       if (props.resource === 'document_references') {
-        state.schema = addSchemaOptions('type', props.doc_type_codes, 'Code', 'Display', state.schema)
-        state.schema = addSchemaOptions('category', props.doc_class_codes, 'Code', 'Display', state.schema)
+        state.schema = addSchemaOptions('type', props.doc_type_codes, 'Code', 'Display', state.schema, 'http://loinc.org')
+        state.schema = addSchemaOptions('category', props.doc_class_codes, 'Code', 'Display', state.schema, 'http://loinc.org')
+        state.schema = addSchemaOptions('category', [{'Code': 'clinical-note', 'Display': 'Clinical Note'}], 'Code', 'Display', state.schema, 'http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category')
       }
       await nextTick()
       state.details = true

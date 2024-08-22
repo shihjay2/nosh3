@@ -1459,8 +1459,9 @@ export default defineComponent({
         if (resource === 'document_references') {
           state.docTypeCodes = await fetchJSON('docTypeCodes', state.online)
           state.docClassCodes = await fetchJSON('docClassCodes', state.online)
-          schema = addSchemaOptions('type', state.docTypeCodes, 'Code', 'Display', schema)
-          schema = addSchemaOptions('category', state.docClassCodes, 'Code', 'Display', schema)
+          schema = addSchemaOptions('type', state.docTypeCodes, 'Code', 'Display', schema, 'http://loinc.org')
+          schema = addSchemaOptions('category', state.docClassCodes, 'Code', 'Display', schema, 'http://loinc.org')
+          schema = addSchemaOptions('category', [{'Code': 'clinical-note', 'Display': 'Clinical Note'}], 'Code', 'Display', schema, 'http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category')
         }
         const db = new PouchDB(prefix + resource)
         try {
