@@ -1429,16 +1429,15 @@ export default defineComponent({
               model = schema.modelRoot
               const index = objectPath.get(state, 'form.' + field).findIndex(form_val => form_val == item)
               model += '.' + index + '.' + schema.system.model
-              console.log(index)
-              console.log(model)
-              console.log(val_obj.system)
-              objectPath.set(state, 'fhir.' + model, val_obj.system)
+             objectPath.set(state, 'fhir.' + model, val_obj.system)
             }
           } else {
             model += '.' + schema.system.model
             objectPath.set(state, 'fhir.' + model, val_obj.system)
           }
-          fhirMap()
+          console.log(state.fhir)
+          state.fhir1 = JSON.stringify(state.fhir, null, "  ")
+          // fhirMap()
         }
       }
     }
