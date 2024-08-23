@@ -735,7 +735,9 @@ export default defineComponent({
                         objectPath.set(state, 'fhir.' + modelRoot + '.' + b + '.' + schema.display, c.label)
                       }
                       if (typeof schema.system !== 'undefined') {
-                        objectPath.set(state, 'fhir.' + modelRoot + '.' + b + '.' + schema.system.model, schema.system.value)
+                        if (typeof schema.system.value !== 'undefined') {
+                          objectPath.set(state, 'fhir.' + modelRoot + '.' + b + '.' + schema.system.model, schema.system.value)
+                        }
                       }
                     }
                   } else if (schema.model !== '') {
@@ -745,7 +747,9 @@ export default defineComponent({
                       objectPath.set(state, 'fhir.' + modelRoot + '.' + a + '.' + schema.display, d.label)
                     }
                     if (typeof schema.system !== 'undefined') {
-                      objectPath.set(state, 'fhir.' + modelRoot + '.' + a + '.' + schema.system.model, schema.system.value)
+                      if (typeof schema.system.value !== 'undefined') {
+                        objectPath.set(state, 'fhir.' + modelRoot + '.' + a + '.' + schema.system.model, schema.system.value)
+                      }
                     }
                   }
                 }
@@ -785,7 +789,9 @@ export default defineComponent({
                     objectPath.set(state, 'fhir.' + modelRoot + '.' + schema.modelRange[m] + '.' + schema.display, m1.label)
                   }
                   if (typeof schema.system !== 'undefined') {
-                    objectPath.set(state, 'fhir.' + modelRoot + '.' + schema.modelRange[m] + '.' + schema.system.model, schema.system.value)
+                    if (typeof schema.system.value !== 'undefined') {
+                      objectPath.set(state, 'fhir.' + modelRoot + '.' + schema.modelRange[m] + '.' + schema.system.model, schema.system.value)
+                    }
                   }
                 }
                 if (objectPath.has(state, 'fhir.' + modelRoot + '.' + schema.modelOne + '.' + schema.modelEnd)) {
@@ -800,12 +806,9 @@ export default defineComponent({
                 }
               }
               if (typeof schema.system !== 'undefined') {
-                // if (typeof j !== 'undefined') {
+                if (typeof schema.system.value !== 'undefined') {
                   objectPath.set(state, 'fhir.' + modelRoot + '.' + schema.modelOne + '.' + schema.system.model, schema.system.value)
-                //   if (typeof j.system !== 'undefined') {
-                //     console.log(j.system)
-                //   }
-                // }
+                }
               }
             } else if (typeof schema.modelChoice !== 'undefined') {
               for (const s in schema.modelChoice) {
@@ -852,9 +855,6 @@ export default defineComponent({
                   objectPath.set(state, 'fhir.' + modelRoot1 + '.' + schema.code, k.value)
                 }
                 if (typeof schema.system !== 'undefined') {
-                  console.log(id)
-                  console.log(typeof schema.system.value)
-                  console.log(schema.system.value)
                   if (typeof schema.system.value !== 'undefined') {
                     objectPath.set(state, 'fhir.' + modelRoot1 + '.' + schema.system.model, schema.system.value)
                   }
