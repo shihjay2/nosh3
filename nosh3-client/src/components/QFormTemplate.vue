@@ -737,6 +737,10 @@ export default defineComponent({
                       if (typeof schema.system !== 'undefined') {
                         if (typeof schema.system.value !== 'undefined') {
                           objectPath.set(state, 'fhir.' + modelRoot + '.' + b + '.' + schema.system.model, schema.system.value)
+                        } else {
+                          if (typeof schema.options !== 'undefined') {
+                            fhirMapSystem(schema, state.form[id][a][b], b)
+                          }
                         }
                       }
                     }
@@ -749,6 +753,10 @@ export default defineComponent({
                     if (typeof schema.system !== 'undefined') {
                       if (typeof schema.system.value !== 'undefined') {
                         objectPath.set(state, 'fhir.' + modelRoot + '.' + a + '.' + schema.system.model, schema.system.value)
+                      } else {
+                        if (typeof schema.options !== 'undefined') {
+                          fhirMapSystem(schema, state.form[id][a], a)
+                        }
                       }
                     }
                   }
@@ -791,6 +799,10 @@ export default defineComponent({
                   if (typeof schema.system !== 'undefined') {
                     if (typeof schema.system.value !== 'undefined') {
                       objectPath.set(state, 'fhir.' + modelRoot + '.' + schema.modelRange[m] + '.' + schema.system.model, schema.system.value)
+                    } else {
+                      if (typeof schema.options !== 'undefined') {
+                        fhirMapSystem(schema, matches[m])
+                      }
                     }
                   }
                 }
@@ -808,6 +820,10 @@ export default defineComponent({
               if (typeof schema.system !== 'undefined') {
                 if (typeof schema.system.value !== 'undefined') {
                   objectPath.set(state, 'fhir.' + modelRoot + '.' + schema.modelOne + '.' + schema.system.model, schema.system.value)
+                } else {
+                  if (typeof schema.options !== 'undefined') {
+                    fhirMapSystem(schema, val)
+                  }
                 }
               }
             } else if (typeof schema.modelChoice !== 'undefined') {
@@ -857,6 +873,10 @@ export default defineComponent({
                 if (typeof schema.system !== 'undefined') {
                   if (typeof schema.system.value !== 'undefined') {
                     objectPath.set(state, 'fhir.' + modelRoot1 + '.' + schema.system.model, schema.system.value)
+                  } else {
+                    if (typeof schema.options !== 'undefined') {
+                      fhirMapSystem(schema, val)
+                    }
                   }
                 }
                 if (typeof schema.use !== 'undefined') {
@@ -877,6 +897,16 @@ export default defineComponent({
           }
         }
       }
+    }
+    const fhirMapSystem = (schema, val, index=null) => {
+      const val_obj = schema.options.find(row1 => row1.value == val)
+      let model = schema.modelRoot
+      if (index !== null) {
+        model += '.' + index + '.' + schema.system.model
+      } else {
+        model += '.' + schema.system.model
+      }
+      objectPath.set(state, 'fhir.' + model, val_obj.system)
     }
     const getForm = (index) => {
       state.fhirProcess = true
@@ -1418,26 +1448,6 @@ export default defineComponent({
           }
         }
       }
-      if (props.resource == 'document_references') {
-        if (field === 'category') {
-          const schema = state.schema.flat().find(row => row.id == field)
-          let val_obj = schema.options.find(row1 => row1.value == val)
-          let model = schema.modelRoot
-          if (schema.multiple) {
-            for (const item of val) {
-              val_obj = schema.options.find(row1 => row1.value == item)
-              model = schema.modelRoot
-              const index = objectPath.get(state, 'form.' + field).findIndex(form_val => form_val == item)
-              model += '.' + index + '.' + schema.system.model
-             objectPath.set(state, 'fhir.' + model, val_obj.system)
-            }
-          } else {
-            model += '.' + schema.system.model
-            objectPath.set(state, 'fhir.' + model, val_obj.system)
-          }
-          fhirMap()
-        }
-      }
     }
     const updateTemplate = () => {
       state.templateSelected = false
@@ -1495,6 +1505,7 @@ export default defineComponent({
       fetchTXT,
       fhirMap,
       fhirMapItem,
+      fhirMapSystem,
       getForm,
       getFormItem,
       getIndex,
