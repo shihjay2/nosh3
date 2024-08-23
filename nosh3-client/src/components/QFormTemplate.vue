@@ -1418,10 +1418,11 @@ export default defineComponent({
       if (props.resource == 'document_references') {
         if (field === 'category') {
           const schema = state.schema.flat().find(row => row.id == field)
-          const val_obj = schema.options.find(row1 => row1.value == val)
+          let val_obj = schema.options.find(row1 => row1.value == val)
           let model = schema.modelRoot
           if (schema.multiple) {
             for (const item of val) {
+              val_obj = schema.options.find(row1 => row1.value == item)
               model = schema.modelRoot
               const index = objectPath.get(state, 'form.' + field).findIndex(form_val => form_val == item)
               model += '.' + index + '.' + schema.system.model
