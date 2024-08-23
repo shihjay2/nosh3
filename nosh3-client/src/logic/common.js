@@ -35,12 +35,20 @@ export function common() {
       if (Array.isArray(schema[c])) {
         for (const d in schema[c]) {
           if (id == schema[c][d].id) {
-            objectPath.set(schema, c + '.' + d + '.options', objectPath.get(schema, c + '.' + d + '.options').concat(options))
+            if (objectPath.has(schema, c + '.' + d + '.options')) {
+              objectPath.set(schema, c + '.' + d + '.options', objectPath.get(schema, c + '.' + d + '.options').concat(options))
+            } else {
+              objectPath.set(schema, c + '.' + d + '.options', options)
+            }
           }
         }
       } else {
         if (id == schema[c].id) {
-          objectPath.set(schema, c + '.options', objectPath.get(schema, c + '.options').concat(options))
+          if (objectPath.has(schema, c + '.options')) {
+            objectPath.set(schema, c + '.options', objectPath.get(schema, c + '.options').concat(options))
+          } else {
+            objectPath.set(schema, c + '.options', options)
+          }
         }
       }
     }

@@ -64,8 +64,7 @@
         "multiple": true,
         "display": "coding.0.display",
         "system": {
-          "model": "coding.0.system",
-          "value": "http://loinc.org"
+          "model": "coding.0.system"
         },
         "alt_label_model": "category.text",
         "rules": "required"
