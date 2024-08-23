@@ -66,7 +66,6 @@
         "system": {
           "model": "coding.0.system"
         },
-        "alt_label_model": "category.text",
         "rules": "required"
       }
     ],

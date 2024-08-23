@@ -852,7 +852,9 @@ export default defineComponent({
                   objectPath.set(state, 'fhir.' + modelRoot1 + '.' + schema.code, k.value)
                 }
                 if (typeof schema.system !== 'undefined') {
+                  console.log(id)
                   console.log(typeof schema.system.value)
+                  console.log(schema.system.value)
                   if (typeof schema.system.value !== 'undefined') {
                     objectPath.set(state, 'fhir.' + modelRoot1 + '.' + schema.system.model, schema.system.value)
                   }
@@ -1427,6 +1429,9 @@ export default defineComponent({
               model = schema.modelRoot
               const index = objectPath.get(state, 'form.' + field).findIndex(form_val => form_val == item)
               model += '.' + index + '.' + schema.system.model
+              console.log(index)
+              console.log(model)
+              console.log(val_obj.system)
               objectPath.set(state, 'fhir.' + model, val_obj.system)
             }
           } else {
