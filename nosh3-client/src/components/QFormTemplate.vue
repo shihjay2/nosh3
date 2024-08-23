@@ -1421,6 +1421,8 @@ export default defineComponent({
           const val_obj = schema.options.find(row1 => row1.value == val)
           let model = schema.modelRoot
           if (schema.multiple) {
+            console.log(objectPath.get(state, 'form.' + field))
+            console.log(val)
             const index = objectPath.get(state, 'form.' + field).findIndex(form_val => form_val == val)
             model += '.' + index + '.' + schema.system.model
           } else {
