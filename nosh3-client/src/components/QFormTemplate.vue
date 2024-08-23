@@ -1421,15 +1421,16 @@ export default defineComponent({
           const val_obj = schema.options.find(row1 => row1.value == val)
           let model = schema.modelRoot
           if (schema.multiple) {
-            console.log(objectPath.get(state, 'form.' + field))
-            console.log(val)
-            const index = objectPath.get(state, 'form.' + field).findIndex(form_val => form_val == val)
-            model += '.' + index + '.' + schema.system.model
+            for (const item of val) {
+              model = schema.modelRoot
+              const index = objectPath.get(state, 'form.' + field).findIndex(form_val => form_val == item)
+              model += '.' + index + '.' + schema.system.model
+              objectPath.set(state, 'fhir.' + model, val_obj.system)
+            }
           } else {
             model += '.' + schema.system.model
+            objectPath.set(state, 'fhir.' + model, val_obj.system)
           }
-          console.log(model)
-          objectPath.set(state, 'fhir.' + model, val_obj.system)
           fhirMap()
         }
       }
