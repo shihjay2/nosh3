@@ -1426,7 +1426,7 @@ export default defineComponent({
           } else {
             model += '.' + schema.system.model
           }
-          console.log(val_obj)
+          console.log(model)
           objectPath.set(state, 'fhir.' + model, val_obj.system)
           fhirMap()
         }
