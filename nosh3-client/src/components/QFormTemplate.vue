@@ -852,6 +852,7 @@ export default defineComponent({
                   objectPath.set(state, 'fhir.' + modelRoot1 + '.' + schema.code, k.value)
                 }
                 if (typeof schema.system !== 'undefined') {
+                  console.log(typeof schema.system.value)
                   if (typeof schema.system.value !== 'undefined') {
                     objectPath.set(state, 'fhir.' + modelRoot1 + '.' + schema.system.model, schema.system.value)
                   }
