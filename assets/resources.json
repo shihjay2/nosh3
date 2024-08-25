@@ -25,6 +25,14 @@
       "fhir": true
     },
     {
+      "resource": "binaries",
+      "icon": "file_present",
+      "label": "Binaries",
+      "patientField": "none",
+      "gnap": false,
+      "fhir": false
+    },
+    {
       "resource": "bundles",
       "icon": "source",
       "label": "Bundles",
