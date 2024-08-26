@@ -1197,12 +1197,12 @@ export function common() {
           const info = await local.info()
           try {
             if (info.doc_count > 0) {
-              await local.loadDecrypted()
-              // await local.loadDecrypted({batch_size: 20})
+              // await local.loadDecrypted()
+              await local.loadDecrypted({batch_size: 20})
             }
             try {
-              await local.loadEncrypted()
-              // await local.loadEncrypted({batch_size: 20, batches_limit: 2})
+              // await local.loadEncrypted()
+              await local.loadEncrypted({batch_size: 20, batches_limit: 2})
               console.log('PouchDB encrypted sync complete for DB: ' + resource )
             } catch (e) {
               console.log(e)
