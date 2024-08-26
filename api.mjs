@@ -146,11 +146,10 @@ async function putMarkdown(req, res) {
         }
       ]
     }
-    console.log(doc)
     try {
       const body = await db.put(doc)
       await sync('document_references', req.params.pid)
-      const opts = {
+      let opts = {
         doc_db: 'document_references',
         doc_id: id,
         diff: null
