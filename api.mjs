@@ -68,7 +68,6 @@ async function getTimeline(req, res) {
       }
       mdjs.push({ul: ul_arr})
     }
-    console.log(mdjs)
     // get observations
     // const observations = objectPath.get(timeline_result, 'rows.0.doc.observations')
     // if (observations.length > 0) {
