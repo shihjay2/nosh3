@@ -127,7 +127,7 @@ async function putMarkdown(req, res) {
           }
         ]
       },
-      "category": {
+      "category": [{
         "coding": [
           {
             "system": "http://loinc.org",
@@ -135,7 +135,7 @@ async function putMarkdown(req, res) {
             "display": "Personal Health Monitoring Report Document"
           }
         ]
-      },
+      }],
       "description": "AI Chat",
       "content": [
         {
@@ -146,6 +146,7 @@ async function putMarkdown(req, res) {
         }
       ]
     }
+    console.log(doc)
     try {
       const body = await db.put(doc)
       await sync('document_references', req.params.pid)
@@ -160,6 +161,7 @@ async function putMarkdown(req, res) {
       res.set('ETag', 'W/"' + body.rev + '"')
       res.status(200).json(body)
     } catch(err) {
+      console.log(err)
       res.status(200).json(err)
     }
   } else {
