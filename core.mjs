@@ -37,9 +37,9 @@ async function couchdbDatabase(patient_id='', protocol='', hostname='', email=''
   const resources = JSON.parse(fs.readFileSync('./assets/resources.json'))
   let prefix = ''
   let gnap_resources = []
+  const base_url = urlFix(protocol + '://' + hostname + '/')
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = patient_id + '_'
-    const base_url = urlFix(protocol + '://' + hostname + '/')
     gnap_resources = [
       {
         "type": "App",
