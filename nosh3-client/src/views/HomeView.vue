@@ -881,7 +881,8 @@ export default defineComponent({
           "label": "URL",
           "model": "url",
           "type": "url",
-          "rules": "required"
+          "placeholder": "https://example.com",
+          "rules": "required|url"
         }
       ]
     })

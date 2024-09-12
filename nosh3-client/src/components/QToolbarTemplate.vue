@@ -141,6 +141,13 @@ export default defineComponent({
         emit('reload-complete')
       }
     })
+    watch(() => auth.maia_alt, (newVal) => {
+      if (newVal !== null) {
+        state.maia = auth.maia_alt + "?uri=" + encodeURIComponent(location.protocol + '//' + location.host + '/api/' + state.patient + '/Timeline')
+      } else {
+        state.maia = auth.maia + "?uri=" + encodeURIComponent(location.protocol + '//' + location.host + '/api/' + state.patient + '/Timeline')
+      }
+    })
     const addendumEncounter = () => {
       emit('addendum-encounter')
     }
