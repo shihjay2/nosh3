@@ -126,8 +126,12 @@ export default defineComponent({
       state.resources = resources.rows
       state.provider = props.provider
       state.patient = props.patient
-      if (auth.maia !== '') {
-        state.maia = auth.maia + "?uri=" + encodeURIComponent(location.protocol + '//' + location.host + '/api/' + state.patient + '/Timeline')
+      if (auth.maia_alt !== null) {
+        state.maia = auth.maia_alt + "?uri=" + encodeURIComponent(location.protocol + '//' + location.host + '/api/' + state.patient + '/Timeline')
+      } else {
+        if (auth.maia !== '') {
+          state.maia = auth.maia + "?uri=" + encodeURIComponent(location.protocol + '//' + location.host + '/api/' + state.patient + '/Timeline')
+        }
       }
       await updateToolbar(props.toolbarObject)
     })

@@ -57,6 +57,14 @@
           <q-icon color="primary" style="font-size: 1.5em" name="receipt_long" />
         </q-item-section>
       </q-item>
+      <q-item dense clickable @click="setMAIA()">
+        <q-item-section>
+          <q-item-label>Set MAIA URL</q-item-label>
+        </q-item-section>
+        <q-item-section avatar>
+          <q-icon color="primary" style="font-size: 1.5em" name="link" />
+        </q-item-section>
+      </q-item>
       <q-item v-if="state.maia !== ''" dense clickable @click="openMAIA()">
         <q-item-section>
           <q-item-label>Launch MAIA</q-item-label>
@@ -93,7 +101,7 @@ export default defineComponent({
     },
     type: String
   },
-  emits: ['open-activities', 'open-list', 'open-page', 'open-schedule', 'open-share', 'stop-inbox-timer'],
+  emits: ['open-activities', 'open-list', 'open-page', 'open-schedule', 'open-share', 'set-maia', 'stop-inbox-timer'],
   setup (props, { emit }) {
     const auth = useAuthStore()
     const { eventAdd } = common()
@@ -107,8 +115,12 @@ export default defineComponent({
       state.user = props.user
       state.patient = props.patient
       state.type = props.type
-      if (auth.maia !== '') {
-        state.maia = auth.maia + "?uri=" + encodeURIComponent(location.protocol + '//' + location.host + '/api/' + state.patient + '/Timeline')
+      if (auth.maia_alt !== null) {
+        state.maia = auth.maia_alt + "?uri=" + encodeURIComponent(location.protocol + '//' + location.host + '/api/' + state.patient + '/Timeline')
+      } else {
+        if (auth.maia !== '') {
+          state.maia = auth.maia + "?uri=" + encodeURIComponent(location.protocol + '//' + location.host + '/api/' + state.patient + '/Timeline')
+        }
       }
     })
     watch(() => props.user, (newVal) => {
@@ -145,6 +157,9 @@ export default defineComponent({
     const openShare = () => {
       emit('open-share')
     }
+    const setMAIA = () => {
+      emit('set-maia')
+    }
     return {
       logout,
       open,
@@ -153,6 +168,7 @@ export default defineComponent({
       openQRReader,
       openSchedule,
       openShare,
+      setMAIA,
       state
     }
   }

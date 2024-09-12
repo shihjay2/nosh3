@@ -76,6 +76,7 @@
             @open-qr-reader="openQRReader"
             @open-schedule="openSchedule"
             @open-share="openShare"
+            @set-maia="setMAIA"
             @stop-inbox-timer="stopInboxTimer"
             :user="state.user"
             :online="state.online"
@@ -439,6 +440,35 @@
       :doc="state.pulldown_doc"
     />
   </q-dialog>
+  <q-dialog v-model="state.showMAIA" persistent position="top" full-width full-height seamless>
+    <q-card>
+      <q-card-section>
+        <div class="text-h6 text-center">Enter Alternative MAIA URL</div>
+      </q-card-section>
+      <q-separator />
+      <Form @submit="onSubmitMAIA">
+        <q-card-section>
+          <div v-for="field2 in state.schemaMAIA" :key="field2.id" class="q-pa-sm">
+            <QInputWithValidation
+              ref="myInput"
+              :name="field2.id"
+              :label="field2.label"
+              :type="field2.type"
+              :model="state.formMAIA[field2.id]"
+              @update-model="updateValue1"
+              :placeholder="field2.placeholder"
+              :rules="field2.rules"
+              focus="false"
+            />
+          </div>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn push icon="cancel" color="negative" @click="onCancelMAIA" label="Cancel" />
+          <q-btn push icon="link" color="primary" label="Enter URL" type="submit" />
+        </q-card-actions>
+      </Form>
+    </q-card>
+  </q-dialog>
   <q-dialog v-model="state.showGraph" persistent position="top" full-width full-height seamless>
     <QGraphTemplate
       v-if="state.showGraph"
@@ -719,6 +749,7 @@ export default defineComponent({
       showTrustee: false,
       showCareOpportunities:false,
       showActivity: false,
+      showMAIA: false,
       searchResults: false,
       searchTerm: '',
       timeline_filter: [],
@@ -839,6 +870,16 @@ export default defineComponent({
           "model": "pin",
           "type": "password",
           "mask": "####",
+          "rules": "required"
+        }
+      ],
+      formMAIA: {},
+      schemaMAIA: [
+        {
+          "id": "url",
+          "label": "URL",
+          "model": "url",
+          "type": "url",
           "rules": "required"
         }
       ]
@@ -1644,6 +1685,14 @@ export default defineComponent({
       state.new_medication_request = true
       openForm('add', 'medication_statements', 'all')
     }
+    const onCancelMAIA = () => {
+      state.showMAIA = false
+    }
+    const onSubmitMAIA = (values) => {
+      const { url } = values
+      auth.setMAIA(url)
+      state.showMAIA = false
+    }
     const onSubmitPIN = async(values) => {
       const { pin } = values
       const result = await axios.post(window.location.origin + '/auth/pinSet', {pin: pin, patient: state.patient})
@@ -2195,6 +2244,12 @@ export default defineComponent({
         })
       }
     }
+    const setMAIA = () => {
+      if (auth.maia_alt !== null) {
+        state.formMAIA['url'] = auth.maia_alt
+      }
+      state.showMAIA = true
+    }
     const searchTimeline = (searchTerm) => {
       const resources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references']
       const arr2 = []
@@ -2473,6 +2528,9 @@ export default defineComponent({
     const updateValue = (val, field, type) => {
       state.formPin[field] = val
     }
+    const updateValue1 = (val, field, type) => {
+      state.formMAIA[field] = val
+    }
     return {
       addendumEncounter,
       addPatient,
@@ -2508,6 +2566,8 @@ export default defineComponent({
       loadTimeline,
       lockThread,
       newPrescription,
+      onCancelMAIA,
+      onSubmitMAIA,
       onSubmitPIN,
       openActivities,
       openBundle,
@@ -2551,6 +2611,7 @@ export default defineComponent({
       setActiveCarePlan,
       setActiveComposition,
       setCompositionSection,
+      setMAIA,
       searchTimeline,
       setChatID,
       signEncounter,
@@ -2569,6 +2630,7 @@ export default defineComponent({
       updateToolbar,
       updateUser,
       updateValue,
+      updateValue1,
       verifyJWT,
       state
     }

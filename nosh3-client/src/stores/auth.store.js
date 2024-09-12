@@ -21,7 +21,8 @@ export const useAuthStore = defineStore({
     returnUrl: null,
     message: null,
     init_sync: false,
-    maia: null
+    maia: null,
+    maia_alt: null
   }),
   persist: true,
   actions: {
@@ -92,6 +93,9 @@ export const useAuthStore = defineStore({
           this.sync_resource.push(resource)
         }
       }
+    },
+    setMAIA(url) {
+      this.maia_alt = url
     }
   }
 })
