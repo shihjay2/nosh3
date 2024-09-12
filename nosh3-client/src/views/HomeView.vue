@@ -1691,6 +1691,7 @@ export default defineComponent({
     }
     const onClearMAIA = () => {
       auth.clearMAIA()
+      state.formMAIA = {}
       state.showMAIA = false
     }
     const onSubmitMAIA = (values) => {
