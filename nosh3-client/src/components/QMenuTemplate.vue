@@ -128,6 +128,11 @@ export default defineComponent({
         state.user = newVal
       }
     })
+    watch(() => auth.maia_alt, (newVal) => {
+      if (newVal) {
+        state.maia = auth.maia_alt + "?uri=" + encodeURIComponent(location.protocol + '//' + location.host + '/api/' + state.patient + '/Timeline')
+      }
+    })
     const logout = async() => {
       emit('stop-inbox-timer')
       if (props.patient !== '') {

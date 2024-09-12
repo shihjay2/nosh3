@@ -464,7 +464,8 @@
         </q-card-section>
         <q-card-actions align="right">
           <q-btn push icon="cancel" color="negative" @click="onCancelMAIA" label="Cancel" />
-          <q-btn push icon="link" color="primary" label="Enter URL" type="submit" />
+          <q-btn push icon="clear_all" color="primary" @click="onClearMAIA" label="Clear URL" />
+          <q-btn push icon="link" color="positive" label="Enter URL" type="submit" />
         </q-card-actions>
       </Form>
     </q-card>
@@ -1688,6 +1689,10 @@ export default defineComponent({
     const onCancelMAIA = () => {
       state.showMAIA = false
     }
+    const onClearMAIA = () => {
+      auth.clearMAIA()
+      state.showMAIA = false
+    }
     const onSubmitMAIA = (values) => {
       const { url } = values
       auth.setMAIA(url)
@@ -2567,6 +2572,7 @@ export default defineComponent({
       lockThread,
       newPrescription,
       onCancelMAIA,
+      onClearMAIA,
       onSubmitMAIA,
       onSubmitPIN,
       openActivities,

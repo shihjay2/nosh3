@@ -96,6 +96,9 @@ export const useAuthStore = defineStore({
     },
     setMAIA(url) {
       this.maia_alt = url
+    },
+    clearMAIA() {
+      this.maia_alt = null
     }
   }
 })
