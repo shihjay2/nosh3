@@ -1374,6 +1374,7 @@ export default defineComponent({
         }
       }
       clearSync()
+      await loadTimeline()
       state.loading = false
       state.sync_on = false
       $q.notify({
