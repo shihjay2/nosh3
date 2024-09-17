@@ -2176,12 +2176,12 @@ export default defineComponent({
         state.oidc_complete = true
       } else {
         $q.notify({
-        message: 'Synthetic Records Synced - ready for import',
-        color: 'primary',
-        actions: [
-          { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
-        ]
-      })
+          message: 'Synthetic Records Synced - ready for import',
+          color: 'primary',
+          actions: [
+            { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+          ]
+        })
       }
     }
     const setActiveCarePlan = (doc) => {
