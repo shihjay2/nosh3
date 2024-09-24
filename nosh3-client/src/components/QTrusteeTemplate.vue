@@ -52,31 +52,33 @@
     </q-card>
   </div>
   <div v-if="state.view === 'user'" class="q-pa-md q-gutter-md">
-    <q-list bordered class="rounded-borders">
-      <q-expansion-item
-        v-for="(row4, index4) in state.user_rows" :key="index4"
-        expand-separator
-        icon="account_circle"
-        :label="row4.email"
-      >
-        <q-list>
-          <q-item v-for="(row5, index5) in row4.resources" :key="index5">
-            <q-item-section avatar>
-              <q-icon color="primary" name="folder" />
-            </q-item-section>
-            <q-item-section>{{ row5.type }}</q-item-section>
-            <q-item-section side>
-              <q-btn flat round color="red" icon="delete" clickable @click="removeResource(row5, row4.email)">
-                <q-tooltip>Delete</q-tooltip>
-              </q-btn>
-            </q-item-section>
-          </q-item>
-        </q-list>
-        <q-btn color="positive" class="full-width" icon="add" label="Read, Write, and Delete for All Resources" clickable @click="addAllResources(row4.email, ['read', 'write', 'delete'])" />
-        <q-btn color="primary" class="full-width" icon="add" label="Read Only for All Resources" clickable @click="addAllResources(row4.email, ['read'])" />
-        <q-btn color="negative" class="full-width" icon="close" label="Remove Access to All Resources" clickable @click="removeAllResources(row4.email)" />
-      </q-expansion-item>
-    </q-list>
+    <q-card>
+      <q-list bordered class="rounded-borders">
+        <q-expansion-item
+          v-for="(row4, index4) in state.user_rows" :key="index4"
+          expand-separator
+          icon="account_circle"
+          :label="row4.email"
+        >
+          <q-list>
+            <q-item v-for="(row5, index5) in row4.resources" :key="index5">
+              <q-item-section avatar>
+                <q-icon color="primary" name="folder" />
+              </q-item-section>
+              <q-item-section>{{ row5.type }}</q-item-section>
+              <q-item-section side>
+                <q-btn flat round color="red" icon="delete" clickable @click="removeResource(row5, row4.email)">
+                  <q-tooltip>Delete</q-tooltip>
+                </q-btn>
+              </q-item-section>
+            </q-item>
+          </q-list>
+          <q-btn color="positive" class="full-width" icon="add" label="Read, Write, and Delete for All Resources" clickable @click="addAllResources(row4.email, ['read', 'write', 'delete'])" />
+          <q-btn color="primary" class="full-width" icon="add" label="Read Only for All Resources" clickable @click="addAllResources(row4.email, ['read'])" />
+          <q-btn color="negative" class="full-width" icon="close" label="Remove Access to All Resources" clickable @click="removeAllResources(row4.email)" />
+        </q-expansion-item>
+      </q-list>
+    </q-card>
   </div>
 </template>
 
