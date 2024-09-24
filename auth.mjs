@@ -10,7 +10,7 @@ import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
 import sortArray from "sort-array"
 import { v4 as uuidv4 } from 'uuid'
-import { couchdbDatabase, couchdbInstall, couchdbUpdate, createKeyPair, equals, getKeys, getName, getNPI, getPIN, introspect, registerResources, signRequest, sync, urlFix, verify, verifyPIN } from './core.mjs'
+import { couchdbDatabase, couchdbInstall, couchdbUpdate, createKeyPair, equals, getAllKeys, getKeys, getName, getNPI, getPIN, introspect, registerResources, signRequest, sync, urlFix, verify, verifyPIN } from './core.mjs'
 const router = express.Router()
 import PouchDBFind from 'pouchdb-find'
 PouchDB.plugin(PouchDBFind)
