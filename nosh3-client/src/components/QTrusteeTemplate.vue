@@ -51,10 +51,37 @@
       </div>
     </q-card>
   </div>
+  <div v-if="state.view === 'user'" class="q-pa-md q-gutter-md">
+    <q-list bordered class="rounded-borders">
+      <q-expansion-item
+        v-for="(row4, index4) in state.user_rows" :key="index4"
+        expand-separator
+        icon="account_circle"
+        :label="row4.email"
+      >
+        <q-list>
+          <q-item v-for="(row5, index5) in row4.resources" :key="index5">
+            <q-item-section avatar>
+              <q-icon color="primary" name="folder" />
+            </q-item-section>
+            <q-item-section>{{ row5.type }}</q-item-section>
+            <q-item-section side>
+              <q-btn flat round color="red" icon="delete" clickable @click="removeResource(row5, row4.email)">
+                <q-tooltip>Delete</q-tooltip>
+              </q-btn>
+            </q-item-section>
+          </q-item>
+        </q-list>
+        <q-btn color="positive" class="full-width" icon="add" label="Read, Write, and Delete for All Resources" clickable @click="addAllResources(row4.email, ['read', 'write', 'delete'])" />
+        <q-btn color="primary" class="full-width" icon="add" label="Read Only for All Resources" clickable @click="addAllResources(row4.email, ['read'])" />
+        <q-btn color="negative" class="full-width" icon="close" label="Remove Access to All Resources" clickable @click="removeAllResources(row4.email)" />
+      </q-expansion-item>
+    </q-list>
+  </div>
 </template>
 
 <script>
-import { defineComponent, reactive, nextTick, onMounted } from 'vue'
+import { defineComponent, reactive, onMounted } from 'vue'
 import axios from 'axios'
 import objectPath from 'object-path'
 import PouchDB from 'pouchdb-browser'
@@ -79,6 +106,7 @@ export default defineComponent({
       user: {},
       view: '',
       rows: [],
+      user_rows: [],
       email_show: false,
       email_show_index: 0
     })
@@ -90,10 +118,57 @@ export default defineComponent({
       const a = await axios.post(window.location.origin + '/auth/gnapResources', body)
       if (objectPath.has(a, 'data.0.ro')) {
         state.rows = objectPath.get(a, 'data')
+        const users = []
+        for (const resource of state.rows) {
+          for (const privilege of objectPath.get(resource, 'privileges')) {
+            if (privilege.indexOf('@') > -1) {
+              if (privilege !== state.user.email) {
+                const found = users.findIndex((user) => user.email === privilege)
+                if (found > -1) {
+                  const resources_arr = objectPath.get(users, found + '.resources')
+                  resources_arr.push(resource)
+                  objectPath.set(users, found + '.resources', resources_arr)
+                } else {
+                  const user = {
+                    email: privilege,
+                    resources: [resource]
+                  }
+                  users.push(user)
+                }
+              }
+            }
+          }
+        }
+        state.user_rows = users
         emit('loading')
       }
     })
-
+    const addAllResources = async(email, read_only_arr) => {
+      emit('loading')
+      for (const i in state.rows) {
+        if (objectPath.get(state, 'rows.' + i + '.actions').join() === read_only_arr.join()) {
+          if (objectPath.get(state, 'rows.' + i + '.privileges').findIndex((item) => item === email) === -1) {
+            const privileges = objectPath.get(state, 'rows.' + i + '.privileges')
+            privileges.push(email)
+            objectPath.set(state, 'rows.' + i + '.privileges', privileges)
+            const body = {
+              resource: objectPath.get(state, 'rows.' + i),
+              method: 'PUT',
+              jwt: auth.gnap_jwt
+            }
+            await axios.post(window.location.origin + '/auth/gnapResource', body)
+          }
+        }
+      }
+      emit('loading')
+      $q.notify({
+        message: 'Privileges updated.',
+        color: 'primary',
+        actions: [
+          { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+        ]
+      })
+    }
     const addPrivilege = async(row_index) => {
       if (state.email_show && state.email !== '') {
         if (validate(state.email)) {
@@ -123,7 +198,6 @@ export default defineComponent({
         state.email_show_index = row_index
       }
     }
-
     const clickPrivilege = async(row_index, value) => {
       const privileges = objectPath.get(state, 'rows.' + row_index + '.privileges')
       privileges.push(value)
@@ -145,7 +219,32 @@ export default defineComponent({
         })
       }
     }
-
+    const removeAllResources = async(email) => {
+      for (const i in state.rows) {
+        if (objectPath.get(state, 'rows.' + i + '.privileges').findIndex((item) => item === email) > -1) {
+          const privileges = []
+          for (const b of objectPath.get(state, 'rows.' + i + '.privileges')) {
+            if (b !== email) {
+              privileges.push(b)
+            }
+          }
+          objectPath.set(state, 'rows.' + i + '.privileges', privileges);
+          const body = {
+            resource: objectPath.get(state, 'rows.' + i),
+            method: 'PUT',
+            jwt: auth.gnap_jwt
+          }
+          await axios.post(window.location.origin + '/auth/gnapResource', body)
+        }
+      }
+      $q.notify({
+        message: 'Privileges updated.',
+        color: 'primary',
+        actions: [
+          { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+        ]
+      })
+    }
     const removePrivilege = async(row_index, privilege_index) => {
       const privileges = objectPath.get(state, 'rows.' + row_index + '.privileges')
       const value = privileges[privilege_index]
@@ -180,16 +279,23 @@ export default defineComponent({
         })
       }
     }
-
+    const removeResource = async(resource, email) => {
+      const row_index = state.rows.findIndex((item) => objectPath.get(item, '_id') === resource._id)
+      const privileges = objectPath.get(state, 'rows.' + row_index + '.privileges')
+      const privilege_index = privileges.findIndex((item1) => item1 === email)
+      await removePrivilege(row_index, privilege_index)
+    }
     const validate = (inputText) => {
       const emailRegex = new RegExp(/^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/, "gm");
       return emailRegex.test(inputText);
     }
-
     return {
+      addAllResources,
       addPrivilege,
       clickPrivilege,
+      removeAllResources,
       removePrivilege,
+      removeResource,
       validate,
       state
     }
