@@ -93,7 +93,7 @@ export default defineComponent({
 
     const addPrivilege = async(row_index) => {
       if (state.email_show && state.email !== '') {
-        if (validate(addValue)) {
+        if (validate(state.email)) {
           const privileges = objectPath.get(state, 'rows.' + row_index + '.privileges')
           privileges.push(state.email)
           objectPath.set(state, 'rows.' + index + '.privileges', privileges)
