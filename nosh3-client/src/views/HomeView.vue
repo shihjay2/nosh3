@@ -613,6 +613,14 @@
               <q-icon color="primary" style="font-size: 1.5em" name="policy" />
             </q-item-section>
           </q-item>
+          <q-item clickable @click="openTrustee('user')">
+            <q-item-section>
+              <q-item-label>Trustee<q-icon name="fas fa-registered" style="font-size: 0.6em; vertical-align: super;"/> Users</q-item-label>
+            </q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" style="font-size: 1.5em" name="policy" />
+            </q-item-section>
+          </q-item>
           <q-item clickable @click="openDump()">
             <q-item-section>
               <q-item-label>FHIR Dump</q-item-label>
