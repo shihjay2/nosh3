@@ -65,7 +65,15 @@
               <q-item-section avatar>
                 <q-icon color="primary" name="folder" />
               </q-item-section>
-              <q-item-section>{{ row5.type }}</q-item-section>
+              <q-item-section>
+                <q-chip v-for="(action1, index6) in row5.actions" :key="index6">
+                  <q-icon v-if="action1 === 'read'" name="visibility" class="q-pr-sm"></q-icon>
+                  <q-icon v-if="action1 === 'write'" name="edit" class="q-pr-sm"></q-icon>
+                  <q-icon v-if="action1 === 'delete'" name="delete" class="q-pr-sm"></q-icon>
+                  {{ action }}
+                </q-chip>
+                {{ row5.type }}
+              </q-item-section>
               <q-item-section side>
                 <q-btn flat round color="red" icon="delete" clickable @click="removeResource(row5, row4.email)">
                   <q-tooltip>Delete</q-tooltip>
