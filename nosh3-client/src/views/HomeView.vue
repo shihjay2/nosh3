@@ -570,6 +570,7 @@
     <QTrusteeTemplate 
       @loading="loading"
       :user="state.user"
+      :view="state.trusteeView"
     />
   </q-dialog>
   <q-dialog v-model="state.showQRReader">
@@ -859,6 +860,7 @@ export default defineComponent({
       showQRReader: false,
       // share
       showShare: false,
+      trusteeView: 'resource',
       // sync
       sync_on: false,
       sync_tooltip: '',
@@ -2086,8 +2088,9 @@ export default defineComponent({
         }
       }
     }
-    const openTrustee = async() => {
+    const openTrustee = async(view='resource') => {
       state.showTrustee = true
+      state.trusteeView = view
     }
     const pinCheck = async() => {
       const check = await axios.post(window.location.origin + '/auth/pinCheck', {patient: state.patient})

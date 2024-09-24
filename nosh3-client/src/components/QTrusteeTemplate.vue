@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md q-gutter-md">
+  <div v-if="state.view === 'resource'" class="q-pa-md q-gutter-md">
     <q-card v-for="(row, index) in state.rows" :key="index">
       <q-card-section>
         <div class="text-h6 text-primary">{{ row.type }}</div>
@@ -69,6 +69,7 @@ export default defineComponent({
   },
   props: {
     user: Object,
+    view: String
   },
   emits: ['loading'],
   setup (props, { emit }) {
@@ -76,6 +77,7 @@ export default defineComponent({
     const auth = useAuthStore()
     const state = reactive({
       user: {},
+      view: '',
       rows: [],
       email_show: false,
       email_show_index: 0
@@ -83,6 +85,7 @@ export default defineComponent({
     onMounted(async() => {
       emit('loading')
       state.user = props.user
+      state.view = props.view
       const body = {email: state.user.email, filter: ''}
       const a = await axios.post(window.location.origin + '/auth/gnapResources', body)
       if (objectPath.has(a, 'data.0.ro')) {
@@ -96,17 +99,16 @@ export default defineComponent({
         if (validate(state.email)) {
           const privileges = objectPath.get(state, 'rows.' + row_index + '.privileges')
           privileges.push(state.email)
-          objectPath.set(state, 'rows.' + index + '.privileges', privileges)
+          objectPath.set(state, 'rows.' + row_index + '.privileges', privileges)
           const body = {
-            resource: objectPath.get(state, 'rows.' + index),
+            resource: objectPath.get(state, 'rows.' + row_index),
             method: 'PUT',
             jwt: auth.gnap_jwt
           }
           const a = await axios.post(window.location.origin + '/auth/gnapResource', body)
           if (objectPath.has(a, 'data')) {
-            console.log('success')
             $q.notify({
-              message: 'Privilege ' + value + ' added.',
+              message: 'Privilege ' + state.email + ' added.',
               color: 'primary',
               actions: [
                 { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
