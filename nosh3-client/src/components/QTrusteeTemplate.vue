@@ -63,13 +63,19 @@
           <q-list>
             <q-item v-for="(row5, index5) in row4.resources" :key="index5">
               <q-item-section avatar>
-                <q-icon color="primary" name="folder" />
-                <q-chip v-for="(action1, index6) in row5.actions" :key="index6" dense>
-                  <q-avatar v-if="action1 === 'read'" icon="visibility" class="q-pr-sm"></q-avatar>
-                  <q-avatar v-if="action1 === 'write'" icon="edit" class="q-pr-sm"></q-avatar>
-                  <q-avatar v-if="action1 === 'delete'" icon="delete" class="q-pr-sm"></q-avatar>
-                  <q-tooltip>{{ action1 }}</q-tooltip>
-                </q-chip>
+                <div class="row">
+                  <div class="col">
+                    <q-icon color="primary" name="folder" />
+                  </div>
+                  <div class="col">
+                    <q-chip v-for="(action1, index6) in row5.actions" :key="index6" dense>
+                      <q-avatar v-if="action1 === 'read'" icon="visibility" class="q-pr-sm"></q-avatar>
+                      <q-avatar v-if="action1 === 'write'" icon="edit" class="q-pr-sm"></q-avatar>
+                      <q-avatar v-if="action1 === 'delete'" icon="delete" class="q-pr-sm"></q-avatar>
+                      <q-tooltip>{{ action1 }}</q-tooltip>
+                    </q-chip>
+                  </div>
+                </div>
               </q-item-section>
               <q-item-section>
                 {{ row5.type }}
