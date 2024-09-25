@@ -134,7 +134,6 @@ export default defineComponent({
       const a = await axios.post(window.location.origin + '/auth/gnapResources', body)
       if (objectPath.has(a, 'data.0.ro')) {
         state.rows = objectPath.get(a, 'data')
-        console.log(state.rows)
         const users = []
         for (const resource of state.rows) {
           for (const privilege of objectPath.get(resource, 'privileges')) {
@@ -177,6 +176,7 @@ export default defineComponent({
           }
         }
       }
+      calcUsers()
       emit('loading')
       $q.notify({
         message: 'Privileges updated.',
@@ -215,6 +215,30 @@ export default defineComponent({
         state.email_show_index = row_index
       }
     }
+    const calcUsers = () => {
+      const users = []
+      for (const resource of state.rows) {
+        for (const privilege of objectPath.get(resource, 'privileges')) {
+          if (privilege.indexOf('@') > -1) {
+            if (privilege !== state.user.email) {
+              const found = users.findIndex((user) => user.email === privilege)
+              if (found > -1) {
+                const resources_arr = objectPath.get(users, found + '.resources')
+                resources_arr.push(resource)
+                objectPath.set(users, found + '.resources', resources_arr)
+              } else {
+                const user = {
+                  email: privilege,
+                  resources: [resource]
+                }
+                users.push(user)
+              }
+            }
+          }
+        }
+      }
+      state.user_rows = users
+    }
     const clickPrivilege = async(row_index, value) => {
       const privileges = objectPath.get(state, 'rows.' + row_index + '.privileges')
       privileges.push(value)
@@ -237,6 +261,7 @@ export default defineComponent({
       }
     }
     const removeAllResources = async(email) => {
+      emit('loading')
       for (const i in state.rows) {
         if (objectPath.get(state, 'rows.' + i + '.privileges').findIndex((item) => item === email) > -1) {
           const privileges = []
@@ -254,6 +279,8 @@ export default defineComponent({
           await axios.post(window.location.origin + '/auth/gnapResource', body)
         }
       }
+      calcUsers()
+      emit('loading')
       $q.notify({
         message: 'Privileges updated.',
         color: 'primary',
@@ -309,6 +336,7 @@ export default defineComponent({
     return {
       addAllResources,
       addPrivilege,
+      calcUsers,
       clickPrivilege,
       removeAllResources,
       removePrivilege,
