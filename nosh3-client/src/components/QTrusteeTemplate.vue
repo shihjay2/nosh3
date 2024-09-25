@@ -67,7 +67,7 @@
                   <div class="col">
                     <q-icon color="primary" name="folder" />
                   </div>
-                  <div class="col-12">
+                  <div class="col-10">
                     <q-chip v-for="(action1, index6) in row5.actions" :key="index6" dense>
                       <q-avatar v-if="action1 === 'read'" icon="visibility" class="q-pr-sm"></q-avatar>
                       <q-avatar v-if="action1 === 'write'" icon="edit" class="q-pr-sm"></q-avatar>
