@@ -64,14 +64,14 @@
             <q-item v-for="(row5, index5) in row4.resources" :key="index5">
               <q-item-section avatar>
                 <q-icon color="primary" name="folder" />
-              </q-item-section>
-              <q-item-section>
                 <q-chip v-for="(action1, index6) in row5.actions" :key="index6">
                   <q-icon v-if="action1 === 'read'" name="visibility" class="q-pr-sm"></q-icon>
                   <q-icon v-if="action1 === 'write'" name="edit" class="q-pr-sm"></q-icon>
                   <q-icon v-if="action1 === 'delete'" name="delete" class="q-pr-sm"></q-icon>
-                  {{ action }}
+                  {{ action1 }}
                 </q-chip>
+              </q-item-section>
+              <q-item-section>
                 {{ row5.type }}
               </q-item-section>
               <q-item-section side>
