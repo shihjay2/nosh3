@@ -134,6 +134,7 @@ export default defineComponent({
       const a = await axios.post(window.location.origin + '/auth/gnapResources', body)
       if (objectPath.has(a, 'data.0.ro')) {
         state.rows = objectPath.get(a, 'data')
+        console.log(state.rows)
         const users = []
         for (const resource of state.rows) {
           for (const privilege of objectPath.get(resource, 'privileges')) {
