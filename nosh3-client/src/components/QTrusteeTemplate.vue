@@ -1,5 +1,6 @@
 <template>
   <div v-if="state.view === 'resource'" class="q-pa-md q-gutter-md">
+    <q-btn color="positive" class="full-width" icon="add" label="Add New User to Share" clickable @click="addUser('resource')" />
     <q-card v-for="(row, index) in state.rows" :key="index">
       <q-card-section>
         <div class="text-h6 text-primary">{{ row.type }}</div>
@@ -53,21 +54,22 @@
   </div>
   <div v-if="state.view === 'user'" class="q-pa-md q-gutter-md">
     <q-card>
-      <q-list bordered class="rounded-borders">
+      <q-btn color="positive" class="full-width" icon="add" label="Add New User to Share" clickable @click="addUser('user')" />
+      <q-list bordered class="rounded-borders q-pa-md q-gutter-md">
         <q-expansion-item
           v-for="(row4, index4) in state.user_rows" :key="index4"
           expand-separator
           icon="account_circle"
           :label="row4.email"
         >
-          <q-list>
+          <q-list bordered separator>
             <q-item v-for="(row5, index5) in row4.resources" :key="index5">
               <q-item-section avatar>
                 <q-icon color="primary" name="folder" />
               </q-item-section>
               <q-item-section>
                 <div class="row">
-                  <div class="col">
+                  <div class="col-7">
                     <q-chip v-for="(action1, index6) in row5.actions" :key="index6" dense>
                       <q-icon v-if="action1 === 'read'" name="visibility" class="q-pr-sm"></q-icon>
                       <q-icon v-if="action1 === 'write'" name="edit" class="q-pr-sm"></q-icon>
@@ -94,6 +96,35 @@
       </q-list>
     </q-card>
   </div>
+  <div v-if="state.view === 'add'" class="q-pa-md q-gutter-md">
+    <q-card>
+      <q-card-section>
+        <div class="text-h6 text-center">Add user for access to your health records</div>
+      </q-card-section>
+      <q-separator />
+      <Form @submit="onSubmitAdd">
+        <q-card-section>
+          <div v-for="field in state.schemaAdd" :key="field.id" class="q-pa-sm">
+            <QInputWithValidation
+              ref="myInput"
+              :name="field.id"
+              :label="field.label"
+              :type="field.type"
+              :model="state.formAdd[field.id]"
+              @update-model="updateValue"
+              :placeholder="field.placeholder"
+              :rules="field.rules"
+              focus="false"
+            />
+          </div>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn push icon="cancel" color="negative" @click="onCancelAdd" label="Cancel" />
+          <q-btn push icon="link" color="positive" label="Enter URL" type="submit" />
+        </q-card-actions>
+      </Form>
+    </q-card>
+  </div>
 </template>
 
 <script>
@@ -114,7 +145,7 @@ export default defineComponent({
     user: Object,
     view: String
   },
-  emits: ['loading'],
+  emits: ['close', 'loading'],
   setup (props, { emit }) {
     const $q = useQuasar()
     const auth = useAuthStore()
@@ -124,7 +155,30 @@ export default defineComponent({
       rows: [],
       user_rows: [],
       email_show: false,
-      email_show_index: 0
+      email_show_index: 0,
+      click_origin: '',
+      schemaAdd: [
+        {
+          "id": "email",
+          "label": "Email Address of New User",
+          "model": "email",
+          "type": "email",
+          "placeholder": "yourname@email.com",
+          "rules": "required|email"
+        },
+        {
+          "id": "access",
+          "label": "Access Permissions for Health Records",
+          "model": "access",
+          "type": "select",
+          "options": [
+            {"value": "read,write,delete", "label": "Read, Write, Delete"},
+            {"value": "read", "label": "Read Only"}
+          ],
+          "rules": "required"
+        }
+      ],
+      formAdd: {}
     })
     onMounted(async() => {
       emit('loading')
@@ -134,28 +188,7 @@ export default defineComponent({
       const a = await axios.post(window.location.origin + '/auth/gnapResources', body)
       if (objectPath.has(a, 'data.0.ro')) {
         state.rows = objectPath.get(a, 'data')
-        const users = []
-        for (const resource of state.rows) {
-          for (const privilege of objectPath.get(resource, 'privileges')) {
-            if (privilege.indexOf('@') > -1) {
-              if (privilege !== state.user.email) {
-                const found = users.findIndex((user) => user.email === privilege)
-                if (found > -1) {
-                  const resources_arr = objectPath.get(users, found + '.resources')
-                  resources_arr.push(resource)
-                  objectPath.set(users, found + '.resources', resources_arr)
-                } else {
-                  const user = {
-                    email: privilege,
-                    resources: [resource]
-                  }
-                  users.push(user)
-                }
-              }
-            }
-          }
-        }
-        state.user_rows = users
+        calcUsers()
         emit('loading')
       }
     })
@@ -215,6 +248,10 @@ export default defineComponent({
         state.email_show_index = row_index
       }
     }
+    const addUser = (origin) => {
+      state.view = 'add'
+      state.click_origin = origin
+    }
     const calcUsers = () => {
       const users = []
       for (const resource of state.rows) {
@@ -258,6 +295,36 @@ export default defineComponent({
             { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
           ]
         })
+      }
+    }
+    const onCancelAdd = () => {
+      if (state.click_origin === '') {
+        emit('close')
+      } else {
+        state.view = state.click_origin
+        state.click_origin = ''
+      }
+    }
+    const onSubmitAdd = async(values) => {
+      const { email, access } = values
+      const arr_access = access.split(',')
+      await addAllResources(email, arr_access)
+      const index = state.rows.findIndex((resource) => resource.type === 'App')
+      const body = {
+        method: 'POST',
+        jwt: auth.gnap_jwt,
+        to: email,
+        from: state.user.display,
+        from_email: state.user.email,
+        access: arr_access,
+        url: state.rows[index].locations[0]
+      }
+      await axios.post(window.location.origin + '/auth/gnapNotify', body)
+      if (state.click_origin === '') {
+        emit('close')
+      } else {
+        state.view = state.click_origin
+        state.click_origin = ''
       }
     }
     const removeAllResources = async(email) => {
@@ -329,6 +396,9 @@ export default defineComponent({
       const privilege_index = privileges.findIndex((item1) => item1 === email)
       await removePrivilege(row_index, privilege_index)
     }
+    const updateValue = (val, field, type) => {
+      state.formAdd[field] = val
+    }
     const validate = (inputText) => {
       const emailRegex = new RegExp(/^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/, "gm");
       return emailRegex.test(inputText);
@@ -336,11 +406,15 @@ export default defineComponent({
     return {
       addAllResources,
       addPrivilege,
+      addUser,
       calcUsers,
       clickPrivilege,
+      onCancelAdd,
+      onSubmitAdd,
       removeAllResources,
       removePrivilege,
       removeResource,
+      updateValue,
       validate,
       state
     }

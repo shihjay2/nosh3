@@ -569,6 +569,7 @@
   <q-dialog v-model="state.showTrustee">
     <QTrusteeTemplate 
       @loading="loading"
+      @close="closeTrustee"
       :user="state.user"
       :view="state.trusteeView"
     />
@@ -1325,6 +1326,9 @@ export default defineComponent({
       state.pulldown_doc = {}
       await refreshPatient(true)
       state.pulldown_form = false
+    }
+    const closeTrustee = () => {
+      state.showTrustee = false
     }
     const completeTask = async(id) => {
       const localDB = new PouchDB(prefix + 'tasks')
@@ -2568,6 +2572,7 @@ export default defineComponent({
       closeList,
       closePage,
       closePulldown,
+      closeTrustee,
       completeTask,
       dumpSync,
       fhirModel,

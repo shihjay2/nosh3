@@ -29,6 +29,7 @@ router.post('gnapProxy', gnapProxy)
 router.post('/gnapResource', gnapResource)
 router.post('/gnapResources', gnapResources)
 router.get('/gnapVerify/:patient', gnapVerify)
+router.post('/gnapNotify', gnapNotify)
 
 router.post('/pinCheck', pinCheck)
 router.post('/pinClear', pinClear)
@@ -201,6 +202,38 @@ async function gnapAuth(req, res) {
     } catch (e) {
       res.status(401).json(e)
     }
+  }
+}
+
+async function gnapNotify(req, res) {
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    const body = {
+      "to": req.body.to,
+      "from": req.body.from,
+      "from_email": req.body.from_email,
+      "access": req.body.access,
+      "url": req.body.url
+    }
+    try {
+      const signedRequest = await signRequest(body, urlFix(process.env.TRUSTEE_URL) + 'api/as/notify', req.body.method, req, req.body.jwt)
+      try {
+        const update = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/notify', signedRequest)
+          .then((res) => {
+            if (res.status > 400 && res.status < 600) { 
+              return {error: res}
+            } else {
+              return res.json()
+            }
+          })
+        res.status(200).json(update)
+      } catch (e) {
+        console.log(e)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  } else {
+    res.status(401).send('Unauthorized - feature not available')
   }
 }
 
