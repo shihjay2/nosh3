@@ -134,6 +134,7 @@ import { Form } from 'vee-validate'
 import objectPath from 'object-path'
 import PouchDB from 'pouchdb-browser'
 import PouchDBFind from 'pouchdb-find'
+import QInputWithValidation from '@/components/QInputWithValidation.vue'
 import { useQuasar } from 'quasar'
 import { useAuthStore } from '@/stores'
 PouchDB.plugin(PouchDBFind)
@@ -141,7 +142,8 @@ PouchDB.plugin(PouchDBFind)
 export default defineComponent({
   name: 'QTrusteeTemplate',
   components: {
-    Form
+    Form,
+    QInputWithValidation
   },
   props: {
     user: Object,
