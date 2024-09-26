@@ -114,6 +114,7 @@
               @update-model="updateValue"
               :placeholder="field.placeholder"
               :rules="field.rules"
+              :options="field.options"
               focus="false"
             />
           </div>
