@@ -570,6 +570,7 @@
     <QTrusteeTemplate 
       @loading="loading"
       @close="closeTrustee"
+      @qr="openQR"
       :user="state.user"
       :view="state.trusteeView"
     />

@@ -120,7 +120,7 @@
         </q-card-section>
         <q-card-actions align="right">
           <q-btn push icon="cancel" color="negative" @click="onCancelAdd" label="Cancel" />
-          <q-btn push icon="link" color="positive" label="Enter URL" type="submit" />
+          <q-btn push icon="link" color="positive" label="Add User" type="submit" />
         </q-card-actions>
       </Form>
     </q-card>
@@ -130,6 +130,7 @@
 <script>
 import { defineComponent, reactive, onMounted } from 'vue'
 import axios from 'axios'
+import { Form } from 'vee-validate'
 import objectPath from 'object-path'
 import PouchDB from 'pouchdb-browser'
 import PouchDBFind from 'pouchdb-find'
@@ -140,12 +141,13 @@ PouchDB.plugin(PouchDBFind)
 export default defineComponent({
   name: 'QTrusteeTemplate',
   components: {
+    Form
   },
   props: {
     user: Object,
     view: String
   },
-  emits: ['close', 'loading'],
+  emits: ['close', 'loading', 'qr'],
   setup (props, { emit }) {
     const $q = useQuasar()
     const auth = useAuthStore()
@@ -326,6 +328,7 @@ export default defineComponent({
         state.view = state.click_origin
         state.click_origin = ''
       }
+      emit('qr')
     }
     const removeAllResources = async(email) => {
       emit('loading')
