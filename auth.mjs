@@ -219,12 +219,14 @@ async function gnapNotify(req, res) {
       try {
         const update = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/notify', signedRequest)
           .then((res) => {
+            console.log(res)
             if (res.status > 400 && res.status < 600) { 
               return {error: res}
             } else {
               return res.json()
             }
           })
+        console.log(update)
         res.status(200).json(update)
       } catch (e) {
         console.log(e)
