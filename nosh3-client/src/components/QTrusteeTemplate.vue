@@ -69,15 +69,15 @@
               </q-item-section>
               <q-item-section>
                 <q-item-label>
+                  {{ row5.type }}
+                </q-item-label>
+                <q-item-label>
                   <q-chip v-for="(action1, index6) in row5.actions" :key="index6">
                     <q-icon v-if="action1 === 'read'" name="visibility" class="q-pr-sm"></q-icon>
                     <q-icon v-if="action1 === 'write'" name="edit" class="q-pr-sm"></q-icon>
                     <q-icon v-if="action1 === 'delete'" name="delete" class="q-pr-sm"></q-icon>
                     {{ action1 }}
                   </q-chip>
-                </q-item-label>
-                <q-item-label>
-                  {{ row5.type }}
                 </q-item-label>
               </q-item-section>
               <q-item-section side>
