@@ -216,7 +216,6 @@ async function gnapNotify(req, res) {
     }
     try {
       const signedRequest = await signRequest(body, urlFix(process.env.TRUSTEE_URL) + 'api/as/notify', req.body.method, req, req.body.jwt)
-      console.log(signedRequest)
       try {
         const update = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/notify', signedRequest)
           .then((res) => {

@@ -70,11 +70,11 @@
               <q-item-section>
                 <div class="row">
                   <div class="col-7">
-                    <q-chip v-for="(action1, index6) in row5.actions" :key="index6" dense>
+                    <q-chip v-for="(action1, index6) in row5.actions" :key="index6">
                       <q-icon v-if="action1 === 'read'" name="visibility" class="q-pr-sm"></q-icon>
                       <q-icon v-if="action1 === 'write'" name="edit" class="q-pr-sm"></q-icon>
                       <q-icon v-if="action1 === 'delete'" name="delete" class="q-pr-sm"></q-icon>
-                      {{ action1 }}
+                      <q-tooltip>{{ action1 }}</q-tooltip>
                     </q-chip>
                   </div>
                   <div class="col">
@@ -121,7 +121,7 @@
         </q-card-section>
         <q-card-actions align="right">
           <q-btn push icon="cancel" color="negative" @click="onCancelAdd" label="Cancel" />
-          <q-btn push icon="link" color="positive" label="Add User" type="submit" />
+          <q-btn push icon="add" color="positive" label="Add User" type="submit" />
         </q-card-actions>
       </Form>
     </q-card>
