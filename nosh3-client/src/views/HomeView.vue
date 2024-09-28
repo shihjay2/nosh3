@@ -1923,6 +1923,7 @@ export default defineComponent({
       state.sort = 'alpha'
       await loadResource(resource, category)
       await nextTick()
+      state.showShare = false
       state.showList = true
       state.toolbar = true
       if ($q.screen.lt.sm) {
