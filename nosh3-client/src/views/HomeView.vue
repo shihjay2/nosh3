@@ -1433,16 +1433,22 @@ export default defineComponent({
         state.divContent = state.base.divContent
         state.search = state.base.uiSearchBars
       } else {
-        if (resource === 'observations' || resource === 'service_requests') {
-          const sub = state.base.categories.find(o => o.value === category)
-          state.options = state.base.categories
-          state.schema = sub.uiSchema
-          state.divContent = sub.divContent
-          state.search = sub.uiSearchBars
+        if (resource !== 'bundles') {
+          if (resource === 'observations' || resource === 'service_requests') {
+            const sub = state.base.categories.find(o => o.value === category)
+            state.options = state.base.categories
+            state.schema = sub.uiSchema
+            state.divContent = sub.divContent
+            state.search = sub.uiSearchBars
+          } else {
+            state.schema = state.base[category].uiSchema
+            state.divContent = state.base[category].divContent
+            state.search = state.base[category].uiSearchBars
+          }
         } else {
-          state.schema = state.base[category].uiSchema
-          state.divContent = state.base[category].divContent
-          state.search = state.base[category].uiSearchBars
+          state.schema = state.base.uiSchema
+          state.divContent = state.base.divContent
+          state.search = []
         }
       }
       const resource_obj = await loadSchema(resource, category, state.schema, state.online, state.options)
