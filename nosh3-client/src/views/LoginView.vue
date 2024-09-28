@@ -35,9 +35,6 @@
               <div class="text-subtitle2 text-red">{{ state.timeout }} seconds remaining</div>
               <div class="text-subtitle2">Check your email for your Magic Link for entry into NOSH ChartingSystem and come back here once verified</div>
             </q-card-section>
-            <q-card-section v-if="state.showUpdate">
-              <div class="text-body1"><q-circular-progress indeterminate size="1em" color="light-blue" class="q-ma-md" />Updating NOSH...</div>
-            </q-card-section>
             <q-card-actions vertical align="center">
               <div v-if="state.magic" class="q-pa-md">
                 <q-btn v-if="!state.sending" class="full-width q-pa-md" push icon="login" color="primary" label="Magic" type="submit" />
@@ -56,6 +53,11 @@
               </a></div>
             </q-card-section>
           </Form>
+        </q-card>
+        <q-card v-if="state.showUpdate" class="q-pa-md">
+          <q-card-section>
+            <div class="text-body1"><q-circular-progress indeterminate size="1em" color="light-blue" class="q-ma-md" />Updating NOSH...</div>
+          </q-card-section>
         </q-card>
         <q-card v-if="state.showPIN">
           <q-card-section>
