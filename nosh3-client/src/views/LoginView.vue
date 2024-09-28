@@ -227,7 +227,7 @@ export default defineComponent({
           if (check.data.response === 'OK') {
             state.loading = false
             state.showUpdate = true
-            const update = await axios.get(window.location.origin + '/auth/update')
+            const update = await axios.post(window.location.origin + '/auth/update', {patient: state.patient})
             if (update.data.response == 'OK') {
               state.showUpdate = false
               state.login = true
