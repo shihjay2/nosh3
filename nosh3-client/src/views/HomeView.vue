@@ -1008,9 +1008,6 @@ export default defineComponent({
       syncTimer = setInterval(async() => {
         await syncProcess('some')
       }, 15000)
-      // syncallTimer = setInterval(async() => {
-      //   await syncProcess()
-      // }, 3600000)
       inboxTimer = setInterval(async() => {
         if (objectPath.has(state, 'user.id')) {
           await updateInbox(state.user)
@@ -2139,9 +2136,7 @@ export default defineComponent({
     }
     const refreshApp = () => {
       state.updateExists = false
-      // Make sure we only send a 'skip waiting' message if the SW is waiting
       if (!state.registration || !state.registration.waiting) return
-      // send message to SW to skip the waiting and activate the new SW
       state.registration.waiting.postMessage({ type: 'SKIP_WAITING' })
     }
     const refreshPatient = async(drawer = true) => {

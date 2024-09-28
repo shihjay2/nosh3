@@ -35,6 +35,9 @@
               <div class="text-subtitle2 text-red">{{ state.timeout }} seconds remaining</div>
               <div class="text-subtitle2">Check your email for your Magic Link for entry into NOSH ChartingSystem and come back here once verified</div>
             </q-card-section>
+            <q-card-section v-if="state.showUpdate">
+              <div class="text-body1"><q-circular-progress indeterminate size="1em" color="light-blue" class="q-ma-md" />Updating NOSH...</div>
+            </q-card-section>
             <q-card-actions vertical align="center">
               <div v-if="state.magic" class="q-pa-md">
                 <q-btn v-if="!state.sending" class="full-width q-pa-md" push icon="login" color="primary" label="Magic" type="submit" />
@@ -182,6 +185,7 @@ export default defineComponent({
       couchdb: '',
       pin: '',
       showPIN: false,
+      showUpdate: false,
       loading: true,
       magic: true,
       gnap: true
@@ -222,7 +226,20 @@ export default defineComponent({
           }
           if (check.data.response === 'OK') {
             state.loading = false
-            state.login = true
+            state.showUpdate = true
+            const update = await axios.get(window.location.origin + '/auth/update')
+            if (update.data.response == 'OK') {
+              state.showUpdate = false
+              state.login = true
+            } else {
+              $q.notify({
+                message: 'Update failed - reload page again',
+                color: 'red',
+                actions: [
+                  { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+                ]
+              })
+            }
           }
         } else {
           state.loading = false

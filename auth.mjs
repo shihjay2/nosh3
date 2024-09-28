@@ -23,6 +23,7 @@ router.post('/authenticate', authenticate)
 router.get('/exportJWT', exportJWT)
 router.post('/addPatient', addPatient)
 router.post('/addResources', addResources)
+router.post('/update', update)
 
 router.post('/gnapAuth', gnapAuth)
 router.post('gnapProxy', gnapProxy)
@@ -167,7 +168,7 @@ async function gnapAuth(req, res) {
   if (!pin) {
     res.status(401).send('Unauthorized - No PIN set')
   } else {
-    await couchdbUpdate(req.body.patient, req.protocol, req.hostname)
+    // await couchdbUpdate(req.body.patient, req.protocol, req.hostname)
     const body = {
       "access_token": {
         "access": [
@@ -802,6 +803,25 @@ async function pinSet (req, res, next) {
     res.status(200).json({ response: 'OK' })
   } else {
     res.status(200).json({ response: 'Incorrect PIN' })
+  }
+}
+
+async function update(req, res) {
+  let pin = process.env.COUCHDB_ENCRYPT_PIN
+  let prefix = ''
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    prefix = req.body.patient + '_'
+    pin = await getPIN(req.body.patient)
+  }
+  if (!pin) {
+    res.status(401).send('Unauthorized - No PIN set')
+  } else {
+    try {
+      await couchdbUpdate(req.body.patient, req.protocol, req.hostname)
+      res.status(200).json({ response: 'OK' })
+    } catch (e) {
+      res.status(200).json({ response: 'Update failed'})
+    }
   }
 }
 
