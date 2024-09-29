@@ -512,6 +512,9 @@
     <q-card>
       <div class="q-pa-md q-gutter-md">
         <q-card>
+          <q-card-section>
+            <div class="text-h6 text-center">If the person you have added access to your resources is with you, you can show this QR Code for the link to NOSH.  Otherwise, you can click anywhere to close.</div>
+          </q-card-section>
           <VueQrious :value="state.qr_value" size="200"></VueQrious>
         </q-card>
       </div>

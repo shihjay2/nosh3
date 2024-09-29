@@ -56,7 +56,7 @@
         </q-card>
         <q-card v-if="state.showUpdate" class="q-pa-md">
           <q-card-section>
-            <div class="text-body1"><q-circular-progress indeterminate size="1em" color="light-blue" class="q-ma-md" />Updating NOSH...</div>
+            <div class="text-body1"><q-circular-progress indeterminate size="1em" color="light-blue" class="q-ma-md" />Updating...</div>
           </q-card-section>
         </q-card>
         <q-card v-if="state.showPIN">
