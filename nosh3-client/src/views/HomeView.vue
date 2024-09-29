@@ -513,7 +513,7 @@
       <div class="q-pa-md q-gutter-md">
         <q-card>
           <q-card-section>
-            <div class="text-center">Show this QR Code for access to your helath record if the person you have invited is next to you.  Otherwise, you can click anywhere to close.</div>
+            <div class="text-center">Show this QR Code for access to your heatlh record if the person you have invited is next to you.  Otherwise, you can click anywhere to close.</div>
           </q-card-section>
           <VueQrious :value="state.qr_value" size="200"></VueQrious>
         </q-card>
