@@ -509,11 +509,11 @@
     />
   </q-dialog>
   <q-dialog v-model="state.qr">
-    <q-card>
+    <q-card style="width: 300px">
       <div class="q-pa-md q-gutter-md">
         <q-card>
           <q-card-section>
-            <div class="text-h6 text-center">If the person you have added access to your resources is with you, you can show this QR Code for the link to NOSH.  Otherwise, you can click anywhere to close.</div>
+            <div class="text-center">Show this QR Code for access to your helath record if the person you have invited is next to you.  Otherwise, you can click anywhere to close.</div>
           </q-card-section>
           <VueQrious :value="state.qr_value" size="200"></VueQrious>
         </q-card>
