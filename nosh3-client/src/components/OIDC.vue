@@ -250,6 +250,11 @@ export default defineComponent({
             try {
               const oidc_response1 = await axios.get(oidc_url1, opts1)
               console.log(oidc_response1.data)
+              localStorage.setItem('oidc_log_' + uuidv4(), {
+                token: state.access_token,
+                response: oidc_response1.data,
+                url: oidc_url1,
+              })
               if (d.label !== 'Summary') {
                 const rows1 = []
                 for (const d2 of oidc_response1.data.entry) {
