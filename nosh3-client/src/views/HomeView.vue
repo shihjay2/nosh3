@@ -1933,8 +1933,8 @@ export default defineComponent({
       state.showImmunizationSchedule = true
     }
     const openInsurance = () => {
-      state.fhir_coverage = auth.coverage
-      state.fhir_eob = auth.eob
+      state.fhir_coverage = JSON.stringify(auth.coverage, null, "  ")
+      state.fhir_eob = JSON.stringify(auth.eob, null, "  ")
       state.showInsurance = true
     }
     const openLink = (url) => {
