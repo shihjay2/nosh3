@@ -246,9 +246,9 @@ export default defineComponent({
           for (const d of cms_resources) {
             const oidc_url1 = localStorage.getItem('oidc_url') + d.path
             const opts1 = {headers: { Authorization: 'Bearer ' + state.access_token}}
+            const log_id = uuidv4()
             try {
               const oidc_response1 = await axios.get(oidc_url1, opts1)
-              const log_id = uuidv4()
               localStorage.setItem('oidc_log_' + log_id , JSON.stringify({
                 token: state.access_token,
                 url: oidc_url1,
@@ -276,6 +276,11 @@ export default defineComponent({
               }
             } catch (e) {
               console.log(e)
+              localStorage.setItem('oidc_log_' + log_id , JSON.stringify({
+                token: state.access_token,
+                url: oidc_url1,
+                response: e
+              }) )
             }
           }
         }

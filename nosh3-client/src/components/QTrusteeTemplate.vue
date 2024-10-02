@@ -197,7 +197,6 @@ export default defineComponent({
     })
     const addAllResources = async(email, read_only_arr) => {
       emit('loading')
-      
       for (const i in state.rows) {
         if (objectPath.get(state, 'rows.' + i + '.actions').join() === read_only_arr.join()) {
           if (objectPath.get(state, 'rows.' + i + '.privileges').findIndex((item) => item === email) === -1) {
@@ -210,7 +209,7 @@ export default defineComponent({
               jwt: auth.gnap_jwt
             }
             await axios.post(window.location.origin + '/auth/gnapResource', body)
-            const counter = i + 1
+            const counter = Number(i) + 1
             $q.notify({
               message: counter + '/' + state.rows.length + ': Privileges updated for ' + objectPath.get(state, 'rows.' + i + '.type'),
               color: 'primary',
