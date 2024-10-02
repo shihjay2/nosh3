@@ -62,6 +62,9 @@
           icon="account_circle"
           :label="row4.email"
         >
+          <q-btn color="positive" class="full-width" icon="add" label="Read, Write, and Delete for All Resources" clickable @click="addAllResources(row4.email, ['read', 'write', 'delete'])" />
+          <q-btn color="primary" class="full-width" icon="add" label="Read Only for All Resources" clickable @click="addAllResources(row4.email, ['read'])" />
+          <q-btn color="negative" class="full-width" icon="close" label="Remove Access to All Resources" clickable @click="removeAllResources(row4.email)" />
           <q-list bordered separator>
             <q-item v-for="(row5, index5) in row4.resources" :key="index5">
               <q-item-section avatar>
@@ -87,9 +90,6 @@
               </q-item-section>
             </q-item>
           </q-list>
-          <q-btn color="positive" class="full-width" icon="add" label="Read, Write, and Delete for All Resources" clickable @click="addAllResources(row4.email, ['read', 'write', 'delete'])" />
-          <q-btn color="primary" class="full-width" icon="add" label="Read Only for All Resources" clickable @click="addAllResources(row4.email, ['read'])" />
-          <q-btn color="negative" class="full-width" icon="close" label="Remove Access to All Resources" clickable @click="removeAllResources(row4.email)" />
         </q-expansion-item>
       </q-list>
     </q-card>
@@ -197,6 +197,7 @@ export default defineComponent({
     })
     const addAllResources = async(email, read_only_arr) => {
       emit('loading')
+      
       for (const i in state.rows) {
         if (objectPath.get(state, 'rows.' + i + '.actions').join() === read_only_arr.join()) {
           if (objectPath.get(state, 'rows.' + i + '.privileges').findIndex((item) => item === email) === -1) {
@@ -209,6 +210,14 @@ export default defineComponent({
               jwt: auth.gnap_jwt
             }
             await axios.post(window.location.origin + '/auth/gnapResource', body)
+            const counter = i + 1
+            $q.notify({
+              message: counter + '/' + state.rows.length + ': Privileges updated for ' + objectPath.get(state, 'rows.' + i + '.type'),
+              color: 'primary',
+              actions: [
+                { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+              ]
+            })
           }
         }
       }
@@ -323,6 +332,13 @@ export default defineComponent({
         url: state.rows[index].locations[0]
       }
       await axios.post(window.location.origin + '/auth/gnapNotify', body)
+      $q.notify({
+        message: 'Email sent to ' + email,
+        color: 'primary',
+        actions: [
+          { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+        ]
+      })
       if (state.click_origin === '') {
         emit('close')
       } else {

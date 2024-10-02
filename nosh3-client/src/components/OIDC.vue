@@ -220,7 +220,6 @@ export default defineComponent({
               try {
                 const oidc_response = await axios.get(oidc_url, opts)
                 const rows = []
-                console.log(oidc_response.data)
                 for (const c2 of oidc_response.data.entry) {
                   if (c2.resource.resourceType === Case.pascal(pluralize.singular(c.resource))) {
                     rows.push(c2.resource)
@@ -249,11 +248,12 @@ export default defineComponent({
             const opts1 = {headers: { Authorization: 'Bearer ' + state.access_token}}
             try {
               const oidc_response1 = await axios.get(oidc_url1, opts1)
-              console.log(oidc_response1.data)
               const log_id = uuidv4()
-              localStorage.setItem('oidc_log_' + log_id + '_token', state.access_token)
-              localStorage.setItem('oidc_log_' + log_id + '_url', oidc_url1)
-              localStorage.setItem('oidc_log_' + log_id + '_response', oidc_response1.data)
+              localStorage.setItem('oidc_log_' + log_id , JSON.stringify({
+                token: state.access_token,
+                url: oidc_url1,
+                response: oidc_response1.data
+              }) )
               if (d.label !== 'Summary') {
                 const rows1 = []
                 for (const d2 of oidc_response1.data.entry) {
