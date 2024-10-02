@@ -31,6 +31,7 @@ router.post('/gnapResource', gnapResource)
 router.post('/gnapResources', gnapResources)
 router.get('/gnapVerify/:patient', gnapVerify)
 router.post('/gnapNotify', gnapNotify)
+router.post('/gnapMail', gnapMail)
 
 router.post('/pinCheck', pinCheck)
 router.post('/pinClear', pinClear)
@@ -168,7 +169,6 @@ async function gnapAuth(req, res) {
   if (!pin) {
     res.status(401).send('Unauthorized - No PIN set')
   } else {
-    // await couchdbUpdate(req.body.patient, req.protocol, req.hostname)
     const body = {
       "access_token": {
         "access": [
@@ -219,6 +219,58 @@ async function gnapNotify(req, res) {
       const signedRequest = await signRequest(body, urlFix(process.env.TRUSTEE_URL) + 'api/as/notify', req.body.method, req, req.body.jwt)
       try {
         const update = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/notify', signedRequest)
+          .then((res) => {
+            console.log(res)
+            if (res.status > 400 && res.status < 600) { 
+              return {error: res}
+            } else {
+              return res.json()
+            }
+          })
+        res.status(200).json(update)
+      } catch (e) {
+        console.log(e)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  } else {
+    res.status(401).send('Unauthorized - feature not available')
+  }
+}
+
+async function gnapMail(req, res) {
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    const body = {
+      "to": req.body.to,
+      "from": req.body.from,
+      "from_email": req.body.from_email,
+      "subject": req.body.subject,
+      "title": req.body.title,
+      "previewtext": req.body.previewtext,
+      "paragraphtext": req.body.paragraphtext,
+      "paragraphtext2": req.body.paragraphtext2,
+      "link": req.body.link,
+      "buttonstyle": req.body.buttonstyle,
+      "buttontext": req.body.buttontext
+    }
+    // const body = {
+    //   to: 'email@address.com',
+    //   from: '',
+    //   from_email: 'email@address.com',
+    //   subject: '',
+    //   title: '',
+    //   previewtext: '',
+    //   paragraphtext: '',
+    //   paragraphtext2: '',
+    //   link: 'https://example.com',
+    //   buttonstyle: 'display:block' || 'display:none',
+    //   buttontext: ''
+    // }
+    try {
+      const signedRequest = await signRequest(body, urlFix(process.env.TRUSTEE_URL) + 'api/as/sendmail', req.body.method, req, req.body.jwt)
+      try {
+        const update = await fetch(urlFix(process.env.TRUSTEE_URL) + 'api/as/sendmail', signedRequest)
           .then((res) => {
             console.log(res)
             if (res.status > 400 && res.status < 600) { 

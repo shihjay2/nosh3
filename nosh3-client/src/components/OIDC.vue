@@ -249,6 +249,7 @@ export default defineComponent({
             const opts1 = {headers: { Authorization: 'Bearer ' + state.access_token}}
             try {
               const oidc_response1 = await axios.get(oidc_url1, opts1)
+              console.log(oidc_response1.data)
               if (d.label !== 'Summary') {
                 const rows1 = []
                 for (const d2 of oidc_response1.data.entry) {
