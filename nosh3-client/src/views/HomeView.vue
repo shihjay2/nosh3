@@ -71,6 +71,7 @@
           <QMenuTemplate
             v-if="state.showMenu"
             @open-activities="openActivities"
+            @open-insurance="openInsurance"
             @open-list="openList"
             @open-page="openPage"
             @open-qr-reader="openQRReader"
@@ -508,6 +509,24 @@
       @close-activities="closeActivities"
     />
   </q-dialog>
+  <q-dialog v-model="state.showInsurance" persistent position="top" full-width full-height seamless>
+    <q-card>
+      <q-card-section>
+        <h6>Coverage:</h6>
+        <textarea id="coverage_preview" v-model="state.fhir_coverage" rows="20" cols="80" class="bg-grey-9 text-white"></textarea>
+      </q-card-section>
+      <q-card-section>
+        <h6>Explanation Of Benefit:</h6>
+        <textarea id="eob_preview" v-model="state.fhir_eob" rows="20" cols="80" class="bg-grey-9 text-white"></textarea>
+      </q-card-section>
+      <q-separator />
+      <q-card-actions align="right">
+        <div class="q-pa-sm q-gutter-sm">
+          <q-btn push icon="cancel" color="red" @click="closeInsurance" label="Close" />
+        </div>
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
   <q-dialog v-model="state.qr">
     <q-card style="width: 300px">
       <div class="q-pa-md q-gutter-md">
@@ -899,7 +918,10 @@ export default defineComponent({
           "placeholder": "https://example.com",
           "rules": "required|url"
         }
-      ]
+      ],
+      showInsurance: false,
+      fhir_coverage: {},
+      fhir_eob: {}
     })
     const route = useRoute()
     const auth = useAuthStore()
@@ -1304,6 +1326,9 @@ export default defineComponent({
     }
     const closeImmunizationSchedule = () => {
       state.showImmunizationSchedule = false
+    }
+    const closeInsurance = () => {
+      state.showInsurance = false
     }
     const closeList = () => {
       state.showList = false
@@ -1906,6 +1931,11 @@ export default defineComponent({
     }
     const openImmunizationSchedule = () => {
       state.showImmunizationSchedule = true
+    }
+    const openInsurance = () => {
+      state.fhir_coverage = auth.coverage
+      state.fhir_eob = auth.eob
+      state.showInsurance = true
     }
     const openLink = (url) => {
       state.patientSearch = ''
@@ -2575,6 +2605,7 @@ export default defineComponent({
       closeForm,
       closeGraph,
       closeImmunizationSchedule,
+      closeInsurance,
       closeList,
       closePage,
       closePulldown,
@@ -2613,6 +2644,7 @@ export default defineComponent({
       openForm,
       openGraph,
       openImmunizationSchedule,
+      openInsurance,
       openLink,
       openList,
       openOIDC,

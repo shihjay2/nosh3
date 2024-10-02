@@ -49,6 +49,14 @@
           <q-icon color="primary" style="font-size: 1.5em" name="share" />
         </q-item-section>
       </q-item>
+      <q-item v-if="state.type == 'pnosh' && state.user.role == 'patient'" dense clickable @click="openInsurance()">
+        <q-item-section>
+          <q-item-label>Insurance</q-item-label>
+        </q-item-section>
+        <q-item-section avatar>
+          <q-icon color="primary" style="font-size: 1.5em" name="account_balance" />
+        </q-item-section>
+      </q-item>
       <q-item v-if="state.patient !== ''" dense clickable @click="openActivity()">
         <q-item-section>
           <q-item-label>Activity</q-item-label>
@@ -101,7 +109,7 @@ export default defineComponent({
     },
     type: String
   },
-  emits: ['open-activities', 'open-list', 'open-page', 'open-schedule', 'open-share', 'set-maia', 'stop-inbox-timer'],
+  emits: ['open-activities', 'open-insurance', 'open-list', 'open-page', 'open-schedule', 'open-share', 'set-maia', 'stop-inbox-timer'],
   setup (props, { emit }) {
     const auth = useAuthStore()
     const { eventAdd } = common()
@@ -152,6 +160,9 @@ export default defineComponent({
     const openActivity = () => {
       emit('open-activities')
     }
+    const openInsurance = () => {
+      emit('open-insurance')
+    }
     const openMAIA = () => {
       window.open(state.maia)
     }
@@ -171,6 +182,7 @@ export default defineComponent({
       logout,
       open,
       openActivity,
+      openInsurance,
       openMAIA,
       openQRReader,
       openSchedule,

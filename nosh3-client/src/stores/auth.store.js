@@ -22,7 +22,9 @@ export const useAuthStore = defineStore({
     message: null,
     init_sync: false,
     maia: null,
-    maia_alt: null
+    maia_alt: null,
+    coverage: [],
+    eob: []
   }),
   persist: true,
   actions: {
@@ -99,6 +101,12 @@ export const useAuthStore = defineStore({
     },
     clearMAIA() {
       this.maia_alt = null
+    },
+    setCoverage(coverage) {
+      this.coverage = coverage
+    },
+    setEOB(eob) {
+      this.eob = eob
     }
   }
 })

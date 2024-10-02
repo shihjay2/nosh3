@@ -239,24 +239,35 @@ export default defineComponent({
         } else {
           const cms_resources = [
             {label: 'Summary', path: 'v1/connect/userinfo'},
-            {label: 'EOB', path: 'v1/fhir/ExplanationOfBenefit/?patient=' + state.patient, resource: 'ExplanationOfBenefit'},
-            {label: 'Coverage', path: 'v1/fhir/Coverage/?patient=' + state.patient, resource: 'Coverage'}
+            {label: 'EOB', path: 'v1/fhir/ExplanationOfBenefit/?patient=', resource: 'ExplanationOfBenefit'},
+            {label: 'Coverage', path: 'v1/fhir/Coverage/?patient=', resource: 'Coverage'}
           ]
           let d1 = 0
+          let cms_patient = ''
           for (const d of cms_resources) {
             const oidc_url1 = localStorage.getItem('oidc_url') + d.path
             const opts1 = {headers: { Authorization: 'Bearer ' + state.access_token}}
             const log_id = uuidv4()
             try {
-              const oidc_response1 = await axios.get(oidc_url1, opts1)
+              const oidc_response1 = await axios.get(oidc_url1 + cms_patient, opts1)
               localStorage.setItem('oidc_log_' + log_id , JSON.stringify({
                 token: state.access_token,
                 url: oidc_url1,
                 response: oidc_response1.data
               }) )
               if (d.label !== 'Summary') {
+                const coverage_arr = auth.coverage
+                const eob_arr = auth.eob
                 const rows1 = []
                 for (const d2 of oidc_response1.data.entry) {
+                  if (d.label === 'Coverage') {
+                    coverage_arr.push(d2.resource)
+                    auth.setCoverage(coverage_arr)
+                  }
+                  if (d.label === 'EOB') {
+                    eob_arr.push(d2.resource)
+                    auth.setEOB(eob_arr)
+                  }
                   if (d2.resource.resourceType === d.resource) {
                     rows1.push(d2.resource)
                   }
@@ -268,6 +279,7 @@ export default defineComponent({
                 objectPath.set(state, 'oidc.docs.' + d1, docs1)
                 d1++
               } else {
+                cms_patient = oidc_response1.data.patient
                 const docs1 = {
                   resource: d.label,
                   rows: oidc_response1.data
