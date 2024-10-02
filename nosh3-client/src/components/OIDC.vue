@@ -245,7 +245,7 @@ export default defineComponent({
           ]
           let d1 = 0
           for (const d of cms_resources) {
-            const oidc_url1 = state.base_url + d.path
+            const oidc_url1 = localStorage.getItem('oidc_url') + d.path
             const opts1 = {headers: { Authorization: 'Bearer ' + state.access_token}}
             try {
               const oidc_response1 = await axios.get(oidc_url1, opts1)
