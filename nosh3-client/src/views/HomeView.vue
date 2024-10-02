@@ -511,14 +511,16 @@
   </q-dialog>
   <q-dialog v-model="state.showInsurance" persistent position="top" full-width full-height seamless>
     <q-card>
-      <q-card-section>
-        <h6>Coverage:</h6>
-        <textarea id="coverage_preview" v-model="state.fhir_coverage" rows="20" cols="80" class="bg-grey-9 text-white"></textarea>
-      </q-card-section>
-      <q-card-section>
-        <h6>Explanation Of Benefit:</h6>
-        <textarea id="eob_preview" v-model="state.fhir_eob" rows="20" cols="80" class="bg-grey-9 text-white"></textarea>
-      </q-card-section>
+      <q-expansion-item expand-separator icon="credit_card" label="Coverage">
+        <q-card-section>
+          <textarea id="coverage_preview" v-model="state.fhir_coverage" rows="20" cols="80" class="bg-grey-9 text-white"></textarea>
+        </q-card-section>
+      </q-expansion-item>
+      <q-expansion-item expand-separator icon="receipt_long" label="Explanation Of Benefit">
+        <q-card-section>
+          <textarea id="eob_preview" v-model="state.fhir_eob" rows="20" cols="80" class="bg-grey-9 text-white"></textarea>
+        </q-card-section>
+      </q-expansion-item>
       <q-separator />
       <q-card-actions align="right">
         <div class="q-pa-sm q-gutter-sm">
@@ -2706,5 +2708,11 @@ export default defineComponent({
   font-size: 30px;
   text-shadow: 4px 4px 4px #aaa;
   vertical-align: middle;
+}
+#eob_preview {
+  font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+}
+#coverage_preview {
+  font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
 }
 </style>
