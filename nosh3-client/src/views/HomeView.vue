@@ -524,6 +524,7 @@
       <q-separator />
       <q-card-actions align="right">
         <div class="q-pa-sm q-gutter-sm">
+          <q-btn push icon="delete" color="primary" @click="clearInsurance" label="Clear" />
           <q-btn push icon="cancel" color="red" @click="closeInsurance" label="Close" />
         </div>
       </q-card-actions>
@@ -1138,6 +1139,10 @@ export default defineComponent({
     }
     const clearDefault = () => {
       state.default = {}
+    }
+    const clearInsurance = () => {
+      auth.clearCoverage()
+      auth.clearEOB()
     }
     const clearSync = () => {
       state.oidc = []
@@ -2599,6 +2604,7 @@ export default defineComponent({
       checkOnline,
       clearAll,
       clearDefault,
+      clearInsurance,
       clearSync,
       closeActivities,
       closeAll,

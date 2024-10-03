@@ -107,6 +107,12 @@ export const useAuthStore = defineStore({
     },
     setEOB(eob) {
       this.eob = eob
+    },
+    clearCoverage() {
+      this.coverage = []
+    },
+    clearEOB() {
+      this.eob = []
     }
   }
 })
