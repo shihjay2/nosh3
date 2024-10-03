@@ -1143,6 +1143,9 @@ export default defineComponent({
     const clearInsurance = () => {
       auth.clearCoverage()
       auth.clearEOB()
+      state.fhir_coverage = JSON.stringify(auth.coverage, null, "  ")
+      state.fhir_eob = JSON.stringify(auth.eob, null, "  ")
+      state.showInsurance = false
     }
     const clearSync = () => {
       state.oidc = []
