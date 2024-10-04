@@ -1027,6 +1027,8 @@ export default defineComponent({
               } else {
                 state.showTimelineParent = true
                 state.showTimeline = true
+                updateToolbar({type: 'timeline'})
+                state.toolbar = true
                 if (auth.oidc !== null) {
                   state.oidc = auth.oidc
                 }
@@ -1100,6 +1102,8 @@ export default defineComponent({
       } else {
         state.searchResults = false
         state.showTimeline = true
+        updateToolbar({type: 'timeline'})
+        state.toolbar = true
         await loadTimeline()
       }
     })
@@ -1224,9 +1228,13 @@ export default defineComponent({
           await refreshPatient()
           state.showTimelineParent = true
           state.showTimeline = true
+          updateToolbar({type: 'timeline'})
+          state.toolbar = true
         } else {
           state.showTimelineParent = true
           state.showTimeline = true
+          updateToolbar({type: 'timeline'})
+          state.toolbar = true
         }
       } else if (state.showList == true) {
         closeAll()
@@ -1235,6 +1243,8 @@ export default defineComponent({
         }
         state.showTimelineParent = true
         state.showTimeline = true
+        updateToolbar({type: 'timeline'})
+        state.toolbar = true
       } else {
         // coming from a form or file component
         closeAll()
@@ -1250,6 +1260,8 @@ export default defineComponent({
         } else {
           state.showTimelineParent = true
           state.showTimeline = true
+          updateToolbar({type: 'timeline'})
+          state.toolbar = true
         }
       }
     }
@@ -1381,6 +1393,8 @@ export default defineComponent({
       state.showList = false
       state.showTimelineParent = true
       state.showTimeline = true
+      updateToolbar({type: 'timeline'})
+      state.toolbar = true
     }
     const closeOIDCComplete = () => {
       state.showOIDCComplete = false
@@ -1389,6 +1403,8 @@ export default defineComponent({
       state.showPage = false
       state.showTimelineParent = true
       state.showTimeline = true
+      updateToolbar({type: 'timeline'})
+      state.toolbar = true
     }
     const closePulldown = async(id = '') => {
       state.pulldown_title = ''

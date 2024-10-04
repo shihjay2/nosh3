@@ -15,7 +15,7 @@
   <q-btn v-if="state.relatedPersons" push flat round icon="groups" clickable @click="openRelatedPersons">
     <q-tooltip>Related Persons</q-tooltip>
   </q-btn>
-  <q-btn v-if="state.resource == 'document_references' && state.maia !== ''" push flat round icon="smart_toy" clickable @click="openMAIA">
+  <q-btn v-if="state.maiaEnable && state.maia !== ''" push flat round icon="smart_toy" clickable @click="openMAIA">
     <q-tooltip>Launch MAIA</q-tooltip>
   </q-btn>
   <q-btn v-if="state.resource == 'medication_statements' && state.provider" push flat round icon="local_pharmacy" clickable @click="newPrescription">
@@ -57,7 +57,7 @@
   <q-btn v-if="state.oidc" push flat round icon="delete_sweep" clickable @click="clearAll()">
     <q-tooltip>Clear Everything</q-tooltip>
   </q-btn>
-  <q-btn push flat round icon="close" clickable @click="closeContainer()">
+  <q-btn v-if="!state.timeline" push flat round icon="close" clickable @click="closeContainer()">
     <q-tooltip>Close</q-tooltip>
   </q-btn>
 </template>
@@ -119,7 +119,9 @@ export default defineComponent({
       form: false,
       oidc: false,
       status: '',
-      maia: ''
+      maia: '',
+      timeline: false,
+      maiaEnable: false
     })
     onMounted(async() => {
       const resources = await fetchJSON('resources', props.online)
@@ -237,6 +239,8 @@ export default defineComponent({
       state.chat = false
       state.oidc = false
       state.encounterSign = false
+      state.timeline = false
+      state.maiaEnable = false
       state.resource = ''
       state.category = ''
       state.encounter = ''
@@ -253,6 +257,11 @@ export default defineComponent({
         state.oidc = true
         state.titleResource = 'Sync from EPIC and CMS Bluebutton'
         state.iconResource = 'sync'
+      } else if (toolbar.type === 'timeline') {
+        state.titleResource = 'Timeline'
+        state.iconResource = 'timeline'
+        state.timeline = true
+        state.maiaEnable = true
       } else {
         state.base = await import('@/assets/fhir/' + toolbar.resource + '.json')
         if (typeof state.base.pageOpen !== 'undefined') {
@@ -331,6 +340,9 @@ export default defineComponent({
         }
         if (toolbar.resource === 'patients') {
           state.relatedPersons = true
+        }
+        if (toolbar.resource === 'document_references') {
+          state.maiaEnable = true
         }
       }
     }
