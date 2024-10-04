@@ -681,14 +681,20 @@
       <q-card-section>
         <div class="text-center">Resources have been synced from {{ state.lastOIDC }}.  Your next step is to pick from these 2 options:</div>
       </q-card-section>
-        <q-btn push icon="playlist_add" color="primary" label="Import Everything" clickable @click="importAll" />
       <q-card-section>
-        or
+        <div class="text-center">
+          <q-btn push icon="playlist_add" color="primary" label="Import Everything" clickable @click="importAll" />
+        </div>
       </q-card-section>
       <q-card-section>
-        <p>Individually review each resource on the left chart pane.</p>
-        <p>Those resources with the <q-badge rounded color="warning" label="Yellow Badge Numbers"/> will show those that can be reviewed before <q-btn flat round color="teal" icon="import_export" label="Import"/></p>
-        <q-btn push icon="add" color="primary" label="Import Individually" clickable @click="closeOIDCComplete" />
+        <div class="text-center">or</div>
+      </q-card-section>
+      <q-card-section>
+        <div class="text-center">
+          <p>Individually review each resource on the left chart pane.</p>
+          <p>Those resources with the <q-badge rounded color="warning" label="Yellow Badge Numbers"/> will show those that can be reviewed before importing by clicking on the <q-btn flat round color="teal" icon="import_export"/> button.</p>
+          <q-btn push icon="add" color="primary" label="Import Individually" clickable @click="closeOIDCComplete" />
+        </div>
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -2280,7 +2286,7 @@ export default defineComponent({
             { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
           ]
         })
-        state.lastOIDC = auth.last_oidc
+        state.lastOIDC = auth.last_oidc + " Synthetic Records"
         state.showOIDCComplete = true
         auth.clearLastOIDC()
       }
