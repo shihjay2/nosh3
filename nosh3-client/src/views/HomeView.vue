@@ -691,8 +691,9 @@
       </q-card-section>
       <q-card-section>
         <div class="text-center">
-          <p>Individually review each resource on the left chart pane.</p>
-          <p>Those resources with the <q-badge rounded color="warning" label="Yellow Badge Numbers"/> will show those that can be reviewed before importing by clicking on the <q-btn flat round color="teal" icon="import_export"/> button.</p>
+          <p>Review each resource on the left chart pane with the <q-badge rounded color="warning" label="Yellow Badge Numbers"/>.</p>
+          <p>Review each resource entry indicated by <q-chip icon="local_fire_department" color="red" text-color="white">Import from {{ state.lastOIDC }}</q-chip>.</p>
+          <p>Import each resource entry by clicking on the <q-btn flat round color="teal" icon="import_export"/> button.</p>
           <q-btn push icon="add" color="primary" label="Import Individually" clickable @click="closeOIDCComplete" />
         </div>
       </q-card-section>
@@ -2286,7 +2287,7 @@ export default defineComponent({
             { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
           ]
         })
-        state.lastOIDC = auth.last_oidc + " Synthetic Records"
+        state.lastOIDC = auth.last_oidc
         state.showOIDCComplete = true
         auth.clearLastOIDC()
       }
