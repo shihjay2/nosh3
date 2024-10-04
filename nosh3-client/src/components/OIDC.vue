@@ -159,7 +159,7 @@ export default defineComponent({
           window.location.href = auth.api.oidc_relay_url + '/oidc_relay_start/' + oidc_state
         } else {
           objectPath.set(state, 'oidc.origin', name + ' Synthetic Records')
-          auth.setLastOIDC(name)
+          auth.setLastOIDC(name + ' Synthetic Records')
           try {
             emit('loading')
             const oidc_response2 = await axios.get(type)
