@@ -214,25 +214,27 @@ export default defineComponent({
           state.resources = resources.rows
           let c1 = 0
           for (const c of resources.rows) {
-            if (c.resource !== 'patients') {
-              const oidc_url = localStorage.getItem('oidc_url') + Case.pascal(pluralize.singular(c.resource)) + '?patient=' + state.patient_token
-              const opts = {headers: {Authorization: 'Bearer ' + state.access_token, Accept: 'application/json'}}
-              try {
-                const oidc_response = await axios.get(oidc_url, opts)
-                const rows = []
-                for (const c2 of oidc_response.data.entry) {
-                  if (c2.resource.resourceType === Case.pascal(pluralize.singular(c.resource))) {
-                    rows.push(c2.resource)
+            if (c.fhir) {
+              if (c.resource !== 'patients') {
+                const oidc_url = localStorage.getItem('oidc_url') + Case.pascal(pluralize.singular(c.resource)) + '?patient=' + state.patient_token
+                const opts = {headers: {Authorization: 'Bearer ' + state.access_token, Accept: 'application/json'}}
+                try {
+                  const oidc_response = await axios.get(oidc_url, opts)
+                  const rows = []
+                  for (const c2 of oidc_response.data.entry) {
+                    if (c2.resource.resourceType === Case.pascal(pluralize.singular(c.resource))) {
+                      rows.push(c2.resource)
+                    }
                   }
+                  const docs = {
+                    resource: c.resource,
+                    rows: rows
+                  }
+                  objectPath.set(state, 'oidc.docs.' + c1, docs)
+                  c1++
+                } catch (e) {
+                  console.log(e)
                 }
-                const docs = {
-                  resource: c.resource,
-                  rows: rows
-                }
-                objectPath.set(state, 'oidc.docs.' + c1, docs)
-                c1++
-              } catch (e) {
-                console.log(e)
               }
             }
           }

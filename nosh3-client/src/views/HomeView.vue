@@ -656,6 +656,14 @@
               <q-icon color="primary" style="font-size: 1.5em" name="local_fire_department" />
             </q-item-section>
           </q-item>
+          <q-item clickable @click="openDebug()">
+            <q-item-section>
+              <q-item-label>Imported FHIR Debug File</q-item-label>
+            </q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" style="font-size: 1.5em" name="adb" />
+            </q-item-section>
+          </q-item>
           <q-item clickable @click="loadMarkdown()">
             <q-item-section>
               <q-item-label>Markdown</q-item-label>
@@ -1831,6 +1839,9 @@ export default defineComponent({
       state.toolbar = true
       state.showChat = true
     }
+    const openDebug = () => {
+      download(JSON.stringify(state.oidc, null, 2), 'fhir_debug.json', 'application/json')
+    }
     const openDetail = () => {
       state.openDetail = true
     }
@@ -2648,6 +2659,7 @@ export default defineComponent({
       openCareOpportunities,
       openChart,
       openChat,
+      openDebug,
       openDetail,
       openDetailComplete,
       openDump,
