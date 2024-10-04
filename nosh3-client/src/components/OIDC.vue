@@ -159,6 +159,7 @@ export default defineComponent({
           window.location.href = auth.api.oidc_relay_url + '/oidc_relay_start/' + oidc_state
         } else {
           objectPath.set(state, 'oidc.origin', name)
+          auth.setLastOIDC(name)
           try {
             emit('loading')
             const oidc_response2 = await axios.get(type)
@@ -193,6 +194,7 @@ export default defineComponent({
         }
       } else {
         objectPath.set(state, 'oidc.origin', name)
+        auth.setLastOIDC(name)
         const relay_url1 = auth.api.oidc_relay_url + '/oidc_relay/' + localStorage.getItem('oidc_state')
         const response1 = await axios.post(window.location.origin + '/oidc', {url: relay_url1})
         localStorage.setItem('oidc_access_token', response1.data.access_token)

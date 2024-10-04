@@ -676,6 +676,22 @@
       </q-card-section>
     </q-card>
   </q-dialog>
+  <q-dialog v-model="state.showOIDCComplete">
+    <q-card>
+      <q-card-section>
+        <div class="text-center">Resources have been synced from {{ state.lastOIDC }}.  Your next step is to pick from these 2 options:</div>
+      </q-card-section>
+        <q-btn push icon="playlist_add" color="primary" label="Import Everything" clickable @click="importAll" />
+      <q-card-section>
+        or
+      </q-card-section>
+      <q-card-section>
+        <p>Individually review each resource on the left chart pane.</p>
+        <p>Those resources with the <q-badge rounded color="warning" label="Yellow Badge Numbers"/> will show those that can be reviewed before <q-btn flat round color="teal" icon="import_export" label="Import"/></p>
+        <q-btn push icon="add" color="primary" label="Import Individually" clickable @click="closeOIDCComplete" />
+      </q-card-section>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script>
@@ -884,6 +900,7 @@ export default defineComponent({
       graphType: '',
       // oidc
       showOIDC: false,
+      showOIDCComplete: false,
       oidc: [],
       oidc_type: '',
       oidc_name: '',
@@ -1036,6 +1053,11 @@ export default defineComponent({
       })
       if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
         await pinCheck()
+      }
+      if (auth.last_oidc !== null) {
+        state.lastOIDC = auth.last_oidc
+        state.showOIDCComplete = true
+        auth.clearLastOIDC()
       }
       if (!auth.init_sync) {
         await syncProcess()
@@ -1353,6 +1375,9 @@ export default defineComponent({
       state.showTimelineParent = true
       state.showTimeline = true
     }
+    const closeOIDCComplete = () => {
+      state.showOIDCComplete = false
+    }
     const closePage = () => {
       state.showPage = false
       state.showTimelineParent = true
@@ -1416,6 +1441,7 @@ export default defineComponent({
       patientSearch.value.focus()
     }
     const importAll = async() => {
+      state.showOIDCComplete = false
       state.loading = true
       state.sync_on = true
       const oidc = state.oidc
@@ -2254,6 +2280,9 @@ export default defineComponent({
             { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
           ]
         })
+        state.lastOIDC = auth.last_oidc
+        state.showOIDCComplete = true
+        auth.clearLastOIDC()
       }
     }
     const setActiveCarePlan = (doc) => {
@@ -2629,6 +2658,7 @@ export default defineComponent({
       closeImmunizationSchedule,
       closeInsurance,
       closeList,
+      closeOIDCComplete,
       closePage,
       closePulldown,
       closeTrustee,
