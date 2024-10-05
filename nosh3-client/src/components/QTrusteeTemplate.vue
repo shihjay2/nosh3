@@ -461,7 +461,7 @@ export default defineComponent({
           state.schemaAdd.push({
             "id": "restrict",
             "label": "Select Resources for Access",
-            "model": "access",
+            "model": "restrict",
             "type": "select",
             "multiple": true,
             "options": state.options,
