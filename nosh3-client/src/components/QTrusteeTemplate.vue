@@ -355,22 +355,42 @@ export default defineComponent({
       if (access !== 'restrict') {
         const arr_access = access.split(',')
         await addAllResources(email, arr_access)
+        const index = state.rows.findIndex((resource) => resource.type === 'App')
+        const body = {
+          method: 'POST',
+          jwt: auth.gnap_jwt,
+          to: email,
+          from: state.user.display,
+          from_email: state.user.email,
+          access: arr_access,
+          url: state.rows[index].locations[0]
+        }
+        await axios.post(window.location.origin + '/auth/gnapNotify', body)
       } else {
         if (restrict.length > 0) {
           await addResources(email, restrict)
+          let message = state.user.display + ' (' + state.user.email + ') has invited you to the following health record and resources:<ul>'
+          for (const restrict_index of restrict) {
+            message += '<li>' + state.rows[restrict_index].type + '[' + state.rows[restrict_index].actions.join(', ') + '], <a href="' + state.rows[restrict_index].locations[0] + '" target="_blank">' + state.rows[restrict_index].locations[0] + '</a></li>'
+          }
+          message += '</ul>'
+          const body = {
+            method: 'POST',
+            jwt: auth.gnap_jwt,
+            to: email,
+            from: state.user.display,
+            from_email: state.user.email,
+            title: 'HIE of One - Health Record Shared With You',
+            previewtext: 'HIE of One - Health Record Shared With You',
+            paragraphtext: '<h3>' + state.user.display + ' shared a health record resources:</h3>' + message,
+            paragraphtext2: '',
+            link: '',
+            buttonstyle: 'display:none',
+            buttontext: ''
+          }
+          await axios.post(window.location.origin + '/auth/gnapMail', body)
         }
       }
-      const index = state.rows.findIndex((resource) => resource.type === 'App')
-      const body = {
-        method: 'POST',
-        jwt: auth.gnap_jwt,
-        to: email,
-        from: state.user.display,
-        from_email: state.user.email,
-        access: arr_access,
-        url: state.rows[index].locations[0]
-      }
-      await axios.post(window.location.origin + '/auth/gnapNotify', body)
       $q.notify({
         message: 'Email sent to ' + email,
         color: 'primary',
@@ -468,6 +488,8 @@ export default defineComponent({
             "options": state.options,
             "rules": "required"
           })
+          const index = state.rows.findIndex((resource) => resource.type === 'App')
+          updateValue([index], restrict)
         } else {
           if (objectPath.has(state, 'schemaAdd.2')) {
             objectPath.del(state, 'schemaAdd.2')
