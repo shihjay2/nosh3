@@ -176,12 +176,14 @@ export default defineComponent({
           "type": "select",
           "options": [
             {"value": "read,write,delete", "label": "Read, Write, Delete"},
-            {"value": "read", "label": "Read Only"}
+            {"value": "read", "label": "Read Only"},
+            {"value": "restrict", "label": "Restrict Some Resources"}
           ],
           "rules": "required"
         }
       ],
-      formAdd: {}
+      formAdd: {},
+      options: []
     })
     onMounted(async() => {
       emit('loading')
@@ -259,6 +261,28 @@ export default defineComponent({
         state.email_show_index = row_index
       }
     }
+    const addResources = async(email, row_indexes) => {
+      let i = 0
+      for (const row_index of row_indexes) {
+        const privileges = objectPath.get(state, 'rows.' + row_index + '.privileges')
+        privileges.push(email)
+        objectPath.set(state, 'rows.' + row_index + '.privileges', privileges)
+        const body = {
+          resource: objectPath.get(state, 'rows.' + row_index),
+          method: 'PUT',
+          jwt: auth.gnap_jwt
+        }
+        await axios.post(window.location.origin + '/auth/gnapResource', body)
+        const counter = Number(i) + 1
+        $q.notify({
+          message: counter + '/' + row_indexes.length + ': Privileges updated for ' + objectPath.get(state, 'rows.' + row_index + '.type'),
+          color: 'primary',
+          actions: [
+            { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+          ]
+        })
+      }
+    }
     const addUser = (origin) => {
       state.view = 'add'
       state.click_origin = origin
@@ -266,6 +290,8 @@ export default defineComponent({
     }
     const calcUsers = () => {
       const users = []
+      const options = []
+      let i = 0
       for (const resource of state.rows) {
         for (const privilege of objectPath.get(resource, 'privileges')) {
           if (privilege.indexOf('@') > -1) {
@@ -285,8 +311,14 @@ export default defineComponent({
             }
           }
         }
+        options.push({
+          "value": i,
+          "label": resource.type + " [" + resource.access.join(', ') + "]"
+        })
+        i++
       }
       state.user_rows = users
+      state.options = options
     }
     const clickPrivilege = async(row_index, value) => {
       const privileges = objectPath.get(state, 'rows.' + row_index + '.privileges')
@@ -318,9 +350,15 @@ export default defineComponent({
       }
     }
     const onSubmitAdd = async(values) => {
-      const { email, access } = values
-      const arr_access = access.split(',')
-      await addAllResources(email, arr_access)
+      const { email, access, restrict } = values
+      if (access !== 'restrict') {
+        const arr_access = access.split(',')
+        await addAllResources(email, arr_access)
+      } else {
+        if (restrict.length > 0) {
+          await addResources(email, restrict)
+        }
+      }
       const index = state.rows.findIndex((resource) => resource.type === 'App')
       const body = {
         method: 'POST',
@@ -418,6 +456,21 @@ export default defineComponent({
     }
     const updateValue = (val, field, type) => {
       state.formAdd[field] = val
+      if (val === 'restrict') {
+        state.schemaAdd.push({
+          "id": "restrict",
+          "label": "Select Resources for Access",
+          "model": "access",
+          "type": "select",
+          "multiple": true,
+          "options": state.options,
+          "rules": "required"
+        })
+      } else {
+        if (objectPath.has(state, 'schemaAdd.2')) {
+          objectPath.del(state, 'schemaAdd.2')
+        }
+      }
     }
     const validate = (inputText) => {
       const emailRegex = new RegExp(/^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/, "gm");
@@ -426,6 +479,7 @@ export default defineComponent({
     return {
       addAllResources,
       addPrivilege,
+      addResources,
       addUser,
       calcUsers,
       clickPrivilege,
