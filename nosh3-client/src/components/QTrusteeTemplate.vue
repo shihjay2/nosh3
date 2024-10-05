@@ -489,7 +489,7 @@ export default defineComponent({
             "rules": "required"
           })
           const index = state.rows.findIndex((resource) => resource.type === 'App')
-          updateValue([index], restrict)
+          updateValue([index], 'restrict')
         } else {
           if (objectPath.has(state, 'schemaAdd.2')) {
             objectPath.del(state, 'schemaAdd.2')
