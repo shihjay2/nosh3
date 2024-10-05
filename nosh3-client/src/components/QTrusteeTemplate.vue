@@ -262,6 +262,7 @@ export default defineComponent({
     const addUser = (origin) => {
       state.view = 'add'
       state.click_origin = origin
+      updateValue('read,write,delete', 'access')
     }
     const calcUsers = () => {
       const users = []
