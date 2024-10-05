@@ -313,7 +313,7 @@ export default defineComponent({
         }
         options.push({
           "value": i,
-          "label": resource.type + " [" + resource.access.join(', ') + "]"
+          "label": resource.type + " [" + resource.actions.join(', ') + "]"
         })
         i++
       }
