@@ -456,19 +456,21 @@ export default defineComponent({
     }
     const updateValue = (val, field, type) => {
       state.formAdd[field] = val
-      if (val === 'restrict') {
-        state.schemaAdd.push({
-          "id": "restrict",
-          "label": "Select Resources for Access",
-          "model": "access",
-          "type": "select",
-          "multiple": true,
-          "options": state.options,
-          "rules": "required"
-        })
-      } else {
-        if (objectPath.has(state, 'schemaAdd.2')) {
-          objectPath.del(state, 'schemaAdd.2')
+      if (field !== 'restrict') {
+        if (val === 'restrict') {
+          state.schemaAdd.push({
+            "id": "restrict",
+            "label": "Select Resources for Access",
+            "model": "access",
+            "type": "select",
+            "multiple": true,
+            "options": state.options,
+            "rules": "required"
+          })
+        } else {
+          if (objectPath.has(state, 'schemaAdd.2')) {
+            objectPath.del(state, 'schemaAdd.2')
+          }
         }
       }
     }
