@@ -1063,7 +1063,7 @@ export default defineComponent({
       if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
         await pinCheck()
       }
-      if (auth.last_oidc !== null) {
+      if (auth.last_oidc !== null && route.query.oidc === undefined) {
         state.lastOIDC = auth.last_oidc
         state.showOIDCComplete = true
         auth.clearLastOIDC()
