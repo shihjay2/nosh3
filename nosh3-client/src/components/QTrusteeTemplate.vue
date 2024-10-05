@@ -113,6 +113,7 @@
               :placeholder="field.placeholder"
               :rules="field.rules"
               :options="field.options"
+              :multiple="field.multiple"
               focus="false"
             />
           </div>
