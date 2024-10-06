@@ -430,14 +430,24 @@ async function gnapVerify(req, res) {
                 if (verify_results.status === 'isValid') {
                   const location = urlFix(req.protocol + '://' + req.hostname + '/') + 'app/chart/' + req.params.patient
                   const introspect_result = await introspect(req, jwt, 'read', location)
+                  let name_obj = {}
                   if (objectPath.has(introspect_result, 'success')) {
                     if (objectPath.has(verify_results, 'payload.vc')) {
-                      const name_obj = getName(objectPath.get(verify_results, 'payload.vc'))
+                      name_obj = getName(objectPath.get(verify_results, 'payload.vc'))
                       objectPath.set(nosh, 'display', name_obj.display)
                       const npi = getNPI(objectPath.get(verify_results, 'payload.vc'))
                       if (npi !== '') {
                         objectPath.set(nosh, 'npi', getNPI(objectPath.get(verify_results, 'payload.vc')))
                         objectPath.set(nosh, 'role', 'provider')
+                      }
+                    } else {
+                      name_obj = {
+                        parsed: {
+                          last: 'Person',
+                          first: 'Guest',
+                          suffix: '',
+                          display: 'Guest Person'
+                        }
                       }
                     }
                     // if (objectPath.has(verify_results, 'payload.vp') && npi !== '') {
