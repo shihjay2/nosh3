@@ -997,7 +997,8 @@ export default defineComponent({
       state.default_med_category = 'outpatient'
       state.couchdb = auth.couchdb
       state.pin = auth.pin
-      const userDB = new PouchDB(prefix + 'users')
+      // const userDB = new PouchDB(prefix + 'users')
+      const userDB = new PouchDB(state.couchdb + prefix + 'users', state.auth)
       try {
         const user = await userDB.get(auth.user.id)
         const [ user_type ] = user.reference.split('/')
