@@ -15,10 +15,10 @@
   <q-btn v-if="state.relatedPersons" push flat round icon="groups" clickable @click="openRelatedPersons">
     <q-tooltip>Related Persons</q-tooltip>
   </q-btn>
-  <q-btn v-if="state.timeline" push flat round icon="policy" clickable @click="openTrustee('user')" color="orange" label="Share Record">
+  <q-btn v-if="state.timeline" push flat round icon="policy" clickable @click="openTrustee('user')" color="deep-orange">
     <q-tooltip>Share Record</q-tooltip>
   </q-btn>
-  <q-btn v-if="state.maiaEnable && state.maia !== ''" push flat round icon="smart_toy" clickable @click="openMAIA" color="orange" label="Launch Medical AI Assistant">
+  <q-btn v-if="state.maiaEnable && state.maia !== ''" push flat round icon="smart_toy" clickable @click="openMAIA" color="deep-orange">
     <q-tooltip>Launch MAIA</q-tooltip>
   </q-btn>
   <q-btn v-if="state.resource == 'medication_statements' && state.provider" push flat round icon="local_pharmacy" clickable @click="newPrescription">
