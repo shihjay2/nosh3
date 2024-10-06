@@ -383,7 +383,7 @@ export default defineComponent({
             subject: 'HIE of One - Health Record Shared With You',
             title: 'HIE of One - Health Record Shared With You',
             previewtext: 'HIE of One - Health Record Shared With You',
-            paragraphtext: btoa('<h3>' + state.user.display + ' shared a health record resources:</h3>' + message),
+            paragraphtext: btoa('<h3>' + state.user.display + ' shared some health record resources:</h3>' + message),
             paragraphtext2: '',
             link: '',
             buttonstyle: 'display:none',
