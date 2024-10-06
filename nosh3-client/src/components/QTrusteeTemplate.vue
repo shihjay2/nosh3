@@ -380,6 +380,7 @@ export default defineComponent({
             to: email,
             from: state.user.display,
             from_email: state.user.email,
+            subject: 'HIE of One - Health Record Shared With You',
             title: 'HIE of One - Health Record Shared With You',
             previewtext: 'HIE of One - Health Record Shared With You',
             paragraphtext: btoa('<h3>' + state.user.display + ' shared a health record resources:</h3>' + message),
