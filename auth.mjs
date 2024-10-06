@@ -445,9 +445,9 @@ async function gnapVerify(req, res) {
                         parsed: {
                           last: 'Person',
                           first: 'Guest',
-                          suffix: '',
-                          display: 'Guest Person'
-                        }
+                          suffix: ''
+                        },
+                        display: 'Guest Person'
                       }
                     }
                     // if (objectPath.has(verify_results, 'payload.vp') && npi !== '') {
