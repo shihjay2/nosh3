@@ -15,7 +15,7 @@
   <q-btn v-if="state.relatedPersons" push flat round icon="groups" clickable @click="openRelatedPersons">
     <q-tooltip>Related Persons</q-tooltip>
   </q-btn>
-  <q-btn v-if="state.timeline" push flat round icon="policy" clickable @click="openTrustee('user')" color="deep-orange">
+  <q-btn v-if="state.timeline && state.user.role === 'patient'" push flat round icon="policy" clickable @click="openTrustee('user')" color="deep-orange">
     <q-tooltip>Share Record</q-tooltip>
   </q-btn>
   <q-btn v-if="state.maiaEnable && state.maia !== ''" push flat round icon="smart_toy" clickable @click="openMAIA" color="deep-orange">
@@ -124,13 +124,15 @@ export default defineComponent({
       status: '',
       maia: '',
       timeline: false,
-      maiaEnable: false
+      maiaEnable: false,
+      user: {}
     })
     onMounted(async() => {
       const resources = await fetchJSON('resources', props.online)
       state.resources = resources.rows
       state.provider = props.provider
       state.patient = props.patient
+      state.user = props.user
       if (auth.maia_alt !== null) {
         state.maia = auth.maia_alt + "?uri=" + encodeURIComponent(location.protocol + '//' + location.host + '/api/' + state.patient + '/Timeline')
       } else {
