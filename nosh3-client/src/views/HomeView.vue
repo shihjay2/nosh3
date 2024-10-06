@@ -98,6 +98,7 @@
           @open-list="openList"
           @open-page="openPage"
           @open-page-form="openPageForm"
+          @open-trustee="openTrustee"
           @set-composition-section="setCompositionSection"
           @sign-encounter="signEncounter"
           @sort-alpha="sortAlpha"

@@ -15,6 +15,9 @@
   <q-btn v-if="state.relatedPersons" push flat round icon="groups" clickable @click="openRelatedPersons">
     <q-tooltip>Related Persons</q-tooltip>
   </q-btn>
+  <q-btn v-if="state.timeline" push flat round icon="policy" clickable @click="openTrustee('user')" color="orange" label="Share Record">
+    <q-tooltip>Share Record</q-tooltip>
+  </q-btn>
   <q-btn v-if="state.maiaEnable && state.maia !== ''" push flat round icon="smart_toy" clickable @click="openMAIA" color="orange" label="Launch Medical AI Assistant">
     <q-tooltip>Launch MAIA</q-tooltip>
   </q-btn>
@@ -85,7 +88,7 @@ export default defineComponent({
   directives: {
     print
   },
-  emits: ['addendum-encounter', 'clear-all', 'clear-sync', 'close-container', 'dump-sync', 'import-all', 'lock-thread', 'new-prescription', 'open-chat', 'open-detail', 'open-form', 'open-file', 'open-immunizationschedule', 'open-list', 'open-page', 'open-page-form', 'set-composition-section', 'sign-encounter', 'sort-alpha', 'sort-date'],
+  emits: ['addendum-encounter', 'clear-all', 'clear-sync', 'close-container', 'dump-sync', 'import-all', 'lock-thread', 'new-prescription', 'open-chat', 'open-detail', 'open-form', 'open-file', 'open-immunizationschedule', 'open-list', 'open-page', 'open-page-form', 'open-trustee', 'set-composition-section', 'sign-encounter', 'sort-alpha', 'sort-date'],
   setup (props, { emit }) {
     const auth = useAuthStore()
     const { fetchJSON } = common()
@@ -214,6 +217,9 @@ export default defineComponent({
     }
     const openRelatedPersons = () => {
       emit('open-list', 'related_persons', 'all')
+    }
+    const openTrustee = (view) => {
+      emit('open-trustee', view)
     }
     const setCompositionSection = () => {
       emit('set-composition-section', state.resource)
@@ -361,6 +367,7 @@ export default defineComponent({
       openImmunizationSchedule,
       openMAIA,
       openRelatedPersons,
+      openTrustee,
       setCompositionSection,
       signEncounter,
       sortDate,

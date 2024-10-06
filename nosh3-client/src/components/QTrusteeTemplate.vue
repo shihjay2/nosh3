@@ -382,7 +382,7 @@ export default defineComponent({
             from_email: state.user.email,
             title: 'HIE of One - Health Record Shared With You',
             previewtext: 'HIE of One - Health Record Shared With You',
-            paragraphtext: '<h3>' + state.user.display + ' shared a health record resources:</h3>' + message,
+            paragraphtext: btoa('<h3>' + state.user.display + ' shared a health record resources:</h3>' + message),
             paragraphtext2: '',
             link: '',
             buttonstyle: 'display:none',
