@@ -537,6 +537,7 @@ async function gnapVerify(req, res) {
                         console.log(related_person)
                         await sync('related_persons', req.params.patient, true, related_person)
                         objectPath.set(new_user, 'reference', 'RelatedPerson/' + related_person_id)
+                        objectPath.set(new_user, 'display', name_obj.display)
                       } else {
                         // this is a provider
                         const practitioner_id = 'nosh_' + uuidv4()

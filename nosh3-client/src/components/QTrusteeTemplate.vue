@@ -65,6 +65,7 @@
           <q-btn color="positive" class="full-width" icon="add" label="Read, Write, and Delete for All Resources" clickable @click="addAllResources(row4.email, ['read', 'write', 'delete'])" />
           <q-btn color="primary" class="full-width" icon="add" label="Read Only for All Resources" clickable @click="addAllResources(row4.email, ['read'])" />
           <q-btn color="negative" class="full-width" icon="close" label="Remove Access to All Resources" clickable @click="removeAllResources(row4.email)" />
+          <q-btn color="secondary" class="full-width" icon="email" label="Notify User" clickable @click="notify(row4.email, index4)" />
           <q-list bordered separator>
             <q-item v-for="(row5, index5) in row4.resources" :key="index5">
               <q-item-section avatar>
@@ -200,6 +201,13 @@ export default defineComponent({
     })
     const addAllResources = async(email, read_only_arr) => {
       emit('loading')
+      const notif = $q.notify({
+        group: false,
+        timeout: 0,
+        spinner: true,
+        message: 'Updating privileges...',
+        color: 'primary'
+      })
       for (const i in state.rows) {
         if (objectPath.get(state, 'rows.' + i + '.actions').join() === read_only_arr.join()) {
           if (objectPath.get(state, 'rows.' + i + '.privileges').findIndex((item) => item === email) === -1) {
@@ -213,24 +221,19 @@ export default defineComponent({
             }
             await axios.post(window.location.origin + '/auth/gnapResource', body)
             const counter = Number(i) + 1
-            $q.notify({
-              message: counter + '/' + state.rows.length + ': Privileges updated for ' + objectPath.get(state, 'rows.' + i + '.type'),
-              color: 'primary',
-              actions: [
-                { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
-              ]
+            notif({
+              caption: counter + '/' + state.rows.length + ': Privileges updated for ' + objectPath.get(state, 'rows.' + i + '.type')
             })
           }
         }
       }
       calcUsers()
       emit('loading')
-      $q.notify({
+      notif({
+        icon: 'done',
+        spinner: false,
         message: 'Privileges updated.',
-        color: 'primary',
-        actions: [
-          { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
-        ]
+        timeout: 2500
       })
     }
     const addPrivilege = async(row_index) => {
@@ -263,7 +266,15 @@ export default defineComponent({
       }
     }
     const addResources = async(email, row_indexes) => {
+      emit('loading')
       let i = 0
+      const notif = $q.notify({
+        group: false,
+        timeout: 0,
+        spinner: true,
+        message: 'Updating privileges...',
+        color: 'primary'
+      })
       for (const row_index of row_indexes) {
         const privileges = objectPath.get(state, 'rows.' + row_index + '.privileges')
         privileges.push(email)
@@ -275,14 +286,18 @@ export default defineComponent({
         }
         await axios.post(window.location.origin + '/auth/gnapResource', body)
         const counter = Number(i) + 1
-        $q.notify({
-          message: counter + '/' + row_indexes.length + ': Privileges updated for ' + objectPath.get(state, 'rows.' + row_index + '.type'),
-          color: 'primary',
-          actions: [
-            { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
-          ]
+        notif({
+          caption: counter + '/' + row_indexes.length + ': Privileges updated for ' + objectPath.get(state, 'rows.' + row_index + '.type'),
         })
       }
+      calcUsers()
+      emit('loading')
+      notif({
+        icon: 'done',
+        spinner: false,
+        message: 'Privileges updated.',
+        timeout: 2500
+      })
     }
     const addUser = (origin) => {
       state.view = 'add'
@@ -341,6 +356,42 @@ export default defineComponent({
           ]
         })
       }
+    }
+    const notify = async(email, index) => {
+      let message = state.user.display + ' (' + state.user.email + ') has invited you to the following health record and resources:<ul>'
+      for (const i in state.user_rows[index].resources) {
+        message += '<li>' + state.user_rows[index].resources[i].type + '[' + state.user_rows[index].resources[i].actions.join(', ') + '], <a href="' + state.user_rows[index].resources[i].locations[0] + '" target="_blank">' + state.user_rows[index].resources[i].locations[0] + '</a></li>'
+      }
+      message += '</ul>'
+      const body = {
+        method: 'POST',
+        jwt: auth.gnap_jwt,
+        to: email,
+        from: state.user.display,
+        from_email: state.user.email,
+        subject: 'HIE of One - Health Record Shared With You',
+        title: 'HIE of One - Health Record Shared With You',
+        previewtext: 'HIE of One - Health Record Shared With You',
+        paragraphtext: btoa('<h3>' + state.user.display + ' shared some health record resources:</h3>' + message),
+        paragraphtext2: '',
+        link: '',
+        buttonstyle: 'display:none',
+        buttontext: ''
+      }
+      const app_index = state.user_rows[index].resources.findIndex((resource) => resource.type === 'App')
+      if (app_index > -1) {
+        objectPath.set(body, 'link', state.user_rows[index].resources[app_index].locations[0])
+        objectPath.set(body, 'buttonstyle', 'display:block')
+        objectPath.set(body, 'buttontext', 'Link to their Personal Health Record')
+      }
+      await axios.post(window.location.origin + '/auth/gnapMail', body)
+      $q.notify({
+        message: 'Email sent to ' + email,
+        color: 'primary',
+        actions: [
+          { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+        ]
+      })
     }
     const onCancelAdd = () => {
       if (state.click_origin === '') {
@@ -409,6 +460,13 @@ export default defineComponent({
     }
     const removeAllResources = async(email) => {
       emit('loading')
+      const notif = $q.notify({
+        group: false,
+        timeout: 0,
+        spinner: true,
+        message: 'Updating privileges...',
+        color: 'primary'
+      })
       for (const i in state.rows) {
         if (objectPath.get(state, 'rows.' + i + '.privileges').findIndex((item) => item === email) > -1) {
           const privileges = []
@@ -424,16 +482,19 @@ export default defineComponent({
             jwt: auth.gnap_jwt
           }
           await axios.post(window.location.origin + '/auth/gnapResource', body)
+          const counter = Number(i) + 1
+          notif({
+            caption: counter + '/' + state.rows.length + ': Privileges updated for ' + objectPath.get(state, 'rows.' + i + '.type'),
+          })
         }
       }
       calcUsers()
       emit('loading')
-      $q.notify({
+      notif({
+        icon: 'done',
+        spinner: false,
         message: 'Privileges updated.',
-        color: 'primary',
-        actions: [
-          { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
-        ]
+        timeout: 2500
       })
     }
     const removePrivilege = async(row_index, privilege_index) => {
@@ -509,6 +570,7 @@ export default defineComponent({
       addUser,
       calcUsers,
       clickPrivilege,
+      notify,
       onCancelAdd,
       onSubmitAdd,
       removeAllResources,
