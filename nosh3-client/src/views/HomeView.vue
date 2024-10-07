@@ -1161,24 +1161,36 @@ export default defineComponent({
     }
     const clearAll = async() => {
       state.loading = true
+      const notif = $q.notify({
+        group: false,
+        timeout: 0,
+        spinner: true,
+        message: 'Clearing chart...',
+        color: 'primary'
+      })
       state.sync_on = true
       const resources = await fetchJSON('resources', state.online)
+      let i = 0
       for (const a of resources.rows) {
         if (a.resource !== 'patients' && a.resource !== 'users') {
           await sync(a.resource, true, state.patient, false, {}, true)
           reloadDrawer(a.resource)
+          const counter = Number(i) + 1
+          notif({
+            caption: counter + '/' + resources.rows.length + ': Cleared ' + Case.capital(a.resource) + ' from the chart',
+          })
         }
+        i++
       }
       clearSync()
       state.loading = false
-      state.sync_on = false
-      $q.notify({
+      notif({
+        icon: 'done',
+        spinner: false,
         message: 'Entire chart is cleared!',
-        color: 'primary',
-        actions: [
-          { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
-        ]
+        timeout: 2500
       })
+      state.sync_on = false
     }
     const clearDefault = () => {
       state.default = {}
@@ -1468,8 +1480,16 @@ export default defineComponent({
     const importAll = async() => {
       state.showOIDCComplete = false
       state.loading = true
+      const notif = $q.notify({
+        group: false,
+        timeout: 0,
+        spinner: true,
+        message: 'Importing synced resources...',
+        color: 'primary'
+      })
       state.sync_on = true
       const oidc = state.oidc
+      let i = 0
       for (const a in oidc) {
         if (objectPath.has(oidc, a + '.docs')) {
           for (const row of oidc[a].docs) {
@@ -1477,6 +1497,11 @@ export default defineComponent({
               for (const doc of row.rows) {
                 await importFHIR(doc, row.resource, state.patient, oidc[a].origin)
                 reloadDrawer(row.resource)
+                const counter = Number(i) + 1
+                notif({
+                  caption: counter + '/' + state.oidc_count + ': ' + Case.capital(row.resource) + ' imported from ' + oidc[a].origin,
+                })
+                i++
               }
             }
           }
@@ -1485,14 +1510,13 @@ export default defineComponent({
       clearSync()
       await loadTimeline()
       state.loading = false
-      state.sync_on = false
-      $q.notify({
+      notif({
+        icon: 'done',
+        spinner: false,
         message: 'All synced external resources have been imported!',
-        color: 'primary',
-        actions: [
-          { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
-        ]
+        timeout: 2500
       })
+      state.sync_on = false
     }
     const importReference = async(resource, reference_id, origin) => {
       const a = state.oidc.findIndex(b => b.origin == origin)

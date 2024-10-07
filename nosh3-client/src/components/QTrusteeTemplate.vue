@@ -360,7 +360,7 @@ export default defineComponent({
     const notify = async(email, index) => {
       let message = state.user.display + ' (' + state.user.email + ') has invited you to the following health record and resources:<ul>'
       for (const i in state.user_rows[index].resources) {
-        message += '<li>' + state.user_rows[index].resources[i].type + '[' + state.user_rows[index].resources[i].actions.join(', ') + '], <a href="' + state.user_rows[index].resources[i].locations[0] + '" target="_blank">' + state.user_rows[index].resources[i].locations[0] + '</a></li>'
+        message += '<li>' + state.user_rows[index].resources[i].type + ' [' + state.user_rows[index].resources[i].actions.join(', ') + '], <a href="' + state.user_rows[index].resources[i].locations[0] + '" target="_blank">' + state.user_rows[index].resources[i].locations[0] + '</a></li>'
       }
       message += '</ul>'
       const body = {
@@ -422,7 +422,7 @@ export default defineComponent({
           await addResources(email, restrict)
           let message = state.user.display + ' (' + state.user.email + ') has invited you to the following health record and resources:<ul>'
           for (const restrict_index of restrict) {
-            message += '<li>' + state.rows[restrict_index].type + '[' + state.rows[restrict_index].actions.join(', ') + '], <a href="' + state.rows[restrict_index].locations[0] + '" target="_blank">' + state.rows[restrict_index].locations[0] + '</a></li>'
+            message += '<li>' + state.rows[restrict_index].type + ' [' + state.rows[restrict_index].actions.join(', ') + '], <a href="' + state.rows[restrict_index].locations[0] + '" target="_blank">' + state.rows[restrict_index].locations[0] + '</a></li>'
           }
           message += '</ul>'
           const body = {
