@@ -2702,8 +2702,8 @@ export default defineComponent({
       state.upload_sync = true
     }
     const uploadSync1 = (files) => {
-      console.log(files[i])
       for (const i in files) {
+        console.log(files[i])
         getBase64(files[i]).then(data => {
           const data1 = data.substr(data.indexOf(',') + 1)
           if (!Array.isArray(state.oidc)) {
