@@ -2702,15 +2702,16 @@ export default defineComponent({
       state.upload_sync = true
     }
     const uploadSync1 = (files) => {
+      console.log(files[i])
       for (const i in files) {
         getBase64(files[i]).then(data => {
+          const data1 = data.substr(data.indexOf(',') + 1)
           if (!Array.isArray(state.oidc)) {
             state.oidc = []
             auth.clearOIDC()
           }
-          
-          console.log(atob(data))
-          for (const doc of atob(data)) {
+          console.log(atob(data1))
+          for (const doc of atob(data1)) {
             console.log(doc)
             state.oidc.push(doc)
           }
