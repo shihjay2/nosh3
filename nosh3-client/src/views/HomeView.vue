@@ -1479,6 +1479,13 @@ export default defineComponent({
       await nextTick()
       patientSearch.value.focus()
     }
+    const getBase64 = (file) => {
+      return new Promise((resolve) => {
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onload = () => resolve(reader.result)
+      })
+    }
     const importAll = async() => {
       state.showOIDCComplete = false
       state.loading = true
@@ -2742,6 +2749,7 @@ export default defineComponent({
       fhirReplace,
       fetchJSON,
       focusInput,
+      getBase64,
       importAll,
       importReference,
       inbox,
