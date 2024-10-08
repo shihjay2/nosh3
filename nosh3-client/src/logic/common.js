@@ -661,23 +661,48 @@ export function common() {
     const oidc = auth_store.oidc
     const a = oidc.findIndex(b => b.origin == origin)
     const c = oidc[a].docs.findIndex(d => d.resource == resource)
-    const e = oidc[a].docs[c].rows.findIndex(f => f.id == reference_id)
-    if (e !== -1) {
-      const reference_doc = objectPath.get(oidc, a + '.docs.' + c + '.rows.' + e)
-      const reference_new_id = 'nosh_' + uuidv4()
-      objectPath.set(reference_doc, 'sync_id', objectPath.get(reference_doc, 'id'))
-      objectPath.set(reference_doc, 'id', reference_new_id)
-      objectPath.set(reference_doc, '_id', reference_new_id)
-      if (!objectPath.has(reference_doc, 'text.div')) {
-        reference_doc = await divBuild(resource, reference_doc)
+    if (c !== -1) {
+      const e = oidc[a].docs[c].rows.findIndex(f => f.id == reference_id)
+      if (e !== -1) {
+        const reference_doc = objectPath.get(oidc, a + '.docs.' + c + '.rows.' + e)
+        const reference_new_id = 'nosh_' + uuidv4()
+        objectPath.set(reference_doc, 'sync_id', objectPath.get(reference_doc, 'id'))
+        objectPath.set(reference_doc, 'id', reference_new_id)
+        objectPath.set(reference_doc, '_id', reference_new_id)
+        if (!objectPath.has(reference_doc, 'text.div')) {
+          reference_doc = await divBuild(resource, reference_doc)
+        }
+        await sync(resource, false, props.patient, true, reference_doc)
+        const a1 = oidc.findIndex(b1 => b1.origin == origin)
+        const c1 = oidc[a].docs.findIndex(d1 => d1.resource == resource)
+        objectPath.del(oidc, a1 + '.docs.' + c1 + '.rows.' + index)
+        auth.setOIDC(oidc)
+        return reference_new_id
       }
-      await sync(resource, false, props.patient, true, reference_doc)
-      const a1 = oidc.findIndex(b1 => b1.origin == origin)
-      const c1 = oidc[a].docs.findIndex(d1 => d1.resource == resource)
-      objectPath.del(oidc, a1 + '.docs.' + c1 + '.rows.' + index)
-      auth.setOIDC(oidc)
-      return reference_new_id
     }
+    const reference_new_id1 = 'nosh_' + uuidv4()
+    const new_resource = {
+      "resourceType": Case.title(pluralize.singular(resource)),
+      "id": reference_new_id1,
+      "active": true,
+      "_id": reference_new_id1,
+      "sync_id": reference_id,
+      "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Guest " + reference_id.substring(0,6) + "</div>"
+      },
+      "name": [
+        {
+          "family": reference_id.substring(0,6),
+          "use": "official",
+          "given": [
+            "Guest"
+          ]
+        }
+      ]
+    }
+    await sync(resource, false, props.patient, true, new_resource)
+    return reference_new_id1
   }
   const inbox = async(resource, user) => {
     const prefix = getPrefix()
