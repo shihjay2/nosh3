@@ -2708,6 +2708,10 @@ export default defineComponent({
           console.log(json1)
           const json2 = json1.replace(/\\n/g, '')
           console.log(json2)
+          const json3 = JSON.parse(json1)
+          console.log(json3)
+          const json4 = JSON.parse(json2)
+          console.log(json4)
           // const json = JSON.parse(JSON.stringify(atob(data.substr(data.indexOf(',') + 1))).replace(/\\n/g, ''))
           if (!Array.isArray(state.oidc)) {
             state.oidc = []
