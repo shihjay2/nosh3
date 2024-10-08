@@ -2703,15 +2703,14 @@ export default defineComponent({
     }
     const uploadSync1 = (files) => {
       for (const i in files) {
-        console.log(files[i])
         getBase64(files[i]).then(data => {
-          const data1 = data.substr(data.indexOf(',') + 1)
+          const json = JSON.parse(JSON.stringify(data.substr(data.indexOf(',') + 1)))
           if (!Array.isArray(state.oidc)) {
             state.oidc = []
             auth.clearOIDC()
           }
-          console.log(atob(data1))
-          for (const doc of atob(data1)) {
+          console.log(atob(json))
+          for (const doc of atob(json)) {
             console.log(doc)
             state.oidc.push(doc)
           }

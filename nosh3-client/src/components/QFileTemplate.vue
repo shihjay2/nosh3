@@ -404,8 +404,8 @@ export default defineComponent({
             emit('update-toolbar', {type: 'file', resource: props.resource, category: props.category, action: 'Image Editor'})
           }
           if (contentType == 'text/plain; charset=utf-8') {
-            state.txt = data
-            if (isMarkdown(atob(data))) {
+            state.txt = data.substr(data.indexOf(',') + 1)
+            if (isMarkdown(atob(state.txt))) {
               state.markdown_preview = true
               emit('update-toolbar', {type: 'file', resource: props.resource, category: props.category, action: 'Markdown Editor'})
             } else {
