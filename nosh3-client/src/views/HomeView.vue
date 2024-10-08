@@ -2708,12 +2708,13 @@ export default defineComponent({
             state.oidc = []
             auth.clearOIDC()
           }
-          console.log(data)
-          // for (const doc of data) {
-          //   console.log(doc)
-          //   state.oidc.push(doc)
-          // }
-          // auth.setOIDC(state.oidc)
+          
+          console.log(atob(data))
+          for (const doc of atob(data)) {
+            console.log(doc)
+            state.oidc.push(doc)
+          }
+          auth.setOIDC(state.oidc)
           state.upload_sync = false
         }).catch((e) => {
           console.log(e)
