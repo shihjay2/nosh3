@@ -37,6 +37,7 @@ import { common } from '@/logic/common'
 import axios from 'axios'
 import Case from 'case'
 import Fuse from 'fuse.js'
+import moment from 'moment'
 import objectPath from 'object-path'
 import pluralize from 'pluralize'
 import sortArray from 'sort-array'
@@ -236,6 +237,11 @@ export default defineComponent({
                   c1++
                 } catch (e) {
                   console.log(e)
+                  const err = {
+                    resource: c.resource,
+                    error: e
+                  }
+                  localStorage.setItem('oidc_error_' + moment().unix(), JSON.stringify(err))
                 }
               }
             }
