@@ -597,13 +597,15 @@ export function common() {
       if (resource === 'encounters') {
         if (objectPath.has(doc, 'participant')) {
           for (const b in objectPath.get(doc, 'participant')) {
-            if (objectPath.get(doc, 'participant.' + b + '.individual.reference').search('Practitioner') === 0) {
-              const nosh_id1 = await referenceSearch('practitioners', objectPath.get(doc, 'participant.' + b + '.individual.reference').split('/').slice(-1).join(''))
-              if (nosh_id1 === null) {
-                const reference_new_id1 = await importReference('practitioners', objectPath.get(doc, 'participant.' + b + '.individual.reference').split('/').slice(-1).join(''), origin, patient)
-                objectPath.set(doc, 'participant.' + b + '.individual.reference', 'Practitioner/' + reference_new_id1)
-              } else {
-                objectPath.set(doc, 'participant.' + b + '.individual.reference', 'Practitioner/' + nosh_id1)
+            if (objectPath.has(doc, 'participant.' + b + '.individual.reference')) {
+              if (objectPath.get(doc, 'participant.' + b + '.individual.reference').search('Practitioner') === 0) {
+                const nosh_id1 = await referenceSearch('practitioners', objectPath.get(doc, 'participant.' + b + '.individual.reference').split('/').slice(-1).join(''))
+                if (nosh_id1 === null) {
+                  const reference_new_id1 = await importReference('practitioners', objectPath.get(doc, 'participant.' + b + '.individual.reference').split('/').slice(-1).join(''), origin, patient)
+                  objectPath.set(doc, 'participant.' + b + '.individual.reference', 'Practitioner/' + reference_new_id1)
+                } else {
+                  objectPath.set(doc, 'participant.' + b + '.individual.reference', 'Practitioner/' + nosh_id1)
+                }
               }
             }
           }
