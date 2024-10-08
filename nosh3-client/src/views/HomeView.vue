@@ -2709,9 +2709,11 @@ export default defineComponent({
             auth.clearOIDC()
           }
           for (const doc of data) {
+            console.log(doc)
             state.oidc.push(doc)
           }
           auth.setOIDC(state.oidc)
+          state.upload_sync = false
         }).catch((e) => {
           console.log(e)
           $q.notify({
