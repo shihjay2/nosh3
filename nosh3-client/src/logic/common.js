@@ -586,7 +586,7 @@ export function common() {
           if (objectPath.get(doc, 'performer.0.reference').search('Practitioner') === 0) {
             const nosh_id = await referenceSearch('practitioners', objectPath.get(doc, 'performer.0.reference').split('/').slice(-1).join(''))
             if (nosh_id === null) {
-              const reference_new_id = await importReference('practitioners', objectPath.get(doc, 'performer.0.reference').split('/').slice(-1).join(''), origin)
+              const reference_new_id = await importReference('practitioners', objectPath.get(doc, 'performer.0.reference').split('/').slice(-1).join(''), origin, patient)
               objectPath.set(doc, 'performer.0.reference', 'Practitioner/' + reference_new_id)
             } else {
               objectPath.set(doc, 'performer.0.reference', 'Practitioner/' + nosh_id)
@@ -600,7 +600,7 @@ export function common() {
             if (objectPath.get(doc, 'participant.' + b + '.individual.reference').search('Practitioner') === 0) {
               const nosh_id1 = await referenceSearch('practitioners', objectPath.get(doc, 'participant.' + b + '.individual.reference').split('/').slice(-1).join(''))
               if (nosh_id1 === null) {
-                const reference_new_id1 = await importReference('practitioners', objectPath.get(doc, 'participant.' + b + '.individual.reference').split('/').slice(-1).join(''), origin)
+                const reference_new_id1 = await importReference('practitioners', objectPath.get(doc, 'participant.' + b + '.individual.reference').split('/').slice(-1).join(''), origin, patient)
                 objectPath.set(doc, 'participant.' + b + '.individual.reference', 'Practitioner/' + reference_new_id1)
               } else {
                 objectPath.set(doc, 'participant.' + b + '.individual.reference', 'Practitioner/' + nosh_id1)
@@ -656,7 +656,7 @@ export function common() {
       await sync(resource, false, patient, true, doc)
     }
   }
-  const importReference = async(resource, reference_id, origin) => {
+  const importReference = async(resource, reference_id, origin, patient) => {
     const auth_store = useAuthStore()
     const oidc = auth_store.oidc
     const a = oidc.findIndex(b => b.origin == origin)
@@ -672,7 +672,7 @@ export function common() {
         if (!objectPath.has(reference_doc, 'text.div')) {
           reference_doc = await divBuild(resource, reference_doc)
         }
-        await sync(resource, false, props.patient, true, reference_doc)
+        await sync(resource, false, patient, true, reference_doc)
         const a1 = oidc.findIndex(b1 => b1.origin == origin)
         const c1 = oidc[a].docs.findIndex(d1 => d1.resource == resource)
         objectPath.del(oidc, a1 + '.docs.' + c1 + '.rows.' + index)
@@ -701,7 +701,7 @@ export function common() {
         }
       ]
     }
-    await sync(resource, false, props.patient, true, new_resource)
+    await sync(resource, false, patient, true, new_resource)
     return reference_new_id1
   }
   const inbox = async(resource, user) => {

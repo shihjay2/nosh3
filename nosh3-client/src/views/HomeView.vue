@@ -1527,24 +1527,24 @@ export default defineComponent({
       })
       state.sync_on = false
     }
-    const importReference = async(resource, reference_id, origin) => {
-      const a = state.oidc.findIndex(b => b.origin == origin)
-      const c = state.oidc[a].docs.findIndex(d => d.resource == resource)
-      const e = state.oidc[a].docs[c].rows.findIndex(f => f.id == reference_id)
-      if (e !== -1) {
-        const reference_doc = objectPath.get(state, 'oidc.' + a + '.docs.' + c + '.rows.' + e)
-        const reference_new_id = 'nosh_' + uuidv4()
-        objectPath.set(reference_doc, 'sync_id', objectPath.get(reference_doc, 'id'))
-        objectPath.set(reference_doc, 'id', reference_new_id)
-        objectPath.set(reference_doc, '_id', reference_new_id)
-        if (!objectPath.has(reference_doc, 'text.div')) {
-          reference_doc = await divBuild(resource, reference_doc)
-        }
-        await sync(resource, false, state.patient, true, reference_doc)
-        removeOIDC(e, resource, origin)
-        return reference_new_id
-      }
-    }
+    // const importReference = async(resource, reference_id, origin) => {
+    //   const a = state.oidc.findIndex(b => b.origin == origin)
+    //   const c = state.oidc[a].docs.findIndex(d => d.resource == resource)
+    //   const e = state.oidc[a].docs[c].rows.findIndex(f => f.id == reference_id)
+    //   if (e !== -1) {
+    //     const reference_doc = objectPath.get(state, 'oidc.' + a + '.docs.' + c + '.rows.' + e)
+    //     const reference_new_id = 'nosh_' + uuidv4()
+    //     objectPath.set(reference_doc, 'sync_id', objectPath.get(reference_doc, 'id'))
+    //     objectPath.set(reference_doc, 'id', reference_new_id)
+    //     objectPath.set(reference_doc, '_id', reference_new_id)
+    //     if (!objectPath.has(reference_doc, 'text.div')) {
+    //       reference_doc = await divBuild(resource, reference_doc)
+    //     }
+    //     await sync(resource, false, state.patient, true, reference_doc)
+    //     removeOIDC(e, resource, origin)
+    //     return reference_new_id
+    //   }
+    // }
     const loading = () => {
       if (state.loading === true) {
         state.loading = false
@@ -2754,7 +2754,7 @@ export default defineComponent({
       focusInput,
       getBase64,
       importAll,
-      importReference,
+      // importReference,
       inbox,
       loading,
       loadResource,
