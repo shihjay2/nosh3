@@ -92,6 +92,7 @@
           @new-prescription="newPrescription"
           @lock-thread="lockThread"
           @open-chat="openChat"
+          @open-debug="openDebug"
           @open-form="openForm"
           @open-file="openFile"
           @open-immunizationschedule="openImmunizationSchedule"
@@ -109,6 +110,7 @@
           @open-detail="openDetail"
           @clear-all="clearAll"
           @import-all="importAll"
+          @upload-sync="uploadSync"
           :toolbar-object="state.toolbarObject"
           :encounter="state.encounter"
           :id="state.id"
@@ -605,6 +607,13 @@
     <QRReader
     />
   </q-dialog>
+  <q-dialog v-model="state.upload_sync">
+    <q-uploader
+          :hide-upload-btn="true"
+          @added="uploadSync1"
+          accept=".json"
+        />
+  </q-dialog>
   <q-dialog v-model="state.showShare">
     <q-card>
       <q-card-section>
@@ -655,14 +664,6 @@
             </q-item-section>
             <q-item-section avatar>
               <q-icon color="primary" style="font-size: 1.5em" name="local_fire_department" />
-            </q-item-section>
-          </q-item>
-          <q-item clickable @click="openDebug()">
-            <q-item-section>
-              <q-item-label>Imported FHIR Debug File</q-item-label>
-            </q-item-section>
-            <q-item-section avatar>
-              <q-icon color="primary" style="font-size: 1.5em" name="adb" />
             </q-item-section>
           </q-item>
           <q-item clickable @click="loadMarkdown()">
@@ -957,7 +958,8 @@ export default defineComponent({
       ],
       showInsurance: false,
       fhir_coverage: {},
-      fhir_eob: {}
+      fhir_eob: {},
+      upload_sync: false
     })
     const route = useRoute()
     const auth = useAuthStore()
@@ -2689,6 +2691,29 @@ export default defineComponent({
     const updateValue1 = (val, field, type) => {
       state.formMAIA[field] = val
     }
+    const uploadSync = () => {
+      state.upload_sync = true
+    }
+    const uploadSync1 = (files) => {
+      for (const i in files) {
+        getBase64(files[i]).then(data => {
+          if (!Array.isArray(state.oidc)) {
+            state.oidc = []
+            auth.clearOIDC()
+          }
+          for (const doc of data) {
+            state.oidc.push(doc)
+          }
+          auth.setOIDC(state.oidc)
+        }).catch((e) => {
+          console.log(e)
+          $q.notify({
+            message: 'Failed to upload file',
+            color: 'red'
+          })
+        })
+      }
+    }
     return {
       addendumEncounter,
       addPatient,
@@ -2796,6 +2821,8 @@ export default defineComponent({
       updateUser,
       updateValue,
       updateValue1,
+      uploadSync,
+      uploadSync1,
       verifyJWT,
       state
     }

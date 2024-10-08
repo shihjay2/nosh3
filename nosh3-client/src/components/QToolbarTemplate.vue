@@ -48,6 +48,12 @@
   <q-btn v-if="state.bundle" push flat round icon="print" clickable v-print="'print_bundle'">
     <q-tooltip>Print</q-tooltip>
   </q-btn>
+  <q-btn v-if="state.oidc" push flat round icon="file_upload" clickable @click="uploadSync()">
+    <q-tooltip>Upload Sync</q-tooltip>
+  </q-btn>
+  <q-btn v-if="state.oidc" push flat round icon="adb" clickable @click="openDebug()">
+    <q-tooltip>Debug Sync</q-tooltip>
+  </q-btn>
   <q-btn v-if="state.oidc" push flat round icon="file_download" clickable @click="dumpSync()">
     <q-tooltip>Sync Dump</q-tooltip>
   </q-btn>
@@ -88,7 +94,7 @@ export default defineComponent({
   directives: {
     print
   },
-  emits: ['addendum-encounter', 'clear-all', 'clear-sync', 'close-container', 'dump-sync', 'import-all', 'lock-thread', 'new-prescription', 'open-chat', 'open-detail', 'open-form', 'open-file', 'open-immunizationschedule', 'open-list', 'open-page', 'open-page-form', 'open-trustee', 'set-composition-section', 'sign-encounter', 'sort-alpha', 'sort-date'],
+  emits: ['addendum-encounter', 'clear-all', 'clear-sync', 'close-container', 'dump-sync', 'import-all', 'lock-thread', 'new-prescription', 'open-chat', 'open-debug', 'open-detail', 'open-form', 'open-file', 'open-immunizationschedule', 'open-list', 'open-page', 'open-page-form', 'open-trustee', 'set-composition-section', 'sign-encounter', 'sort-alpha', 'sort-date', 'upload-sync'],
   setup (props, { emit }) {
     const auth = useAuthStore()
     const { fetchJSON } = common()
@@ -207,6 +213,9 @@ export default defineComponent({
       } else {
         emit('open-page-form')
       }
+    }
+    const openDebug = () => {
+      emit('open-debug')
     }
     const openDetail = () => {
       emit('open-detail')
@@ -354,6 +363,9 @@ export default defineComponent({
         }
       }
     }
+    const uploadSync = () => {
+      emit('upload-sync')
+    }
     return {
       addendumEncounter,
       clearAll,
@@ -365,6 +377,7 @@ export default defineComponent({
       lockThread,
       newPrescription,
       onFormOpen,
+      openDebug,
       openDetail,
       openImmunizationSchedule,
       openMAIA,
@@ -375,6 +388,7 @@ export default defineComponent({
       sortDate,
       sortTitle,
       updateToolbar,
+      uploadSync,
       state
     }
   }
