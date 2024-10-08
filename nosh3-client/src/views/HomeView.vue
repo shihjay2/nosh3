@@ -2704,25 +2704,16 @@ export default defineComponent({
     const uploadSync1 = (files) => {
       for (const i in files) {
         getBase64(files[i]).then(data => {
-          const json1 = atob(data.substr(data.indexOf(',') + 1))
-          console.log(json1)
-          const json2 = json1.replace(/\\n/g, '')
-          console.log(json2)
-          const json3 = JSON.parse(json1)
-          console.log(json3)
-          const json4 = JSON.parse(json2)
-          console.log(json4)
-          // const json = JSON.parse(JSON.stringify(atob(data.substr(data.indexOf(',') + 1))).replace(/\\n/g, ''))
+          const json = JSON.parse(atob(data.substr(data.indexOf(',') + 1)))
           if (!Array.isArray(state.oidc)) {
             state.oidc = []
             auth.clearOIDC()
           }
-          // console.log(json)
-          // for (const doc of json) {
-          //   console.log(doc)
-          //   state.oidc.push(doc)
-          // }
-          // auth.setOIDC(state.oidc)
+          for (const doc of json) {
+            console.log(doc)
+            state.oidc.push(doc)
+          }
+          auth.setOIDC(state.oidc)
           state.upload_sync = false
         }).catch((e) => {
           console.log(e)
