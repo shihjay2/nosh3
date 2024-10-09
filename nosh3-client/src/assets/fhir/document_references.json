@@ -2,21 +2,14 @@
   "fhir" : {
     "resourceType": "DocumentReference",
     "id": "",
-    "status": {
-      "coding": [
-        {
-          "system": "http://hl7.org/fhir/document-reference-status",
-          "code": ""
-        }
-      ]
-    },
+    "status": "",
     "subject": {
       "reference": ""
     },
     "date": ""
   },
   "resourceName": "Document Reference",
-  "activeField": "status.coding.0.code",
+  "activeField": "status",
   "patientField": "subject.reference",
   "divContent": "{conditionText} [{conditionICD10}] (Date: {onsetDateTime})",
   "defaultDate": [

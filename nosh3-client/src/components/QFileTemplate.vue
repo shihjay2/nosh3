@@ -427,6 +427,7 @@ export default defineComponent({
       for (const i in files) {
         getBase64(files[i]).then(data => {
           objectPath.set(state, 'fhir.' + state.model + '.contentType', data.substring(data.indexOf(':') + 1, data.indexOf(';')))
+          objectPath.set(state, 'fhir.' + state.model + '.url', 'Binary/' + state.fhir_binary.id)
           objectPath.set(state, 'fhir_binary.contentType', data.substring(data.indexOf(':') + 1, data.indexOf(';')))
           objectPath.set(state, 'fhir_binary.data', data.substring(data.indexOf(',') + 1))
           state.fhir1 = JSON.stringify(state.fhir, null, "  ")
@@ -597,6 +598,8 @@ export default defineComponent({
               doc.addImage(img.src, "png", 0, 0, img.width, img.height)
               if (parseInt(key) === state.totalPage) {
                 state.pdf = doc.output('datauristring')
+                console.log(state.data)
+                console.log(state.pdf)
                 state.data = state.pdf
                 state.edit = false
                 state.image = {}
