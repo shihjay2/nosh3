@@ -233,7 +233,7 @@ export default defineComponent({
                             const oidc_response_binary = await axios.get(oidc_url_binary, opts)
                             objectPath.del(c2, 'resource.content')
                             objectPath.set(c2, 'resource.content.0.attachment.contentType', oidc_response_binary.data.contentType)
-                            objectPath.set(c2, 'resource.content.0.attachment.data', oidc_response_binary.data.data)
+                            objectPath.set(c2, 'resource.content.0.attachment.data', btoa(oidc_response_binary.data.data))
                             const ret1 = {
                               resource: 'binaries',
                               response: oidc_response_binary
