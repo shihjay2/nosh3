@@ -291,7 +291,7 @@ export default defineComponent({
     var img
     var prefix = getPrefix()
     var localDB = new PouchDB(prefix + props.resource)
-    var binaryDB = new PouchDB(prefix, 'binaries')
+    var binaryDB = new PouchDB(prefix + 'binaries')
     onMounted(async() => {
       state.auth = props.auth
       state.online = props.online
