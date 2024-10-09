@@ -35,7 +35,9 @@
     @save-pdf="onSavePdf"
   />
   <MdPreview v-if="state.markdown" v-model="state.txt_data" language="en-US"/>
-  <div class="q-pa-sm q-gutter-sm" v-if="state.html" v-html="state.htmlContent" id="htmlContainer"></div>
+  <div class="q-pa-sm q-gutter-sm" v-if="state.html">
+    <div v-html="state.htmlContent" id="htmlContainer"></div>
+  </div>
   <QuillEditor v-if="state.text" v-model="state.txt_data" theme="snow" toolbar="minimal"/>
   <q-stepper
     v-if="state.add"
@@ -621,10 +623,11 @@ export default defineComponent({
         state.image = {}
         state.data = data
         state.sending = true
-        console.log(state.fhir)
-        console.log(state.fhir_binary)
         await sync(props.resource, false, props.patient, true, state.fhir)
+        const doc = await localDB.get(state.id)
+        objectPath.set(state, 'fhir', doc)
         await sync('binaries', false, props.patient, true, state.fhir_binary)
+        state.fhir_binary = await binaryDB.get(state.binary_id)
         state.sending = false
         const contentType = objectPath.get(state, 'fhir.' + state.model + '.contentType')
         let notify = ''
