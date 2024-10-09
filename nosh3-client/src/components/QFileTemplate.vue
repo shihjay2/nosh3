@@ -35,7 +35,7 @@
     @save-pdf="onSavePdf"
   />
   <MdPreview v-if="state.markdown" v-model="state.txt_data" language="en-US"/>
-  <div v-if="state.html" v-html="state.htmlContent" id="htmlContainer"></div>
+  <div class="q-pa-sm q-gutter-sm" v-if="state.html" v-html="state.htmlContent" id="htmlContainer"></div>
   <QuillEditor v-if="state.text" v-model="state.txt_data" theme="snow" toolbar="minimal"/>
   <q-stepper
     v-if="state.add"
@@ -597,6 +597,7 @@ export default defineComponent({
               doc.addImage(img.src, "png", 0, 0, img.width, img.height)
               if (parseInt(key) === state.totalPage) {
                 state.pdf = doc.output('datauristring')
+                state.data = state.pdf
                 state.edit = false
                 state.image = {}
                 state.view = true
@@ -608,7 +609,6 @@ export default defineComponent({
           }
         }
         img0.src = objectPath.get(state, 'pagePng.1')
-        state.data = data
       } else {
         objectPath.set(state, 'fhir.' + state.model + '.contentType', data.substring(data.indexOf(':') + 1, data.indexOf(';')))
         objectPath.set(state, 'fhir_binary.contentType', data.substring(data.indexOf(':') + 1, data.indexOf(';')))
@@ -618,6 +618,8 @@ export default defineComponent({
         state.image = {}
         state.data = data
         state.sending = true
+        console.log(state.fhir)
+        console.log(state.fhir_binary)
         await sync(props.resource, false, props.patient, true, state.fhir)
         await sync('binaries', false, props.patient, true, state.fhir_binary)
         state.sending = false
