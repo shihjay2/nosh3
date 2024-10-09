@@ -264,7 +264,7 @@ export default defineComponent({
                     resource: c.resource,
                     response: oidc_response
                   }
-                  localStorage.setItem('oidc_success_' + moment().unix(), JSON.stringify(ret))
+                  localStorage.setItem('oidc_success_' + c1 + '_' + moment().unix() , JSON.stringify(ret))
                   c1++
                 } catch (e) {
                   console.log(e)
