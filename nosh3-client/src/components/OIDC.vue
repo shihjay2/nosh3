@@ -157,6 +157,7 @@ export default defineComponent({
           localStorage.setItem('oidc_url', state.base_url)
           localStorage.setItem('oidc_state', oidc_state)
           localStorage.setItem('oidc_name', name)
+          emit('loading')
           const response = await axios.post(window.location.origin + '/oidc', {url: relay_url, body: body})
           localStorage.setItem('oidc_response', response.data)
           window.location.href = auth.api.oidc_relay_url + '/oidc_relay_start/' + oidc_state

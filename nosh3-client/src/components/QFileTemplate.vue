@@ -337,6 +337,14 @@ export default defineComponent({
         state.fhir1 = JSON.stringify(state.fhir, null, "  ")
         state.detailsPending = true
         state.id = state.fhir.id
+        state.binary_id = 'nosh_' + uuidv4()
+        state.fhir_binary = {
+          "resourceType": "Binary",
+          "id": state.binary_id,
+          "_id": state.binary_id,
+          "contentType": '',
+          "data": ''
+        }
         state.viewer = false
         state.add = true
       } else {
@@ -356,14 +364,6 @@ export default defineComponent({
           // new file
           state.viewer = false
           state.add = true
-          state.binary_id = 'nosh_' + uuidv4()
-          state.fhir_binary = {
-            "resourceType": "Binary",
-            "id": state.binary_id,
-            "_id": state.binary_id,
-            "contentType": '',
-            "data": ''
-          }
         } else {
           // existing file
           let c = state.category + '.0'
