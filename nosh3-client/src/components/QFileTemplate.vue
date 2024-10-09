@@ -386,6 +386,7 @@ export default defineComponent({
               "data": binary_data
             }
             await sync('binaries', false, props.patient, true, state.fhir_binary)
+            state.fhir_binary = await binaryDB.get(state.binary_id)
             objectPath.del(state, 'fhir.' + c)
             objectPath.set(state, 'fhir.' + c + '.url', 'Binary/' + state.binary_id)
             objectPath.set(state, 'fhir.' + c + '.contentType', contentType)

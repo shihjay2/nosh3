@@ -437,6 +437,7 @@ export default defineComponent({
     var localDB3 = new PouchDB(prefix + 'bundles')
     var localDB4 = new PouchDB(prefix + 'medication_requests')
     var localDB5 = new PouchDB(prefix + 'users')
+    var localDB6 = new PouchDB(prefix + 'binaries')
     onMounted(async() => {
       state.auth = props.auth
       state.online = props.online
@@ -613,6 +614,17 @@ export default defineComponent({
       })
     }
     const deleteRow = async(doc, index) => {
+      if (props.resource === 'document_references') {
+        const binary_id = objectPath.get(doc, 'content.0.attachment.url').substring(objectPath.get(doc, 'content.0.attachment.url').indexOf('/') + 1)
+        const binary_doc = await localDB6.get(binary_id)
+        const binary_result = await localDB6.remove(binary_doc)
+        const binary_opts = {
+          doc_db: 'binaries',
+          doc_id: binary_result.id,
+          diff: null
+        }
+        await eventAdd('Deleted binary', props.patient, binary_opts)
+      }
       const result = await localDB.remove(doc)
       const opts = {
         doc_db: props.resource,
