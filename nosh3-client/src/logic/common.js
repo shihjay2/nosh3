@@ -645,7 +645,8 @@ export function common() {
               }
               await sync('binaries', false, patient, true, binary_doc)
               // clean up doc
-              objectPath.del(doc, 'content.' + c + '.attachment.data')
+              objectPath.del(doc, 'content.' + c + '.attachment')
+              objectPath.set(doc, 'content.' + c + '.attachment.contentType', binary_doc.contentType)
               objectPath.set(doc, 'content.' + c + '.attachment.url', 'Binary/' + binary_id)
             }
           }
