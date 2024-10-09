@@ -226,6 +226,32 @@ export default defineComponent({
                   const rows = []
                   for (const c2 of oidc_response.data.entry) {
                     if (c2.resource.resourceType === Case.pascal(pluralize.singular(c.resource))) {
+                      if (c.resource === 'document_references') {
+                        if (objectPath.has(c2, 'resource.content.0.attachment.url')) {
+                          try {
+                            const oidc_url_binary = localStorage.getItem('oidc_url') + objectPath.get(c2, 'resource.content.0.attachment.url')
+                            const oidc_response_binary = await axios.get(oidc_url_binary, opts)
+                            objectPath.del(c2, 'resource.content.0.attachment.url')
+                            objectPath.set(c2, 'resource.content.0.attachment.contentType', oidc_response_binary.data.contentType)
+                            objectPath.set(c2, 'resource.content.0.attachment.data', oidc_response_binary.data.data)
+                            if (objectPath.has(c2, 'resource.content.1')) {
+                              objectPath.del(c2, 'resource.content.1')
+                            }
+                            const ret1 = {
+                              resource: 'binaries',
+                              response: oidc_response_binary
+                            }
+                            localStorage.setItem('oidc_success_' + moment().unix(), JSON.stringify(ret1))
+                          } catch (e) {
+                            console.log(e)
+                            const err = {
+                              resource: 'binaries',
+                              error: e
+                            }
+                            localStorage.setItem('oidc_error_' + moment().unix(), JSON.stringify(err))
+                          }
+                        }
+                      }
                       rows.push(c2.resource)
                     }
                   }
@@ -234,6 +260,11 @@ export default defineComponent({
                     rows: rows
                   }
                   objectPath.set(state, 'oidc.docs.' + c1, docs)
+                  const ret = {
+                    resource: c.resource,
+                    response: oidc_response
+                  }
+                  localStorage.setItem('oidc_success_' + moment().unix(), JSON.stringify(ret))
                   c1++
                 } catch (e) {
                   console.log(e)

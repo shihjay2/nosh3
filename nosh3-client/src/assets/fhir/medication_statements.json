@@ -45,6 +45,7 @@
         "modelRoot": "medicationCodeableConcept.coding",
         "modelArray": true,
         "model": "display",
+        "alt_model": "medication.display",
         "type": "text",
         "readonly": true,
         "rules": "required"

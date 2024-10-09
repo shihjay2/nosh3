@@ -550,7 +550,7 @@
     <q-tooltip :offset="[0, 8]">Loading...</q-tooltip>
   </q-dialog>
   <q-dialog v-model="state.showPIN">
-    <q-card>
+    <q-card v-if="state.user.role === 'patient'">
       <q-card-section>
         <div class="text-h6 text-center">Enter PIN</div>
       </q-card-section>
@@ -592,6 +592,11 @@
           <q-btn push icon="pin" color="primary" label="Enter PIN" type="submit" />
         </q-card-actions>
       </Form>
+    </q-card>
+    <q-card v-if="state.user.role !== 'patient'">
+      <q-card-section>
+        Encrypted database locked.  Please come back later until the patient unlocks the database.
+      </q-card-section>
     </q-card>
   </q-dialog>
   <q-dialog v-model="state.showTrustee">
