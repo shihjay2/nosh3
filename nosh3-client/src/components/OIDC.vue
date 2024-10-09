@@ -231,12 +231,9 @@ export default defineComponent({
                           try {
                             const oidc_url_binary = localStorage.getItem('oidc_url') + objectPath.get(c2, 'resource.content.0.attachment.url')
                             const oidc_response_binary = await axios.get(oidc_url_binary, opts)
-                            objectPath.del(c2, 'resource.content.0.attachment.url')
+                            objectPath.del(c2, 'resource.content')
                             objectPath.set(c2, 'resource.content.0.attachment.contentType', oidc_response_binary.data.contentType)
                             objectPath.set(c2, 'resource.content.0.attachment.data', oidc_response_binary.data.data)
-                            if (objectPath.has(c2, 'resource.content.1')) {
-                              objectPath.del(c2, 'resource.content.1')
-                            }
                             const ret1 = {
                               resource: 'binaries',
                               response: oidc_response_binary
