@@ -35,6 +35,7 @@
     @save-pdf="onSavePdf"
   />
   <MdPreview v-if="state.markdown" v-model="state.txt_data" language="en-US"/>
+  <div v-if="state.html" v-html="state.htmlContent" id="htmlContainer"></div>
   <QuillEditor v-if="state.text" v-model="state.txt_data" theme="snow" toolbar="minimal"/>
   <q-stepper
     v-if="state.add"
@@ -271,6 +272,9 @@ export default defineComponent({
       txt: '',
       markdown_preview: false,
       text_preview: false,
+      // html
+      html: false,
+      htmlContent: '',
       // forms
       base: {},
       schema: {},
@@ -365,6 +369,9 @@ export default defineComponent({
             } else {
               state.text = true
             }
+          } else if (contentType == 'text/html') {
+            state.htmlContent = atob(objectPath.get(state, 'fhir.' + c + '.data'))
+            state.html = true
           } else {
             state.viewer = true
           }

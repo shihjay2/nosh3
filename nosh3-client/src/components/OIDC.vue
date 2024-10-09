@@ -33,6 +33,7 @@
 
 <script>
 import { defineComponent, reactive, ref, onMounted, watch } from 'vue'
+import { useQuasar } from 'quasar'
 import { common } from '@/logic/common'
 import axios from 'axios'
 import Case from 'case'
@@ -55,6 +56,7 @@ export default defineComponent({
   },
   emits: ['loading', 'save-oidc'],
   setup(props, { emit }) {
+    const $q = useQuasar()
     const { fetchJSON } = common()
     const filter = ref(null)
     const state = reactive({
@@ -194,6 +196,14 @@ export default defineComponent({
           }
         }
       } else {
+        const notif = $q.notify({
+          group: false,
+          timeout: 0,
+          spinner: true,
+          message: 'Sync from ' + name + '...',
+          color: 'primary'
+        })
+        let i = 0
         objectPath.set(state, 'oidc.origin', name)
         auth.setLastOIDC(name)
         const relay_url1 = auth.api.oidc_relay_url + '/oidc_relay/' + localStorage.getItem('oidc_state')
@@ -258,6 +268,10 @@ export default defineComponent({
                     rows: rows
                   }
                   objectPath.set(state, 'oidc.docs.' + c1, docs)
+                  const counter = Number(i) + 1
+                  notif({
+                    caption: counter + '/' + resources.rows.length + ': Synced ' + Case.capital(c.resource)
+                  })
                   const ret = {
                     resource: c.resource,
                     response: oidc_response
@@ -274,6 +288,7 @@ export default defineComponent({
                 }
               }
             }
+            i++
           }
         } else {
           const cms_resources = [
@@ -325,6 +340,10 @@ export default defineComponent({
                 }
                 objectPath.set(state, 'oidc.docs.' + d1, docs1)
               }
+              const counter = Number(i) + 1
+              notif({
+                caption: counter + '/' + cms_resources.length + ': Synced ' + d.label
+              })
             } catch (e) {
               console.log(e)
               localStorage.setItem('oidc_log_' + log_id , JSON.stringify({
@@ -333,8 +352,15 @@ export default defineComponent({
                 response: e
               }) )
             }
+            i++
           }
         }
+        notif({
+          icon: 'done',
+          spinner: false,
+          message: 'Sync completed!',
+          timeout: 2500
+        })
         emit('save-oidc', state.oidc)
       }
     }

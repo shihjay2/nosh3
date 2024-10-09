@@ -1184,7 +1184,7 @@ export default defineComponent({
           reloadDrawer(a.resource)
           const counter = Number(i) + 1
           notif({
-            caption: counter + '/' + resources.rows.length + ': Cleared ' + Case.capital(a.resource) + ' from the chart',
+            caption: counter + '/' + resources.rows.length + ': Cleared ' + Case.capital(a.resource) + ' from the chart'
           })
         }
         i++
@@ -1513,7 +1513,7 @@ export default defineComponent({
                 reloadDrawer(row.resource)
                 const counter = Number(i) + 1
                 notif({
-                  caption: counter + '/' + state.oidc_count + ': ' + Case.capital(row.resource) + ' imported from ' + oidc[a].origin,
+                  caption: counter + '/' + state.oidc_count + ': ' + Case.capital(row.resource) + ' imported from ' + oidc[a].origin
                 })
                 i++
               }

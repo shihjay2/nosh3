@@ -287,7 +287,7 @@ export default defineComponent({
         await axios.post(window.location.origin + '/auth/gnapResource', body)
         const counter = Number(i) + 1
         notif({
-          caption: counter + '/' + row_indexes.length + ': Privileges updated for ' + objectPath.get(state, 'rows.' + row_index + '.type'),
+          caption: counter + '/' + row_indexes.length + ': Privileges updated for ' + objectPath.get(state, 'rows.' + row_index + '.type')
         })
       }
       calcUsers()
@@ -484,7 +484,7 @@ export default defineComponent({
           await axios.post(window.location.origin + '/auth/gnapResource', body)
           const counter = Number(i) + 1
           notif({
-            caption: counter + '/' + state.rows.length + ': Privileges updated for ' + objectPath.get(state, 'rows.' + i + '.type'),
+            caption: counter + '/' + state.rows.length + ': Privileges updated for ' + objectPath.get(state, 'rows.' + i + '.type')
           })
         }
       }
