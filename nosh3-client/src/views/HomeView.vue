@@ -777,7 +777,7 @@ export default defineComponent({
 },
   setup () {
     const $q = useQuasar()
-    const { addSchemaOptions, divBuild, fetchJSON, fhirModel, fhirReplace, importFHIR, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, sync, syncAll, syncTooltip, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
+    const { addSchemaOptions, fetchJSON, fhirModel, fhirReplace, importFHIR, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, sync, syncAll, syncTooltip, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
     const state = reactive({
       menuVisible: false,
       showDrawer: false,
@@ -2709,7 +2709,7 @@ export default defineComponent({
     const uploadSync1 = (files) => {
       for (const i in files) {
         getBase64(files[i]).then(data => {
-          const json = JSON.parse(atob(data.substr(data.indexOf(',') + 1)))
+          const json = JSON.parse(atob(data.substring(data.indexOf(',') + 1)))
           if (!Array.isArray(state.oidc)) {
             state.oidc = []
             auth.clearOIDC()

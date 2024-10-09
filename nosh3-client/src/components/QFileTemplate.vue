@@ -215,6 +215,8 @@ export default defineComponent({
     const state = reactive({
       fhir: {},
       fhir1: {},
+      fhir_binary: {},
+      binary_id: '',
       index: '',
       model: '',
       category: '',
@@ -289,6 +291,7 @@ export default defineComponent({
     var img
     var prefix = getPrefix()
     var localDB = new PouchDB(prefix + props.resource)
+    var binaryDB = new PouchDB(prefix, 'binaries')
     onMounted(async() => {
       state.auth = props.auth
       state.online = props.online
@@ -353,6 +356,14 @@ export default defineComponent({
           // new file
           state.viewer = false
           state.add = true
+          state.binary_id = 'nosh_' + uuidv4()
+          state.fhir_binary = {
+            "resourceType": "Binary",
+            "id": state.binary_id,
+            "_id": state.binary_id,
+            "contentType": '',
+            "data": ''
+          }
         } else {
           // existing file
           let c = state.category + '.0'
@@ -360,22 +371,42 @@ export default defineComponent({
             c += '.' + state.subcategory
           }
           const contentType = objectPath.get(state, 'fhir.' + c + '.contentType')
+          let binary_data = ''
+          if (objectPath.has(state, 'fhir.' + c + '.data')) {
+            binary_data = objectPath.get(state, 'fhir.' + c + '.data')
+            // transfer to binary
+            state.binary_id = 'nosh_' + uuidv4()
+            state.fhir_binary = {
+              "resourceType": "Binary",
+              "id": state.binary_id,
+              "_id": state.binary_id,
+              "contentType": contentType,
+              "data": binary_data
+            }
+            await sync('binaries', false, props.patient, true, state.fhir_binary)
+            objectPath.set(state, 'fhir.' + c + '.url', 'Binary/' + state.binary_id)
+            objectPath.del(state, 'fhir.' + c + '.data')
+          } else {
+            state.binary_id = objectPath.get(state, 'fhir.' + c + '.url').substring(objectPath.get(state, 'fhir.' + c + '.url').indexOf('/') + 1)
+            state.fhir_binary = await binaryDB.get(state.binary_id)
+            binary_data = state.fhir_binary.data
+          }
           if (contentType == 'application/pdf') {
             state.pdfViewer = true
           } else if (contentType == 'text/plain; charset=utf-8') {
-              state.txt_data = atob(objectPath.get(state, 'fhir.' + c + '.data'))
+              state.txt_data = atob(binary_data)
             if (isMarkdown(state.txt_data)) {
               state.markdown = true
             } else {
               state.text = true
             }
           } else if (contentType == 'text/html') {
-            state.htmlContent = atob(objectPath.get(state, 'fhir.' + c + '.data'))
+            state.htmlContent = atob(binary_data)
             state.html = true
           } else {
             state.viewer = true
           }
-          state.data = 'data:' + contentType + ';base64,' + objectPath.get(state, 'fhir.' + c + '.data')
+          state.data = 'data:' + contentType + ';base64,' + binary_data
         }
       }
     })
@@ -394,8 +425,9 @@ export default defineComponent({
     const addedFn = (files) => {
       for (const i in files) {
         getBase64(files[i]).then(data => {
-          objectPath.set(state, 'fhir.' + state.model + '.contentType', data.substr(data.indexOf(':') + 1, data.indexOf(';') - data.indexOf(':') - 1))
-          objectPath.set(state, 'fhir.' + state.model + '.data', data.substr(data.indexOf(',') + 1))
+          objectPath.set(state, 'fhir.' + state.model + '.contentType', data.substring(data.indexOf(':') + 1, data.indexOf(';')))
+          objectPath.set(state, 'fhir_binary.contentType', data.substring(data.indexOf(':') + 1, data.indexOf(';')))
+          objectPath.set(state, 'fhir_binary.data', data.substring(data.indexOf(',') + 1))
           state.fhir1 = JSON.stringify(state.fhir, null, "  ")
           const contentType = objectPath.get(state, 'fhir.' + state.model + '.contentType')
           if (contentType == 'application/pdf') {
@@ -411,7 +443,7 @@ export default defineComponent({
             emit('update-toolbar', {type: 'file', resource: props.resource, category: props.category, action: 'Image Editor'})
           }
           if (contentType == 'text/plain; charset=utf-8') {
-            state.txt = data.substr(data.indexOf(',') + 1)
+            state.txt = data.substring(data.indexOf(',') + 1)
             if (isMarkdown(atob(state.txt))) {
               state.markdown_preview = true
               emit('update-toolbar', {type: 'file', resource: props.resource, category: props.category, action: 'Markdown Editor'})
@@ -575,22 +607,25 @@ export default defineComponent({
           }
         }
         img0.src = objectPath.get(state, 'pagePng.1')
+        state.data = data
       } else {
-        objectPath.set(state, 'fhir.' + state.model + '.contentType', data.substr(data.indexOf(':') + 1, data.indexOf(';') - data.indexOf(':') - 1))
-        objectPath.set(state, 'fhir.' + state.model + '.data', data.substr(data.indexOf(',') + 1))
+        objectPath.set(state, 'fhir.' + state.model + '.contentType', data.substring(data.indexOf(':') + 1, data.indexOf(';')))
+        objectPath.set(state, 'fhir_binary.contentType', data.substring(data.indexOf(':') + 1, data.indexOf(';')))
+        objectPath.set(state, 'fhir_binary.data', data.substring(data.indexOf(',') + 1))
         state.fhir1 = JSON.stringify(state.fhir, null, "  ")
         state.edit = false
         state.image = {}
         state.data = data
         state.sending = true
         await sync(props.resource, false, props.patient, true, state.fhir)
+        await sync('binaries', false, props.patient, true, state.fhir_binary)
         state.sending = false
         const contentType = objectPath.get(state, 'fhir.' + state.model + '.contentType')
         let notify = ''
         if (contentType === 'application/pdf') {
           notify = 'PDF document'
         } else if (contentType === 'text/plain; charset=utf-8'){
-          if (isMarkdown(atob(objectPath.get(state, 'fhir.' + state.model + '.data')))) {
+          if (isMarkdown(atob(objectPath.get(state, 'fhir_binary.data')))) {
             notify = 'Markdown document'
           } else {
             notify = 'text document'

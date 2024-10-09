@@ -619,8 +619,8 @@ export function common() {
                 if (!isMarkdown(atob(objectPath.get(doc, 'content.' + c + '.attachment.data')))) {
                   doc0.text(atob(objectPath.get(doc, 'content.' + c + '.attachment.data')), 10, 10)
                   const pdf = doc0.output('datauristring')
-                  objectPath.set(doc, 'content.' + c + '.attachment.contentType', pdf.substr(pdf.indexOf(':') + 1, pdf.indexOf(';') - pdf.indexOf(':') - 1))
-                  objectPath.set(doc, 'content.' + c + '.attachment.data', pdf.substr(pdf.indexOf(',') + 1))
+                  objectPath.set(doc, 'content.' + c + '.attachment.contentType', pdf.substring(pdf.indexOf(':') + 1, pdf.indexOf(';')))
+                  objectPath.set(doc, 'content.' + c + '.attachment.data', pdf.substring(pdf.indexOf(',') + 1))
                 }
               }
               if (objectPath.get(doc, 'content.' + c + '.attachment.contentType').includes('image')) {
@@ -629,11 +629,24 @@ export function common() {
                   const doc1 = new jsPDF('p', 'px', 'a4')
                   doc1.addImage(objectPath.get(doc, 'content.' + c + '.attachment.data'), 10, 10, img.width, img.height)
                   const pdf1 = doc1.output('datauristring')
-                  objectPath.set(doc, 'content.' + c + '.attachment.contentType', pdf1.substr(pdf1.indexOf(':') + 1, pdf1.indexOf(';') - pdf1.indexOf(':') - 1))
-                  objectPath.set(doc, 'content.' + c + '.attachment.data', pdf1.substr(pdf1.indexOf(',') + 1))
+                  objectPath.set(doc, 'content.' + c + '.attachment.contentType', pdf1.substring(pdf1.indexOf(':') + 1, pdf1.indexOf(';')))
+                  objectPath.set(doc, 'content.' + c + '.attachment.data', pdf1.substring(pdf1.indexOf(',') + 1))
                 }
                 img.src = objectPath.get(doc, 'content.' + c + '.attachment.data')
               }
+              // transfer to binary
+              const binary_id = 'nosh_' + uuidv4()
+              const binary_doc = {
+                "resourceType": "Binary",
+                "id": binary_id,
+                "_id": binary_id,
+                "contentType": objectPath.set(doc, 'content.' + c + '.attachment.contentType'),
+                "data": objectPath.get(doc, 'content.' + c + '.attachment.data')
+              }
+              await sync('binaries', false, patient, true, binary_doc)
+              // clean up doc
+              objectPath.del(doc, 'content.' + c + '.attachment.data')
+              objectPath.set(doc, 'content.' + c + '.attachment.url', 'Binary/' + binary_id)
             }
           }
         }
@@ -1240,7 +1253,7 @@ export function common() {
       await eventAdd('Updated ' + pluralize.singular(resource.replace('_statements', '')), patient_id, opts)
     }
     if (online) {
-      if (resource !== 'users' && resource !== 'presentations') {
+      if (resource !== 'users' && resource !== 'presentations' && resource !== 'binaries') {
         try {
           await local.setPassword(pin, {name: couchdb + prefix + resource, opts: auth})
           const info = await local.info()
