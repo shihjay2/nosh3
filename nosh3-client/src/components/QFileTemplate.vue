@@ -651,7 +651,7 @@ export default defineComponent({
           ]
         })
         state.add = false
-        if (contentType == 'application/pdf') {
+        if (state.notify = 'PDF document') {
           state.page = 1
           state.pdfViewer = true
         } else {
