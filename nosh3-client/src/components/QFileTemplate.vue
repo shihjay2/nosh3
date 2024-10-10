@@ -583,6 +583,7 @@ export default defineComponent({
     const onEditPdf = () => {
       state.pdf = state.data
       state.editPdf = true
+      state.pdfViewer = false
     }
     const onMousedown = (props) => {
       console.log(props)
