@@ -674,9 +674,9 @@ export default defineComponent({
         }
       }
     }
-    const onSavePdf = () => {
+    const onSavePdf = async() => {
       state.editPdf = false
-      onSave(state.data)
+      await onSave(state.data)
       state.pdfViewer = true
     }
     const onTextEditing = (props) => {

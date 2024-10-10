@@ -1,9 +1,9 @@
 <template>
   <q-card :style="state.dialogWidth">
     <q-card-section>
-      <q-toolbar class="bg-grey-3 text-white">
-        <q-toolbar-title v-if="state.function === 'viewer'">PDF Viewer</q-toolbar-title>
-        <q-toolbar-title v-if="state.function === 'editor'">PDF Editor</q-toolbar-title>
+      <q-toolbar class="bg-grey-3 q-pa-sm q-gutter-sm">
+        <div v-if="state.function === 'viewer'">PDF Viewer</div>
+        <div v-if="state.function === 'editor'">PDF Editor</div>
         <q-pagination
           v-if="state.pagination"
           v-model="state.currentPage"
