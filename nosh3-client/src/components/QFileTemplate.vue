@@ -630,6 +630,7 @@ export default defineComponent({
                 state.edit = false
                 state.image = {}
                 state.editPdf = true
+                state.editPage = false
               } else {
                 doc.addPage([img0.height, img0.width], "p")
               }
