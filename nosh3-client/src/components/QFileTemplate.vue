@@ -28,11 +28,11 @@
     v-if="state.pdfViewer"
     :pdf="state.data"
     :page="state.page"
+    save=false
     @pdf-loaded="onPdfLoaded"
     @number-of-pages="onPdfNumberOfPages"
     @page-loaded="onPdfPageLoaded"
     @edit-pdf="onEditPdf"
-    @save-pdf="onSavePdf"
   />
   <MdPreview v-if="state.markdown" v-model="state.txt_data" language="en-US"/>
   <div class="q-pa-sm q-gutter-sm" v-if="state.html">
@@ -97,14 +97,15 @@
       </q-stepper-navigation>
     </q-step>
   </q-stepper>
-  <q-dialog v-model="state.view" persistent position="top" full-width full-height seamless>
+  <q-dialog v-model="state.editPdf" persistent position="top" full-width full-height seamless>
     <PDFDocument
       :pdf="state.pdf"
       :page="state.page"
+      save=true
       @pdf-loaded="onPdfLoaded"
       @number-of-pages="onPdfNumberOfPages"
       @page-loaded="onPdfPageLoaded"
-      @edit-pdf="onEditPdf"
+      @edit-page="onEditPage"
       @save-pdf="onSavePdf"
     />
   </q-dialog>
@@ -252,6 +253,7 @@ export default defineComponent({
       dataVideo: '',
       // pdf editor
       editPdf: false,
+      editPage: false,
       view: false,
       pdf: '',
       page: 1,
@@ -444,7 +446,6 @@ export default defineComponent({
           if (contentType == 'application/pdf') {
             state.pdf = data
             state.editPdf = true
-            state.view = true
             state.notify = 'PDF document'
             emit('update-toolbar', {type: 'file', resource: props.resource, category: props.category, action: 'PDF Editor'})
           }
@@ -508,16 +509,22 @@ export default defineComponent({
     const closeFHIR = () => {
       state.showPreview = false
     }
-    const closeForm = async(id='') => {
+    const closeForm = async(id='',fhir={}) => {
       state.details = false
       state.toolbarTitle = state.toolbarTitleLast
       if (state.detailsPending == true) {
         if (id !== '') {
-          const doc = await localDB.get(props.id)
+          const doc = await localDB.get(id)
           objectPath.set(state, 'fhir', doc)
           state.fhir1 = JSON.stringify(state.fhir, null, "  ")
           state.detailsPending = false
-          onSave(state.data)
+          emit('reload-drawer', props.resource)
+          emit('load-timeline')
+          emit('close-container')
+        }
+      } else {
+        if (id !== '') {
+          emit('load-timeline')
         }
       }
     }
@@ -556,22 +563,26 @@ export default defineComponent({
       console.log(props)
     }
     const onCancel = () => {
-      if (state.editPdf == true) {
-        state.view = true
+      if (state.editPage == true) {
+        state.editPdf = true
       }
       state.edit = false
       state.image = {}
     }
-    const onEditPdf = (val, page, pagePng, totalPage) => {
+    const onEditPage = (val, page, pagePng, totalPage) => {
       state.image.data = val
       state.page = page
       state.pagePng = pagePng
       state.totalPage = totalPage
       state.image.name = 'pdf_edit_page'
-      state.editPdf = true
-      state.view = false
+      state.editPage = true
+      state.editPdf = false
       state.edit = true
       emit('update-toolbar', {type: 'file', resource: props.resource, category: props.category, action: 'Image Editor'})
+    }
+    const onEditPdf = () => {
+      state.pdf = state.data
+      state.editPdf = true
     }
     const onMousedown = (props) => {
       console.log(props)
@@ -604,8 +615,7 @@ export default defineComponent({
       console.log(props)
     }
     const onSave = async(data) => {
-      if (state.editPdf == true) {
-        console.log(data)
+      if (state.editPage == true) {
         objectPath.set(state, 'pagePng.' + state.page, data)
         const img0 = new Image
         img0.onload = () => {
@@ -619,7 +629,7 @@ export default defineComponent({
                 state.data = state.pdf
                 state.edit = false
                 state.image = {}
-                state.view = true
+                state.editPdf = true
               } else {
                 doc.addPage([img0.height, img0.width], "p")
               }
@@ -635,7 +645,6 @@ export default defineComponent({
         state.fhir1 = JSON.stringify(state.fhir, null, "  ")
         state.edit = false
         state.image = {}
-        state.data = data
         state.sending = true
         await sync(props.resource, false, props.patient, true, state.fhir)
         const doc = await localDB.get(state.id)
@@ -658,19 +667,15 @@ export default defineComponent({
           state.viewer = true
         }
         stopVideo()
-        emit('reload-drawer', props.resource)
-        emit('load-timeline')
         if (state.detailsPending == true) {
           openForm()
-        } else {
-          emit('close-container')
         }
       }
     }
-    const onSavePdf = (val) => {
-      state.view = false
+    const onSavePdf = () => {
       state.editPdf = false
-      onSave(val)
+      onSave(state.data)
+      state.pdfViewer = true
     }
     const onTextEditing = (props) => {
       console.log(props)
@@ -733,6 +738,7 @@ export default defineComponent({
       loading,
       onAddText,
       onCancel,
+      onEditPage,
       onEditPdf,
       onMousedown,
       onObjectActivated,
