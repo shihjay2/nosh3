@@ -395,7 +395,9 @@ export default defineComponent({
             state.fhir_binary = await binaryDB.get(state.binary_id)
             binary_data = state.fhir_binary.data
           }
+          state.data = 'data:' + contentType + ';base64,' + binary_data
           if (contentType == 'application/pdf') {
+            state.pdf = state.data
             state.pdfViewer = true
           } else if (contentType == 'text/plain; charset=utf-8') {
               state.txt_data = atob(binary_data)
@@ -410,7 +412,7 @@ export default defineComponent({
           } else {
             state.viewer = true
           }
-          state.data = 'data:' + contentType + ';base64,' + binary_data
+         
         }
       }
     })
@@ -498,11 +500,14 @@ export default defineComponent({
     const closeFHIR = () => {
       state.showPreview = false
     }
-    const closeForm = (id='') => {
+    const closeForm = async(id='') => {
       state.details = false
       state.toolbarTitle = state.toolbarTitleLast
       if (state.detailsPending == true) {
         if (id !== '') {
+          const doc = await localDB.get(props.id)
+          objectPath.set(state, 'fhir', doc)
+          state.fhir1 = JSON.stringify(state.fhir, null, "  ")
           state.detailsPending = false
           onSave(state.data)
         }
@@ -591,6 +596,7 @@ export default defineComponent({
     }
     const onSave = async(data) => {
       if (state.editPdf == true) {
+        console.log(data)
         objectPath.set(state, 'pagePng.' + state.page, data)
         const img0 = new Image
         img0.onload = () => {
@@ -601,8 +607,6 @@ export default defineComponent({
               doc.addImage(img.src, "png", 0, 0, img.width, img.height)
               if (parseInt(key) === state.totalPage) {
                 state.pdf = doc.output('datauristring')
-                console.log(state.data)
-                console.log(state.pdf)
                 state.data = state.pdf
                 state.edit = false
                 state.image = {}
