@@ -287,7 +287,8 @@ export default defineComponent({
       // db
       auth: {},
       couchdb: '',
-      pin: ''
+      pin: '',
+      notify: ''
     })
     var video
     var img
@@ -399,20 +400,23 @@ export default defineComponent({
           if (contentType == 'application/pdf') {
             state.pdf = state.data
             state.pdfViewer = true
+            state.notify = 'PDF document'
           } else if (contentType == 'text/plain; charset=utf-8') {
               state.txt_data = atob(binary_data)
             if (isMarkdown(state.txt_data)) {
               state.markdown = true
+              state.notify = 'Markdown document'
             } else {
               state.text = true
+              state.notify = 'text document'
             }
           } else if (contentType == 'text/html') {
             state.htmlContent = atob(binary_data)
             state.html = true
           } else {
             state.viewer = true
+            state.notify = 'image'
           }
-         
         }
       }
     })
@@ -441,21 +445,25 @@ export default defineComponent({
             state.pdf = data
             state.editPdf = true
             state.view = true
+            state.notify = 'PDF document'
             emit('update-toolbar', {type: 'file', resource: props.resource, category: props.category, action: 'PDF Editor'})
           }
           if (contentType == 'image/jpeg' || contentType == 'image/gif' || contentType == 'image/png' || contentType == 'image/bmp' || contentType == 'image/tiff') {
             state.image.data = data
             state.image.name = files[i].name
             state.edit = true
+            state.notify = 'image'
             emit('update-toolbar', {type: 'file', resource: props.resource, category: props.category, action: 'Image Editor'})
           }
           if (contentType == 'text/plain; charset=utf-8') {
             state.txt = data.substring(data.indexOf(',') + 1)
             if (isMarkdown(atob(state.txt))) {
               state.markdown_preview = true
+              state.notify = 'Markdown document'
               emit('update-toolbar', {type: 'file', resource: props.resource, category: props.category, action: 'Markdown Editor'})
             } else {
               state.text_preview = true
+              state.notify = 'text document'
               emit('update-toolbar', {type: 'file', resource: props.resource, category: props.category, action: 'Text Editor'})
             }
           }
@@ -560,6 +568,7 @@ export default defineComponent({
       state.pagePng = pagePng
       state.totalPage = totalPage
       state.image.name = 'pdf_edit_page'
+      state.editPdf = true
       state.view = false
       state.edit = true
       emit('update-toolbar', {type: 'file', resource: props.resource, category: props.category, action: 'Image Editor'})
@@ -634,21 +643,8 @@ export default defineComponent({
         await sync('binaries', false, props.patient, true, state.fhir_binary)
         state.fhir_binary = await binaryDB.get(state.binary_id)
         state.sending = false
-        const contentType = objectPath.get(state, 'fhir.' + state.model + '.contentType')
-        let notify = ''
-        if (contentType === 'application/pdf') {
-          notify = 'PDF document'
-        } else if (contentType === 'text/plain; charset=utf-8'){
-          if (isMarkdown(atob(objectPath.get(state, 'fhir_binary.data')))) {
-            notify = 'Markdown document'
-          } else {
-            notify = 'text document'
-          }
-        } else {
-          notify = 'image'
-        }
         $q.notify({
-          message: 'The ' + notify + ' was saved with success!',
+          message: 'The ' + state.notify + ' was saved with success!',
           color: 'primary',
           actions: [
             { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
