@@ -1,23 +1,25 @@
 <template>
   <q-card :style="state.dialogWidth">
-    <q-card-section class="bg-grey-3">
-      <div class="q-pa-sm q-gutter-sm">
+    <q-card-section>
+      <q-toolbar class="bg-grey-3 text-white">
+        <q-toolbar-title v-if="state.function === 'viewer'">PDF Viewer</q-toolbar-title>
+        <q-toolbar-title v-if="state.function === 'editor'">PDF Editor</q-toolbar-title>
         <q-pagination
           v-if="state.pagination"
           v-model="state.currentPage"
           :max="state.numberOfPages"
           input
         />
-        <q-btn v-if="!state.save" push color="primary" icon="edit" size="sm" clickable @click="editPdf()">
+        <q-btn v-if="state.function === 'viewer'" push color="primary" icon="edit" size="sm" clickable @click="editPdf()">
           <q-tooltip>Edit PDF</q-tooltip>
         </q-btn>
-        <q-btn v-if="state.save" push color="primary" icon="edit" size="sm" clickable @click="editPage()">
+        <q-btn v-if="state.function === 'editor'" push color="primary" icon="edit" size="sm" clickable @click="editPage()">
           <q-tooltip>Edit Page</q-tooltip>
         </q-btn>
-        <q-btn v-if="state.save" push color="primary" icon="save" size="sm" clickable @click="savePdf()">
+        <q-btn v-if="state.function === 'editor'" push color="primary" icon="save" size="sm" clickable @click="savePdf()">
           <q-tooltip>Save PDF</q-tooltip>
         </q-btn>
-      </div>
+      </q-toolbar>
     </q-card-section>
     <q-card-section>
       <q-scroll-area :style="state.scroll">
@@ -55,8 +57,8 @@ export default defineComponent({
       type: Number,
       required: true
     },
-    save: {
-      type: Boolean,
+    function: {
+      type: String,
       required: true
     }
   },
@@ -79,7 +81,7 @@ export default defineComponent({
       pagePngDiv: true,
       dialogWidth: '',
       scroll: '',
-      save: true
+      function: 'viewer'
     })
     onMounted(() => {
       state.currentPage = props.page
@@ -87,7 +89,7 @@ export default defineComponent({
       state.dialogWidth += $q.screen.width - 10 + 'px;width:'
       state.dialogWidth += $q.screen.width - 20 + 'px;'
       state.scroll = 'height:'
-      state.save = props.save
+      state.function = props.function
       if ($q.screen.lt.sm) {
         state.scroll += $q.screen.height - 80 + 'px;max-width:'
         state.scroll += $q.screen.width - 30 + 'px;'

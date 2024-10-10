@@ -28,7 +28,7 @@
     v-if="state.pdfViewer"
     :pdf="state.data"
     :page="state.page"
-    save=false
+    function="viewer"
     @pdf-loaded="onPdfLoaded"
     @number-of-pages="onPdfNumberOfPages"
     @page-loaded="onPdfPageLoaded"
@@ -101,7 +101,7 @@
     <PDFDocument
       :pdf="state.pdf"
       :page="state.page"
-      save=true
+      function="editor"
       @pdf-loaded="onPdfLoaded"
       @number-of-pages="onPdfNumberOfPages"
       @page-loaded="onPdfPageLoaded"
@@ -668,6 +668,8 @@ export default defineComponent({
         }
         stopVideo()
         if (state.detailsPending == true) {
+          console.log('new document reference')
+          console.log(state.id)
           openForm()
         }
       }
