@@ -555,6 +555,7 @@ export default defineComponent({
     }
     const onDonePdf = async() => {
       state.page = 1
+      await sync(props.resource, false, props.patient, true, state.fhir)
       if (state.detailsPending == true) {
         console.log('new document reference')
         console.log(state.id)

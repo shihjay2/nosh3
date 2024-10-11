@@ -6,7 +6,7 @@
         :rows="state.table.rows"
         :columns="state.table.columns"
         :filter="state.table.filter"
-        row-key="id"
+        row-key="doc_id"
         :visible-columns="state.table.visibleColumns"
         :wrap-cells="state.wrap"
         v-model:expanded="state.expanded"
