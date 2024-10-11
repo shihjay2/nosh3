@@ -6,7 +6,7 @@
         :rows="state.table.rows"
         :columns="state.table.columns"
         :filter="state.table.filter"
-        row-key="doc_id"
+        row-key="datetime"
         :visible-columns="state.table.visibleColumns"
         :wrap-cells="state.wrap"
         v-model:expanded="state.expanded"
@@ -92,7 +92,6 @@ export default {
       await query()
       sort()
       tableMap()
-      console.log(state.table.rows)
     })
     watch(() => state.expanded, async(newVal, oldVal) => {
       if (newVal) {
@@ -102,7 +101,7 @@ export default {
             newVal.splice(newVal.indexOf(oldVal[0]),1)
             update = true
           }
-          const b = state.activities.find(c => c.doc_id === newVal[0])
+          const b = state.activities.find(c => c.datetime === newVal[0])
           state.diff = []
           if (b.diff !== null) {
             state.expanded_text = 'Document updated with these changes: '

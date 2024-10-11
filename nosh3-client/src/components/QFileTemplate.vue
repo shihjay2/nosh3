@@ -455,6 +455,10 @@ export default defineComponent({
               emit('update-toolbar', {type: 'file', resource: props.resource, category: props.category, action: 'Text Editor'})
             }
           }
+          await sync(props.resource, false, props.patient, true, state.fhir)
+          if (state.detailsPending == true) {
+            openForm()
+          }
         } catch(e) {
           console.log(e)
           $q.notify({
