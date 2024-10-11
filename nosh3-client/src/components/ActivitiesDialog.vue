@@ -6,7 +6,7 @@
         :rows="state.table.rows"
         :columns="state.table.columns"
         :filter="state.table.filter"
-        row-key="_id"
+        row-key="id"
         :visible-columns="state.table.visibleColumns"
         :wrap-cells="state.wrap"
         v-model:expanded="state.expanded"
@@ -20,9 +20,9 @@
           </q-tr>
         </template>
         <template v-slot:body="props">
-          <q-tr :props="props" @click="props.expand = !props.expand">
+          <q-tr :props="props">
             <q-td auto-width>
-              <q-btn size="sm" color="primary" round dense :icon="props.expand ? 'remove' : 'add'" />
+              <q-btn size="sm" color="primary" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'" />
             </q-td>
             <q-td v-for="col in props.cols" :key="col.name" :props="props">
               {{ col.value }}
@@ -92,6 +92,7 @@ export default {
       await query()
       sort()
       tableMap()
+      console.log(state.table.rows)
     })
     watch(() => state.expanded, async(newVal, oldVal) => {
       if (newVal) {

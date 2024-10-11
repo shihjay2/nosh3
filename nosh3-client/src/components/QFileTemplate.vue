@@ -425,7 +425,7 @@ export default defineComponent({
       for (const i in files) {
         try {
           state.data = await getBase64(files[i])
-          objectPath.set(state, 'fhir.' + state.model + '.contentType', state.data.substring(data.indexOf(':') + 1, data.indexOf(';')))
+          objectPath.set(state, 'fhir.' + state.model + '.contentType', state.data.substring(state.data.indexOf(':') + 1, state.data.indexOf(';')))
           objectPath.set(state, 'fhir.' + state.model + '.url', 'Binary/' + state.fhir_binary.id)
           state.fhir1 = JSON.stringify(state.fhir, null, "  ")
           await saveBinary()
