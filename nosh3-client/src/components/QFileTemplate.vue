@@ -673,8 +673,8 @@ export default defineComponent({
       state.details = true
     }
     const saveBinary = async() => {
-      objectPath.set(state, 'fhir_binary.contentType', state.data.substring(data.indexOf(':') + 1, data.indexOf(';')))
-      objectPath.set(state, 'fhir_binary.data', state.data.substring(data.indexOf(',') + 1))
+      objectPath.set(state, 'fhir_binary.contentType', state.data.substring(state.data.indexOf(':') + 1, state.data.indexOf(';')))
+      objectPath.set(state, 'fhir_binary.data', state.data.substring(state.data.indexOf(',') + 1))
       await sync('binaries', false, props.patient, true, state.fhir_binary)
       state.fhir_binary = await binaryDB.get(state.binary_id)  
     }
