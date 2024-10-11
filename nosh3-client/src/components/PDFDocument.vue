@@ -2,22 +2,17 @@
   <q-card :style="state.dialogWidth">
     <q-card-section>
       <q-toolbar class="bg-grey-3 q-pa-sm q-gutter-sm">
-        <div v-if="state.function === 'viewer'">PDF Viewer</div>
-        <div v-if="state.function === 'editor'">PDF Editor</div>
         <q-pagination
           v-if="state.pagination"
           v-model="state.currentPage"
           :max="state.numberOfPages"
           input
         />
-        <q-btn v-if="state.function === 'viewer'" push color="primary" icon="edit" size="sm" clickable @click="editPdf()">
-          <q-tooltip>Edit PDF</q-tooltip>
-        </q-btn>
-        <q-btn v-if="state.function === 'editor'" push color="primary" icon="edit" size="sm" clickable @click="editPage()">
+        <q-btn push color="primary" icon="edit" size="sm" clickable @click="editPage()">
           <q-tooltip>Edit Page</q-tooltip>
         </q-btn>
-        <q-btn v-if="state.function === 'editor'" push color="primary" icon="save" size="sm" clickable @click="savePdf()">
-          <q-tooltip>Save PDF</q-tooltip>
+        <q-btn v-if="state.function === 'editor'" push color="primary" icon="done" size="sm" clickable @click="donePDF()">
+          <q-tooltip>Done Editing</q-tooltip>
         </q-btn>
       </q-toolbar>
     </q-card-section>
@@ -62,7 +57,7 @@ export default defineComponent({
       required: true
     }
   },
-  emits: ['pdf-loaded', 'number-of-pages', 'page-loaded', 'edit-page', 'edit-pdf', 'save-pdf'],
+  emits: ['pdf-loaded', 'number-of-pages', 'page-loaded', 'edit-page', 'done-pdf'],
   setup(props, { emit }) {
     const $q = useQuasar()
     const annotationLayerRef = ref()
@@ -104,11 +99,17 @@ export default defineComponent({
         render(newVal)
       }
     })
+    watch(() => props.pdf, (newVal) => {
+      load()
+    })
+    watch(() => props.function, (newVal) => {
+      state.function = newVal
+    })
+    const donePDF = () => {
+      emit('done-pdf')
+    }
     const editPage = () => {
       emit('edit-page', objectPath.get(state, 'pagePng.' + state.currentPage), state.currentPage, state.pagePng, state.numberOfPages)
-    }
-    const editPdf = () => {
-      emit('edit-pdf')
     }
     const load = async() => {
       pdf = await pdfjsLib.getDocument(props.pdf).promise
@@ -174,15 +175,11 @@ export default defineComponent({
         renderInteractiveForms: false
       })
     }
-    const savePdf = () => {
-      emit('save-pdf')
-    }
     return {
+      donePDF,
       editPage,
-      editPdf,
       load,
       render,
-      savePdf,
       annotationLayerRef,
       canvasRef,
       canvasWrapperRef,

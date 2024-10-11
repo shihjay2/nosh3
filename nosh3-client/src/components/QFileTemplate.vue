@@ -25,14 +25,15 @@
     </q-card-section>
   </q-card>
   <PDFDocument
-    v-if="state.pdfViewer"
+    v-if="state.pdf"
     :pdf="state.data"
     :page="state.page"
-    function="viewer"
+    :function="state.pdfFunction"
     @pdf-loaded="onPdfLoaded"
     @number-of-pages="onPdfNumberOfPages"
     @page-loaded="onPdfPageLoaded"
-    @edit-pdf="onEditPdf"
+    @edit-page="onEditPage"
+    @done-pdf="onDonePdf"
   />
   <MdPreview v-if="state.markdown" v-model="state.txt_data" language="en-US"/>
   <div class="q-pa-sm q-gutter-sm" v-if="state.html">
@@ -97,18 +98,6 @@
       </q-stepper-navigation>
     </q-step>
   </q-stepper>
-  <q-dialog v-model="state.editPdf" persistent position="top" full-width full-height seamless>
-    <PDFDocument
-      :pdf="state.pdf"
-      :page="state.page"
-      function="editor"
-      @pdf-loaded="onPdfLoaded"
-      @number-of-pages="onPdfNumberOfPages"
-      @page-loaded="onPdfPageLoaded"
-      @edit-page="onEditPage"
-      @save-pdf="onSavePdf"
-    />
-  </q-dialog>
   <q-dialog v-model="state.edit" persistent position="top" full-width full-height seamless>
     <TuiImageEditor
       v-if="state.edit"
@@ -232,7 +221,6 @@ export default defineComponent({
       pdfViewer: false,
       add: false,
       loading: true,
-      sending: false,
       page_limit: '',
       showPreview: false,
       // editor
@@ -251,11 +239,12 @@ export default defineComponent({
       startVideoDisable: false,
       captureVideoDisable: true,
       dataVideo: '',
-      // pdf editor
+      // pdf
       editPdf: false,
       editPage: false,
       view: false,
-      pdf: '',
+      pdf: false,
+      pdfFunction: 'viewer',
       page: 1,
       totalPage: null,
       pagePng: {},
@@ -400,8 +389,7 @@ export default defineComponent({
           }
           state.data = 'data:' + contentType + ';base64,' + binary_data
           if (contentType == 'application/pdf') {
-            state.pdf = state.data
-            state.pdfViewer = true
+            state.pdf = true
             state.notify = 'PDF document'
           } else if (contentType == 'text/plain; charset=utf-8') {
               state.txt_data = atob(binary_data)
@@ -434,30 +422,30 @@ export default defineComponent({
         startVideo()
       }
     })
-    const addedFn = (files) => {
+    const addedFn = async(files) => {
       for (const i in files) {
-        getBase64(files[i]).then(data => {
-          objectPath.set(state, 'fhir.' + state.model + '.contentType', data.substring(data.indexOf(':') + 1, data.indexOf(';')))
+        try {
+          state.data = await getBase64(files[i])
+          objectPath.set(state, 'fhir.' + state.model + '.contentType', state.data.substring(data.indexOf(':') + 1, data.indexOf(';')))
           objectPath.set(state, 'fhir.' + state.model + '.url', 'Binary/' + state.fhir_binary.id)
-          objectPath.set(state, 'fhir_binary.contentType', data.substring(data.indexOf(':') + 1, data.indexOf(';')))
-          objectPath.set(state, 'fhir_binary.data', data.substring(data.indexOf(',') + 1))
           state.fhir1 = JSON.stringify(state.fhir, null, "  ")
+          await saveBinary()
           const contentType = objectPath.get(state, 'fhir.' + state.model + '.contentType')
           if (contentType == 'application/pdf') {
-            state.pdf = data
-            state.editPdf = true
+            state.pdfFunction = 'editor'
+            state.pdf = true
             state.notify = 'PDF document'
             emit('update-toolbar', {type: 'file', resource: props.resource, category: props.category, action: 'PDF Editor'})
           }
           if (contentType == 'image/jpeg' || contentType == 'image/gif' || contentType == 'image/png' || contentType == 'image/bmp' || contentType == 'image/tiff') {
-            state.image.data = data
+            state.image.data = state.data
             state.image.name = files[i].name
             state.edit = true
             state.notify = 'image'
             emit('update-toolbar', {type: 'file', resource: props.resource, category: props.category, action: 'Image Editor'})
           }
           if (contentType == 'text/plain; charset=utf-8') {
-            state.txt = data.substring(data.indexOf(',') + 1)
+            state.txt = state.data.substring(data.indexOf(',') + 1)
             if (isMarkdown(atob(state.txt))) {
               state.markdown_preview = true
               state.notify = 'Markdown document'
@@ -468,13 +456,13 @@ export default defineComponent({
               emit('update-toolbar', {type: 'file', resource: props.resource, category: props.category, action: 'Text Editor'})
             }
           }
-        }).catch((e) => {
+        } catch(e) {
           console.log(e)
           $q.notify({
             message: 'Failed to convert file',
             color: 'red'
           })
-        })
+        }
       }
     }
     const captureVideo = () => {
@@ -569,6 +557,14 @@ export default defineComponent({
       state.edit = false
       state.image = {}
     }
+    const onDonePdf = async() => {
+      state.page = 1
+      if (state.detailsPending == true) {
+        console.log('new document reference')
+        console.log(state.id)
+        openForm()
+      }
+    }
     const onEditPage = (val, page, pagePng, totalPage) => {
       state.image.data = val
       state.page = page
@@ -579,11 +575,6 @@ export default defineComponent({
       state.editPdf = false
       state.edit = true
       emit('update-toolbar', {type: 'file', resource: props.resource, category: props.category, action: 'Image Editor'})
-    }
-    const onEditPdf = () => {
-      state.pdf = state.data
-      state.editPdf = true
-      state.pdfViewer = false
     }
     const onMousedown = (props) => {
       console.log(props)
@@ -623,15 +614,22 @@ export default defineComponent({
           const doc = new jsPDF("p", "px", [img0.height, img0.width])
           for (const [key, value] of Object.entries(state.pagePng)) {
             const img = new Image
-            img.onload = () => {
+            img.onload = async() => {
               doc.addImage(img.src, "png", 0, 0, img.width, img.height)
               if (parseInt(key) === state.totalPage) {
-                state.pdf = doc.output('datauristring')
-                state.data = state.pdf
+                state.data = doc.output('datauristring')
+                await saveBinary()
                 state.edit = false
                 state.image = {}
                 state.editPdf = true
                 state.editPage = false
+                $q.notify({
+                  message: 'The ' + state.notify + ' was saved with success!',
+                  color: 'primary',
+                  actions: [
+                    { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+                  ]
+                })
               } else {
                 doc.addPage([img0.height, img0.width], "p")
               }
@@ -641,19 +639,10 @@ export default defineComponent({
         }
         img0.src = objectPath.get(state, 'pagePng.1')
       } else {
-        objectPath.set(state, 'fhir.' + state.model + '.contentType', data.substring(data.indexOf(':') + 1, data.indexOf(';')))
-        objectPath.set(state, 'fhir_binary.contentType', data.substring(data.indexOf(':') + 1, data.indexOf(';')))
-        objectPath.set(state, 'fhir_binary.data', data.substring(data.indexOf(',') + 1))
-        state.fhir1 = JSON.stringify(state.fhir, null, "  ")
+        state.data = data
+        await saveBinary()
         state.edit = false
         state.image = {}
-        state.sending = true
-        await sync(props.resource, false, props.patient, true, state.fhir)
-        const doc = await localDB.get(state.id)
-        objectPath.set(state, 'fhir', doc)
-        await sync('binaries', false, props.patient, true, state.fhir_binary)
-        state.fhir_binary = await binaryDB.get(state.binary_id)
-        state.sending = false
         $q.notify({
           message: 'The ' + state.notify + ' was saved with success!',
           color: 'primary',
@@ -662,24 +651,9 @@ export default defineComponent({
           ]
         })
         state.add = false
-        if (state.notify = 'PDF document') {
-          state.page = 1
-          state.pdfViewer = true
-        } else {
-          state.viewer = true
-        }
         stopVideo()
-        if (state.detailsPending == true) {
-          console.log('new document reference')
-          console.log(state.id)
-          openForm()
-        }
+        state.viewer = true
       }
-    }
-    const onSavePdf = async() => {
-      state.editPdf = false
-      await onSave(state.data)
-      state.pdfViewer = true
     }
     const onTextEditing = (props) => {
       console.log(props)
@@ -697,6 +671,12 @@ export default defineComponent({
       }
       await nextTick()
       state.details = true
+    }
+    const saveBinary = async() => {
+      objectPath.set(state, 'fhir_binary.contentType', state.data.substring(data.indexOf(':') + 1, data.indexOf(';')))
+      objectPath.set(state, 'fhir_binary.data', state.data.substring(data.indexOf(',') + 1))
+      await sync('binaries', false, props.patient, true, state.fhir_binary)
+      state.fhir_binary = await binaryDB.get(state.binary_id)  
     }
     const saveVideo = () => {
       state.image.data = state.dataVideo
@@ -742,8 +722,8 @@ export default defineComponent({
       loading,
       onAddText,
       onCancel,
+      onDonePdf,
       onEditPage,
-      onEditPdf,
       onMousedown,
       onObjectActivated,
       onObjectAdded,
@@ -754,10 +734,10 @@ export default defineComponent({
       onPdfPageLoaded,
       onRedoStackChanged,
       onSave,
-      onSavePdf,
       onTextEditing,
       onUndoStackChanged,
       openForm,
+      saveBinary,
       saveVideo,
       showFHIR,
       startVideo,
