@@ -92,10 +92,10 @@ export default {
       await query()
       sort()
       tableMap()
+      console.log(state.table.rows)
     })
     watch(() => state.expanded, async(newVal, oldVal) => {
       if (newVal) {
-        console.log(newVal)
         if (newVal.length === 2 || oldVal.length === 0) {
           let update = false
           if (newVal.length === 2) {
