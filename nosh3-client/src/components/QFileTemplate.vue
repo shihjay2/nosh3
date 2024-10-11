@@ -614,7 +614,6 @@ export default defineComponent({
               if (parseInt(key) === state.totalPage) {
                 state.pdf = false
                 state.data = doc.output('datauristring')
-                console.log(state.data)
                 await saveBinary()
                 state.edit = false
                 state.image = {}

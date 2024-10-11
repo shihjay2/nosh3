@@ -1240,7 +1240,9 @@ export function common() {
       }
       const result = await local.put(data)
       if (prev_data !== '') {
-        diff = fastDiff(prev_data, JSON.stringify(data))
+        if (resource !== 'binaries') {
+          diff = fastDiff(prev_data, JSON.stringify(data))
+        }
       }
       const opts = {
         doc_db: resource,
