@@ -511,7 +511,6 @@ export default defineComponent({
           state.detailsPending = false
           emit('reload-drawer', props.resource)
           emit('load-timeline')
-          emit('close-container')
         }
       } else {
         if (id !== '') {
