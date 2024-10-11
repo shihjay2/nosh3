@@ -240,7 +240,6 @@ export default defineComponent({
       captureVideoDisable: true,
       dataVideo: '',
       // pdf
-      editPdf: false,
       editPage: false,
       view: false,
       pdf: false,
@@ -551,9 +550,6 @@ export default defineComponent({
       console.log(props)
     }
     const onCancel = () => {
-      if (state.editPage == true) {
-        state.editPdf = true
-      }
       state.edit = false
       state.image = {}
     }
@@ -572,7 +568,6 @@ export default defineComponent({
       state.totalPage = totalPage
       state.image.name = 'pdf_edit_page'
       state.editPage = true
-      state.editPdf = false
       state.edit = true
       emit('update-toolbar', {type: 'file', resource: props.resource, category: props.category, action: 'Image Editor'})
     }
@@ -617,12 +612,14 @@ export default defineComponent({
             img.onload = async() => {
               doc.addImage(img.src, "png", 0, 0, img.width, img.height)
               if (parseInt(key) === state.totalPage) {
+                state.pdf = false
                 state.data = doc.output('datauristring')
+                console.log(state.data)
                 await saveBinary()
                 state.edit = false
                 state.image = {}
-                state.editPdf = true
                 state.editPage = false
+                state.pdf = true
                 $q.notify({
                   message: 'The ' + state.notify + ' was saved with success!',
                   color: 'primary',

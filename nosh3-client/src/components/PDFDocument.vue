@@ -99,9 +99,6 @@ export default defineComponent({
         render(newVal)
       }
     })
-    watch(() => props.pdf, (newVal) => {
-      load()
-    })
     watch(() => props.function, (newVal) => {
       state.function = newVal
     })
