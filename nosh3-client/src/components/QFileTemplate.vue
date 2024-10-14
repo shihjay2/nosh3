@@ -28,12 +28,10 @@
     v-if="state.pdf"
     :pdf="state.data"
     :page="state.page"
-    :function="state.pdfFunction"
     @pdf-loaded="onPdfLoaded"
     @number-of-pages="onPdfNumberOfPages"
     @page-loaded="onPdfPageLoaded"
     @edit-page="onEditPage"
-    @done-pdf="onDonePdf"
   />
   <MdPreview v-if="state.markdown" v-model="state.txt_data" language="en-US"/>
   <div class="q-pa-sm q-gutter-sm" v-if="state.html">
@@ -243,7 +241,6 @@ export default defineComponent({
       editPage: false,
       view: false,
       pdf: false,
-      pdfFunction: 'viewer',
       page: 1,
       totalPage: null,
       pagePng: {},
@@ -431,7 +428,6 @@ export default defineComponent({
           await saveBinary()
           const contentType = objectPath.get(state, 'fhir.' + state.model + '.contentType')
           if (contentType == 'application/pdf') {
-            state.pdfFunction = 'editor'
             state.pdf = true
             state.notify = 'PDF document'
             emit('update-toolbar', {type: 'file', resource: props.resource, category: props.category, action: 'PDF Editor'})
@@ -555,15 +551,6 @@ export default defineComponent({
     const onCancel = () => {
       state.edit = false
       state.image = {}
-    }
-    const onDonePdf = async() => {
-      state.page = 1
-      await sync(props.resource, false, props.patient, true, state.fhir)
-      if (state.detailsPending == true) {
-        console.log('new document reference')
-        console.log(state.id)
-        openForm()
-      }
     }
     const onEditPage = (val, page, pagePng, totalPage) => {
       state.image.data = val
@@ -722,7 +709,6 @@ export default defineComponent({
       loading,
       onAddText,
       onCancel,
-      onDonePdf,
       onEditPage,
       onMousedown,
       onObjectActivated,

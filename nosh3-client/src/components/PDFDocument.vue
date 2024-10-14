@@ -11,9 +11,6 @@
         <q-btn push color="primary" icon="edit" size="sm" clickable @click="editPage()">
           <q-tooltip>Edit Page</q-tooltip>
         </q-btn>
-        <q-btn v-if="state.function === 'editor'" push color="primary" icon="done" size="sm" clickable @click="donePDF()">
-          <q-tooltip>Done Editing</q-tooltip>
-        </q-btn>
       </q-toolbar>
     </q-card-section>
     <q-card-section>
@@ -51,10 +48,6 @@ export default defineComponent({
     page: {
       type: Number,
       required: true
-    },
-    function: {
-      type: String,
-      required: true
     }
   },
   emits: ['pdf-loaded', 'number-of-pages', 'page-loaded', 'edit-page', 'done-pdf'],
@@ -76,7 +69,6 @@ export default defineComponent({
       pagePngDiv: true,
       dialogWidth: '',
       scroll: '',
-      function: 'viewer'
     })
     onMounted(() => {
       state.currentPage = props.page
@@ -84,7 +76,6 @@ export default defineComponent({
       state.dialogWidth += $q.screen.width - 10 + 'px;width:'
       state.dialogWidth += $q.screen.width - 20 + 'px;'
       state.scroll = 'height:'
-      state.function = props.function
       if ($q.screen.lt.sm) {
         state.scroll += $q.screen.height - 80 + 'px;max-width:'
         state.scroll += $q.screen.width - 30 + 'px;'
@@ -99,12 +90,6 @@ export default defineComponent({
         render(newVal)
       }
     })
-    watch(() => props.function, (newVal) => {
-      state.function = newVal
-    })
-    const donePDF = () => {
-      emit('done-pdf')
-    }
     const editPage = () => {
       emit('edit-page', objectPath.get(state, 'pagePng.' + state.currentPage), state.currentPage, state.pagePng, state.numberOfPages)
     }
@@ -173,7 +158,6 @@ export default defineComponent({
       })
     }
     return {
-      donePDF,
       editPage,
       load,
       render,
