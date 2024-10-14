@@ -515,20 +515,31 @@
   <q-dialog v-model="state.showInsurance" persistent position="top" full-width full-height seamless>
     <q-card>
       <q-expansion-item expand-separator icon="credit_card" label="Coverage">
-        <q-card-section>
-          <textarea id="coverage_preview" v-model="state.fhir_coverage" rows="20" cols="80" class="bg-grey-9 text-white"></textarea>
-        </q-card-section>
+        <InsuranceDialog :fhir="state.fhir_coverage" type="Coverage"></InsuranceDialog>
+        <q-btn push icon="visibility" color="primary" @click="openInsuranceFHIR('Coverage')" label="FHIR" />
       </q-expansion-item>
       <q-expansion-item expand-separator icon="receipt_long" label="Explanation Of Benefit">
-        <q-card-section>
-          <textarea id="eob_preview" v-model="state.fhir_eob" rows="20" cols="80" class="bg-grey-9 text-white"></textarea>
-        </q-card-section>
+        <InsuranceDialog :fhir="state.fhir_eob" type="ExplanationOfBenefit"></InsuranceDialog>
+        <q-btn push icon="visibility" color="primary" @click="openInsuranceFHIR('ExplanationOfBenefit')" label="FHIR" />
       </q-expansion-item>
       <q-separator />
       <q-card-actions align="right">
         <div class="q-pa-sm q-gutter-sm">
           <q-btn push icon="delete" color="primary" @click="clearInsurance" label="Clear" />
           <q-btn push icon="cancel" color="red" @click="closeInsurance" label="Close" />
+        </div>
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+  <q-dialog v-model="state.showInsurancePreview" persistent position="top" full-width full-height seamless>
+    <q-card>
+      <q-card-section>
+        <textarea v-model="state.fhir_insurance" rows="20" cols="80" class="bg-grey-9 text-white"></textarea>
+      </q-card-section>
+      <q-separator />
+      <q-card-actions align="right">
+        <div class="q-pa-sm q-gutter-sm">
+          <q-btn push icon="cancel" color="red" @click="closeInsuranceFHIR" label="Close" />
         </div>
       </q-card-actions>
     </q-card>
@@ -719,6 +730,7 @@ import CareOpportunities from '@/components/CareOpportunities.vue'
 import { Form } from 'vee-validate'
 import Fuse from 'fuse.js'
 import ImmunizationSchedule from '@/components/ImmunizationSchedule.vue'
+import InsuranceDialog from '@/components/InsuranceDialog.vue'
 import json2md from 'json2md'
 import moment from 'moment'
 import objectPath from 'object-path'
@@ -756,6 +768,7 @@ export default defineComponent({
     CareOpportunities,
     Form,
     ImmunizationSchedule,
+    InsuranceDialog,
     OIDC,
     QBundleTemplate,
     QChatTemplate,
@@ -962,6 +975,8 @@ export default defineComponent({
         }
       ],
       showInsurance: false,
+      showInsurancePreview: false,
+      fhir_insurance: {},
       fhir_coverage: {},
       fhir_eob: {},
       upload_sync: false
@@ -1205,8 +1220,8 @@ export default defineComponent({
     const clearInsurance = () => {
       auth.clearCoverage()
       auth.clearEOB()
-      state.fhir_coverage = JSON.stringify(auth.coverage, null, "  ")
-      state.fhir_eob = JSON.stringify(auth.eob, null, "  ")
+      state.fhir_coverage = auth.coverage
+      state.fhir_eob = auth.eob
       state.showInsurance = false
     }
     const clearSync = () => {
@@ -1409,6 +1424,10 @@ export default defineComponent({
     }
     const closeInsurance = () => {
       state.showInsurance = false
+    }
+    const closeInsuranceFHIR = () => {
+      state.fhir_insurance = {}
+      state.showInsurancePreview = false
     }
     const closeList = () => {
       state.showList = false
@@ -2043,9 +2062,17 @@ export default defineComponent({
       state.showImmunizationSchedule = true
     }
     const openInsurance = () => {
-      state.fhir_coverage = JSON.stringify(auth.coverage, null, "  ")
-      state.fhir_eob = JSON.stringify(auth.eob, null, "  ")
+      state.fhir_coverage = auth.coverage
+      state.fhir_eob = auth.eob
       state.showInsurance = true
+    }
+    const openInsuranceFHIR = (type) => {
+      if (type === 'Coverage') {
+        state.fhir_insurance = JSON.stringify(auth.coverage, null, "  ")
+      } else{
+        state.fhir_insurance = JSON.stringify(auth.eob, null, "  ")
+      }
+      state.showInsurancePreview = true
     }
     const openLink = (url) => {
       state.patientSearch = ''
@@ -2746,6 +2773,7 @@ export default defineComponent({
       closeGraph,
       closeImmunizationSchedule,
       closeInsurance,
+      closeInsuranceFHIR,
       closeList,
       closeOIDCComplete,
       closePage,
@@ -2788,6 +2816,7 @@ export default defineComponent({
       openGraph,
       openImmunizationSchedule,
       openInsurance,
+      openInsuranceFHIR,
       openLink,
       openList,
       openOIDC,
