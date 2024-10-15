@@ -35,7 +35,7 @@
             <li>Total Cost: {{ props.row.total_cost }}</li>
             <li>Payment: {{ props.row.payment }}</li>
           </ul>
-          <h6>Diagnoses:</h6>
+          <b>Diagnoses:</b>
           <ul>
             <li v-for="(dx, index) in props.row.diagnoses" :key="index">
               {{ dx }}
@@ -133,8 +133,8 @@ export default {
           const dx_arr = []
           if (objectPath.has(row, 'diagnosis')) {
             for (const dx of objectPath.get(row, 'diagnosis')) {
-              if (objectPath.has(dx, 'diagnosisCodableConcept.coding.0.display')) {
-                dx_arr.push(objectPath.get(dx, 'diagnosisCodableConcept.coding.0.display') + ' [' + objectPath.get(dx, 'diagnosisCodableConcept.coding.0.code') + ']')
+              if (objectPath.has(dx, 'diagnosisCodeableConcept.coding.0.display')) {
+                dx_arr.push(objectPath.get(dx, 'diagnosisCodeableConcept.coding.0.display') + ' [' + objectPath.get(dx, 'diagnosisCodableConcept.coding.0.code') + ']')
               }
             }
           }
