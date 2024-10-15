@@ -7,6 +7,7 @@ import moment from 'moment'
 import objectPath from 'object-path'
 import pluralize from 'pluralize'
 import PouchDB from 'pouchdb'
+import settings from './settings.mjs'
 import { v4 as uuidv4 } from 'uuid'
 import { eventAdd, eventUser, isMarkdown, markdownParse, pollSet, sync, verifyJWT } from './core.mjs'
 
@@ -30,6 +31,7 @@ async function getTimeline(req, res) {
     attachments: true,
     startkey: 'nosh_'
   })
+  const db_binary = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'binaries', settings.couchdb_auth)
   if (timeline_result.rows.length > 0) {
     const timeline = objectPath.get(timeline_result, 'rows.0.doc.timeline')
     const mdjs = []
@@ -47,7 +49,9 @@ async function getTimeline(req, res) {
         if (objectPath.has(doc, 'content')) {
           for (const c in objectPath.get(doc, 'content')) {
             if (objectPath.get(doc, 'content.' + c + '.attachment.contentType').includes('text/plain')) {
-              const md = atob(objectPath.get(doc, 'content.' + c + '.attachment.data'))
+              const binary_id = objectPath.get(doc, 'content.' + c + '.attachment.url').substring(objectPath.get(doc, 'content.' + c + '.attachment.url').indexOf('/') + 1)
+              const binary_doc = await db_binary.get(binary_id)
+              const md = atob(objectPath.get(binary_doc, 'data'))
               if (isMarkdown(md)) {
                 const md_arr = markdownParse(md)
                 for (const md_arr_row of md_arr) {
@@ -106,7 +110,9 @@ async function putMarkdown(req, res) {
   }
   await sync('document_references', req.params.pid)
   const db = new PouchDB(prefix + 'document_references')
+  const db_binary = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'binaries', settings.couchdb_auth)
   const id = 'nosh_' + uuidv4()
+  const binary_id = 'nosh_' + uuidv4()
   const md = req.body.content
   if (isMarkdown(md)) {
     const doc = {
@@ -141,13 +147,21 @@ async function putMarkdown(req, res) {
         {
           "attachment": {
             "contentType": "text/plain; charset=utf-8",
-            "data": btoa(md)
+            "url": "Binary/" + binary_id
           }
         }
       ]
     }
+    const binary_doc = {
+      "resourceType": "Binary",
+      "id": binary_id,
+      "_id": binary_id,
+      "contentType": "text/plain; charset=utf-8",
+      "data": btoa(md)
+    }
     try {
       const body = await db.put(doc)
+      await db_binary.put(binary_doc)
       await sync('document_references', req.params.pid)
       let opts = {
         doc_db: 'document_references',
@@ -156,6 +170,13 @@ async function putMarkdown(req, res) {
       }
       opts = await eventUser(res, opts, prefix)
       await eventAdd('Updated document reference', opts, req.params.pid)
+      let binary_opts = {
+        doc_db: 'binaries',
+        doc_id: binary_id,
+        diff: null
+      }
+      binary_opts = await eventUser(res, binary_opts, prefix)
+      await eventAdd('Updated binary', binary_opts, req.params.pid)
       await pollSet(req.params.pid, 'document_references')
       res.set('ETag', 'W/"' + body.rev + '"')
       res.status(200).json(body)

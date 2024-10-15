@@ -8,6 +8,7 @@ import moment from 'moment'
 import objectPath from 'object-path'
 import pluralize from 'pluralize'
 import PouchDB from 'pouchdb'
+import settings from './settings.mjs'
 import { v4 as uuidv4 } from 'uuid'
 import { eventAdd,  sync,  verifyJWT } from './core.mjs'
 
@@ -71,6 +72,14 @@ async function getSecuredResource(req, res) {
   const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
   try {
     const doc = await db.get(req.params.id, {revs_info: true})
+    if (Case.snake(pluralize(req.params.type)) === 'document_references') {
+      const db_binary = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'binaries', settings.couchdb_auth)
+      const binary_id = objectPath.get(doc, 'content.0.attachment.url').substring(objectPath.get(doc, 'content.0.attachment.url').indexOf('/') + 1)
+      const binary_doc = await db_binary.get(binary_id)
+      objectPath.del(doc, 'content.0.attachment')
+      objectPath.set(doc, 'content.0.attachment.contentType', binary_doc.contentType)
+      objectPath.set(doc, 'content.0.attachment.data', binary_doc.data)
+    }
     res.status(200).json(doc)
   } catch(err) {
     res.status(200).json(err)
@@ -86,6 +95,14 @@ async function getSecuredResourceVersion(req, res) {
   const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
   try {
     const doc = db.get(req.params.id, {rev: req.params.vid})
+    if (Case.snake(pluralize(req.params.type)) === 'document_references') {
+      const db_binary = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'binaries', settings.couchdb_auth)
+      const binary_id = objectPath.get(doc, 'content.0.attachment.url').substring(objectPath.get(doc, 'content.0.attachment.url').indexOf('/') + 1)
+      const binary_doc = await db_binary.get(binary_id)
+      objectPath.del(doc, 'content.0.attachment')
+      objectPath.set(doc, 'content.0.attachment.contentType', binary_doc.contentType)
+      objectPath.set(doc, 'content.0.attachment.data', binary_doc.data)
+    }
     res.status(200).json(doc)
   } catch(err) {
     res.status(200).json(err)
@@ -104,9 +121,31 @@ async function postSecuredResource(req, res) {
     objectPath.set(req, 'body.id', id)
     objectPath.set(req, 'body._id', id)
     objectPath.set(req, 'body.subject.reference', 'Patient/' + req.params.pid)
+    if (Case.snake(pluralize(req.params.type)) === 'document_references') {
+      const db_binary = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'binaries', settings.couchdb_auth)
+      const binary_id = 'nosh_' + uuidv4()
+      const binary_doc = {
+        "resourceType": "Binary",
+        "id": binary_id,
+        "_id": binary_id,
+        "contentType": objectPath.get(req, 'body.content.0.attachment.contentType'),
+        "data": objectPath.get(req, 'body.content.0.attachment.data')
+      }
+      await db_binary.put(binary_doc)
+      objectPath.del(req, 'body.content.0.attachment')
+      objectPath.set(req, 'body.content.0.attachment.contentType', binary_doc.contentType)
+      objectPath.set(req, 'body.content.0.attachment.url', 'Binary/' + binary_id)
+      let binary_opts = {
+        doc_db: 'binaries',
+        doc_id: binary_id,
+        diff: null
+      }
+      binary_opts = await eventUser(res, binary_opts, prefix)
+      await eventAdd('Updated binary', binary_opts, req.params.pid)
+    }
     const body = await db.put(req.body)
     await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
-    const opts = {
+    let opts = {
       doc_db: Case.snake(pluralize(req.params.type)),
       doc_id: body.id,
       diff: null
@@ -137,6 +176,28 @@ async function putSecuredResource(req, res) {
     } catch (e) {
       console.log('New Document')
     }
+    if (Case.snake(pluralize(req.params.type)) === 'document_references') {
+      const db_binary = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'binaries', settings.couchdb_auth)
+      const binary_id = 'nosh_' + uuidv4()
+      const binary_doc = {
+        "resourceType": "Binary",
+        "id": binary_id,
+        "_id": binary_id,
+        "contentType": objectPath.get(req, 'body.content.0.attachment.contentType'),
+        "data": objectPath.get(req, 'body.content.0.attachment.data')
+      }
+      await db_binary.put(binary_doc)
+      objectPath.del(req, 'body.content.0.attachment')
+      objectPath.set(req, 'body.content.0.attachment.contentType', binary_doc.contentType)
+      objectPath.set(req, 'body.content.0.attachment.url', 'Binary/' + binary_id)
+      let binary_opts = {
+        doc_db: 'binaries',
+        doc_id: binary_id,
+        diff: null
+      }
+      binary_opts = await eventUser(res, binary_opts, prefix)
+      await eventAdd('Updated binary', binary_opts, req.params.pid)
+    }
     const body = await db.put(req.body)
     await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
     if (prev_data !== '') {
@@ -144,7 +205,7 @@ async function putSecuredResource(req, res) {
       console.log(diff_result)
       diff = diff_result.join(',')
     }
-    const opts = {
+    let opts = {
       doc_db: Case.snake(pluralize(req.params.type)),
       doc_id: body.id,
       diff: diff

@@ -772,7 +772,7 @@ async function sync(resource, patient_id='', save=false, data={}) {
     const result = await local.put(data)
     await eventAdd('Updated ' + pluralize.singular(resource.replace('_statements', '')), {id: 'system', display: 'System', doc_db: resource, doc_id: result.id, diff: null}, patient_id)
   }
-  if (resource !== 'users') {
+  if (resource !== 'users' && resource !== 'presentations' && resource !== 'binaries') {
     const info = await local.info()
     if (info.doc_count > 0) {
       try {
