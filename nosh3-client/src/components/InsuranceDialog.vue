@@ -70,8 +70,6 @@ export default {
       fhir: [],
       table: {},
       expanded: [],
-      current: [],
-      prev: [],
       wrap: true,
       type: ''
     })
@@ -83,7 +81,6 @@ export default {
     })
     watch(() => state.expanded, async(newVal, oldVal) => {
       if (newVal) {
-        console.log(newVal)
         if (newVal.length === 2 || oldVal.length === 0) {
           let update = false
           if (newVal.length === 2) {
@@ -153,7 +150,6 @@ export default {
         i++
       }
       state.fhir = sorted
-      console.log(state.fhir)
     }
     const tableMap = () => {
       if (props.type === 'Coverage') {
@@ -188,7 +184,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-#diffpreview {
-  font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
-}
 </style>

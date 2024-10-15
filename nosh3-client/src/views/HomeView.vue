@@ -1986,7 +1986,6 @@ export default defineComponent({
           }
         }
       }
-      console.log(entries)
       objectPath.set(bundleDoc, 'entry', entries)
       download(JSON.stringify(bundleDoc, null, 2), 'fhir_bundle.json', 'application/json')
     }
@@ -2642,7 +2641,6 @@ export default defineComponent({
             sync_res = 1
           } else {
             sync_res = await syncSome(state.online, state.patient)
-            console.log(sync_res)
           }
           state.drawerReload = true
           state.sync_on = false
@@ -2746,7 +2744,6 @@ export default defineComponent({
             auth.clearOIDC()
           }
           for (const doc of json) {
-            console.log(doc)
             state.oidc.push(doc)
           }
           auth.setOIDC(state.oidc)
