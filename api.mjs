@@ -9,7 +9,7 @@ import pluralize from 'pluralize'
 import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
 import { v4 as uuidv4 } from 'uuid'
-import { eventAdd, eventUser, isMarkdown, markdownParse, pollSet, sync, verifyJWT } from './core.mjs'
+import { eventAdd, eventUser, isMarkdown, markdownParse, pollSet, sync, urlFix, verifyJWT } from './core.mjs'
 
 const router = express.Router()
 import PouchDBFind from 'pouchdb-find'
