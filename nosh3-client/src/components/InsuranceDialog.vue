@@ -4,7 +4,7 @@
     :rows="state.table.rows"
     :columns="state.table.columns"
     :filter="state.table.filter"
-    row-key="datetime"
+    row-key="id"
     :visible-columns="state.table.visibleColumns"
     :wrap-cells="state.wrap"
     v-model:expanded="state.expanded"
@@ -125,7 +125,7 @@ export default {
             {type: 'PDE', link: 'https://www.medicare.gov/drug-coverage-part-d', display: 'What Drug Plans Cover'},
             {type: 'SNF', link: 'https://www.medicare.gov/what-medicare-covers/part-a/part-a-coverage-skilled-nursing-facilities.html', display: 'What Part A Covers: Skilled Nursing Facility Care'}
           ]
-          const coverage_link = {}
+          let coverage_link = {}
           const coverage_link_index = eob_type_map.findIndex((a) => a.type === objectPath.get(row, 'type.coding.1.code'))
           if (coverage_link_index !== -1) {
             coverage_link = objectPath.get(eob_type_map, coverage_link_index)
@@ -159,6 +159,7 @@ export default {
     const tableMap = () => {
       if (props.type === 'Coverage') {
         state.table.columns = [
+          {name: 'id', label: 'ID', field: 'id', align: 'left'},
           {name: 'type', label: 'Type', field: 'type', align: 'left'},
           {name: 'status', label: 'Status', field: 'status', align: 'left'},
           {name: 'start_date', label: 'Start Date', field: 'start_date', align: 'left'}
@@ -167,6 +168,7 @@ export default {
       }
       if (props.type === 'ExplanationOfBenefit') {
         state.table.columns = [
+          {name: 'id', label: 'ID', field: 'id', align: 'left'},
           {name: 'type', label: 'Type', field: 'type', align: 'left'},
           {name: 'status', label: 'Status', field: 'status', align: 'left'},
           {name: 'billable_start_date', label: 'Start Date', field: 'billable_start_date', align: 'left'},

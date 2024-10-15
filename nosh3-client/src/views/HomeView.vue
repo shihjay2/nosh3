@@ -515,12 +515,16 @@
   <q-dialog v-model="state.showInsurance" persistent position="top" full-width full-height seamless>
     <q-card>
       <q-expansion-item expand-separator icon="credit_card" label="Coverage">
-        <InsuranceDialog :fhir="state.fhir_coverage" type="Coverage"></InsuranceDialog>
-        <q-btn push icon="visibility" color="primary" @click="openInsuranceFHIR('Coverage')" label="FHIR" />
+        <div class="q-pa-md q-gutter-md">
+          <InsuranceDialog :fhir="state.fhir_coverage" type="Coverage"></InsuranceDialog>
+          <q-btn push icon="visibility" color="primary" @click="openInsuranceFHIR('Coverage')" label="FHIR" />
+        </div>
       </q-expansion-item>
       <q-expansion-item expand-separator icon="receipt_long" label="Explanation Of Benefit">
-        <InsuranceDialog :fhir="state.fhir_eob" type="ExplanationOfBenefit"></InsuranceDialog>
-        <q-btn push icon="visibility" color="primary" @click="openInsuranceFHIR('ExplanationOfBenefit')" label="FHIR" />
+        <div class="q-pa-md q-gutter-md">
+          <InsuranceDialog :fhir="state.fhir_eob" type="ExplanationOfBenefit"></InsuranceDialog>
+          <q-btn push icon="visibility" color="primary" @click="openInsuranceFHIR('ExplanationOfBenefit')" label="FHIR" />
+        </div>
       </q-expansion-item>
       <q-separator />
       <q-card-actions align="right">
