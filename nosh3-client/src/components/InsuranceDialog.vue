@@ -161,6 +161,7 @@ export default {
       if (props.type === 'Coverage') {
         state.table.columns = [
           {name: 'id', label: 'ID', field: 'id', align: 'left'},
+          {name: 'category', label: 'Category', field: 'category', align: 'left'},
           {name: 'type', label: 'Type', field: 'type', align: 'left'},
           {name: 'status', label: 'Status', field: 'status', align: 'left'},
           {name: 'start_date', label: 'Start Date', field: 'start_date', align: 'left'}
@@ -170,6 +171,7 @@ export default {
       if (props.type === 'ExplanationOfBenefit') {
         state.table.columns = [
           {name: 'id', label: 'ID', field: 'id', align: 'left'},
+          {name: 'category', label: 'Category', field: 'category', align: 'left'},
           {name: 'type', label: 'Type', field: 'type', align: 'left'},
           {name: 'status', label: 'Status', field: 'status', align: 'left'},
           {name: 'billable_start_date', label: 'Start Date', field: 'billable_start_date', align: 'left'},
