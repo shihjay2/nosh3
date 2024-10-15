@@ -41,7 +41,7 @@
               {{ dx }}
             </li>
           </ul>
-          <a v-if="props.row.coverage_link.type" tag="a" :href="props.row.coverage_link.link" target="_blank" v-ripple>
+          <a v-if="props.row.coverage_link.type !== undefined" tag="a" :href="props.row.coverage_link.link" target="_blank" v-ripple>
             {{ props.row.coverage_link.display }}
           </a>
         </q-td>
