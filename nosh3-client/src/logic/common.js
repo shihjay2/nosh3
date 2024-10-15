@@ -653,28 +653,32 @@ export function common() {
         }
       }
       if (resource === 'medication_requests') {
-        const med_statement_id = 'nosh_' + uuidv4()
-        const med_statement_doc = {
-          "resourceType": "MedicationStatement",
-          "id": med_statement_id,
-          "_id": med_statement_id,
-          "status": doc.status,
-          "medication": {
-            "reference": doc.medicationReference.reference,
-            "display": doc.medicationReference.display
-          },
-          "dosage": [
-            {
-              "sequence": 1,
-              "text": doc.dosageInstruction[0].text,
-            }
-          ],
-          "subject": {
-            "reference": "Patient/" + patient
-          },
-          "effectiveDateTime": doc.authoredOn
+        if (objectPath.has(doc, 'medicationReference.reference')) {
+          const med_statement_id = 'nosh_' + uuidv4()
+          const med_statement_doc = {
+            "resourceType": "MedicationStatement",
+            "id": med_statement_id,
+            "_id": med_statement_id,
+            "status": doc.status,
+            "medication": {
+              "reference": doc.medicationReference.reference,
+              "display": doc.medicationReference.display
+            },
+            "dosage": [
+              {
+                "sequence": 1,
+                "text": doc.dosageInstruction[0].text,
+              }
+            ],
+            "subject": {
+              "reference": "Patient/" + patient
+            },
+            "effectiveDateTime": doc.authoredOn
+          }
+          await sync('medication_statements', false, patient, true, med_statement_doc)
+        } else {
+          console.log(doc)
         }
-        await sync('medication_statements', false, patient, true, med_statement_doc)
       }
       if (resource === 'immunizations' ||
           resource === 'allergy_intolerances' ||
