@@ -8,6 +8,7 @@
     :visible-columns="state.table.visibleColumns"
     :wrap-cells="state.wrap"
     v-model:expanded="state.expanded"
+    virtual-scroll
   >
     <template v-slot:header="props">
       <q-tr :props="props">
@@ -77,30 +78,21 @@ export default {
       sort()
       tableMap()
     })
-    // watch(() => state.expanded, async(newVal, oldVal) => {
-    //   if (newVal) {
-    //     if (newVal.length === 2 || oldVal.length === 0) {
-    //       let update = false
-    //       if (newVal.length === 2) {
-    //         newVal.splice(newVal.indexOf(oldVal[0]),1)
-    //         update = true
-    //       }
-    //       const b = state.fhir.find(c => c.datetime === newVal[0])
-    //       state.diff = []
-    //       if (b.diff !== null) {
-    //         state.expanded_text = 'Document updated with these changes: '
-    //         state.diff = b.diff
-    //       } else if (b.doc_rev !== null) {
-    //         state.expanded_text = 'Added new document.'
-    //       } else {
-    //         state.expanded_text = 'No further details about this activity.'
-    //       }
-    //       if (update) {
-    //         state.expanded = newVal
-    //       }
-    //     }
-    //   }
-    // })
+    watch(() => state.expanded, async(newVal, oldVal) => {
+      if (newVal) {
+        console.log(newVal)
+        if (newVal.length === 2 || oldVal.length === 0) {
+          let update = false
+          if (newVal.length === 2) {
+            newVal.splice(newVal.indexOf(oldVal[0]),1)
+            update = true
+          }
+          if (update) {
+            state.expanded = newVal
+          }
+        }
+      }
+    })
     const sort = () => {
       const sorted = []
       let i = 0
@@ -134,7 +126,7 @@ export default {
           if (objectPath.has(row, 'diagnosis')) {
             for (const dx of objectPath.get(row, 'diagnosis')) {
               if (objectPath.has(dx, 'diagnosisCodeableConcept.coding.0.display')) {
-                dx_arr.push(objectPath.get(dx, 'diagnosisCodeableConcept.coding.0.display') + ' [' + objectPath.get(dx, 'diagnosisCodableConcept.coding.0.code') + ']')
+                dx_arr.push(objectPath.get(dx, 'diagnosisCodeableConcept.coding.0.display') + ' [' + objectPath.get(dx, 'diagnosisCodeableConcept.coding.0.code') + ']')
               }
             }
           }
