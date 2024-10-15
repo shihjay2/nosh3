@@ -43,9 +43,11 @@
               {{ dx }}
             </li>
           </ul>
-          <a v-if="props.row.coverage_link !== null" tag="a" :href="props.row.coverage_link.link" target="_blank" v-ripple>
-            {{ props.row.coverage_link.display }}
-          </a>
+          <div v-if="props.row.coverage">
+            <a tag="a" :href="props.row.coverage_link.link" target="_blank" v-ripple>
+              {{ props.row.coverage_link.display }}
+            </a>
+          </div>
         </q-td>
       </q-tr>
     </template>
@@ -120,8 +122,10 @@ export default {
             {type: 'SNF', link: 'https://www.medicare.gov/what-medicare-covers/part-a/part-a-coverage-skilled-nursing-facilities.html', display: 'What Part A Covers: Skilled Nursing Facility Care'}
           ]
           let coverage_link = null
+          let coverage = false
           const coverage_link_index = eob_type_map.findIndex((a) => a.type === objectPath.get(row, 'type.coding.1.code'))
           if (coverage_link_index !== -1) {
+            coverage = true
             coverage_link = objectPath.get(eob_type_map, coverage_link_index)
           }
           const dx_arr = []
@@ -143,6 +147,7 @@ export default {
             total_cost: objectPath.get(row, 'totalCost.value') + ' ' + objectPath.get(row, 'totalCost.code'),
             payment: objectPath.get(row, 'payment.amount.value') + ' ' + objectPath.get(row, 'payment.amount.code'),
             diagnoses: dx_arr,
+            coverage: coverage,
             coverage_link: coverage_link
           }
           sorted.push(sorted_row)
@@ -150,6 +155,7 @@ export default {
         i++
       }
       state.fhir = sorted
+      console.log(state.fhir)
     }
     const tableMap = () => {
       if (props.type === 'Coverage') {
