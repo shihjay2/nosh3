@@ -538,7 +538,7 @@
   <q-dialog v-model="state.showInsurancePreview" persistent position="top" full-width full-height seamless>
     <q-card>
       <q-card-section>
-        <textarea v-model="state.fhir_insurance" rows="20" cols="80" class="bg-grey-9 text-white"></textarea>
+        <textarea id="insurance_preview" v-model="state.fhir_insurance" rows="20" cols="80" class="bg-grey-9 text-white"></textarea>
       </q-card-section>
       <q-separator />
       <q-card-actions align="right">
@@ -2885,10 +2885,7 @@ export default defineComponent({
   text-shadow: 4px 4px 4px #aaa;
   vertical-align: middle;
 }
-#eob_preview {
-  font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
-}
-#coverage_preview {
+#insurance_preview {
   font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
 }
 </style>
