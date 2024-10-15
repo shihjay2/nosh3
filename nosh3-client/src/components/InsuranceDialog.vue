@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { reactive, onMounted } from 'vue'
+import { reactive, onMounted, watch } from 'vue'
 import objectPath from 'object-path'
 
 export default {
