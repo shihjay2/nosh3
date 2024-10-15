@@ -1,6 +1,7 @@
 <template>
   <q-table
     v-if='"rows" in state.table'
+    style="height: 300px"
     :rows="state.table.rows"
     :columns="state.table.columns"
     :filter="state.table.filter"
@@ -20,7 +21,7 @@
     </template>
     <template v-slot:body="props">
       <q-tr :props="props">
-        <q-td auto-width>
+        <q-td v-if="props.row.category === 'ExplanationOfBenefit'" auto-width>
           <q-btn size="sm" color="primary" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'" />
         </q-td>
         <q-td v-for="col in props.cols" :key="col.name" :props="props">
@@ -42,7 +43,7 @@
               {{ dx }}
             </li>
           </ul>
-          <a v-if="props.row.coverage_link.type !== undefined" tag="a" :href="props.row.coverage_link.link" target="_blank" v-ripple>
+          <a v-if="props.row.coverage_link !== null" tag="a" :href="props.row.coverage_link.link" target="_blank" v-ripple>
             {{ props.row.coverage_link.display }}
           </a>
         </q-td>
@@ -100,6 +101,7 @@ export default {
         if (props.type === 'Coverage') {
           const sorted_row = {
             id: i,
+            category: props.type,
             type: objectPath.get(row, 'type.coding.0.system') + ' ' + objectPath.get(row, 'type.coding.0.code'),
             status: objectPath.get(row, 'status'),
             start_date: objectPath.get(row, 'period.start'),
@@ -117,7 +119,7 @@ export default {
             {type: 'PDE', link: 'https://www.medicare.gov/drug-coverage-part-d', display: 'What Drug Plans Cover'},
             {type: 'SNF', link: 'https://www.medicare.gov/what-medicare-covers/part-a/part-a-coverage-skilled-nursing-facilities.html', display: 'What Part A Covers: Skilled Nursing Facility Care'}
           ]
-          let coverage_link = {}
+          let coverage_link = null
           const coverage_link_index = eob_type_map.findIndex((a) => a.type === objectPath.get(row, 'type.coding.1.code'))
           if (coverage_link_index !== -1) {
             coverage_link = objectPath.get(eob_type_map, coverage_link_index)
@@ -132,6 +134,7 @@ export default {
           }
           const sorted_row = {
             id: objectPath.get(row, 'id'),
+            category: props.type,
             type: objectPath.get(row, 'type.coding.0.display'),
             status: objectPath.get(row, 'status'),
             billable_start_date: objectPath.get(row, 'billablePeriod.start'),
