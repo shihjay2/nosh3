@@ -13,7 +13,7 @@
   >
     <template v-slot:header="props">
       <q-tr :props="props">
-        <q-th v-if="props.row.category === 'ExplanationOfBenefit'" auto-width />
+        <q-th v-if="state.type === 'ExplanationOfBenefit'" auto-width />
         <q-th v-for="col in props.cols" :key="col.name" :props="props">
           {{ col.label }}
         </q-th>
@@ -21,7 +21,7 @@
     </template>
     <template v-slot:body="props">
       <q-tr :props="props">
-        <q-td v-if="props.row.category === 'ExplanationOfBenefit'" auto-width>
+        <q-td v-if="state.type === 'ExplanationOfBenefit'" auto-width>
           <q-btn size="sm" color="primary" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'" />
         </q-td>
         <q-td v-for="col in props.cols" :key="col.name" :props="props">
@@ -73,11 +73,11 @@ export default {
       current: [],
       prev: [],
       wrap: true,
-      diff: [],
-      expanded_text: ''
+      type: ''
     })
     onMounted(async() => {
       state.fhir = props.fhir
+      state.type = props.type
       sort()
       tableMap()
     })
@@ -103,7 +103,6 @@ export default {
         if (props.type === 'Coverage') {
           const sorted_row = {
             id: i,
-            category: props.type,
             type: objectPath.get(row, 'type.coding.0.system') + ' ' + objectPath.get(row, 'type.coding.0.code'),
             status: objectPath.get(row, 'status'),
             start_date: objectPath.get(row, 'period.start'),
@@ -138,7 +137,6 @@ export default {
           }
           const sorted_row = {
             id: objectPath.get(row, 'id'),
-            category: props.type,
             type: objectPath.get(row, 'type.coding.0.display'),
             status: objectPath.get(row, 'status'),
             billable_start_date: objectPath.get(row, 'billablePeriod.start'),
@@ -161,7 +159,6 @@ export default {
       if (props.type === 'Coverage') {
         state.table.columns = [
           {name: 'id', label: 'ID', field: 'id', align: 'left'},
-          {name: 'category', label: 'Category', field: 'category', align: 'left'},
           {name: 'type', label: 'Type', field: 'type', align: 'left'},
           {name: 'status', label: 'Status', field: 'status', align: 'left'},
           {name: 'start_date', label: 'Start Date', field: 'start_date', align: 'left'}
@@ -171,7 +168,6 @@ export default {
       if (props.type === 'ExplanationOfBenefit') {
         state.table.columns = [
           {name: 'id', label: 'ID', field: 'id', align: 'left'},
-          {name: 'category', label: 'Category', field: 'category', align: 'left'},
           {name: 'type', label: 'Type', field: 'type', align: 'left'},
           {name: 'status', label: 'Status', field: 'status', align: 'left'},
           {name: 'billable_start_date', label: 'Start Date', field: 'billable_start_date', align: 'left'},
