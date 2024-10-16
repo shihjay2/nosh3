@@ -32,6 +32,7 @@ export default defineComponent({
     onMounted(() => {
       state.data = props.data
       state.style = props.style
+      console.log(state.data)
     })
     watch(() => props.data, (newVal) => {
       state.data = newVal
