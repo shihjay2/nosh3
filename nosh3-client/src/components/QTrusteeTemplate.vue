@@ -227,6 +227,7 @@ export default defineComponent({
           }
         }
       }
+      await addDefault(email, notif)
       calcUsers()
       emit('loading')
       notif({
@@ -235,6 +236,28 @@ export default defineComponent({
         message: 'Privileges updated.',
         timeout: 2500
       })
+    }
+    const addDefault = async(email, notif) => {
+      const index_arr = []
+      index_arr.push(state.rows.findIndex((resource) => resource.type === 'App'))
+      index_arr.push(state.rows.findIndex((resource) => resource.type === 'Timeline - Read Only'))
+      let j = 0
+      for (const i of index_arr) {
+        const privileges = objectPath.get(state, 'rows.' + i + '.privileges')
+        privileges.push(email)
+        objectPath.set(state, 'rows.' + i + '.privileges', privileges)
+        const body = {
+          resource: objectPath.get(state, 'rows.' + i),
+          method: 'PUT',
+          jwt: auth.gnap_jwt
+        }
+        await axios.post(window.location.origin + '/auth/gnapResource', body)
+        const counter = Number(j) + 1
+        notif({
+          caption: counter + '/' + index_arr.length + ': Privileges updated for ' + objectPath.get(state, 'rows.' + i + '.type')
+        })
+        j++
+      }
     }
     const addPrivilege = async(row_index) => {
       if (state.email_show && state.email !== '') {
@@ -565,6 +588,7 @@ export default defineComponent({
     }
     return {
       addAllResources,
+      addDefault,
       addPrivilege,
       addResources,
       addUser,
