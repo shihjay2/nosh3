@@ -706,32 +706,43 @@ export function common() {
           objectPath.set(med_statement_doc, 'dosage.0.route.system', objectPath.get(doc, 'dosageInstruction.0.route.system'))
           objectPath.set(med_statement_doc, 'dosage.0.timing.code.text', objectPath.get(doc, 'dosageInstruction.0.timing.code.text'))
         }
-        if (objectPath.has(doc, 'dosageInstruction.0.timing.repeat')) {
-          objectPath.set(med_statement_doc, 'dosage.0.timing.repeat.frequency', objectPath.get(doc, 'dosageInstruction.0.timing.repeat.frequency'))
-          objectPath.set(med_statement_doc, 'dosage.0.timing.repeat.period', objectPath.get(doc, 'dosageInstruction.0.timing.repeat.period'))
-          objectPath.set(med_statement_doc, 'dosage.0.timing.repeat.periodUnit', objectPath.get(doc, 'dosageInstruction.0.timing.repeat.periodUnit'))
-          let timing = numberToWords(objectPath.get(med_statement_doc, 'dosage.0.timing.repeat.frequency'))
-          if (timing == 'one') {
-            timing += ' time'
-          } else {
-            timing += ' times'
+        if (objectPath.has(doc, 'dosageInstruction.0.timing.code.text', timing)) {
+          objectPath.set(med_statement_doc, 'dosage.0.timing.code.text', objectPath.get(doc, 'dosageInstruction.0.timing.code.text', timing))
+        }
+        if (!objectPath.has(med_statement_doc, 'dosage.0.timing.code.text')) {
+          if (objectPath.has(doc, 'dosageInstruction.0.timing.repeat.frequency')) {
+            objectPath.set(med_statement_doc, 'dosage.0.timing.repeat.frequency', objectPath.get(doc, 'dosageInstruction.0.timing.repeat.frequency'))
           }
-          if (objectPath.get(med_statement_doc, 'dosage.0.timing.repeat.period') === 1) {
-            timing += ' a'
-          } else {
-            timing += ' every ' + numberToWords(objectPath.get(med_statement_doc, 'dosage.0.timing.repeat.period'))
+          if (objectPath.has(doc, 'dosageInstruction.0.timing.repeat.period')) {
+            objectPath.set(med_statement_doc, 'dosage.0.timing.repeat.period', objectPath.get(doc, 'dosageInstruction.0.timing.repeat.period'))
           }
-          const unit_arr = [
-            {key: 'd', value: ' day'},
-            {key: 'h', value: ' hour'},
-            {key: 'wk', value: ' week'},
-            {key: 'm', value: ' month'}
-          ]
-          const unit_index = unit_arr.findIndex((a) => a.key === objectPath.set(med_statement_doc, 'dosage.0.timing.repeat.periodUnit'))
-          if (unit_index !== -1) {
-            timing += objectPath.get(unit_arr, unit_index + '.value')
+          if (objectPath.has(doc, 'dosageInstruction.0.timing.repeat.periodUnit')) {
+            objectPath.set(med_statement_doc, 'dosage.0.timing.repeat.periodUnit', objectPath.get(doc, 'dosageInstruction.0.timing.repeat.periodUnit'))
           }
-          objectPath.set(med_statement_doc, 'dosage.0.timing.code.text', timing)
+          if (objectPath.has(med_statement_doc, 'dosage.0.timing.repeat.frequency')) {
+            let timing = numberToWords(objectPath.get(med_statement_doc, 'dosage.0.timing.repeat.frequency'))
+            if (timing == 'one') {
+              timing += ' time'
+            } else {
+              timing += ' times'
+            }
+            if (objectPath.get(med_statement_doc, 'dosage.0.timing.repeat.period') === 1) {
+              timing += ' a'
+            } else {
+              timing += ' every ' + numberToWords(objectPath.get(med_statement_doc, 'dosage.0.timing.repeat.period'))
+            }
+            const unit_arr = [
+              {key: 'd', value: ' day'},
+              {key: 'h', value: ' hour'},
+              {key: 'wk', value: ' week'},
+              {key: 'm', value: ' month'}
+            ]
+            const unit_index = unit_arr.findIndex((a) => a.key === objectPath.set(med_statement_doc, 'dosage.0.timing.repeat.periodUnit'))
+            if (unit_index !== -1) {
+              timing += objectPath.get(unit_arr, unit_index + '.value')
+            }
+            objectPath.set(med_statement_doc, 'dosage.0.timing.code.text', timing)
+          }
         }
         if (objectPath.has(doc, 'dosageInstruction.0.asNeededBoolean')) {
           objectPath.set(med_statement_doc, 'asNeededBoolean', objectPath.get(doc, 'dosageInstruction.0.asNeededBoolean'))

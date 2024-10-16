@@ -919,7 +919,9 @@ export default defineComponent({
           if (objectPath.has(result, 'docs.0')) {
             result.docs.sort((a1, b1) => moment(b1.authoredOn) - moment(a1.authoredOn))
             for (const d in objectPath.get(result, 'docs')) {
-              objectPath.set(state, 'rows.' + index + '.history.' + d + '.description', removeTags(objectPath.get(result, 'docs.' + d + '.text.div')))
+              if (objectPath.has(result, 'docs.' + d + '.text.div')) {
+                objectPath.set(state, 'rows.' + index + '.history.' + d + '.description', removeTags(objectPath.get(result, 'docs.' + d + '.text.div')))
+              }
               objectPath.set(state, 'rows.' + index + '.history.' + d + '.created', objectPath.get(result, 'docs.' + d + '.authoredOn'))
               objectPath.set(state, 'rows.' + index + '.history.' + d + '.id', objectPath.get(result, 'docs.' + d + '.id'))
             }
