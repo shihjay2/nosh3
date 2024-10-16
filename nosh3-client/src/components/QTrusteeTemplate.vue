@@ -243,19 +243,21 @@ export default defineComponent({
       index_arr.push(state.rows.findIndex((resource) => resource.type === 'Timeline - Read Only'))
       let j = 0
       for (const i of index_arr) {
-        const privileges = objectPath.get(state, 'rows.' + i + '.privileges')
-        privileges.push(email)
-        objectPath.set(state, 'rows.' + i + '.privileges', privileges)
-        const body = {
-          resource: objectPath.get(state, 'rows.' + i),
-          method: 'PUT',
-          jwt: auth.gnap_jwt
+        if (objectPath.get(state, 'rows.' + i + '.privileges').findIndex((item) => item === email) === -1) {
+          const privileges = objectPath.get(state, 'rows.' + i + '.privileges')
+          privileges.push(email)
+          objectPath.set(state, 'rows.' + i + '.privileges', privileges)
+          const body = {
+            resource: objectPath.get(state, 'rows.' + i),
+            method: 'PUT',
+            jwt: auth.gnap_jwt
+          }
+          await axios.post(window.location.origin + '/auth/gnapResource', body)
+          const counter = Number(j) + 1
+          notif({
+            caption: counter + '/' + index_arr.length + ': Privileges updated for ' + objectPath.get(state, 'rows.' + i + '.type')
+          })
         }
-        await axios.post(window.location.origin + '/auth/gnapResource', body)
-        const counter = Number(j) + 1
-        notif({
-          caption: counter + '/' + index_arr.length + ': Privileges updated for ' + objectPath.get(state, 'rows.' + i + '.type')
-        })
         j++
       }
     }
