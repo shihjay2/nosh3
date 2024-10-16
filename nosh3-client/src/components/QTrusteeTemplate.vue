@@ -241,6 +241,7 @@ export default defineComponent({
       const index_arr = []
       index_arr.push(state.rows.findIndex((resource) => resource.type === 'App'))
       index_arr.push(state.rows.findIndex((resource) => resource.type === 'Timeline - Read Only'))
+      index_arr.push(state.rows.findIndex((resource) => resource.type === 'Markdown - Write Only'))
       let j = 0
       for (const i of index_arr) {
         if (objectPath.get(state, 'rows.' + i + '.privileges').findIndex((item) => item === email) === -1) {
