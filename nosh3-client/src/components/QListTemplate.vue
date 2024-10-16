@@ -500,7 +500,6 @@ export default defineComponent({
         state.add_user = true
       }
       await loadList()
-      console.log(state.rows)
     })
     watch(() => props.encounter, (newVal) => {
       state.encounter = newVal

@@ -20,6 +20,7 @@
     "changedpi": "^1.0.4",
     "comdb": "^6.0.0-beta",
     "convert": "^4.6.0",
+    "convert-number-to-words": "^1.0.3",
     "core-js": "^3.8.3",
     "downloadjs": "^1.4.7",
     "fast-diff": "^1.2.0",
