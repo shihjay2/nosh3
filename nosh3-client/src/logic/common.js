@@ -707,7 +707,7 @@ export function common() {
           objectPath.set(med_statement_doc, 'dosage.0.timing.code.text', objectPath.get(doc, 'dosageInstruction.0.timing.code.text'))
         }
         if (objectPath.has(doc, 'dosageInstruction.0.timing.code.text')) {
-          objectPath.set(med_statement_doc, 'dosage.0.timing.code.text', objectPath.get(doc, 'dosageInstruction.0.timing.code.text', timing))
+          objectPath.set(med_statement_doc, 'dosage.0.timing.code.text', objectPath.get(doc, 'dosageInstruction.0.timing.code.text'))
         }
         if (!objectPath.has(med_statement_doc, 'dosage.0.timing.code.text')) {
           if (objectPath.has(doc, 'dosageInstruction.0.timing.repeat.frequency')) {
