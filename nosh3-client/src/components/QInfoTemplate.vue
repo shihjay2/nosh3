@@ -7,7 +7,7 @@
       </q-item-section>
     </q-item>
   </q-list>
-  <span v-if="state.style == 'span_no_label'">{{ state.data.value.toLowerCase() }}&nbsp;</span>
+  <span v-if="state.style == 'span_no_label'">{{ state.text }}&nbsp;</span>
   <q-item v-if="state.style == 'list'">
     <q-item-section>
       <div v-html="state.content"></div>
@@ -27,16 +27,28 @@ export default defineComponent({
   setup(props) {
     const state = reactive({
       data: {},
-      style: ''
+      style: '',
+      text: ''
     })
     onMounted(() => {
       state.data = props.data
       state.style = props.style
+      format()
     })
     watch(() => props.data, (newVal) => {
       state.data = newVal
+      format()
     })
+    const format = () => {
+      if (state.style == 'span_no_label') {
+        console.log(typeof(state.data.value))
+        if (typeof(state.data.value) === 'string') {
+          state.text = state.data.value.toLowerCase()
+        }
+      }
+    }
     return {
+      format,
       state
     }
   }
