@@ -654,103 +654,105 @@ export function common() {
         }
       }
       if (resource === 'medication_requests') {
-        const med_statement_id = 'nosh_' + uuidv4()
-        const med_statement_doc = {
-          "resourceType": "MedicationStatement",
-          "id": med_statement_id,
-          "_id": med_statement_id,
-          "status": doc.status,
-          "dosage": [
-            {
-              "sequence": 1
-            }
-          ],
-          "subject": {
-            "reference": "Patient/" + patient
-          },
-          "effectiveDateTime": doc.authoredOn
-        }
-        if (objectPath.has(doc, 'medicationReference.display')) {
-          objectPath.set(med_statement_doc, 'medication.display', objectPath.get(doc, 'medicationReference.display'))
-        }
-        if (objectPath.has(doc, 'medicationReference.reference')) {
-          objectPath.set(med_statement_doc, 'medication.reference', objectPath.get(doc, 'medicationReference.reference'))
-        }
-        if (objectPath.has(doc, 'dosageInstruction.0.text')) {
-          objectPath.set(med_statement_doc, 'dosage.0.text', objectPath.get(doc, 'dosageInstruction.0.text'))
-        }
-        if (objectPath.has(doc, 'medicationCodeableConcept.coding.0.display')) {
-          objectPath.set(med_statement_doc, 'medicationCodeableConcept.coding.0.display', objectPath.get(doc, 'medicationCodeableConcept.coding.0.display'))
-          objectPath.set(med_statement_doc, 'medicationCodeableConcept.coding.0.code', objectPath.get(doc, 'medicationCodeableConcept.coding.0.code'))
-          objectPath.set(med_statement_doc, 'medicationCodeableConcept.coding.0.system', objectPath.get(doc, 'medicationCodeableConcept.coding.0.system'))
-        }
-        if (objectPath.has(doc, 'dosageInstruction.0.doseAndRate.0.doseQuantity.value')) {
-          objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseQuantity.value', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseQuantity.value'))
-          objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseQuantity.code', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseQuantity.code'))
-          objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseQuantity.unit', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseQuantity.unit'))
-          objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseQuantity.system', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseQuantity.system'))
-        }
-        if (objectPath.has(doc, 'dosageInstruction.0.doseAndRate.0.doseRange.low.value')) {
-          objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseRange.low.value', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseRange.low.value'))
-          objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseRange.high.value', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseRange.high.value'))
-          objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseRange.low.code', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseRange.low.code'))
-          objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseRange.high.code', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseRange.high.code'))
-          objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseRange.low.unit', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseRange.low.unit'))
-          objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseRange.high.unit', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseRange.high.unit'))
-          objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseRange.low.system', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseRange.low.system'))
-          objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseRange.high.system', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseRange.high.system'))
-        }
-        if (objectPath.has(doc, 'dosageInstruction.0.route.display')) {
-          objectPath.set(med_statement_doc, 'dosage.0.route.coding', objectPath.get(doc, 'dosageInstruction.0.route.coding'))
-          objectPath.set(med_statement_doc, 'dosage.0.route.display', objectPath.get(doc, 'dosageInstruction.0.route.display'))
-          objectPath.set(med_statement_doc, 'dosage.0.route.system', objectPath.get(doc, 'dosageInstruction.0.route.system'))
-          objectPath.set(med_statement_doc, 'dosage.0.timing.code.text', objectPath.get(doc, 'dosageInstruction.0.timing.code.text'))
-        }
-        if (objectPath.has(doc, 'dosageInstruction.0.timing.code.text')) {
-          objectPath.set(med_statement_doc, 'dosage.0.timing.code.text', objectPath.get(doc, 'dosageInstruction.0.timing.code.text'))
-        }
-        if (!objectPath.has(med_statement_doc, 'dosage.0.timing.code.text')) {
-          if (objectPath.has(doc, 'dosageInstruction.0.timing.repeat.frequency')) {
-            objectPath.set(med_statement_doc, 'dosage.0.timing.repeat.frequency', objectPath.get(doc, 'dosageInstruction.0.timing.repeat.frequency'))
+        if (doc.status === 'active') {
+          const med_statement_id = 'nosh_' + uuidv4()
+          const med_statement_doc = {
+            "resourceType": "MedicationStatement",
+            "id": med_statement_id,
+            "_id": med_statement_id,
+            "status": doc.status,
+            "dosage": [
+              {
+                "sequence": 1
+              }
+            ],
+            "subject": {
+              "reference": "Patient/" + patient
+            },
+            "effectiveDateTime": doc.authoredOn
           }
-          if (objectPath.has(doc, 'dosageInstruction.0.timing.repeat.period')) {
-            objectPath.set(med_statement_doc, 'dosage.0.timing.repeat.period', objectPath.get(doc, 'dosageInstruction.0.timing.repeat.period'))
+          if (objectPath.has(doc, 'medicationReference.display')) {
+            objectPath.set(med_statement_doc, 'medication.display', objectPath.get(doc, 'medicationReference.display'))
           }
-          if (objectPath.has(doc, 'dosageInstruction.0.timing.repeat.periodUnit')) {
-            objectPath.set(med_statement_doc, 'dosage.0.timing.repeat.periodUnit', objectPath.get(doc, 'dosageInstruction.0.timing.repeat.periodUnit'))
+          if (objectPath.has(doc, 'medicationReference.reference')) {
+            objectPath.set(med_statement_doc, 'medication.reference', objectPath.get(doc, 'medicationReference.reference'))
           }
-          if (objectPath.has(med_statement_doc, 'dosage.0.timing.repeat.frequency')) {
-            let timing = numberToWords(objectPath.get(med_statement_doc, 'dosage.0.timing.repeat.frequency'))
-            if (timing == 'one') {
-              timing += ' time'
-            } else {
-              timing += ' times'
-            }
-            if (objectPath.get(med_statement_doc, 'dosage.0.timing.repeat.period') === 1) {
-              timing += ' a'
-            } else {
-              timing += ' every ' + numberToWords(objectPath.get(med_statement_doc, 'dosage.0.timing.repeat.period'))
-            }
-            const unit_arr = [
-              {key: 'd', value: ' day'},
-              {key: 'h', value: ' hour'},
-              {key: 'wk', value: ' week'},
-              {key: 'm', value: ' month'}
-            ]
-            const unit_index = unit_arr.findIndex((a) => a.key === objectPath.set(med_statement_doc, 'dosage.0.timing.repeat.periodUnit'))
-            if (unit_index !== -1) {
-              timing += objectPath.get(unit_arr, unit_index + '.value')
-            }
-            objectPath.set(med_statement_doc, 'dosage.0.timing.code.text', timing)
+          if (objectPath.has(doc, 'dosageInstruction.0.text')) {
+            objectPath.set(med_statement_doc, 'dosage.0.text', objectPath.get(doc, 'dosageInstruction.0.text'))
           }
+          if (objectPath.has(doc, 'medicationCodeableConcept.coding.0.display')) {
+            objectPath.set(med_statement_doc, 'medicationCodeableConcept.coding.0.display', objectPath.get(doc, 'medicationCodeableConcept.coding.0.display'))
+            objectPath.set(med_statement_doc, 'medicationCodeableConcept.coding.0.code', objectPath.get(doc, 'medicationCodeableConcept.coding.0.code'))
+            objectPath.set(med_statement_doc, 'medicationCodeableConcept.coding.0.system', objectPath.get(doc, 'medicationCodeableConcept.coding.0.system'))
+          }
+          if (objectPath.has(doc, 'dosageInstruction.0.doseAndRate.0.doseQuantity.value')) {
+            objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseQuantity.value', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseQuantity.value'))
+            objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseQuantity.code', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseQuantity.code'))
+            objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseQuantity.unit', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseQuantity.unit'))
+            objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseQuantity.system', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseQuantity.system'))
+          }
+          if (objectPath.has(doc, 'dosageInstruction.0.doseAndRate.0.doseRange.low.value')) {
+            objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseRange.low.value', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseRange.low.value'))
+            objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseRange.high.value', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseRange.high.value'))
+            objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseRange.low.code', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseRange.low.code'))
+            objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseRange.high.code', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseRange.high.code'))
+            objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseRange.low.unit', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseRange.low.unit'))
+            objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseRange.high.unit', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseRange.high.unit'))
+            objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseRange.low.system', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseRange.low.system'))
+            objectPath.set(med_statement_doc, 'dosage.0.doseAndRate.0.doseRange.high.system', objectPath.get(doc, 'dosageInstruction.0.doseAndRate.0.doseRange.high.system'))
+          }
+          if (objectPath.has(doc, 'dosageInstruction.0.route.display')) {
+            objectPath.set(med_statement_doc, 'dosage.0.route.coding', objectPath.get(doc, 'dosageInstruction.0.route.coding'))
+            objectPath.set(med_statement_doc, 'dosage.0.route.display', objectPath.get(doc, 'dosageInstruction.0.route.display'))
+            objectPath.set(med_statement_doc, 'dosage.0.route.system', objectPath.get(doc, 'dosageInstruction.0.route.system'))
+            objectPath.set(med_statement_doc, 'dosage.0.timing.code.text', objectPath.get(doc, 'dosageInstruction.0.timing.code.text'))
+          }
+          if (objectPath.has(doc, 'dosageInstruction.0.timing.code.text')) {
+            objectPath.set(med_statement_doc, 'dosage.0.timing.code.text', objectPath.get(doc, 'dosageInstruction.0.timing.code.text'))
+          }
+          if (!objectPath.has(med_statement_doc, 'dosage.0.timing.code.text')) {
+            if (objectPath.has(doc, 'dosageInstruction.0.timing.repeat.frequency')) {
+              objectPath.set(med_statement_doc, 'dosage.0.timing.repeat.frequency', objectPath.get(doc, 'dosageInstruction.0.timing.repeat.frequency'))
+            }
+            if (objectPath.has(doc, 'dosageInstruction.0.timing.repeat.period')) {
+              objectPath.set(med_statement_doc, 'dosage.0.timing.repeat.period', objectPath.get(doc, 'dosageInstruction.0.timing.repeat.period'))
+            }
+            if (objectPath.has(doc, 'dosageInstruction.0.timing.repeat.periodUnit')) {
+              objectPath.set(med_statement_doc, 'dosage.0.timing.repeat.periodUnit', objectPath.get(doc, 'dosageInstruction.0.timing.repeat.periodUnit'))
+            }
+            if (objectPath.has(med_statement_doc, 'dosage.0.timing.repeat.frequency')) {
+              let timing = numberToWords(objectPath.get(med_statement_doc, 'dosage.0.timing.repeat.frequency'))
+              if (timing == 'one') {
+                timing += ' time'
+              } else {
+                timing += ' times'
+              }
+              if (objectPath.get(med_statement_doc, 'dosage.0.timing.repeat.period') === 1) {
+                timing += ' a'
+              } else {
+                timing += ' every ' + numberToWords(objectPath.get(med_statement_doc, 'dosage.0.timing.repeat.period'))
+              }
+              const unit_arr = [
+                {key: 'd', value: ' day'},
+                {key: 'h', value: ' hour'},
+                {key: 'wk', value: ' week'},
+                {key: 'm', value: ' month'}
+              ]
+              const unit_index = unit_arr.findIndex((a) => a.key === objectPath.set(med_statement_doc, 'dosage.0.timing.repeat.periodUnit'))
+              if (unit_index !== -1) {
+                timing += objectPath.get(unit_arr, unit_index + '.value')
+              }
+              objectPath.set(med_statement_doc, 'dosage.0.timing.code.text', timing)
+            }
+          }
+          if (objectPath.has(doc, 'dosageInstruction.0.asNeededBoolean')) {
+            objectPath.set(med_statement_doc, 'asNeededBoolean', objectPath.get(doc, 'dosageInstruction.0.asNeededBoolean'))
+          }
+          if (objectPath.has(doc, 'dosageInstruction.0.additionalInstruction.0.text')) {
+            objectPath.set(med_statement_doc, 'additionalInstruction.0.text', objectPath.get(doc, 'dosageInstruction.0.additionalInstruction.0.text'))
+          }
+          await sync('medication_statements', false, patient, true, med_statement_doc)
         }
-        if (objectPath.has(doc, 'dosageInstruction.0.asNeededBoolean')) {
-          objectPath.set(med_statement_doc, 'asNeededBoolean', objectPath.get(doc, 'dosageInstruction.0.asNeededBoolean'))
-        }
-        if (objectPath.has(doc, 'dosageInstruction.0.additionalInstruction.0.text')) {
-          objectPath.set(med_statement_doc, 'additionalInstruction.0.text', objectPath.get(doc, 'dosageInstruction.0.additionalInstruction.0.text'))
-        }
-        await sync('medication_statements', false, patient, true, med_statement_doc)
       }
       if (resource === 'immunizations' ||
           resource === 'allergy_intolerances' ||
