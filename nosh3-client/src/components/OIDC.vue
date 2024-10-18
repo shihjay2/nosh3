@@ -204,6 +204,7 @@ export default defineComponent({
           message: 'Sync from ' + name + '...',
           color: 'primary'
         })
+        const debug = []
         let i = 0
         objectPath.set(state, 'oidc.origin', name)
         auth.setLastOIDC(name)
@@ -250,20 +251,27 @@ export default defineComponent({
                               resource: 'binaries',
                               response: oidc_response_binary
                             }
-                            localStorage.setItem('oidc_success_' + moment().unix(), JSON.stringify(ret1))
+                            debug.push(ret1)
                           } catch (e) {
                             console.log(e)
                             const err = {
                               resource: 'binaries',
                               error: e
                             }
-                            localStorage.setItem('oidc_error_' + moment().unix(), JSON.stringify(err))
+                            debug.push(err)
                           }
                         }
                       }
                       rows.push(c2.resource)
                     }
                   }
+                  const ret = {
+                    resource: c.resource,
+                    token: state.access_token,
+                    url: oidc_url,
+                    response: oidc_response
+                  }
+                  debug.push(ret)
                   const docs = {
                     resource: c.resource,
                     rows: rows
@@ -273,19 +281,15 @@ export default defineComponent({
                   notif({
                     caption: counter + '/' + resources.rows.length + ': Synced ' + Case.capital(c.resource)
                   })
-                  const ret = {
-                    resource: c.resource,
-                    response: oidc_response
-                  }
-                  localStorage.setItem('oidc_success_' + c1 + '_' + moment().unix() , JSON.stringify(ret))
                   c1++
                 } catch (e) {
-                  console.log(e)
                   const err = {
                     resource: c.resource,
+                    token: state.access_token,
+                    url: oidc_url,
                     error: e
                   }
-                  localStorage.setItem('oidc_error_' + moment().unix(), JSON.stringify(err))
+                  debug.push(err)
                 }
               }
             }
@@ -302,7 +306,6 @@ export default defineComponent({
           for (const d of cms_resources) {
             const oidc_url1 = localStorage.getItem('oidc_url') + d.path
             const opts1 = {headers: { Authorization: 'Bearer ' + state.access_token}}
-            const log_id = uuidv4()
             try {
               const oidc_response1 = await axios.get(oidc_url1 + cms_patient, opts1)
               localStorage.setItem('oidc_log_' + log_id , JSON.stringify({
@@ -310,6 +313,13 @@ export default defineComponent({
                 url: oidc_url1,
                 response: oidc_response1.data
               }) )
+              const ret = {
+                resource: d.resource,
+                token: state.access_token,
+                url: oidc_url1 + cms_patient,
+                response: oidc_response1
+              }
+              debug.push(ret)
               if (d.label !== 'Summary') {
                 const coverage_arr = auth.coverage
                 const eob_arr = auth.eob
@@ -347,11 +357,13 @@ export default defineComponent({
               })
             } catch (e) {
               console.log(e)
-              localStorage.setItem('oidc_log_' + log_id , JSON.stringify({
+              const err = {
+                resource: c.resource,
                 token: state.access_token,
-                url: oidc_url1,
-                response: e
-              }) )
+                url: oidc_url1 + cms_patient,
+                error: e
+              }
+              debug.push(err)
             }
             i++
           }
@@ -362,6 +374,7 @@ export default defineComponent({
           message: 'Sync completed!',
           timeout: 2500
         })
+        objectPath.set(state, 'oidc.debug', debug)
         emit('save-oidc', state.oidc)
       }
     }
