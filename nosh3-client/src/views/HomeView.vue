@@ -335,6 +335,7 @@
       <OIDC
         v-if="state.showOIDC"
         @save-oidc="saveOIDC"
+        @debug-oidc="debugOIDC"
         @loading="loading"
         :type="state.oidc_type"
         :name="state.oidc_name"
@@ -1478,6 +1479,14 @@ export default defineComponent({
           { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
         ]
       })
+    }
+    const debugOIDC = () => {
+      if (!Array.isArray(state.oidc)) {
+        state.oidc = []
+        auth.clearOIDC()
+      }
+      state.oidc.push(doc)
+      auth.setOIDC(state.oidc)
     }
     const dumpSync = () => {
       const bundleDoc = {}
@@ -2781,6 +2790,7 @@ export default defineComponent({
       closePulldown,
       closeTrustee,
       completeTask,
+      debugOIDC,
       dumpSync,
       fhirModel,
       fhirReplace,

@@ -38,7 +38,6 @@ import { common } from '@/logic/common'
 import axios from 'axios'
 import Case from 'case'
 import Fuse from 'fuse.js'
-import moment from 'moment'
 import objectPath from 'object-path'
 import pluralize from 'pluralize'
 import sortArray from 'sort-array'
@@ -54,7 +53,7 @@ export default defineComponent({
     oidcComplete: Boolean,
     patient: String
   },
-  emits: ['loading', 'save-oidc'],
+  emits: ['loading', 'debug-oidc', 'save-oidc'],
   setup(props, { emit }) {
     const $q = useQuasar()
     const { fetchJSON } = common()
@@ -256,6 +255,8 @@ export default defineComponent({
                               response: oidc_response_binary
                             }
                             debug.push(ret1)
+                            objectPath.set(state, 'oidc.debug', debug)
+                            emit('debug-oidc')
                           } catch (e) {
                             console.log(e)
                             const err = {
@@ -263,6 +264,8 @@ export default defineComponent({
                               error: e
                             }
                             debug.push(err)
+                            objectPath.set(state, 'oidc.debug', debug)
+                            emit('debug-oidc')
                           }
                         }
                       }
@@ -276,6 +279,8 @@ export default defineComponent({
                     response: oidc_response
                   }
                   debug.push(ret)
+                  objectPath.set(state, 'oidc.debug', debug)
+                  emit('debug-oidc')
                   const docs = {
                     resource: c.resource,
                     rows: rows
@@ -293,6 +298,8 @@ export default defineComponent({
                     error: e
                   }
                   debug.push(err)
+                  objectPath.set(state, 'oidc.debug', debug)
+                  emit('debug-oidc')
                 }
               }
             }
@@ -327,6 +334,8 @@ export default defineComponent({
                 response: oidc_response1
               }
               debug.push(ret)
+              objectPath.set(state, 'oidc.debug', debug)
+              emit('debug-oidc')
               if (d.label !== 'Summary') {
                 const coverage_arr = auth.coverage
                 const eob_arr = auth.eob
@@ -370,6 +379,8 @@ export default defineComponent({
                 error: e
               }
               debug.push(err)
+              objectPath.set(state, 'oidc.debug', debug)
+              emit('debug-oidc')
             }
             i++
           }
