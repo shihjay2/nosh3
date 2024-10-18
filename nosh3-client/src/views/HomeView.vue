@@ -1482,8 +1482,8 @@ export default defineComponent({
     }
     const debugOIDC = (doc) => {
       if (!Array.isArray(state.oidc)) {
-        state.oidc = []
-        auth.clearOIDC()
+        // state.oidc = []
+        // auth.clearOIDC()
       }
       const i = state.oidc.findIndex((a) => a.origin === doc.origin)
       if (i !== -1) {
@@ -2359,8 +2359,8 @@ export default defineComponent({
     }
     const saveOIDC = (doc) => {
       if (!Array.isArray(state.oidc)) {
-        state.oidc = []
-        auth.clearOIDC()
+        // state.oidc = []
+        // auth.clearOIDC()
       }
       const i = state.oidc.findIndex((a) => a.origin === doc.origin)
       if (i !== -1) {
