@@ -1485,7 +1485,12 @@ export default defineComponent({
         state.oidc = []
         auth.clearOIDC()
       }
-      state.oidc.push(doc)
+      const i = state.oidc.findIndex((a) => a.origin === doc.origin)
+      if (i !== -1) {
+        objectPath.set(state, 'oidc.' + i, doc)
+      } else {
+        state.oidc.push(doc)
+      }
       auth.setOIDC(state.oidc)
     }
     const dumpSync = () => {
@@ -2357,7 +2362,12 @@ export default defineComponent({
         state.oidc = []
         auth.clearOIDC()
       }
-      state.oidc.push(doc)
+      const i = state.oidc.findIndex((a) => a.origin === doc.origin)
+      if (i !== -1) {
+        objectPath.set(state, 'oidc.' + i, doc)
+      } else {
+        state.oidc.push(doc)
+      }
       auth.setOIDC(state.oidc)
       let complete = false
       if (localStorage.getItem("oidc_access_token") !== null) {
