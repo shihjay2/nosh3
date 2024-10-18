@@ -233,6 +233,10 @@ export default defineComponent({
               if (c.resource !== 'patients') {
                 const oidc_url = localStorage.getItem('oidc_url') + Case.pascal(pluralize.singular(c.resource)) + '?patient=' + state.patient_token
                 const opts = {headers: {Authorization: 'Bearer ' + state.access_token, Accept: 'application/json'}}
+                const counter = Number(i) + 1
+                notif({
+                  caption: counter + '/' + resources.rows.length + ': Syncing ' + Case.capital(c.resource)
+                })
                 try {
                   const oidc_response = await axios.get(oidc_url, opts)
                   const rows = []
@@ -277,7 +281,6 @@ export default defineComponent({
                     rows: rows
                   }
                   objectPath.set(state, 'oidc.docs.' + c1, docs)
-                  const counter = Number(i) + 1
                   notif({
                     caption: counter + '/' + resources.rows.length + ': Synced ' + Case.capital(c.resource)
                   })
@@ -306,6 +309,10 @@ export default defineComponent({
           for (const d of cms_resources) {
             const oidc_url1 = localStorage.getItem('oidc_url') + d.path
             const opts1 = {headers: { Authorization: 'Bearer ' + state.access_token}}
+            const counter = Number(i) + 1
+            notif({
+              caption: counter + '/' + cms_resources.length + ': Syncing ' + d.label
+            })
             try {
               const oidc_response1 = await axios.get(oidc_url1 + cms_patient, opts1)
               localStorage.setItem('oidc_log_' + log_id , JSON.stringify({
@@ -351,7 +358,6 @@ export default defineComponent({
                 }
                 objectPath.set(state, 'oidc.docs.' + d1, docs1)
               }
-              const counter = Number(i) + 1
               notif({
                 caption: counter + '/' + cms_resources.length + ': Synced ' + d.label
               })
