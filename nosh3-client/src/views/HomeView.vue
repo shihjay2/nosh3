@@ -1480,7 +1480,7 @@ export default defineComponent({
         ]
       })
     }
-    const debugOIDC = () => {
+    const debugOIDC = (doc) => {
       if (!Array.isArray(state.oidc)) {
         state.oidc = []
         auth.clearOIDC()

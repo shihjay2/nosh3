@@ -256,7 +256,7 @@ export default defineComponent({
                             }
                             debug.push(ret1)
                             objectPath.set(state, 'oidc.debug', debug)
-                            emit('debug-oidc')
+                            emit('debug-oidc', state.oidc)
                           } catch (e) {
                             console.log(e)
                             const err = {
@@ -265,7 +265,7 @@ export default defineComponent({
                             }
                             debug.push(err)
                             objectPath.set(state, 'oidc.debug', debug)
-                            emit('debug-oidc')
+                            emit('debug-oidc', state.oidc)
                           }
                         }
                       }
@@ -280,7 +280,7 @@ export default defineComponent({
                   }
                   debug.push(ret)
                   objectPath.set(state, 'oidc.debug', debug)
-                  emit('debug-oidc')
+                  emit('debug-oidc', state.oidc)
                   const docs = {
                     resource: c.resource,
                     rows: rows
@@ -299,7 +299,7 @@ export default defineComponent({
                   }
                   debug.push(err)
                   objectPath.set(state, 'oidc.debug', debug)
-                  emit('debug-oidc')
+                  emit('debug-oidc', state.oidc)
                 }
               }
             }
@@ -335,7 +335,7 @@ export default defineComponent({
               }
               debug.push(ret)
               objectPath.set(state, 'oidc.debug', debug)
-              emit('debug-oidc')
+              emit('debug-oidc', state.oidc)
               if (d.label !== 'Summary') {
                 const coverage_arr = auth.coverage
                 const eob_arr = auth.eob
@@ -380,7 +380,7 @@ export default defineComponent({
               }
               debug.push(err)
               objectPath.set(state, 'oidc.debug', debug)
-              emit('debug-oidc')
+              emit('debug-oidc', state.oidc)
             }
             i++
           }
