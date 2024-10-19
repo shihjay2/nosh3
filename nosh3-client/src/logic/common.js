@@ -513,7 +513,7 @@ export function common() {
     await local.info()
     try {
       const doc = await local.get(prefix)
-      return objectPath.get(doc, 'data')
+      return JSON.parse(objectPath.get(doc, 'data'))
     } catch (e) {
       return []
     }
@@ -1313,8 +1313,7 @@ export function common() {
     } catch (e) {
       console.log('New OIDC!')
     }
-    objectPath.set(doc, 'data', oidc)
-    console.log(doc)
+    objectPath.set(doc, 'data', JSON.stringify(oidc))
     await local.put(doc)
   }
   const setOptions = () => {
