@@ -102,7 +102,7 @@ export function common() {
     try {
       const doc = await local.get(prefix)
       objectPath.set(doc, 'data', [])
-      await local.put(data)
+      await local.put(doc)
     } catch (e) {
       console.log('No OIDC!')
     }
@@ -1314,7 +1314,7 @@ export function common() {
       console.log('New OIDC!')
     }
     objectPath.set(doc, 'data', oidc)
-    await local.put(data)
+    await local.put(doc)
   }
   const setOptions = () => {
     return [
