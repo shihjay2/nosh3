@@ -335,7 +335,6 @@
       <OIDC
         v-if="state.showOIDC"
         @save-oidc="saveOIDC"
-        @debug-oidc="debugOIDC"
         @loading="loading"
         :type="state.oidc_type"
         :name="state.oidc_name"
@@ -795,7 +794,7 @@ export default defineComponent({
 },
   setup () {
     const $q = useQuasar()
-    const { addSchemaOptions, clearOIDC, fetchJSON, fhirModel, fhirReplace, getOIDC, importFHIR, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, setOIDC, sync, syncAll, syncTooltip, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
+    const { addSchemaOptions, clearOIDC, fetchJSON, fhirModel, fhirReplace, getOIDC, getOIDCDebug, importFHIR, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, setOIDC, sync, syncAll, syncTooltip, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
     const state = reactive({
       menuVisible: false,
       showDrawer: false,
@@ -1478,19 +1477,6 @@ export default defineComponent({
         ]
       })
     }
-    const debugOIDC = async(doc) => {
-      if (!Array.isArray(state.oidc)) {
-        state.oidc = []
-        await clearOIDC()
-      }
-      const i = state.oidc.findIndex((a) => a.origin === doc.origin)
-      if (i !== -1) {
-        objectPath.set(state, 'oidc.' + i, doc)
-      } else {
-        state.oidc.push(doc)
-      }
-      await setOIDC(state.oidc)
-    }
     const dumpSync = () => {
       const bundleDoc = {}
       const id = 'nosh_' + uuidv4()
@@ -1963,8 +1949,9 @@ export default defineComponent({
       state.toolbar = true
       state.showChat = true
     }
-    const openDebug = () => {
-      download(JSON.stringify(state.oidc, null, 2), 'fhir_debug.json', 'application/json')
+    const openDebug = async() => {
+      const debug = await getOIDCDebug()
+      download(JSON.stringify(debug, null, 2), 'fhir_debug.json', 'application/json')
     }
     const openDetail = () => {
       state.openDetail = true
@@ -2803,7 +2790,6 @@ export default defineComponent({
       closePulldown,
       closeTrustee,
       completeTask,
-      debugOIDC,
       dumpSync,
       fhirModel,
       fhirReplace,

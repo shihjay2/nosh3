@@ -518,6 +518,17 @@ export function common() {
       return []
     }
   }
+  const getOIDCDebug = async() => {
+    const prefix = getPrefix()
+    const local = new PouchDB(prefix + 'oidc')
+    await local.info()
+    try {
+      const doc = await local.get(prefix + 'log')
+      return JSON.parse(objectPath.get(doc, 'data'))
+    } catch (e) {
+      return []
+    }
+  }
   const getPrefix = () => {
     const auth_store = useAuthStore()
     return auth_store.prefix
@@ -1308,13 +1319,20 @@ export function common() {
       "id": prefix,
       "_id": prefix,
     }
+    let doc_log = {
+      "id": prefix + 'log',
+      "_id": prefix + 'log',
+    }
     try {
       doc = await local.get(prefix)
+      doc_log = await local.get(prefix + 'log')
     } catch (e) {
       console.log('New OIDC!')
     }
     objectPath.set(doc, 'data', JSON.stringify(oidc))
+    objectPath.set(doc_log, 'data', JSON.stringify(oidc))
     await local.put(doc)
+    await local.put(doc_log)
   }
   const setOptions = () => {
     return [
@@ -1571,6 +1589,7 @@ export function common() {
     fhirModel,
     fhirReplace,
     getOIDC,
+    getOIDCDebug,
     getPrefix,
     getResource,
     getSignedEncounters,
