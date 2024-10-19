@@ -41,7 +41,6 @@ export default defineComponent({
     })
     const format = () => {
       if (state.style == 'span_no_label') {
-        console.log(typeof(state.data.value))
         if (typeof(state.data.value) === 'string') {
           state.text = state.data.value.toLowerCase()
         }

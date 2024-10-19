@@ -17,7 +17,6 @@ export const useAuthStore = defineStore({
     patient: null,
     prefix: null,
     sync_resource: [],
-    oidc: [],
     last_oidc: null,
     returnUrl: null,
     message: null,
@@ -29,9 +28,6 @@ export const useAuthStore = defineStore({
   }),
   persist: true,
   actions: {
-    clearOIDC() {
-      this.oidc = []
-    },
     login(user, payload, jwt) {
       this.user = user
       this.jwt = jwt
@@ -75,9 +71,6 @@ export const useAuthStore = defineStore({
     },
     setMessage(message) {
       this.message = message
-    },
-    setOIDC(oidc) {
-      this.oidc = oidc
     },
     setLastOIDC(oidc) {
       this.last_oidc = oidc

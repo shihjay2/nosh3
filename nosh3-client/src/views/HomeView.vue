@@ -795,7 +795,7 @@ export default defineComponent({
 },
   setup () {
     const $q = useQuasar()
-    const { addSchemaOptions, fetchJSON, fhirModel, fhirReplace, importFHIR, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, sync, syncAll, syncTooltip, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
+    const { addSchemaOptions, clearOIDC, fetchJSON, fhirModel, fhirReplace, getOIDC, importFHIR, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, setOIDC, sync, syncAll, syncTooltip, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
     const state = reactive({
       menuVisible: false,
       showDrawer: false,
@@ -1058,9 +1058,7 @@ export default defineComponent({
                 state.showTimeline = true
                 updateToolbar({type: 'timeline'})
                 state.toolbar = true
-                if (auth.oidc !== null) {
-                  state.oidc = auth.oidc
-                }
+                state.oidc = await getOIDC()
               }
             } else {
               if (prefix === '') {
@@ -1229,9 +1227,9 @@ export default defineComponent({
       state.fhir_eob = auth.eob
       state.showInsurance = false
     }
-    const clearSync = () => {
+    const clearSync = async() => {
       state.oidc = []
-      auth.clearOIDC()
+      await clearOIDC()
     }
     const closeActivities = () => {
       state.showActivity = false
@@ -1480,10 +1478,10 @@ export default defineComponent({
         ]
       })
     }
-    const debugOIDC = (doc) => {
+    const debugOIDC = async(doc) => {
       if (!Array.isArray(state.oidc)) {
-        // state.oidc = []
-        // auth.clearOIDC()
+        state.oidc = []
+        await clearOIDC()
       }
       const i = state.oidc.findIndex((a) => a.origin === doc.origin)
       if (i !== -1) {
@@ -1491,7 +1489,7 @@ export default defineComponent({
       } else {
         state.oidc.push(doc)
       }
-      auth.setOIDC(state.oidc)
+      await setOIDC(state.oidc)
     }
     const dumpSync = () => {
       const bundleDoc = {}
@@ -2357,10 +2355,10 @@ export default defineComponent({
       state.drawerResource = ''
       state.drawerReload = false
     }
-    const saveOIDC = (doc) => {
+    const saveOIDC = async(doc) => {
       if (!Array.isArray(state.oidc)) {
-        // state.oidc = []
-        // auth.clearOIDC()
+        state.oidc = []
+        await clearOIDC()
       }
       const i = state.oidc.findIndex((a) => a.origin === doc.origin)
       if (i !== -1) {
@@ -2368,7 +2366,7 @@ export default defineComponent({
       } else {
         state.oidc.push(doc)
       }
-      auth.setOIDC(state.oidc)
+      await setOIDC(state.oidc)
       let complete = false
       if (localStorage.getItem("oidc_access_token") !== null) {
         complete = true
@@ -2395,6 +2393,10 @@ export default defineComponent({
         state.lastOIDC = auth.last_oidc
         state.showOIDCComplete = true
         auth.clearLastOIDC()
+        if (objectPath.has(state, 'user.id')) {
+          await updateInbox(state.user)
+          console.log('Inbox updated')
+        }
       }
     }
     const setActiveCarePlan = (doc) => {
@@ -2407,12 +2409,12 @@ export default defineComponent({
         ]
       })
     }
-    const removeOIDC = (index, resource, origin) => {
-      state.oidc = auth.oidc
+    const removeOIDC = async(index, resource, origin) => {
+      state.oidc = await getOIDC()
       const a = state.oidc.findIndex(b => b.origin == origin)
       const c = state.oidc[a].docs.findIndex(d => d.resource == resource)
       objectPath.del(state, 'oidc.' + a + '.docs.' + c + '.rows.' + index)
-      auth.setOIDC(state.oidc)
+      await setOIDC(state.oidc)
     }
     const setActiveComposition = (doc) => {
       state.compositionDoc = doc
@@ -2754,26 +2756,27 @@ export default defineComponent({
     const uploadSync = () => {
       state.upload_sync = true
     }
-    const uploadSync1 = (files) => {
+    const uploadSync1 = async(files) => {
       for (const i in files) {
-        getBase64(files[i]).then(data => {
+        try {
+          const data = getBase64(files[i])
           const json = JSON.parse(atob(data.substring(data.indexOf(',') + 1)))
           if (!Array.isArray(state.oidc)) {
             state.oidc = []
-            auth.clearOIDC()
+            await clearOIDC()
           }
           for (const doc of json) {
             state.oidc.push(doc)
           }
-          auth.setOIDC(state.oidc)
+          await setOIDC(state.oidc)
           state.upload_sync = false
-        }).catch((e) => {
+        } catch (e) {
           console.log(e)
           $q.notify({
             message: 'Failed to upload file',
             color: 'red'
           })
-        })
+        }
       }
     }
     return {

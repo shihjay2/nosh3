@@ -95,6 +95,18 @@ export function common() {
     await sync('bundles', false, patient_id, true, bundleDoc)
     return bundleDoc
   }
+  const clearOIDC = async() => {
+    const prefix = getPrefix()
+    const local = new PouchDB(prefix + 'oidc')
+    await local.info()
+    try {
+      const doc = await local.get(prefix)
+      objectPath.set(doc, 'data', [])
+      await local.put(data)
+    } catch (e) {
+      console.log('No OIDC!')
+    }
+  }
   const divBuild = async(resource, doc) => {
     // create div
     let value = '<div xmlns="http://www.w3.org/1999/xhtml">'
@@ -495,6 +507,17 @@ export function common() {
       return str
     }
   }
+  const getOIDC = async() => {
+    const prefix = getPrefix()
+    const local = new PouchDB(prefix + 'oidc')
+    await local.info()
+    try {
+      const doc = await local.get(prefix)
+      return objectPath.get(doc, 'data')
+    } catch (e) {
+      return []
+    }
+  }
   const getPrefix = () => {
     const auth_store = useAuthStore()
     return auth_store.prefix
@@ -773,8 +796,7 @@ export function common() {
     }
   }
   const importReference = async(resource, reference_id, origin, patient) => {
-    const auth_store = useAuthStore()
-    const oidc = auth_store.oidc
+    const oidc = await getOIDC()
     const a = oidc.findIndex(b => b.origin == origin)
     const c = oidc[a].docs.findIndex(d => d.resource == resource)
     if (c !== -1) {
@@ -792,7 +814,7 @@ export function common() {
         const a1 = oidc.findIndex(b1 => b1.origin == origin)
         const c1 = oidc[a].docs.findIndex(d1 => d1.resource == resource)
         objectPath.del(oidc, a1 + '.docs.' + c1 + '.rows.' + index)
-        auth.setOIDC(oidc)
+        await setOIDC(oidc)
         return reference_new_id
       }
     }
@@ -1278,6 +1300,22 @@ export function common() {
       return str.replace( /(<([^>]+)>)/ig, '')
     }
   }
+  const setOIDC = async(oidc) => {
+    const prefix = getPrefix()
+    const local = new PouchDB(prefix + 'oidc')
+    await local.info()
+    let doc = {
+      "id": prefix,
+      "_id": prefix,
+    }
+    try {
+      doc = await local.get(prefix)
+    } catch (e) {
+      console.log('New OIDC!')
+    }
+    objectPath.set(doc, 'data', oidc)
+    await local.put(data)
+  }
   const setOptions = () => {
     return [
       {
@@ -1524,6 +1562,7 @@ export function common() {
   return {
     addSchemaOptions,
     bundleBuild,
+    clearOIDC,
     divBuild,
     eventAdd,
     fetchJSON,
@@ -1531,6 +1570,7 @@ export function common() {
     fhirDisplay,
     fhirModel,
     fhirReplace,
+    getOIDC,
     getPrefix,
     getResource,
     getSignedEncounters,
@@ -1550,6 +1590,7 @@ export function common() {
     patientStatus,
     referenceSearch,
     removeTags,
+    setOIDC,
     setOptions,
     sync,
     syncAll,
