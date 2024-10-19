@@ -124,7 +124,8 @@ export default defineComponent({
     })
     watch(() => props.oidcComplete, (newVal) => {
       if (newVal) {
-        window.location.href = window.location.origin + '/app/chart/' + props.patient
+        console.log(newVal)
+        // window.location.href = window.location.origin + '/app/chart/' + props.patient
       }
     })
     const open = async(type, name, origin) => {
