@@ -1314,6 +1314,7 @@ export function common() {
       console.log('New OIDC!')
     }
     objectPath.set(doc, 'data', oidc)
+    console.log(doc)
     await local.put(doc)
   }
   const setOptions = () => {
