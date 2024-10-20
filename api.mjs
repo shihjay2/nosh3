@@ -178,6 +178,7 @@ async function putMarkdown(req, res) {
       binary_opts = await eventUser(res, binary_opts, prefix)
       await eventAdd('Updated binary', binary_opts, req.params.pid)
       await pollSet(req.params.pid, 'document_references')
+      await pollSet(req.params.pid, 'binaries')
       res.set('ETag', 'W/"' + body.rev + '"')
       res.status(200).json(body)
     } catch(err) {
