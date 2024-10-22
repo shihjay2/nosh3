@@ -15,7 +15,7 @@
   <q-btn v-if="state.relatedPersons" push flat round icon="groups" clickable @click="openRelatedPersons">
     <q-tooltip>Related Persons</q-tooltip>
   </q-btn>
-  <q-btn v-if="state.timeline && state.user.role === 'patient'" push flat round icon="cloud_sync" clickable @click="openTrustee('user')" color="deep-orange">
+  <q-btn v-if="state.timeline && state.user.role === 'patient'" push flat round icon="cloud_sync" clickable @click="startSync" color="deep-orange">
     <q-tooltip>Sync Database</q-tooltip>
   </q-btn>
   <q-btn v-if="state.timeline && state.user.role === 'patient'" push flat round icon="policy" clickable @click="openTrustee('user')" color="deep-orange">
@@ -82,6 +82,7 @@ import Case from 'case'
 import pluralize from 'pluralize'
 import print from 'vue3-print-nb'
 import objectPath from 'object-path'
+import { startSession } from '@spruceid/ssx/dist/modules/Storage/kepler/authenticator'
 
 export default defineComponent({
   name: 'QToolbarTemplate',
