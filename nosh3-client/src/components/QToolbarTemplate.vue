@@ -82,7 +82,6 @@ import Case from 'case'
 import pluralize from 'pluralize'
 import print from 'vue3-print-nb'
 import objectPath from 'object-path'
-import { startSession } from '@spruceid/ssx/dist/modules/Storage/kepler/authenticator'
 
 export default defineComponent({
   name: 'QToolbarTemplate',
