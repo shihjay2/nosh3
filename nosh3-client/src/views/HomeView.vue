@@ -111,6 +111,7 @@
           @clear-all="clearAll"
           @import-all="importAll"
           @upload-sync="uploadSync"
+          @start-sync="startSync"
           :toolbar-object="state.toolbarObject"
           :encounter="state.encounter"
           :id="state.id"
@@ -2633,6 +2634,9 @@ export default defineComponent({
     const sortDate = () => {
       state.sort = 'date'
     }
+    const startSync = async() => {
+      await syncProcess()
+    }
     const stopInboxTimer = () => {
       clearInterval(inboxTimer)
       clearInterval(syncTimer)
@@ -2862,6 +2866,7 @@ export default defineComponent({
       signEncounter,
       sortAlpha,
       sortDate,
+      startSync,
       stopInboxTimer,
       sync,
       syncAll,

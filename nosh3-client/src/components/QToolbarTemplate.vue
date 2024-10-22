@@ -15,6 +15,9 @@
   <q-btn v-if="state.relatedPersons" push flat round icon="groups" clickable @click="openRelatedPersons">
     <q-tooltip>Related Persons</q-tooltip>
   </q-btn>
+  <q-btn v-if="state.timeline && state.user.role === 'patient'" push flat round icon="cloud_sync" clickable @click="openTrustee('user')" color="deep-orange">
+    <q-tooltip>Sync Database</q-tooltip>
+  </q-btn>
   <q-btn v-if="state.timeline && state.user.role === 'patient'" push flat round icon="policy" clickable @click="openTrustee('user')" color="deep-orange">
     <q-tooltip>Share Record</q-tooltip>
   </q-btn>
@@ -94,7 +97,7 @@ export default defineComponent({
   directives: {
     print
   },
-  emits: ['addendum-encounter', 'clear-all', 'clear-sync', 'close-container', 'dump-sync', 'import-all', 'lock-thread', 'new-prescription', 'open-chat', 'open-debug', 'open-detail', 'open-form', 'open-file', 'open-immunizationschedule', 'open-list', 'open-page', 'open-page-form', 'open-trustee', 'set-composition-section', 'sign-encounter', 'sort-alpha', 'sort-date', 'upload-sync'],
+  emits: ['addendum-encounter', 'clear-all', 'clear-sync', 'close-container', 'dump-sync', 'import-all', 'lock-thread', 'new-prescription', 'open-chat', 'open-debug', 'open-detail', 'open-form', 'open-file', 'open-immunizationschedule', 'open-list', 'open-page', 'open-page-form', 'open-trustee', 'set-composition-section', 'sign-encounter', 'sort-alpha', 'sort-date', 'start-sync', 'upload-sync'],
   setup (props, { emit }) {
     const auth = useAuthStore()
     const { fetchJSON } = common()
@@ -244,6 +247,9 @@ export default defineComponent({
     const sortTitle = () => {
       emit('sort-alpha')
     }
+    const startSync = () => {
+      emit('start-sync')
+    }
     const updateToolbar = async(toolbar) => {
       state.base = {}
       state.pageOpen = false
@@ -387,6 +393,7 @@ export default defineComponent({
       signEncounter,
       sortDate,
       sortTitle,
+      startSync,
       updateToolbar,
       uploadSync,
       state
