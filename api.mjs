@@ -8,6 +8,7 @@ import objectPath from 'object-path'
 import pluralize from 'pluralize'
 import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
+import TurndownService from 'turndown'
 import { v4 as uuidv4 } from 'uuid'
 import { eventAdd, eventUser, isMarkdown, markdownParse, pollSet, sync, urlFix, verifyJWT } from './core.mjs'
 
@@ -48,15 +49,23 @@ async function getTimeline(req, res) {
         const doc = row.doc
         if (objectPath.has(doc, 'content')) {
           for (const c in objectPath.get(doc, 'content')) {
+            const binary_id = objectPath.get(doc, 'content.' + c + '.attachment.url').substring(objectPath.get(doc, 'content.' + c + '.attachment.url').indexOf('/') + 1)
+            const binary_doc = await db_binary.get(binary_id)
+            const data = atob(objectPath.get(binary_doc, 'data'))
             if (objectPath.get(doc, 'content.' + c + '.attachment.contentType').includes('text/plain')) {
-              const binary_id = objectPath.get(doc, 'content.' + c + '.attachment.url').substring(objectPath.get(doc, 'content.' + c + '.attachment.url').indexOf('/') + 1)
-              const binary_doc = await db_binary.get(binary_id)
-              const md = atob(objectPath.get(binary_doc, 'data'))
-              if (isMarkdown(md)) {
-                const md_arr = markdownParse(md)
+              if (isMarkdown(data)) {
+                const md_arr = markdownParse(data)
                 for (const md_arr_row of md_arr) {
                   mdjs.push(md_arr_row)
                 }
+              }
+            }
+            if (objectPath.get(doc, 'content.' + c + '.attachment.contentType').includes('text/html')) {
+              const turndownService = new TurndownService()
+              const md = turndownService.turndown(data)
+              const md_arr1 = markdownParse(md)
+              for (const md_arr_row1 of md_arr1) {
+                mdjs.push(md_arr_row1)
               }
             }
           }
