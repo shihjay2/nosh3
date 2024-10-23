@@ -73,6 +73,7 @@
 import { defineComponent, onMounted, reactive, watchEffect } from 'vue'
 import { useQuasar } from 'quasar'
 import { common } from '@/logic/common'
+import { Form } from 'vee-validate'
 import * as jose from 'jose'
 import PouchDB from 'pouchdb-browser'
 import { useAuthStore } from '@/stores'
