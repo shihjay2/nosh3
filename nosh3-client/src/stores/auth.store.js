@@ -56,6 +56,7 @@ export const useAuthStore = defineStore({
       this.api = null
       this.pin = null
       this.instance = null
+      this.last_oidc = null
       this.trustee = null
       this.gnap_jwt = null
       this.prefix = null
