@@ -51,7 +51,7 @@
                 </q-item>
                 <q-item>
                   <q-item-section>
-                    If you are not the patient, please come back later until the login prompt appears.
+                    If you are not the patient, please refresh the page later until the login prompt appears.
                   </q-item-section>
                 </q-item>
               </q-list>
@@ -77,6 +77,7 @@ import * as jose from 'jose'
 import PouchDB from 'pouchdb-browser'
 import { useAuthStore } from '@/stores'
 import { useRoute } from 'vue-router'
+import QInputWithValidation from '@/components/QInputWithValidation.vue'
 import { router } from '@/helpers'
 import objectPath from 'object-path'
 import PouchDBFind from 'pouchdb-find'
@@ -85,6 +86,10 @@ PouchDB.plugin(PouchDBFind)
 
 export default defineComponent({
   name: 'VerifyView',
+  components: {
+    Form,
+    QInputWithValidation
+  },
   setup (props) {
     const $q = useQuasar()
     const route = useRoute()

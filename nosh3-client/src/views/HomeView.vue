@@ -565,7 +565,7 @@
     <q-spinner color="white" size="md" thickness="5"/>
     <q-tooltip :offset="[0, 8]">Loading...</q-tooltip>
   </q-dialog>
-  <q-dialog v-model="state.showPIN">
+  <q-dialog v-model="state.showPIN" persistent>
     <q-card v-if="state.user.role === 'patient'">
       <q-card-section>
         <div class="text-h6 text-center">Enter PIN</div>
@@ -599,7 +599,7 @@
             </q-item>
             <q-item>
               <q-item-section>
-                If you are not the patient, please come back later until the login prompt appears.
+                If you are not the patient, please refresh the page later until the login prompt appears.
               </q-item-section>
             </q-item>
           </q-list>
@@ -611,7 +611,7 @@
     </q-card>
     <q-card v-if="state.user.role !== 'patient'">
       <q-card-section>
-        Encrypted database locked.  Please come back later until the patient unlocks the database.
+        Encrypted database locked.  Please refresh the page later until the patient unlocks the database.
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -718,6 +718,16 @@
           <p>Review each resource entry indicated by <q-chip icon="local_fire_department" color="red" text-color="white">Import from {{ state.lastOIDC }}</q-chip>.</p>
           <p>Import each resource entry by clicking on the <q-btn flat round color="teal" icon="import_export"/> button.</p>
           <q-btn push icon="add" color="primary" label="Import Individually" clickable @click="closeOIDCComplete" />
+        </div>
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+  <q-dialog v-model="state.showLogoff" persistent>
+    <q-card>
+      <q-card-section>
+        <div class="text-center">
+          <p>Your access token has expired.  Sign in again for access.</p>
+          <q-btn push icon="login" color="primary" label="Sign In Again" clickable @click="login" />
         </div>
       </q-card-section>
     </q-card>
@@ -956,6 +966,7 @@ export default defineComponent({
       // sync
       sync_on: false,
       sync_tooltip: '',
+      showLogoff: false,
       showPIN: false,
       formPin: {},
       schemaPin: [
@@ -1859,6 +1870,10 @@ export default defineComponent({
         ]
       })
     }
+    const login = () => {
+      auth.returnUrl = route.fullPath
+      return auth.logout()
+    }
     const newPrescription = () => {
       state.new_medication_request = true
       openForm('add', 'medication_statements', 'all')
@@ -2283,28 +2298,34 @@ export default defineComponent({
       state.trusteeView = view
     }
     const pinCheck = async() => {
-      const check = await axios.post(window.location.origin + '/auth/pinCheck', {patient: state.patient})
-      if (check.data.response === 'Error') {
-        state.loading = false
-        state.showPIN = true
-      }
-      if (objectPath.has(check, 'data.sync.status')) {
-        if (objectPath.get(check, 'data.sync.status') === 'sync') {
-          for (const resource of objectPath.get(check, 'data.sync.resources')) {
-            auth.setSyncResource(resource)
-          }
-          await syncProcess('some')
+      try {
+        await verifyJWT(state.online)
+        const check = await axios.post(window.location.origin + '/auth/pinCheck', {patient: state.patient})
+        if (check.data.response === 'Error') {
+          state.loading = false
+          state.showPIN = true
         }
-      }
-      if (check.data.response === 'Forbidden') {
-        state.login = false
-        $q.notify({
-          message: 'Invalid URL - forbidden',
-          color: 'red',
-          actions: [
-            { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
-          ]
-        })
+        if (objectPath.has(check, 'data.sync.status')) {
+          if (objectPath.get(check, 'data.sync.status') === 'sync') {
+            for (const resource of objectPath.get(check, 'data.sync.resources')) {
+              auth.setSyncResource(resource)
+            }
+            await syncProcess('some')
+          }
+        }
+        if (check.data.response === 'Forbidden') {
+          state.login = false
+          $q.notify({
+            message: 'Invalid URL - forbidden',
+            color: 'red',
+            actions: [
+              { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+            ]
+          })
+        }
+      } catch(e) {
+        auth.setMessage('jwt not valid')
+        state.showLogoff = true
       }
     }
     const refreshApp = () => {
@@ -2810,6 +2831,7 @@ export default defineComponent({
       loadMarkdown,
       loadTimeline,
       lockThread,
+      login,
       newPrescription,
       onCancelMAIA,
       onClearMAIA,

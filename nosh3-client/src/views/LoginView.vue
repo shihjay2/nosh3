@@ -92,7 +92,7 @@
                 </q-item>
                 <q-item>
                   <q-item-section>
-                    If you are not the patient, please come back later until the login prompt appears.
+                    If you are not the patient, please refresh the page later until the login prompt appears.
                   </q-item-section>
                 </q-item>
               </q-list>
