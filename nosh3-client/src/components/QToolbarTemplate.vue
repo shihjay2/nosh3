@@ -15,9 +15,6 @@
   <q-btn v-if="state.relatedPersons" push flat round icon="groups" clickable @click="openRelatedPersons">
     <q-tooltip>Related Persons</q-tooltip>
   </q-btn>
-  <q-btn v-if="state.timeline && state.user.role === 'patient'" push flat round icon="cloud_sync" clickable @click="startSync" color="deep-orange">
-    <q-tooltip>Sync Database</q-tooltip>
-  </q-btn>
   <q-btn v-if="state.timeline && state.user.role === 'patient'" push flat round icon="policy" clickable @click="openTrustee('user')" color="deep-orange">
     <q-tooltip>Share Record</q-tooltip>
   </q-btn>
@@ -247,9 +244,6 @@ export default defineComponent({
     const sortTitle = () => {
       emit('sort-alpha')
     }
-    const startSync = () => {
-      emit('start-sync')
-    }
     const updateToolbar = async(toolbar) => {
       state.base = {}
       state.pageOpen = false
@@ -393,7 +387,6 @@ export default defineComponent({
       signEncounter,
       sortDate,
       sortTitle,
-      startSync,
       updateToolbar,
       uploadSync,
       state

@@ -13,12 +13,15 @@
         <q-toolbar-title id="logo">
           Nosh
         </q-toolbar-title>
-        <div class="q-pa-md q-gutter-xs">
+        <div class="q-pa-md q-gutter-xs" v-if="state.sync_on">
           <div class="q-gutter-md row justify-center">
             <q-spinner-radio v-if="state.sync_on" color="white" size="1em"/>
-            <q-tooltip>{{ state.sync_tooltip }}</q-tooltip>
+            <q-tooltip v-if="state.sync_on">{{ state.sync_tooltip }}</q-tooltip>
           </div>
         </div>
+        <q-btn v-if="!state.sync_on" push dense round icon="cloud_sync" @click="startSync">
+          <q-tooltip>Sync Database</q-tooltip>
+        </q-btn>
         <q-btn v-if="state.updateExists" flat dense round icon="update" @click="refreshApp">
           <q-tooltip>Update available, click to refresh</q-tooltip>
         </q-btn>
