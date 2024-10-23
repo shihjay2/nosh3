@@ -19,7 +19,7 @@
             <q-tooltip v-if="state.sync_on">{{ state.sync_tooltip }}</q-tooltip>
           </div>
         </div>
-        <q-btn v-if="!state.sync_on" push dense round icon="cloud_sync" @click="startSync">
+        <q-btn v-if="!state.sync_on" flat dense round icon="cloud_sync" @click="startSync">
           <q-tooltip>Sync Database</q-tooltip>
         </q-btn>
         <q-btn v-if="state.updateExists" flat dense round icon="update" @click="refreshApp">
