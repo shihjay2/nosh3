@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { router } from '@/helpers'
 
 export const useAuthStore = defineStore({
-  id: 'auth_' + window.location.pathname.split("/").pop(),
+  id: 'auth',
   state: () => ({
     user: {},
     jwt: null,
