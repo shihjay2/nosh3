@@ -803,15 +803,28 @@ async function pinCheck (req, res, next) {
       await db.info()
       const result = await db.find({selector: {'_id': {$eq: req.body.patient}}})
       if (result.docs.length > 0) {
-        const sync_db = new PouchDB('sync')
+        let prefix = ''
+        if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+          prefix = req.body.patient + '_'
+        }
+        const sync_db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'sync', settings.couchdb_auth)
         const sync = {status: 'nothing to sync', resources: []}
         try {
-          const result = await sync_db.find({selector: {'_id': {$eq: req.body.patient}}})
-          if (result.docs.length > 0) {
-            objectPath.set(sync, 'status', 'sync')
-            objectPath.set(sync, 'resources', result.docs[0].resources)
-            await sync_db.remove(result.docs[0])
-            res.status(200).json({ response: 'OK', sync})
+          if (req.body.last_sync > 0) {
+            const result = await sync_db.find({selector: {'_id': {"$gte": req.body.last_sync}}})
+            if (result.docs.length > 0) {
+              const resources = []
+              for (const doc of result.docs) {
+                if (!resources.includes(doc.resource)) {
+                  resources.push(doc.resource)
+                }
+              }
+              objectPath.set(sync, 'status', 'sync')
+              objectPath.set(sync, 'resources', resources)
+              res.status(200).json({ response: 'OK', sync})
+            } else {
+              res.status(200).json({ response: 'OK', sync})
+            }
           } else {
             res.status(200).json({ response: 'OK', sync})
           }
@@ -871,9 +884,7 @@ async function pinSet (req, res, next) {
 
 async function update(req, res) {
   let pin = process.env.COUCHDB_ENCRYPT_PIN
-  let prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
-    prefix = req.body.patient + '_'
     pin = await getPIN(req.body.patient)
   }
   if (!pin) {

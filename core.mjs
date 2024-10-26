@@ -564,21 +564,16 @@ function markdownParse(text) {
   return arr
 }
 
-async function pollSet(patient_id, new_resource) {
-  const db = new PouchDB('sync')
-  const resources = []
-  let doc = {}
-  const result = await db.find({selector: {'_id': {$eq: patient_id}}})
-  if (result.docs.length > 0) {
-    for (const resource of result.docs[0].resources) {
-      resources.push(resource)
-    }
-    doc = result.docs[0]
-  } else {
-    objectPath.set(doc, '_id', patient_id)
+async function pollSet(patient_id, resource) {
+  let prefix = ''
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    prefix = patient_id + '_'
   }
-  resources.push(new_resource)
-  objectPath.set(doc, 'resources', resources)
+  const db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'sync', settings.couchdb_auth)
+  let doc = {
+    '_id': moment().unix(),
+    'resource': resource
+  }
   await db.put(doc)
   return true
 }

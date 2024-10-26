@@ -185,6 +185,14 @@
       "fhir": true
     },
     {
+      "resource": "sync",
+      "icon": "sync",
+      "label": "Sync",
+      "patientField": "none",
+      "gnap": false,
+      "fhir": false
+    },
+    {
       "resource": "tasks",
       "icon": "task",
       "label": "Tasks",

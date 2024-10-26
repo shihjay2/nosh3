@@ -211,7 +211,7 @@ export default defineComponent({
         state.magic = false
         if (auth.returnUrl !== null) {
           state.patient = auth.returnUrl.replace('/app/chart/', '')
-          const check = await axios.post(window.location.origin + '/auth/pinCheck', {patient: state.patient})
+          const check = await axios.post(window.location.origin + '/auth/pinCheck', {patient: state.patient, last_sync: 0})
           if (check.data.response === 'Error') {
             state.loading = false
             state.showPIN = true

@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { router } from '@/helpers'
 
 export const useAuthStore = defineStore({
-  id: 'auth',
+  id: 'auth_' + window.location.pathname,
   state: () => ({
     user: {},
     jwt: null,
@@ -17,6 +17,7 @@ export const useAuthStore = defineStore({
     patient: null,
     prefix: null,
     sync_resource: [],
+    last_sync: 0,
     last_oidc: null,
     returnUrl: null,
     message: null,
@@ -78,6 +79,9 @@ export const useAuthStore = defineStore({
     },
     clearLastOIDC() {
       this.last_oidc = null
+    },
+    setLastSync(timestamp) {
+      this.last_sync = timestamp
     },
     setPatient(patient) {
       this.patient = patient

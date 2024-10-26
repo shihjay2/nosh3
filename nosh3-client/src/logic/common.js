@@ -17,6 +17,7 @@ PouchDB.plugin(PouchDBFind)
 PouchDB.plugin(comdb)
 import {v4 as uuidv4} from 'uuid'
 import { useAuthStore } from '@/stores'
+import { time } from 'highcharts'
 
 export function common() {
   const addSchemaOptions = (id, arr, val, label, schema, system='') => {
@@ -1363,6 +1364,8 @@ export function common() {
     const pin = auth_store.pin
     const prefix = getPrefix()
     const local = new PouchDB(prefix + resource)
+    const sync_db = new PouchDB(couchdb + prefix + 'sync', auth)
+    const timestamp = moment().unix()
     if (save) {
       let prev_data = ''
       let diff = null
@@ -1420,9 +1423,14 @@ export function common() {
           console.log(err)
         })
       }
+      auth_store.setLastSync(timestamp)
+      await sync_db.put({
+        '_id': timestamp,
+        'resource': resource
+      })
     }
     if (destroy) {
-      if (resource !== 'users' && resource !== 'presentations') {
+      if (resource !== 'users' && resource !== 'presentations' && resource !== 'binaries') {
         await local.setPassword(pin, {name: couchdb + prefix + resource, opts: auth})
       }
       await local.destroy()
@@ -1434,6 +1442,11 @@ export function common() {
       await new_local.info()
       const new_destroy_remote = new PouchDB(couchdb + prefix + resource, auth)
       await new_destroy_remote.info()
+      auth_store.setLastSync(timestamp)
+      await sync_db.put({
+        '_id': timestamp,
+        'resource': resource
+      })
       console.log('PouchDB destroy and sync complete for DB: ' + resource)
     }
   }

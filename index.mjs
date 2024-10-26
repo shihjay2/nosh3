@@ -157,17 +157,6 @@ app.get('/start', async(req, res) => {
   }
 })
 
-app.post('/syncCheck', async(req, res) => {
-  const db = new PouchDB('sync')
-  await db.info()
-  try {
-    const doc = await db.get(req.body.patient)
-    res.status(200).json(doc)
-  } catch (e) {
-    res.status(200).json({ response: 'Error', message: 'No Sync Needed' })
-  }
-})
-
 const port = process.env.PORT || 4000
 app.listen(port, () => {
     console.log(`listening on ${port}`)

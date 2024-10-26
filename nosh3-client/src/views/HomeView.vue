@@ -2303,7 +2303,7 @@ export default defineComponent({
     const pinCheck = async() => {
       try {
         await verifyJWT(state.online)
-        const check = await axios.post(window.location.origin + '/auth/pinCheck', {patient: state.patient})
+        const check = await axios.post(window.location.origin + '/auth/pinCheck', {patient: state.patient, last_sync: auth.last_sync})
         if (check.data.response === 'Error') {
           state.loading = false
           state.showPIN = true

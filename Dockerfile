@@ -1,4 +1,4 @@
-FROM node:19-slim AS builder
+FROM node:slim AS builder
 RUN apt-get update || : && apt-get install -y python3 build-essential
 WORKDIR /usr/src/app
 COPY package*.json ./
@@ -8,8 +8,8 @@ WORKDIR /usr/src/app/nosh3-client
 RUN npm ci
 RUN npm run build
 
-FROM node:19-alpine
-LABEL Maintainer Michael Shihjay Chen <shihjay2@gmail.com>
+FROM node:alpine
+LABEL Maintainer="Michael Shihjay Chen <shihjay2@gmail.com>"
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/nosh3-client/dist ./nosh3-client/dist
 COPY --from=builder /usr/src/app/*.mjs /usr/src/app/jsconfig.json ./
