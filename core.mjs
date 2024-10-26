@@ -571,7 +571,8 @@ async function pollSet(patient_id, resource) {
   }
   const db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'sync', settings.couchdb_auth)
   let doc = {
-    '_id': moment().unix(),
+    '_id': 'nosh_' + uuidv4(),
+    'timestamp': moment().unix(),
     'resource': resource
   }
   await db.put(doc)

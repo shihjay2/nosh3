@@ -1425,7 +1425,8 @@ export function common() {
       }
       auth_store.setLastSync(timestamp)
       await sync_db.put({
-        '_id': timestamp,
+        '_id': 'nosh_' + uuidv4(),
+        'timestamp': timestamp,
         'resource': resource
       })
     }
@@ -1444,7 +1445,8 @@ export function common() {
       await new_destroy_remote.info()
       auth_store.setLastSync(timestamp)
       await sync_db.put({
-        '_id': timestamp,
+        '_id': 'nosh_' + uuidv4(),
+        'timestamp': timestamp,
         'resource': resource
       })
       console.log('PouchDB destroy and sync complete for DB: ' + resource)
