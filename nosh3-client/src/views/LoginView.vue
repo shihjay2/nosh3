@@ -144,6 +144,7 @@ export default defineComponent({
   setup () {
     const $q = useQuasar()
     const auth = useAuthStore(localStorage.getItem('auth_id'))
+    console.log(auth)
     const myInput = ref(null)
     const { eventAdd, syncAll, syncState } = common()
     const state = reactive({

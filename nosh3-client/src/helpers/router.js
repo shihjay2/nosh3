@@ -56,7 +56,7 @@ router.beforeEach(async (to) => {
       }
     } else {
       if (localStorage.getItem('auth_id') === null) {
-        console.log(auth.returnUrl)
+        // console.log(auth.returnUrl)
         return '/app/error'
       }
     }
