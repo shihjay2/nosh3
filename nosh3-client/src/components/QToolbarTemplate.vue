@@ -96,7 +96,7 @@ export default defineComponent({
   },
   emits: ['addendum-encounter', 'clear-all', 'clear-sync', 'close-container', 'dump-sync', 'import-all', 'lock-thread', 'new-prescription', 'open-chat', 'open-debug', 'open-detail', 'open-form', 'open-file', 'open-immunizationschedule', 'open-list', 'open-page', 'open-page-form', 'open-trustee', 'set-composition-section', 'sign-encounter', 'sort-alpha', 'sort-date', 'start-sync', 'upload-sync'],
   setup (props, { emit }) {
-    const auth = useAuthStore()
+    const auth = useAuthStore(localStorage.getItem('auth_id'))
     const { fetchJSON } = common()
     const state = reactive({
       base: {},

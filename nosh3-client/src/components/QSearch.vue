@@ -196,7 +196,7 @@ export default defineComponent({
       pulldown_bar: '',
       pulldown_selected: ''
     })
-    const auth = useAuthStore()
+    const auth = useAuthStore(localStorage.getItem('auth_id'))
     onMounted(async() => {
       state.apiKey = auth.api.umls_key
       if (props.search === 'searchVaccine') {

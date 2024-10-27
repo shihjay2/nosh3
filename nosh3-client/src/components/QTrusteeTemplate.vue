@@ -153,7 +153,7 @@ export default defineComponent({
   emits: ['close', 'loading', 'qr'],
   setup (props, { emit }) {
     const $q = useQuasar()
-    const auth = useAuthStore()
+    const auth = useAuthStore(localStorage.getItem('auth_id'))
     const state = reactive({
       user: {},
       view: '',

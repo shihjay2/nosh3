@@ -83,7 +83,7 @@ export default {
       diff: [],
       expanded_text: ''
     })
-    const auth = useAuthStore()
+    const auth = useAuthStore(localStorage.getItem('auth_id'))
     var prefix = ''
     if (auth.instance === 'digitalocean' && auth.type === 'pnosh') {
       prefix = auth.patient + '_'

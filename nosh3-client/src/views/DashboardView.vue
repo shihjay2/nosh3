@@ -477,7 +477,7 @@ export default defineComponent({
       showQRReader: false
     })
     const route = useRoute()
-    const auth = useAuthStore()
+    const auth = useAuthStore(localStorage.getItem('auth_id'))
     const patientSearch = ref(null)
     const patientSearchBtn = ref(null)
     // autoupdate pwa

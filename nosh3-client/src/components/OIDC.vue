@@ -71,7 +71,7 @@ export default defineComponent({
       bluebutton: false,
       loading: false
     })
-    const auth = useAuthStore()
+    const auth = useAuthStore(localStorage.getItem('auth_id'))
     onMounted(async() => {
       if (props.type === '') {
         state.bluebutton = true

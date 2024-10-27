@@ -111,7 +111,7 @@ export default defineComponent({
   },
   emits: ['open-activities', 'open-insurance', 'open-list', 'open-page', 'open-schedule', 'open-share', 'set-maia', 'stop-inbox-timer'],
   setup (props, { emit }) {
-    const auth = useAuthStore()
+    const auth = useAuthStore(localStorage.getItem('auth_id'))
     const { eventAdd } = common()
     const state = reactive({
       user: {},

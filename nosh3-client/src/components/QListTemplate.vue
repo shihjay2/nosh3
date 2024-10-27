@@ -429,7 +429,7 @@ export default defineComponent({
       section_divContent: '',
       section_default: {},
     })
-    const auth = useAuthStore()
+    const auth = useAuthStore(localStorage.getItem('auth_id'))
     var prefix = getPrefix()
     var localDB = new PouchDB(prefix + props.resource)
     var localDB1 = new PouchDB(prefix + 'care_plans')
