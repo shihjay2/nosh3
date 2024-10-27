@@ -35,7 +35,7 @@ export const router = createRouter({
 })
 
 router.beforeEach(async (to) => {
-  const publicPages = ['/app/login', '/app/verify']
+  const publicPages = ['/app/login', '/app/verify', '/app/error']
   const authRequired = !publicPages.includes(to.path)
   let auth = null
   const config = await axios.get(window.location.origin + '/auth/config')
