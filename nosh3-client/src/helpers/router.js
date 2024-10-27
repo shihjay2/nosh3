@@ -39,9 +39,6 @@ router.beforeEach(async (to) => {
   const authRequired = !publicPages.includes(to.path)
   let auth = null
   const config = await axios.get(window.location.origin + '/auth/config')
-  console.log(config.data)
-  console.log(to.path)
-  console.log(authRequired)
   if (config.data.instance === 'digitalocean' && config.data.type === 'pnosh') {
     if (authRequired) {
       if (to.path !== '/app/dashboard') {
@@ -56,7 +53,6 @@ router.beforeEach(async (to) => {
       }
     } else {
       if (localStorage.getItem('auth_id') === null) {
-        // console.log(auth.returnUrl)
         return '/app/error'
       }
     }

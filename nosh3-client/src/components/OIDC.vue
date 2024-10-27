@@ -318,11 +318,6 @@ export default defineComponent({
             })
             try {
               const oidc_response1 = await axios.get(oidc_url1 + cms_patient, opts1)
-              localStorage.setItem('oidc_log_' + log_id , JSON.stringify({
-                token: state.access_token,
-                url: oidc_url1,
-                response: oidc_response1.data
-              }) )
               const ret = {
                 resource: d.resource,
                 token: state.access_token,

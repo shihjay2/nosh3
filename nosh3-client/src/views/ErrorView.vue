@@ -17,7 +17,7 @@
             <q-list>
               <q-item>
                 <q-item-section avatar>
-                  <q-avatar color="red" text-color="white" icon="safety_check" />
+                  <q-avatar color="red" text-color="white" icon="error" />
                 </q-item-section>
                 <q-item-section>
                   That's all we know.
