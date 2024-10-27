@@ -39,24 +39,32 @@ router.beforeEach(async (to) => {
   const authRequired = !publicPages.includes(to.path)
   let auth = null
   const config = await axios.get(window.location.origin + '/auth/config')
+  console.log(config.data)
+  console.log(to.path)
+  console.log(authRequired)
   if (config.data.instance === 'digitalocean' && config.data.type === 'pnosh') {
     if (authRequired) {
       if (to.path !== '/app/dashboard') {
         localStorage.setItem('auth_id', to.path.split("/").pop())
         auth = useAuthStore(to.path.split("/").pop())
+        if (!auth.user) {
+          auth.returnUrl = to.fullPath
+          return '/app/login'
+        }
       } else {
         return '/app/error'
       }
     } else {
+      console.log(auth.returnUrl)
       return '/app/error'
     }
   } else {
     localStorage.setItem('auth_id', 'auth')
     auth = useAuthStore('auth')
-  }
-  if (authRequired && !auth.user) {
-    auth.returnUrl = to.fullPath
-    return '/app/login'
+    if (authRequired && !auth.user) {
+      auth.returnUrl = to.fullPath
+      return '/app/login'
+    }
   }
 })
 

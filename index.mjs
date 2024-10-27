@@ -49,6 +49,10 @@ app.get('/app/verify', (req, res) => {
   res.sendFile(client + "index.html")
 })
 
+app.get('/app/error', (req, res) => {
+  res.sendFile(client + "index.html")
+})
+
 app.get('/fetch/:file/:type?', (req, res) => {
   let type = 'json'
   if (req.params.type == 'txt') {
