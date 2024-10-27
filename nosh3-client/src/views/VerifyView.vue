@@ -94,7 +94,7 @@ export default defineComponent({
   setup (props) {
     const $q = useQuasar()
     const route = useRoute()
-    const auth = useAuthStore(localStorage.getItem('auth_id'))
+    const auth = useAuthStore()
     const { eventAdd, syncAll, syncState } = common()
     const state = reactive({
       progress: '',

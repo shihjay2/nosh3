@@ -81,7 +81,7 @@ export default {
       uspstf: false,
       uspstf_specific_recommendations: []
     })
-    const auth = useAuthStore(localStorage.getItem('auth_id'))
+    const auth = useAuthStore()
     onMounted(async() => {
       state.patientAgeMonths = moment().diff(props.patientDOB, 'months')
       await ascvd()

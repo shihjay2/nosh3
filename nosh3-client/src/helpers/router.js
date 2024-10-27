@@ -46,7 +46,7 @@ router.beforeEach(async (to) => {
     if (authRequired) {
       if (to.path !== '/app/dashboard') {
         localStorage.setItem('auth_id', to.path.split("/").pop())
-        auth = useAuthStore(to.path.split("/").pop())
+        auth = useAuthStore()
         if (!auth.user) {
           auth.returnUrl = to.fullPath
           return '/app/login'
@@ -62,7 +62,7 @@ router.beforeEach(async (to) => {
     }
   } else {
     localStorage.setItem('auth_id', 'auth')
-    auth = useAuthStore('auth')
+    auth = useAuthStore()
     if (authRequired && !auth.user) {
       auth.returnUrl = to.fullPath
       return '/app/login'

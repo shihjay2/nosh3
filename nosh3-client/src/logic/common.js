@@ -152,7 +152,7 @@ export function common() {
     return doc
   }
   const eventAdd = async(event, patient_id, opts={doc_db: null, doc_id: null, diff: null}) => {
-    const auth_store = useAuthStore(localStorage.getItem('auth_id'))
+    const auth_store = useAuthStore()
     const prefix = getPrefix()
     const db = new PouchDB(prefix + 'activities')
     // check if old version and destroy
@@ -531,7 +531,7 @@ export function common() {
     }
   }
   const getPrefix = () => {
-    const auth_store = useAuthStore(localStorage.getItem('auth_id'))
+    const auth_store = useAuthStore()
     return auth_store.prefix
   }
   const getResource = async(resource, arr) => {
@@ -557,7 +557,7 @@ export function common() {
     return arr
   }
   const getSignedEncounters = async(yearback="100") => {
-    const auth_store = useAuthStore(localStorage.getItem('auth_id'))
+    const auth_store = useAuthStore()
     const prefix = getPrefix()
     const ret = []
     const encountersDB = new PouchDB(prefix + 'encounters')
@@ -1355,7 +1355,7 @@ export function common() {
     return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
   }
   const sync = async(resource, online, patient_id, save=false, data={}, destroy=false) => {
-    const auth_store = useAuthStore(localStorage.getItem('auth_id'))
+    const auth_store = useAuthStore()
     const couchdb = auth_store.couchdb
     const auth = {fetch: (url, opts) => {
       opts.headers.set('Authorization', 'Bearer ' + auth_store.jwt)
@@ -1491,7 +1491,7 @@ export function common() {
     }
   }
   const syncSome = async(online, patient_id) => {
-    const auth_store = useAuthStore(localStorage.getItem('auth_id'))
+    const auth_store = useAuthStore()
     const resources = auth_store.sync_resource
     let count = 0
     if (resources.length > 0) {
@@ -1580,7 +1580,7 @@ export function common() {
   }
   const verifyJWT = async(online) => {
     if (online) {
-      const auth_store = useAuthStore(localStorage.getItem('auth_id'))
+      const auth_store = useAuthStore()
       const keys = await axios.get(window.location.origin + '/auth/jwks')
       const jwk = await jose.importJWK(keys.data.keys[0])
       const jwt = auth_store.jwt

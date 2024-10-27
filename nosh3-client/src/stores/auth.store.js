@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 import { router } from '@/helpers'
 
-export const useAuthStore = (id) => defineStore({
-  id: id,
+export const useAuthStore = defineStore(localStorage.getItem('auth_id') || 'auth', {
+  // id: localStorage.getItem('auth_id'),
   state: () => ({
     user: {},
     jwt: null,
