@@ -1400,11 +1400,11 @@ export function common() {
           try {
             if (info.doc_count > 0) {
               // await local.loadDecrypted()
-              await local.loadDecrypted({batch_size: 20})
+              await local.loadDecrypted({batch_size: 5})
             }
             try {
               // await local.loadEncrypted()
-              await local.loadEncrypted({batch_size: 20, batches_limit: 2})
+              await local.loadEncrypted({batch_size: 5, batches_limit: 2})
               console.log('PouchDB encrypted sync complete for DB: ' + resource )
             } catch (e) {
               console.log(e)
@@ -1431,7 +1431,7 @@ export function common() {
       })
     }
     if (destroy) {
-      if (resource !== 'users' && resource !== 'presentations' && resource !== 'binaries') {
+      if (resource !== 'users' && resource !== 'presentations' && resource !== 'binaries' && resource !== 'sync') {
         await local.setPassword(pin, {name: couchdb + prefix + resource, opts: auth})
       }
       await local.destroy()
@@ -1457,9 +1457,11 @@ export function common() {
     objectPath.set(syncState, 'total', resources.rows.length)
     objectPath.set(syncState, 'complete', 0)
     for (const resource of resources.rows) {
-      objectPath.set(syncTooltip, 'text', 'Syncing ' + Case.title(resource.resource) + '...')
-      await sync(resource.resource, online, patient_id, false, {})
-      objectPath.set(syncState, 'complete', objectPath.get(syncState, 'complete') + 1)
+      if (resource.resource !== 'sync') {
+        objectPath.set(syncTooltip, 'text', 'Syncing ' + Case.title(resource.resource) + '...')
+        await sync(resource.resource, online, patient_id, false, {})
+        objectPath.set(syncState, 'complete', objectPath.get(syncState, 'complete') + 1)
+      }
     }
     await sleep(5)
   }
