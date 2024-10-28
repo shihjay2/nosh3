@@ -210,7 +210,7 @@ export default defineComponent({
           const localinfo = await localDB.info()
           if (localinfo.doc_count == 0 && localinfo.update_seq == 0) {
             auth.setSync()
-            state.progress += '<br/>Syncing data for the first time...'
+            state.progress += '<br/>Syncing data for the first time (this may take a while)...'
             await syncAll(true, state.patient, true)
             state.progress += '<br/>Complete!'
           }

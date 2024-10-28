@@ -13,10 +13,12 @@
         <q-toolbar-title id="logo">
           Nosh
         </q-toolbar-title>
-        <div class="q-pa-md q-gutter-xs" v-if="state.sync_on">
+        <div class="q-pa-md q-gutter-xs">
           <div class="q-gutter-md row justify-center">
             <q-spinner-radio v-if="state.sync_on" color="white" size="1em"/>
-            <q-tooltip v-if="state.sync_on">{{ state.sync_tooltip }}</q-tooltip>
+            <div v-for="resource in state.sync_resources"  :key="resource">
+              <QSync :resource="resource" :stop="state.sync_stop" @sync-on="syncOn" />
+            </div>
           </div>
         </div>
         <q-btn v-if="!state.sync_on" flat dense round icon="cloud_sync" @click="startSync">
@@ -768,6 +770,7 @@ import QMenuTemplate from '@/components/QMenuTemplate.vue'
 import QPageTemplate from '@/components/QPageTemplate.vue'
 import QRReader from '@/components/QRReader.vue'
 import QScheduleTemplate from '@/components/QScheduleTemplate.vue'
+import QSync from '@/components/QSync.vue'
 import QTrusteeTemplate from '@/components/QTrusteeTemplate.vue'
 import QToolbarTemplate from '@/components/QToolbarTemplate.vue'
 import { useAuthStore } from '@/stores'
@@ -801,6 +804,7 @@ export default defineComponent({
     QPageTemplate,
     QRReader,
     QScheduleTemplate,
+    QSync,
     QToolbarTemplate,
     QTrusteeTemplate,
     VOffline,
@@ -968,6 +972,8 @@ export default defineComponent({
       trusteeView: 'resource',
       // sync
       sync_on: false,
+      sync_resources: [],
+      sync_stop: false,
       sync_tooltip: '',
       showLogoff: false,
       showPIN: false,
@@ -1109,13 +1115,21 @@ export default defineComponent({
         state.showOIDCComplete = true
         auth.clearLastOIDC()
       }
-      if (!auth.init_sync) {
-        await syncProcess()
-        auth.unsetSync()
+      const resources = await fetchJSON('resources', state.online)
+      const resources_arr = []
+      for (const a of resources.rows) {
+        if (a.resource !== 'sync') {
+          resources_arr.push(a.resource) 
+        }
       }
-      syncTimer = setInterval(async() => {
-        await syncProcess('some')
-      }, 15000)
+      state.sync_resources = resources_arr
+      // if (!auth.init_sync) {
+      //   await syncProcess()
+      //   auth.unsetSync()
+      // }
+      // syncTimer = setInterval(async() => {
+      //   await syncProcess('some')
+      // }, 15000)
       inboxTimer = setInterval(async() => {
         if (objectPath.has(state, 'user.id')) {
           await updateInbox(state.user)
@@ -2304,18 +2318,19 @@ export default defineComponent({
       try {
         await verifyJWT(state.online)
         const check = await axios.post(window.location.origin + '/auth/pinCheck', {patient: state.patient, last_sync: auth.last_sync})
+        console.log(check.data)
         if (check.data.response === 'Error') {
           state.loading = false
           state.showPIN = true
         }
-        if (objectPath.has(check, 'data.sync.status')) {
-          if (objectPath.get(check, 'data.sync.status') === 'sync') {
-            for (const resource of objectPath.get(check, 'data.sync.resources')) {
-              auth.setSyncResource(resource)
-            }
-            await syncProcess('some')
-          }
-        }
+        // if (objectPath.has(check, 'data.sync.status')) {
+        //   if (objectPath.get(check, 'data.sync.status') === 'sync') {
+        //     for (const resource of objectPath.get(check, 'data.sync.resources')) {
+        //       auth.setSyncResource(resource)
+        //     }
+        //     await syncProcess('some')
+        //   }
+        // }
         if (check.data.response === 'Forbidden') {
           state.login = false
           $q.notify({
@@ -2659,13 +2674,20 @@ export default defineComponent({
       state.sort = 'date'
     }
     const startSync = async() => {
-      await syncProcess()
+      // await syncProcess()
     }
     const stopInboxTimer = () => {
       clearInterval(inboxTimer)
       clearInterval(syncTimer)
       clearInterval(pinTimer)
       clearInterval(syncallTimer)
+    }
+    const syncOn = () => {
+      if (state.sync_on) {
+        state.sync_on = false
+      } else {
+        state.sync_on = true
+      }
     }
     const syncProcess = async(type='all') => {
       let sync_res = 0
@@ -2895,6 +2917,7 @@ export default defineComponent({
       stopInboxTimer,
       sync,
       syncAll,
+      syncOn,
       syncProcess,
       timelineScroll,
       thread,

@@ -17,7 +17,6 @@ PouchDB.plugin(PouchDBFind)
 PouchDB.plugin(comdb)
 import {v4 as uuidv4} from 'uuid'
 import { useAuthStore } from '@/stores'
-import { time } from 'highcharts'
 
 export function common() {
   const addSchemaOptions = (id, arr, val, label, schema, system='') => {
@@ -1399,12 +1398,12 @@ export function common() {
           const info = await local.info()
           try {
             if (info.doc_count > 0) {
-              // await local.loadDecrypted()
-              await local.loadDecrypted({batch_size: 2})
+              await local.loadDecrypted()
+              // await local.loadDecrypted({batch_size: 2})
             }
             try {
-              // await local.loadEncrypted()
-              await local.loadEncrypted({batch_size: 2, batches_limit: 1})
+              await local.loadEncrypted()
+              // await local.loadEncrypted({batch_size: 2, batches_limit: 1})
               console.log('PouchDB encrypted sync complete for DB: ' + resource )
             } catch (e) {
               console.log(e)
@@ -1435,10 +1434,8 @@ export function common() {
         await local.setPassword(pin, {name: couchdb + prefix + resource, opts: auth})
       }
       await local.destroy()
-      // if (resource === 'users' || resource === 'presentations') {
-        const destroy_remote = new PouchDB(couchdb + prefix + resource, auth)
-        await destroy_remote.destroy()
-      // }
+      const destroy_remote = new PouchDB(couchdb + prefix + resource, auth)
+      await destroy_remote.destroy()
       const new_local = new PouchDB(prefix + resource)
       await new_local.info()
       const new_destroy_remote = new PouchDB(couchdb + prefix + resource, auth)
