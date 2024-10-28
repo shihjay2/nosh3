@@ -46,14 +46,14 @@ export default defineComponent({
         retry: true 
       }).on('change', (info) => { 
         state.sync_on = true
-        emit('sync-on')
+        emit('sync-on', 'Syncing ' + Case.title(props.resource) + '...')
         state.sync_tooltip = 'Syncing ' + Case.title(props.resource) + '...'
       }).on('paused', (err) => {
         state.sync_on = false
         emit('sync-on')
       }).on('active', () => {
         state.sync_on = true
-        emit('sync-on')
+        emit('sync-on', 'Syncing ' + Case.title(props.resource) + '...')
         state.sync_tooltip = 'Syncing ' + Case.title(props.resource) + '...'
       }).on('denied', (err) => {
         console.log(err)  

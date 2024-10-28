@@ -13,12 +13,10 @@
         <q-toolbar-title id="logo">
           Nosh
         </q-toolbar-title>
-        <div class="q-pa-md q-gutter-xs" style="max-width: 40px">
+        <div class="q-pa-md q-gutter-xs" v-if="state.sync_on">
           <div class="q-gutter-md row justify-center">
             <q-spinner-radio v-if="state.sync_on" color="white" size="1em"/>
-            <div v-for="resource in state.sync_resources" :key="resource" style="max-width: 1px">
-              <QSync :resource="resource" :stop="state.sync_stop" @sync-on="syncOn" />
-            </div>
+            <q-tooltip v-if="state.sync_on">{{ state.sync_tooltip }}</q-tooltip>
           </div>
         </div>
         <q-btn v-if="!state.sync_on" flat dense round icon="cloud_sync" @click="startSync">
@@ -737,6 +735,9 @@
       </q-card-section>
     </q-card>
   </q-dialog>
+  <div v-for="resource in state.sync_resources" :key="resource" style="display:none;">
+    <QSync :resource="resource" :stop="state.sync_stop" @sync-on="syncOn" />
+  </div>
 </template>
 
 <script>
@@ -2682,11 +2683,13 @@ export default defineComponent({
       clearInterval(pinTimer)
       clearInterval(syncallTimer)
     }
-    const syncOn = () => {
+    const syncOn = (text='') => {
       if (state.sync_on) {
         state.sync_on = false
+        state.sync_tooltip = text
       } else {
         state.sync_on = true
+        state.sync_tooltip = text
       }
     }
     const syncProcess = async(type='all') => {
