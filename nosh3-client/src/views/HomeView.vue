@@ -13,10 +13,10 @@
         <q-toolbar-title id="logo">
           Nosh
         </q-toolbar-title>
-        <div class="q-pa-md q-gutter-xs">
+        <div class="q-pa-md q-gutter-xs" style="max-width: 40px">
           <div class="q-gutter-md row justify-center">
             <q-spinner-radio v-if="state.sync_on" color="white" size="1em"/>
-            <div v-for="resource in state.sync_resources"  :key="resource">
+            <div v-for="resource in state.sync_resources" :key="resource" style="max-width: 1px">
               <QSync :resource="resource" :stop="state.sync_stop" @sync-on="syncOn" />
             </div>
           </div>
