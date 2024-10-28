@@ -741,7 +741,7 @@
 </template>
 
 <script>
-import { defineComponent, nextTick, onMounted, reactive, ref, watch, watchEffect } from 'vue'
+import { defineComponent, nextTick, onBeforeMount, onMounted, reactive, ref, watch, watchEffect } from 'vue'
 import { useQuasar } from 'quasar'
 import { common } from '@/logic/common'
 import axios from 'axios'
@@ -1030,6 +1030,18 @@ export default defineComponent({
     var syncTimer = null
     var syncallTimer = null
     var pinTimer = null
+    onBeforeMount(async() => {
+      state.loading = true
+      const resources = await fetchJSON('resources', state.online)
+      const resources_arr = []
+      for (const a of resources.rows) {
+        if (a.resource !== 'sync') {
+          resources_arr.push(a.resource) 
+        }
+      }
+      state.sync_resources = resources_arr
+      state.loading = false
+    })
     onMounted(async() => {
       try {
         await verifyJWT(state.online)
@@ -1117,14 +1129,6 @@ export default defineComponent({
         state.showOIDCComplete = true
         auth.clearLastOIDC()
       }
-      const resources = await fetchJSON('resources', state.online)
-      const resources_arr = []
-      for (const a of resources.rows) {
-        if (a.resource !== 'sync') {
-          resources_arr.push(a.resource) 
-        }
-      }
-      state.sync_resources = resources_arr
       // if (!auth.init_sync) {
       //   await syncProcess()
       //   auth.unsetSync()
