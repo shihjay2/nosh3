@@ -100,7 +100,8 @@ export default defineComponent({
     })
     watch(() => props.stop, async(newVal) => {
       if (newVal) {
-        sync.cancel()
+        sync_to.cancel()
+        synd_from.cancel()
       }
     })
     return {

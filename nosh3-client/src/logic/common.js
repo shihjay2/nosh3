@@ -1374,6 +1374,9 @@ export function common() {
       } catch (e) {
         console.log('New Document!')
       }
+      if (resource !== 'users' && resource !== 'presentations' && resource !== 'binaries') {
+        await local.setPassword(pin, {name: couchdb + prefix + resource, opts: auth})
+      }
       const result = await local.put(data)
       if (prev_data !== '') {
         if (resource !== 'binaries') {
