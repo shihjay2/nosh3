@@ -37,9 +37,9 @@ export default defineComponent({
       const pin = auth_store.pin
       const prefix = getPrefix()
       const local = new PouchDB(prefix + props.resource)
-      const remote = new PouchDB(couchdb + prefix + resource, auth)
-      if (resource !== 'users' && resource !== 'presentations' && resource !== 'binaries') {
-        await local.setPassword(pin, {name: couchdb + prefix + resource, opts: auth})
+      const remote = new PouchDB(couchdb + prefix + props.resource, auth)
+      if (props.resource !== 'users' && props.resource !== 'presentations' && props.resource !== 'binaries') {
+        await local.setPassword(pin, {name: couchdb + prefix + props.resource, opts: auth})
       }
       sync = local.sync(remote, {
         live: true, 
