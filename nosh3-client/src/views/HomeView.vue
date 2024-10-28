@@ -736,7 +736,7 @@
     </q-card>
   </q-dialog>
   <div v-for="resource in state.sync_resources" :key="resource" style="display:none;">
-    <QSync :resource="resource" :stop="state.sync_stop" @sync-on="syncOn" />
+    <QSync :resource="resource" :stop="state.sync_stop" @sync-on="syncOn" @sync-off="syncOff" />
   </div>
 </template>
 
@@ -974,6 +974,7 @@ export default defineComponent({
       // sync
       sync_on: false,
       sync_resources: [],
+      syncing_resources: [],
       sync_stop: false,
       sync_tooltip: '',
       showLogoff: false,
@@ -2319,7 +2320,6 @@ export default defineComponent({
       try {
         await verifyJWT(state.online)
         const check = await axios.post(window.location.origin + '/auth/pinCheck', {patient: state.patient, last_sync: auth.last_sync})
-        console.log(check.data)
         if (check.data.response === 'Error') {
           state.loading = false
           state.showPIN = true
@@ -2683,14 +2683,23 @@ export default defineComponent({
       clearInterval(pinTimer)
       clearInterval(syncallTimer)
     }
-    const syncOn = (text='') => {
-      if (state.sync_on) {
-        state.sync_on = false
-        state.sync_tooltip = text
-      } else {
-        state.sync_on = true
-        state.sync_tooltip = text
+    const syncOff = (resource) => {
+      const index = state.syncing_resources.indexOf(resource)
+      if (index > -1) {
+        state.syncing_resources.splice(index, 1)
       }
+      if (state.syncing_resources.length > 0) {
+        state.sync_on = true
+        state.sync_tooltip = 'Syncing ' + state.syncing_resources.join(', ') + '...'
+      } else {
+        state.sync_on = false
+        state.sync_tooltip = ''
+      }
+    }
+    const syncOn = (resource) => {
+      state.sync_on = true
+      state.syncing_resources.push(resource)
+      state.sync_tooltip = 'Syncing ' + state.syncing_resources.join(', ') + '...'
     }
     const syncProcess = async(type='all') => {
       let sync_res = 0
@@ -2920,6 +2929,7 @@ export default defineComponent({
       stopInboxTimer,
       sync,
       syncAll,
+      syncOff,
       syncOn,
       syncProcess,
       timelineScroll,

@@ -19,14 +19,15 @@ export default defineComponent({
     resource: String,
     stop: Boolean
   },
-  emits: ['sync-on'],
+  emits: ['sync-on', 'sync-off'],
   setup(props, { emit }) {
     const { getPrefix } = common()
     const state = reactive({
       sync_on: false,
       sync_tooltip: ''
     })
-    let sync = null
+    let sync_to = null
+    let sync_from = null
     onMounted(async() => {
       const auth_store = useAuthStore()
       const couchdb = auth_store.couchdb
@@ -41,25 +42,57 @@ export default defineComponent({
       if (props.resource !== 'users' && props.resource !== 'presentations' && props.resource !== 'binaries') {
         await local.setPassword(pin, {name: couchdb + prefix + props.resource, opts: auth})
       }
-      sync = local.sync(remote, {
+      console.log('loading ' + props.resource)
+      sync_to = local.replicate.to(remote, {
         live: true, 
         retry: true 
       }).on('change', (info) => { 
+        console.log('sync change: ' + props.resource)
         state.sync_on = true
-        emit('sync-on', 'Syncing ' + Case.title(props.resource) + '...')
+        emit('sync-on', Case.title(props.resource))
         state.sync_tooltip = 'Syncing ' + Case.title(props.resource) + '...'
       }).on('paused', (err) => {
+        console.log('sync pause: ' + props.resource)
         state.sync_on = false
-        emit('sync-on')
+        emit('sync-off', Case.title(props.resource))
       }).on('active', () => {
+        console.log('sync resume: ' + props.resource)
         state.sync_on = true
-        emit('sync-on', 'Syncing ' + Case.title(props.resource) + '...')
+        emit('sync-on', Case.title(props.resource))
         state.sync_tooltip = 'Syncing ' + Case.title(props.resource) + '...'
       }).on('denied', (err) => {
         console.log(err)  
       }).on('complete', (info) => {
+        console.log('sync complete: ' + props.resource)
         state.sync_on = false
-        emit('sync-on')
+        emit('sync-off', Case.title(props.resource))
+        console.log('PouchDB encrypted sync complete for DB: ' + props.resource )
+      }).on('error', (err) => {
+        console.log(err)
+      })
+      sync_from = local.replicate.from(remote, {
+        live: true, 
+        retry: true 
+      }).on('change', (info) => { 
+        console.log('sync change: ' + props.resource)
+        state.sync_on = true
+        emit('sync-on', Case.title(props.resource))
+        state.sync_tooltip = 'Syncing ' + Case.title(props.resource) + '...'
+      }).on('paused', (err) => {
+        console.log('sync pause: ' + props.resource)
+        state.sync_on = false
+        emit('sync-off', Case.title(props.resource))
+      }).on('active', () => {
+        console.log('sync resume: ' + props.resource)
+        state.sync_on = true
+        emit('sync-on', Case.title(props.resource))
+        state.sync_tooltip = 'Syncing ' + Case.title(props.resource) + '...'
+      }).on('denied', (err) => {
+        console.log(err)  
+      }).on('complete', (info) => {
+        console.log('sync complete: ' + props.resource)
+        state.sync_on = false
+        emit('sync-off', Case.title(props.resource))
         console.log('PouchDB encrypted sync complete for DB: ' + props.resource )
       }).on('error', (err) => {
         console.log(err)
