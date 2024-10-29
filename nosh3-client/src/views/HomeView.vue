@@ -2325,14 +2325,14 @@ export default defineComponent({
           state.loading = false
           state.showPIN = true
         }
-        // if (objectPath.has(check, 'data.sync.status')) {
-        //   if (objectPath.get(check, 'data.sync.status') === 'sync') {
-        //     for (const resource of objectPath.get(check, 'data.sync.resources')) {
-        //       auth.setSyncResource(resource)
-        //     }
-        //     await syncProcess('some')
-        //   }
-        // }
+        if (objectPath.has(check, 'data.sync.status')) {
+          if (objectPath.get(check, 'data.sync.status') === 'sync') {
+            for (const resource of objectPath.get(check, 'data.sync.resources')) {
+              auth.setSyncResource(resource)
+            }
+            await syncProcess('some')
+          }
+        }
         if (check.data.response === 'Forbidden') {
           state.login = false
           $q.notify({
@@ -2676,7 +2676,7 @@ export default defineComponent({
       state.sort = 'date'
     }
     const startSync = async() => {
-      // await syncProcess()
+      await syncProcess()
     }
     const stopInboxTimer = () => {
       clearInterval(inboxTimer)
