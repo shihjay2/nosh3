@@ -735,9 +735,6 @@
       </q-card-section>
     </q-card>
   </q-dialog>
-  <div v-for="resource in state.sync_resources" :key="resource" style="display:none;">
-    <QSync :resource="resource" :stop="state.sync_stop" @sync-on="syncOn" @sync-off="syncOff" />
-  </div>
 </template>
 
 <script>
@@ -771,7 +768,7 @@ import QMenuTemplate from '@/components/QMenuTemplate.vue'
 import QPageTemplate from '@/components/QPageTemplate.vue'
 import QRReader from '@/components/QRReader.vue'
 import QScheduleTemplate from '@/components/QScheduleTemplate.vue'
-import QSync from '@/components/QSync.vue'
+// import QSync from '@/components/QSync.vue'
 import QTrusteeTemplate from '@/components/QTrusteeTemplate.vue'
 import QToolbarTemplate from '@/components/QToolbarTemplate.vue'
 import { useAuthStore } from '@/stores'
@@ -805,7 +802,7 @@ export default defineComponent({
     QPageTemplate,
     QRReader,
     QScheduleTemplate,
-    QSync,
+    // QSync,
     QToolbarTemplate,
     QTrusteeTemplate,
     VOffline,
@@ -1030,18 +1027,18 @@ export default defineComponent({
     var syncTimer = null
     var syncallTimer = null
     var pinTimer = null
-    onBeforeMount(async() => {
-      state.loading = true
-      const resources = await fetchJSON('resources', state.online)
-      const resources_arr = []
-      for (const a of resources.rows) {
-        if (a.resource !== 'sync') {
-          resources_arr.push(a.resource) 
-        }
-      }
-      state.sync_resources = resources_arr
-      state.loading = false
-    })
+    // onBeforeMount(async() => {
+    //   state.loading = true
+    //   const resources = await fetchJSON('resources', state.online)
+    //   const resources_arr = []
+    //   for (const a of resources.rows) {
+    //     if (a.resource !== 'sync') {
+    //       resources_arr.push(a.resource) 
+    //     }
+    //   }
+    //   state.sync_resources = resources_arr
+    //   state.loading = false
+    // })
     onMounted(async() => {
       try {
         await verifyJWT(state.online)
@@ -1129,13 +1126,13 @@ export default defineComponent({
         state.showOIDCComplete = true
         auth.clearLastOIDC()
       }
-      // if (!auth.init_sync) {
-      //   await syncProcess()
-      //   auth.unsetSync()
-      // }
-      // syncTimer = setInterval(async() => {
-      //   await syncProcess('some')
-      // }, 15000)
+      if (auth.init_sync) {
+        await syncProcess()
+        auth.unsetSync()
+      }
+      syncTimer = setInterval(async() => {
+        await syncProcess('some')
+      }, 15000)
       inboxTimer = setInterval(async() => {
         if (objectPath.has(state, 'user.id')) {
           await updateInbox(state.user)

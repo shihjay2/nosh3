@@ -1374,9 +1374,9 @@ export function common() {
       } catch (e) {
         console.log('New Document!')
       }
-      if (resource !== 'users' && resource !== 'presentations' && resource !== 'binaries') {
-        await local.setPassword(pin, {name: couchdb + prefix + resource, opts: auth})
-      }
+      // if (resource !== 'users' && resource !== 'presentations' && resource !== 'binaries') {
+      //   await local.setPassword(pin, {name: couchdb + prefix + resource, opts: auth})
+      // }
       const result = await local.put(data)
       if (prev_data !== '') {
         if (resource !== 'binaries') {
@@ -1401,12 +1401,12 @@ export function common() {
           const info = await local.info()
           try {
             if (info.doc_count > 0) {
-              await local.loadDecrypted()
-              // await local.loadDecrypted({batch_size: 2})
+              // await local.loadDecrypted()
+              await local.loadDecrypted({batch_size: 20})
             }
             try {
-              await local.loadEncrypted()
-              // await local.loadEncrypted({batch_size: 2, batches_limit: 1})
+              // await local.loadEncrypted()
+              await local.loadEncrypted({batch_size: 20, batches_limit: 2})
               console.log('PouchDB encrypted sync complete for DB: ' + resource )
             } catch (e) {
               console.log(e)

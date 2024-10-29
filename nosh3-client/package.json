@@ -46,6 +46,7 @@
     "pluralize": "^8.0.0",
     "pouchdb-browser": "^8.0.1",
     "pouchdb-find": "^8.0.1",
+    "promise-worker": "^2.0.1",
     "quasar": "^2.0.0",
     "raw-loader": "^4.0.2",
     "register-service-worker": "^1.7.2",
