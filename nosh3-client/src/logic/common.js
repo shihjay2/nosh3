@@ -1386,6 +1386,7 @@ export function common() {
         diff: diff
       }
       if (resource === 'users' && data.id === auth_store.user.id) {
+        objectPath.set(data, '_rev', result.rev)
         auth_store.update(data)
       }
       auth_store.setSyncResource(resource)

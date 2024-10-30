@@ -1159,14 +1159,11 @@ export default defineComponent({
       }
     })
     watch(() => state.user, async(newVal, oldVal) => {
-      console.log(oldVal)
-      console.log(newVal)
       if (newVal._rev === oldVal._rev) {
         await sync('users', false, state.patient, true, newVal)
       }
     })
     watch(() => auth.user, async(newVal) => {
-      console.log('auth user changed')
       if (newVal) {
         state.user = newVal
       }
