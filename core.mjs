@@ -570,6 +570,12 @@ async function pollSet(patient_id, resource) {
     prefix = patient_id + '_'
   }
   const db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'sync', settings.couchdb_auth)
+  const sync_result = await db.find({selector: {'resource': {"$eq": resource}}})
+  if (sync_result.docs.length > 0) {
+    for (const sync_doc of sync_result.docs) {
+      await db.remove(sync_doc)
+    }
+  }
   let doc = {
     '_id': 'nosh_' + uuidv4(),
     'timestamp': moment().unix(),

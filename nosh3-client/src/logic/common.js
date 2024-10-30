@@ -1401,12 +1401,12 @@ export function common() {
           const info = await local.info()
           try {
             if (info.doc_count > 0) {
-              // await local.loadDecrypted()
-              await local.loadDecrypted({batch_size: 20})
+              await local.loadDecrypted()
+              // await local.loadDecrypted({batch_size: 20})
             }
             try {
-              // await local.loadEncrypted()
-              await local.loadEncrypted({batch_size: 20, batches_limit: 2})
+              await local.loadEncrypted()
+              // await local.loadEncrypted({batch_size: 20, batches_limit: 2})
               console.log('PouchDB encrypted sync complete for DB: ' + resource )
             } catch (e) {
               console.log(e)
@@ -1426,6 +1426,12 @@ export function common() {
         })
       }
       auth_store.setLastSync(timestamp)
+      const sync_result = await sync_db.find({selector: {'resource': {"$eq": resource}}})
+      if (sync_result.docs.length > 0) {
+        for (const sync_doc of sync_result.docs) {
+          await sync_db.remove(sync_doc)
+        }
+      }
       await sync_db.put({
         '_id': 'nosh_' + uuidv4(),
         'timestamp': timestamp,
@@ -1444,6 +1450,12 @@ export function common() {
       const new_destroy_remote = new PouchDB(couchdb + prefix + resource, auth)
       await new_destroy_remote.info()
       auth_store.setLastSync(timestamp)
+      const sync_result1 = await sync_db.find({selector: {'resource': {"$eq": resource}}})
+      if (sync_result1.docs.length > 0) {
+        for (const sync_doc1 of sync_result1.docs) {
+          await sync_db.remove(sync_doc1)
+        }
+      }
       await sync_db.put({
         '_id': 'nosh_' + uuidv4(),
         'timestamp': timestamp,
@@ -1496,12 +1508,15 @@ export function common() {
     const auth_store = useAuthStore()
     const resources = auth_store.sync_resource
     let count = 0
+    objectPath.set(syncState, 'total', resources.length)
+    objectPath.set(syncState, 'complete', 0)
     if (resources.length > 0) {
       if (online) {
         for (const resource of resources) {
           if (resource !== undefined) {
             objectPath.set(syncTooltip, 'text', 'Syncing ' + Case.title(resource) + '...')
             await sync(resource, online, patient_id, false, {})
+            objectPath.set(syncState, 'complete', objectPath.get(syncState, 'complete') + 1)
             count++
           }
         }

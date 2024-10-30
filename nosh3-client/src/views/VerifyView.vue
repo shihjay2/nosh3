@@ -95,7 +95,7 @@ export default defineComponent({
     const $q = useQuasar()
     const route = useRoute()
     const auth = useAuthStore()
-    const { eventAdd, syncAll, syncState } = common()
+    const { eventAdd, syncAll, syncSome, syncState } = common()
     const state = reactive({
       progress: '',
       couchdb: '',
@@ -126,11 +126,11 @@ export default defineComponent({
       }
       const config = await axios.get(window.location.origin + '/auth/config')
       state.config = config.data
+      let check = null
       if (state.config.instance === 'digitalocean' && state.config.type === 'pnosh') {
         if (route.query.patient !== null) {
           state.patient = route.query.patient
-          // state.patient = auth.returnUrl.replace('/app/chart/', '')
-          const check = await axios.post(window.location.origin + '/auth/pinCheck', {patient: state.patient, last_sync: 0})
+          check = await axios.post(window.location.origin + '/auth/pinCheck', {patient: state.patient, last_sync: auth.last_sync})
           if (check.data.response === 'Error') {
             state.loading = false
             state.showPIN = true
@@ -209,10 +209,22 @@ export default defineComponent({
           const localDB = new PouchDB(prefix + 'users')
           const localinfo = await localDB.info()
           if (localinfo.doc_count == 0 && localinfo.update_seq == 0) {
-            auth.setSync()
             state.progress += '<br/>Syncing data for the first time (this may take a while)...'
             await syncAll(true, state.patient, true)
             state.progress += '<br/>Complete!'
+          } else {
+            if (check !== null) {
+              if (objectPath.has(check, 'data.sync.status')) {
+                if (objectPath.get(check, 'data.sync.status') === 'sync') {
+                  for (const resource of objectPath.get(check, 'data.sync.resources')) {
+                    auth.setSyncResource(resource)
+                  }
+                  state.progress += '<br/>Syncing data for the updates (this may take a while)...'
+                  await syncSome(true, state.patient)
+                  state.progress += '<br/>Complete!'
+                }
+              }
+            }
           }
           router.push(state.payload._noshRedirect)
         } else {
