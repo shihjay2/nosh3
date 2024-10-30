@@ -1228,7 +1228,7 @@ export default defineComponent({
         }
         i++
       }
-      clearSync()
+      await clearSync()
       state.loading = false
       notif({
         icon: 'done',
@@ -1561,7 +1561,7 @@ export default defineComponent({
           }
         }
       }
-      clearSync()
+      await clearSync()
       await loadTimeline()
       state.loading = false
       notif({
