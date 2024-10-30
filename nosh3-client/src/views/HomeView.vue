@@ -1158,8 +1158,8 @@ export default defineComponent({
         state.patientListSearch = fuse.search(newVal)
       }
     })
-    watch(() => state.user, async(newVal) => {
-      if (newVal._rev === state.user._rev) {
+    watch(() => state.user, async(newVal, oldVal) => {
+      if (newVal._rev === oldVal._rev) {
         await sync('users', false, state.patient, true, newVal)
       }
     })
