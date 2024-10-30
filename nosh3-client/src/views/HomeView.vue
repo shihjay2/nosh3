@@ -768,7 +768,6 @@ import QMenuTemplate from '@/components/QMenuTemplate.vue'
 import QPageTemplate from '@/components/QPageTemplate.vue'
 import QRReader from '@/components/QRReader.vue'
 import QScheduleTemplate from '@/components/QScheduleTemplate.vue'
-// import QSync from '@/components/QSync.vue'
 import QTrusteeTemplate from '@/components/QTrusteeTemplate.vue'
 import QToolbarTemplate from '@/components/QToolbarTemplate.vue'
 import { useAuthStore } from '@/stores'
@@ -802,7 +801,6 @@ export default defineComponent({
     QPageTemplate,
     QRReader,
     QScheduleTemplate,
-    // QSync,
     QToolbarTemplate,
     QTrusteeTemplate,
     VOffline,
@@ -970,7 +968,6 @@ export default defineComponent({
       trusteeView: 'resource',
       // sync
       sync_on: false,
-      sync_resources: [],
       syncing_resources: [],
       sync_stop: false,
       sync_tooltip: '',
@@ -1027,18 +1024,6 @@ export default defineComponent({
     var syncTimer = null
     var syncallTimer = null
     var pinTimer = null
-    // onBeforeMount(async() => {
-    //   state.loading = true
-    //   const resources = await fetchJSON('resources', state.online)
-    //   const resources_arr = []
-    //   for (const a of resources.rows) {
-    //     if (a.resource !== 'sync') {
-    //       resources_arr.push(a.resource) 
-    //     }
-    //   }
-    //   state.sync_resources = resources_arr
-    //   state.loading = false
-    // })
     onMounted(async() => {
       try {
         await verifyJWT(state.online)
@@ -1174,6 +1159,8 @@ export default defineComponent({
       }
     })
     watch(() => state.user, async(newVal) => {
+      console.log(state.user)
+      console.log(newVal)
       if (newVal) {
         await sync('users', false, state.patient, true, newVal)
       }
@@ -2684,24 +2671,6 @@ export default defineComponent({
       clearInterval(pinTimer)
       clearInterval(syncallTimer)
     }
-    const syncOff = (resource) => {
-      const index = state.syncing_resources.indexOf(resource)
-      if (index > -1) {
-        state.syncing_resources.splice(index, 1)
-      }
-      if (state.syncing_resources.length > 0) {
-        state.sync_on = true
-        state.sync_tooltip = 'Syncing ' + state.syncing_resources.join(', ') + '...'
-      } else {
-        state.sync_on = false
-        state.sync_tooltip = ''
-      }
-    }
-    const syncOn = (resource) => {
-      state.sync_on = true
-      state.syncing_resources.push(resource)
-      state.sync_tooltip = 'Syncing ' + state.syncing_resources.join(', ') + '...'
-    }
     const syncProcess = async(type='all') => {
       let sync_res = 0
       if (state.online) {
@@ -2930,8 +2899,6 @@ export default defineComponent({
       stopInboxTimer,
       sync,
       syncAll,
-      syncOff,
-      syncOn,
       syncProcess,
       timelineScroll,
       thread,

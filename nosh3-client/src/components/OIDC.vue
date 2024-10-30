@@ -175,7 +175,7 @@ export default defineComponent({
                 let c2_synthea_count = 0
                 for (const c2_synthea of oidc_response2.data.entry) {
                   if (c2_synthea.resource.resourceType === Case.pascal(pluralize.singular(c_synthea.resource))) {
-                    if (c2_synthea_count < 20) {
+                    if (c2_synthea_count < 300) {
                       rows2.push(c2_synthea.resource)
                     }
                     c2_synthea_count++
