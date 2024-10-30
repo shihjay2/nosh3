@@ -1159,10 +1159,13 @@ export default defineComponent({
       }
     })
     watch(() => state.user, async(newVal) => {
-      console.log(state.user)
-      console.log(newVal)
-      if (newVal) {
+      if (newVal._rev === state.user._rev) {
         await sync('users', false, state.patient, true, newVal)
+      }
+    })
+    watch(() => auth.user, async(newVal) => {
+      if (newVal) {
+        state.user = auth.user
       }
     })
     watchEffect(() => {
@@ -1351,9 +1354,6 @@ export default defineComponent({
           }
           if (state.resource == 'patients' && state.category == 'new') {
             window.location.href = window.location.origin + '/app/chart/' + id
-          }
-          if (state.resource == 'users' && doc.id === state.user.id) {
-            state.user = doc
           }
           if (state.resource == 'compositions') {
             if (state.user.reference === doc.author[0].reference) {
