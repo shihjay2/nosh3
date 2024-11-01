@@ -442,7 +442,6 @@ async function gnapVerify(req, res) {
               .then((res) => res.json())
             await db.remove(result)
             const result_jwt = await processJWT(doc, prefix, pin, req, result.route)
-            console.log(result_jwt)
             if (result_jwt.status === 200 && result_jwt.type === 'redirect') {
               res.redirect(result_jwt.response)
             } else {
@@ -709,7 +708,6 @@ async function processJWT(doc, prefix, pin, req, route) {
             objectPath.set(payload, '_noshType', 'mdnosh')
           }
           const jwt_nosh = await createJWT(user_id, urlFix(req.protocol + '://' + req.hostname + '/'), urlFix(req.protocol + '://' + req.hostname + '/'), payload)
-          console.log(jwt_nosh)
           return {
             'status': 200,
             'type': 'redirect',
