@@ -89,6 +89,14 @@
           <q-icon color="primary" style="font-size: 1.5em" name="autorenew" />
         </q-item-section>
       </q-item>
+      <q-item v-if="state.type == 'pnosh'" clickable @click="rotateJWT()">
+        <q-item-section>
+          <q-item-label>Renew JWT</q-item-label>
+        </q-item-section>
+        <q-item-section avatar>
+          <q-icon color="primary" style="font-size: 1.5em" name="autorenew" />
+        </q-item-section>
+      </q-item>
       <q-item clickable @click="logout()">
         <q-item-section>
           <q-item-label>Logout</q-item-label>
@@ -117,7 +125,7 @@ export default defineComponent({
     },
     type: String
   },
-  emits: ['open-activities', 'open-insurance', 'open-list', 'open-page', 'open-schedule', 'open-share', 'set-maia', 'stop-inbox-timer'],
+  emits: ['open-activities', 'open-insurance', 'open-list', 'open-page', 'open-schedule', 'open-share', 'rotate-jwt', 'set-maia', 'stop-inbox-timer'],
   setup (props, { emit }) {
     const auth = useAuthStore()
     const { eventAdd } = common()
@@ -188,6 +196,9 @@ export default defineComponent({
     const openShare = () => {
       emit('open-share')
     }
+    const rotateJWT = () => {
+      emit('rotate-jwt')
+    }
     const setMAIA = () => {
       emit('set-maia')
     }
@@ -200,6 +211,7 @@ export default defineComponent({
       openQRReader,
       openSchedule,
       openShare,
+      rotateJWT,
       setMAIA,
       state
     }

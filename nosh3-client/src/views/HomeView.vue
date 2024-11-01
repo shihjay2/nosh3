@@ -82,6 +82,7 @@
             @open-share="openShare"
             @set-maia="setMAIA"
             @stop-inbox-timer="stopInboxTimer"
+            @rotate-jwt="rotateJWT"
             :user="state.user"
             :online="state.online"
             :patient="state.patient"

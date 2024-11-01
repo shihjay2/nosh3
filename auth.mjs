@@ -396,7 +396,7 @@ async function gnapRotate(req, res) {
     try {
       const doc = await fetch(req.body.url, signedRequest)
         .then((res) => res.json())
-      const result_jwt = await processJWT(doc, prefix, pin, req)
+      const result_jwt = await processJWT(doc, prefix, pin, req, null)
       if (result_jwt.status === 200 && result_jwt.type === 'redirect') {
         res.status(result_jwt.status).json({'jwt': result_jwt.jwt})
       } else {
@@ -441,7 +441,7 @@ async function gnapVerify(req, res) {
             const doc = await fetch(result.continue.uri, signedRequest)
               .then((res) => res.json())
             await db.remove(result)
-            const result_jwt = await processJWT(doc, prefix, pin, req)
+            const result_jwt = await processJWT(doc, prefix, pin, req, result.route)
             console.log(result_jwt)
             if (result_jwt.status === 200 && result_jwt.type === 'redirect') {
               res.redirect(result_jwt.response)
@@ -517,7 +517,7 @@ async function exportJWT(req, res) {
   res.status(200).json(pem)
 }
 
-async function processJWT(doc, prefix, pin, req) {
+async function processJWT(doc, prefix, pin, req, route) {
   if (objectPath.has(doc, 'access_token.subject')) {
     const nosh = {
       email: '',
@@ -684,10 +684,10 @@ async function processJWT(doc, prefix, pin, req) {
             const db_patients = new PouchDB(prefix + 'patients')
             const result_patients = await db_patients.find({selector: {_id: {$regex: '^nosh_*'}}})
             if (result_patients.docs.length > 0) {
-              if (result.route === null) {
+              if (route === null) {
                 objectPath.set(payload, '_noshRedirect','/app/chart/' + result_patients.docs[0]._id)
               } else {
-                objectPath.set(payload, '_noshRedirect', result.route)
+                objectPath.set(payload, '_noshRedirect', route)
               }
               objectPath.set(payload, '_noshType', 'pnosh')
               objectPath.set(payload, '_nosh.patient', req.params.patient)
@@ -704,7 +704,7 @@ async function processJWT(doc, prefix, pin, req) {
             if (result.route === null) {
               objectPath.set(payload, '_noshRedirect', '/app/dashboard/')
             } else {
-              objectPath.set(payload, '_noshRedirect', result.route)
+              objectPath.set(payload, '_noshRedirect', route)
             }
             objectPath.set(payload, '_noshType', 'mdnosh')
           }
