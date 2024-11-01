@@ -14,6 +14,7 @@ export const useAuthStore = defineStore(localStorage.getItem('auth_id') || 'auth
     trustee: null,
     gnap_jwt: null,
     rotate_jwt: null,
+    rotate_jwt_uri: null,
     stay_logged_in: false,
     patient: null,
     prefix: null,
@@ -41,7 +42,8 @@ export const useAuthStore = defineStore(localStorage.getItem('auth_id') || 'auth
       this.instance = payload._nosh.instance
       this.trustee = payload._nosh.trustee_url
       this.gnap_jwt = payload.jwt
-      this.rotate_jwt = payload._gnap.access_token.manage.uri
+      this.rotate_jwt_uri = payload._gnap.access_token.manage.uri
+      this.rotate_jwt = payload._gnap.access_token.manage.access_token.value
       this.patient = payload._nosh.patient
       this.prefix = payload._nosh.prefix
       this.maia = payload._nosh.maia
@@ -63,6 +65,7 @@ export const useAuthStore = defineStore(localStorage.getItem('auth_id') || 'auth
       this.trustee = null
       this.gnap_jwt = null
       this.rotate_jwt = null
+      this.rotate_jwt_uri = null
       this.prefix = null
       this.maia = null
       if (route !== '/app/login') {

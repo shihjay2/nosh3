@@ -2360,7 +2360,7 @@ export default defineComponent({
       state.drawerReload = false
     }
     const rotateJWT = async() => {
-      const body = {url: auth.rotate_jwt, patient: state.patient, jwt: auth.gnap_jwt}
+      const body = {url: auth.rotate_jwt_uri, patient: state.patient, jwt: auth.rotate_jwt}
       const a = await axios.post(window.location.origin + '/auth/gnapRotate/' + state.patient, body)
       if (objectPath.has(a, 'data.jwt')) {
         const jwt = objectPath.get(a, 'data.jwt')
