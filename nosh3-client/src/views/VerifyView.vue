@@ -167,70 +167,70 @@ export default defineComponent({
         state.progress = 'Token being processed...'
         const keys = await axios.get(window.location.origin + '/auth/jwks')
         const jwk = await jose.importJWK(keys.data.keys[0])
+        const jwt = route.query.token
         try {
-          const { payload, protectedHeader } = await jose.jwtVerify(route.query.token, jwk)
+          const { payload, protectedHeader } = await jose.jwtVerify(jwt, jwk)
           objectPath.set(state, 'payload', payload)
           objectPath.set(state, 'protectedHeader', protectedHeader)
           state.progress += '<br/>Token successfully read...'
+          state.auth = {fetch: (url, opts) => {
+            opts.headers.set('Authorization', 'Bearer ' + jwt)
+            return PouchDB.fetch(url, opts)
+          }}
+          state.couchdb = state.payload._noshDB
+          state.pin = state.payload._nosh.pin
+          state.patient = state.payload._nosh.patient
+          state.progress += '<br/>Setting user...'
+          const prefix = state.payload._nosh.prefix
+          const users = new PouchDB(state.couchdb + prefix + 'users', state.auth)
+          const selector = {'email': {$eq: state.payload._nosh.email}, _id: {"$gte": null}}
+          // var selector = [
+          //   {'email': {$eq: state.payload._nosh.email}, _id: {"$gte": null}},
+          //   {'did': {$eq: state.payload._nosh.did}, _id: {"$gte": null}}
+          // ]
+          const result = await users.find({
+            // selector: {$or: selector}
+            selector: selector
+          })
+          if (result.docs.length > 0) {
+            auth.login(result.docs[0], state.payload, jwt)
+            state.progress += '<br/>Welcome, ' + state.payload._nosh.display + '...'
+            await eventAdd('Logged in', state.patient)
+            const localDB = new PouchDB(prefix + 'users')
+            const localinfo = await localDB.info()
+            if (localinfo.doc_count == 0 && localinfo.update_seq == 0) {
+              state.progress += '<br/>Syncing data for the first time (this may take a while)...'
+              await syncAll(true, state.patient, true)
+              state.progress += '<br/>Complete!'
+            } else {
+              if (check !== null) {
+                if (objectPath.has(check, 'data.sync.status')) {
+                  if (objectPath.get(check, 'data.sync.status') === 'sync') {
+                    for (const resource of objectPath.get(check, 'data.sync.resources')) {
+                      auth.setSyncResource(resource)
+                    }
+                    state.progress += '<br/>Syncing data for the updates (this may take a while)...'
+                    await syncSome(true, state.patient)
+                    state.progress += '<br/>Complete!'
+                  }
+                }
+              }
+            }
+            router.push(state.payload._noshRedirect)
+          } else {
+            // not authorized - user not set up
+            $q.notify({
+              message: 'Your email address is ' + state.payload._nosh.email + ', but you do not have an account',
+              color: 'red',
+              actions: [
+                { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+              ]
+            })
+          }
         } catch (e) {
           console.log(e)
           $q.notify({
             message: 'Unauthorized access!',
-            color: 'red',
-            actions: [
-              { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
-            ]
-          })
-        }
-        const jwt = route.query.token
-        state.auth = {fetch: (url, opts) => {
-          opts.headers.set('Authorization', 'Bearer ' + jwt)
-          return PouchDB.fetch(url, opts)
-        }}
-        state.couchdb = state.payload._noshDB
-        state.pin = state.payload._nosh.pin
-        state.patient = state.payload._nosh.patient
-        state.progress += '<br/>Setting user...'
-        const prefix = state.payload._nosh.prefix
-        const users = new PouchDB(state.couchdb + prefix + 'users', state.auth)
-        const selector = {'email': {$eq: state.payload._nosh.email}, _id: {"$gte": null}}
-        // var selector = [
-        //   {'email': {$eq: state.payload._nosh.email}, _id: {"$gte": null}},
-        //   {'did': {$eq: state.payload._nosh.did}, _id: {"$gte": null}}
-        // ]
-        const result = await users.find({
-          // selector: {$or: selector}
-          selector: selector
-        })
-        if (result.docs.length > 0) {
-          auth.login(result.docs[0], state.payload, jwt)
-          state.progress += '<br/>Welcome, ' + state.payload._nosh.display + '...'
-          await eventAdd('Logged in', state.patient)
-          const localDB = new PouchDB(prefix + 'users')
-          const localinfo = await localDB.info()
-          if (localinfo.doc_count == 0 && localinfo.update_seq == 0) {
-            state.progress += '<br/>Syncing data for the first time (this may take a while)...'
-            await syncAll(true, state.patient, true)
-            state.progress += '<br/>Complete!'
-          } else {
-            if (check !== null) {
-              if (objectPath.has(check, 'data.sync.status')) {
-                if (objectPath.get(check, 'data.sync.status') === 'sync') {
-                  for (const resource of objectPath.get(check, 'data.sync.resources')) {
-                    auth.setSyncResource(resource)
-                  }
-                  state.progress += '<br/>Syncing data for the updates (this may take a while)...'
-                  await syncSome(true, state.patient)
-                  state.progress += '<br/>Complete!'
-                }
-              }
-            }
-          }
-          router.push(state.payload._noshRedirect)
-        } else {
-          // not authorized - user not set up
-          $q.notify({
-            message: 'Your email address is ' + state.payload._nosh.email + ', but you do not have an account',
             color: 'red',
             actions: [
               { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }

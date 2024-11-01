@@ -738,7 +738,7 @@
 </template>
 
 <script>
-import { defineComponent, nextTick, onBeforeMount, onMounted, reactive, ref, watch, watchEffect } from 'vue'
+import { defineComponent, nextTick, onMounted, reactive, ref, watch, watchEffect } from 'vue'
 import { useQuasar } from 'quasar'
 import { common } from '@/logic/common'
 import axios from 'axios'
@@ -749,6 +749,7 @@ import { Form } from 'vee-validate'
 import Fuse from 'fuse.js'
 import ImmunizationSchedule from '@/components/ImmunizationSchedule.vue'
 import InsuranceDialog from '@/components/InsuranceDialog.vue'
+import * as jose from 'jose'
 import json2md from 'json2md'
 import moment from 'moment'
 import objectPath from 'object-path'
@@ -1572,24 +1573,6 @@ export default defineComponent({
       })
       state.sync_on = false
     }
-    // const importReference = async(resource, reference_id, origin) => {
-    //   const a = state.oidc.findIndex(b => b.origin == origin)
-    //   const c = state.oidc[a].docs.findIndex(d => d.resource == resource)
-    //   const e = state.oidc[a].docs[c].rows.findIndex(f => f.id == reference_id)
-    //   if (e !== -1) {
-    //     const reference_doc = objectPath.get(state, 'oidc.' + a + '.docs.' + c + '.rows.' + e)
-    //     const reference_new_id = 'nosh_' + uuidv4()
-    //     objectPath.set(reference_doc, 'sync_id', objectPath.get(reference_doc, 'id'))
-    //     objectPath.set(reference_doc, 'id', reference_new_id)
-    //     objectPath.set(reference_doc, '_id', reference_new_id)
-    //     if (!objectPath.has(reference_doc, 'text.div')) {
-    //       reference_doc = await divBuild(resource, reference_doc)
-    //     }
-    //     await sync(resource, false, state.patient, true, reference_doc)
-    //     removeOIDC(e, resource, origin)
-    //     return reference_new_id
-    //   }
-    // }
     const loading = () => {
       if (state.loading === true) {
         state.loading = false
@@ -2331,8 +2314,12 @@ export default defineComponent({
           })
         }
       } catch(e) {
-        auth.setMessage('jwt not valid')
-        state.showLogoff = true
+        if (auth.stay_logged_in) {
+          await rotateJWT()
+        } else {
+          auth.setMessage('jwt not valid')
+          state.showLogoff = true
+        }
       }
     }
     const refreshApp = () => {
@@ -2370,6 +2357,27 @@ export default defineComponent({
     const reloadDrawerComplete = () => {
       state.drawerResource = ''
       state.drawerReload = false
+    }
+    const rotateJWT = async() => {
+      const body = {url: auth.rotate_jwt, patient: state.patient, jwt: auth.gnap_jwt}
+      const a = await axios.post(window.location.origin + '/auth/gnapRotate/' + state.patient, body)
+      if (objectPath.has(a, 'data.jwt')) {
+        const jwt = objectPath.get(a, 'data.jwt')
+        try {
+          const { payload } = await jose.jwtVerify(jwt, jwk)
+          console.log('JWT renewed!')
+          auth.updateJWT(payload, jwt)
+        } catch (e) {
+          console.log(e)
+          $q.notify({
+            message: 'Unauthorized access!',
+            color: 'red',
+            actions: [
+              { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+            ]
+          })
+        }
+      }
     }
     const saveOIDC = async(doc) => {
       if (!Array.isArray(state.oidc)) {
@@ -2829,7 +2837,6 @@ export default defineComponent({
       focusInput,
       getBase64,
       importAll,
-      // importReference,
       inbox,
       loading,
       loadResource,
@@ -2885,6 +2892,7 @@ export default defineComponent({
       reloadDrawerComplete,
       removeOIDC,
       removeTags,
+      rotateJWT,
       saveOIDC,
       setActiveCarePlan,
       setActiveComposition,

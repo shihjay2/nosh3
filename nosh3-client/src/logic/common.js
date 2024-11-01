@@ -75,7 +75,6 @@ export function common() {
       'when': signature_data.time,
       'who': {
         'reference': signature_data.reference
-        // 'reference' : 'Practitioner/xcda-author'
       },
       'targetFormat': 'application/fhir',
       'sigFormat': 'application/json',
@@ -108,7 +107,6 @@ export function common() {
     }
   }
   const divBuild = async(resource, doc) => {
-    // create div
     let value = '<div xmlns="http://www.w3.org/1999/xhtml">'
     const base = await import('@/assets/fhir/' + resource + '.json')
     const schema = base.uiSchema.flat()
@@ -154,7 +152,6 @@ export function common() {
     const auth_store = useAuthStore()
     const prefix = getPrefix()
     const db = new PouchDB(prefix + 'activities')
-    // check if old version and destroy
     const check = await db.allDocs({include_docs: true})
     if (check.rows.length > 0) {
       for (const a of check.rows) {
@@ -171,7 +168,6 @@ export function common() {
       }
     }
     const db1 = new PouchDB(prefix + 'activities')
-    // check if existing day event doc, otherwise create one
     const datetime = moment().startOf('day').unix()
     const datetime_formal = moment().startOf('day').format('YYYY-MM-DDTHH:mm:ss.SSSZ')
     const check1 = await db1.find({selector: {'datetime': {"$eq": datetime}}})
