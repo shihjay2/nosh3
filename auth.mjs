@@ -396,6 +396,7 @@ async function gnapRotate(req, res) {
     try {
       const doc = await fetch(req.body.url, signedRequest)
         .then((res) => res.json())
+      console.log(doc)
       const result_jwt = await processJWT(doc, prefix, pin, req, null)
       if (result_jwt.status === 200 && result_jwt.type === 'redirect') {
         res.status(result_jwt.status).json({'jwt': result_jwt.jwt})
