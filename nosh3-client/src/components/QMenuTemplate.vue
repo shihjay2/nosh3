@@ -1,6 +1,6 @@
 <template>
   <q-menu fit auto-close>
-    <q-list style="min-width: 150px">
+    <q-list dense style="min-width: 120px">
       <q-item clickable @click="open('page', 'users', 'me', state.user.id)">
         <q-item-section>
           <q-item-label>{{ state.user.display }}</q-item-label>

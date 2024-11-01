@@ -442,6 +442,7 @@ async function gnapVerify(req, res) {
               .then((res) => res.json())
             await db.remove(result)
             const result_jwt = await processJWT(doc, prefix, pin, req)
+            console.log(result_jwt)
             if (result_jwt.status === 200 && result_jwt.type === 'redirect') {
               res.redirect(result_jwt.response)
             } else {
@@ -692,7 +693,12 @@ async function processJWT(doc, prefix, pin, req) {
               objectPath.set(payload, '_nosh.patient', req.params.patient)
             } else {
               // not installed yet
-              res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'start')
+              // res.redirect(urlFix(req.protocol + '://' + req.hostname + '/') + 'start')
+              return {
+                'status': 401,
+                'type': 'send',
+                'response': 'Not installed yet'
+              }
             }
           } else {
             if (result.route === null) {
@@ -703,6 +709,7 @@ async function processJWT(doc, prefix, pin, req) {
             objectPath.set(payload, '_noshType', 'mdnosh')
           }
           const jwt_nosh = await createJWT(user_id, urlFix(req.protocol + '://' + req.hostname + '/'), urlFix(req.protocol + '://' + req.hostname + '/'), payload)
+          console.log(jwt_nosh)
           return {
             'status': 200,
             'type': 'redirect',
