@@ -2363,6 +2363,8 @@ export default defineComponent({
       const body = {url: auth.rotate_jwt_uri, patient: state.patient, jwt: auth.rotate_jwt}
       const a = await axios.post(window.location.origin + '/auth/gnapRotate/' + state.patient, body)
       if (objectPath.has(a, 'data.jwt')) {
+        const keys = await axios.get(window.location.origin + '/auth/jwks')
+        const jwk = await jose.importJWK(keys.data.keys[0])
         const jwt = objectPath.get(a, 'data.jwt')
         try {
           const { payload } = await jose.jwtVerify(jwt, jwk)
