@@ -700,19 +700,16 @@ async function signRequest(doc, urlinput, method, req, auth='') {
     keys.push(pair)
   }
   const key_jose = await jose.importJWK(keys[0].privateKey, keys[0].privateKey.alg)
-  let body = {}
-  if (Object.keys(doc).length !== 0) {
-    body = {
-      ...doc,
-      "client": {
-        "display": {
-          "name": "NOSH",
-          "uri": req.protocol + "://" + req.hostname
-        },
-        "key": {
-          "proof": "httpsig",
-          "jwk": keys[0].publicKey
-        }
+  const body = {
+    ...doc,
+    "client": {
+      "display": {
+        "name": "NOSH",
+        "uri": req.protocol + "://" + req.hostname
+      },
+      "key": {
+        "proof": "httpsig",
+        "jwk": keys[0].publicKey
       }
     }
   }
