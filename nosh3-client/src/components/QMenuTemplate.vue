@@ -86,15 +86,7 @@
           <q-toggle v-model="state.stay_logged_in" label="Keep Me Logged In" color="primary" keep-color />
         </q-item-section>
         <q-item-section avatar>
-          <q-icon color="primary" style="font-size: 1.5em" name="autorenew" />
-        </q-item-section>
-      </q-item>
-      <q-item v-if="state.type == 'pnosh'" clickable @click="rotateJWT()">
-        <q-item-section>
-          <q-item-label>Renew JWT</q-item-label>
-        </q-item-section>
-        <q-item-section avatar>
-          <q-icon color="primary" style="font-size: 1.5em" name="autorenew" />
+          <q-btn flat round color="primary" icon="autorenew" @click="rotateJWT()"/>
         </q-item-section>
       </q-item>
       <q-item clickable @click="logout()">

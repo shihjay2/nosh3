@@ -2370,8 +2370,15 @@ export default defineComponent({
             const jwt = objectPath.get(a, 'data.jwt')
             try {
               const { payload } = await jose.jwtVerify(jwt, jwk)
-              console.log('JWT renewed!')
               auth.updateJWT(payload, jwt)
+              console.log('JWT renewed!')
+              $q.notify({
+                message: 'Renewed session!',
+                color: 'red',
+                actions: [
+                  { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+                ]
+              })
             } catch (e) {
               console.log(e)
               $q.notify({
