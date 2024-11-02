@@ -810,7 +810,7 @@ export default defineComponent({
 },
   setup () {
     const $q = useQuasar()
-    const { addSchemaOptions, clearOIDC, fetchJSON, fhirModel, fhirReplace, getOIDC, getOIDCDebug, importFHIR, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, setOIDC, sync, syncAll, syncTooltip, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
+    const { addSchemaOptions, clearCoverage, clearEOB, clearOIDC, fetchJSON, fhirModel, fhirReplace, getCoverage, getEOB, getOIDC, getOIDCDebug, importFHIR, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, setOIDC, sync, syncAll, syncTooltip, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
     const state = reactive({
       menuVisible: false,
       showDrawer: false,
@@ -1243,11 +1243,11 @@ export default defineComponent({
     const clearDefault = () => {
       state.default = {}
     }
-    const clearInsurance = () => {
-      auth.clearCoverage()
-      auth.clearEOB()
-      state.fhir_coverage = auth.coverage
-      state.fhir_eob = auth.eob
+    const clearInsurance = async() => {
+      await clearCoverage()
+      await clearEOB()
+      state.fhir_coverage = await getCoverage()
+      state.fhir_eob = await getEOB()
       state.showInsurance = false
     }
     const clearSync = async() => {
@@ -2070,16 +2070,18 @@ export default defineComponent({
     const openImmunizationSchedule = () => {
       state.showImmunizationSchedule = true
     }
-    const openInsurance = () => {
-      state.fhir_coverage = auth.coverage
-      state.fhir_eob = auth.eob
+    const openInsurance = async() => {
+      state.fhir_coverage = await getCoverage()
+      state.fhir_eob = await getEOB()
       state.showInsurance = true
     }
-    const openInsuranceFHIR = (type) => {
+    const openInsuranceFHIR = async(type) => {
       if (type === 'Coverage') {
-        state.fhir_insurance = JSON.stringify(auth.coverage, null, "  ")
-      } else{
-        state.fhir_insurance = JSON.stringify(auth.eob, null, "  ")
+        const coverage = await getCoverage()
+        state.fhir_insurance = JSON.stringify(coverage, null, "  ")
+      } else {
+        const eob = await getEOB()
+        state.fhir_insurance = JSON.stringify(eob, null, "  ")
       }
       state.showInsurancePreview = true
     }
@@ -2374,7 +2376,7 @@ export default defineComponent({
               console.log('JWT renewed!')
               $q.notify({
                 message: 'Renewed session!',
-                color: 'red',
+                color: 'primary',
                 actions: [
                   { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
                 ]

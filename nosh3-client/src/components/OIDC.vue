@@ -56,7 +56,7 @@ export default defineComponent({
   emits: ['loading', 'save-oidc'],
   setup(props, { emit }) {
     const $q = useQuasar()
-    const { fetchJSON } = common()
+    const { fetchJSON, getCoverage, getEOB, setCoverage, setEOB } = common()
     const filter = ref(null)
     const state = reactive({
       filter: '',
@@ -327,17 +327,17 @@ export default defineComponent({
               debug.push(ret)
               objectPath.set(state, 'oidc.debug', debug)
               if (d.label !== 'Summary') {
-                const coverage_arr = auth.coverage
-                const eob_arr = auth.eob
+                const coverage_arr = await getCoverage()
+                const eob_arr = await getEOB()
                 const rows1 = []
                 for (const d2 of oidc_response1.data.entry) {
                   if (d.label === 'Coverage') {
                     coverage_arr.push(d2.resource)
-                    auth.setCoverage(coverage_arr)
+                    await setCoverage(coverage_arr)
                   }
                   if (d.label === 'EOB') {
                     eob_arr.push(d2.resource)
-                    auth.setEOB(eob_arr)
+                    await setEOB(eob_arr)
                   }
                   if (d2.resource.resourceType === d.resource) {
                     rows1.push(d2.resource)

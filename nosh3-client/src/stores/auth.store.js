@@ -25,9 +25,7 @@ export const useAuthStore = defineStore(localStorage.getItem('auth_id') || 'auth
     message: null,
     init_sync: false,
     maia: null,
-    maia_alt: null,
-    coverage: [],
-    eob: []
+    maia_alt: null
   }),
   persist: true,
   actions: {
@@ -128,18 +126,6 @@ export const useAuthStore = defineStore(localStorage.getItem('auth_id') || 'auth
     },
     clearMAIA() {
       this.maia_alt = null
-    },
-    setCoverage(coverage) {
-      this.coverage = coverage
-    },
-    setEOB(eob) {
-      this.eob = eob
-    },
-    clearCoverage() {
-      this.coverage = []
-    },
-    clearEOB() {
-      this.eob = []
     },
     setStayLoggedIn(val) {
       this.stay_logged_in = val

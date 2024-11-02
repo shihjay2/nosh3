@@ -94,6 +94,30 @@ export function common() {
     await sync('bundles', false, patient_id, true, bundleDoc)
     return bundleDoc
   }
+  const clearCoverage = async() => {
+    const prefix = getPrefix()
+    const local = new PouchDB(prefix + 'coverage')
+    await local.info()
+    try {
+      const doc = await local.get(prefix)
+      objectPath.set(doc, 'data', [])
+      await local.put(doc)
+    } catch (e) {
+      console.log('No Coverage!')
+    }
+  }
+  const clearEOB = async() => {
+    const prefix = getPrefix()
+    const local = new PouchDB(prefix + 'eob')
+    await local.info()
+    try {
+      const doc = await local.get(prefix)
+      objectPath.set(doc, 'data', [])
+      await local.put(doc)
+    } catch (e) {
+      console.log('No EOB!')
+    }
+  }
   const clearOIDC = async() => {
     const prefix = getPrefix()
     const local = new PouchDB(prefix + 'oidc')
@@ -501,6 +525,28 @@ export function common() {
       found.forEach((e,i) => mapping[`{${e}}`] = replaceWith[i])
       str = str.replace(/\{\w+\}/ig, n => mapping[n])
       return str
+    }
+  }
+  const getCoverage = async() => {
+    const prefix = getPrefix()
+    const local = new PouchDB(prefix + 'coverage')
+    await local.info()
+    try {
+      const doc = await local.get(prefix)
+      return JSON.parse(objectPath.get(doc, 'data'))
+    } catch (e) {
+      return []
+    }
+  }
+  const getEOB = async() => {
+    const prefix = getPrefix()
+    const local = new PouchDB(prefix + 'eob')
+    await local.info()
+    try {
+      const doc = await local.get(prefix)
+      return JSON.parse(objectPath.get(doc, 'data'))
+    } catch (e) {
+      return []
     }
   }
   const getOIDC = async() => {
@@ -1307,6 +1353,36 @@ export function common() {
       return str.replace( /(<([^>]+)>)/ig, '')
     }
   }
+  const setCoverage = async(arr) => {
+    const prefix = getPrefix()
+    const local = new PouchDB(prefix + 'coverage')
+    let doc = {
+      "id": prefix,
+      "_id": prefix,
+    }
+    try {
+      doc = await local.get(prefix)
+    } catch (e) {
+      console.log('New Coverage!')
+    }
+    objectPath.set(doc, 'data', JSON.stringify(arr))
+    await local.put(doc)
+  }
+  const setEOB = async(arr) => {
+    const prefix = getPrefix()
+    const local = new PouchDB(prefix + 'eob')
+    let doc = {
+      "id": prefix,
+      "_id": prefix,
+    }
+    try {
+      doc = await local.get(prefix)
+    } catch (e) {
+      console.log('New EOB!')
+    }
+    objectPath.set(doc, 'data', JSON.stringify(arr))
+    await local.put(doc)
+  }
   const setOIDC = async(oidc) => {
     const prefix = getPrefix()
     const local = new PouchDB(prefix + 'oidc')
@@ -1606,6 +1682,8 @@ export function common() {
   return {
     addSchemaOptions,
     bundleBuild,
+    clearCoverage,
+    clearEOB,
     clearOIDC,
     divBuild,
     eventAdd,
@@ -1614,6 +1692,8 @@ export function common() {
     fhirDisplay,
     fhirModel,
     fhirReplace,
+    getCoverage,
+    getEOB,
     getOIDC,
     getOIDCDebug,
     getPrefix,
@@ -1635,6 +1715,8 @@ export function common() {
     patientStatus,
     referenceSearch,
     removeTags,
+    setCoverage,
+    setEOB,
     setOIDC,
     setOptions,
     sync,
