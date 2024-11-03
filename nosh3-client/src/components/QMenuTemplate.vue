@@ -78,7 +78,7 @@
           <q-item-label>Launch MAIA</q-item-label>
         </q-item-section>
         <q-item-section avatar>
-          <q-icon color="primary" style="font-size: 1.5em" name="smart_toy" />
+          <q-icon color="primary" style="font-size: 1.5em" name="chat_apps_script" />
         </q-item-section>
       </q-item>
       <q-item v-if="state.type == 'pnosh'">
@@ -86,7 +86,9 @@
           <q-toggle v-model="state.stay_logged_in" label="Keep Me Logged In" color="primary" keep-color />
         </q-item-section>
         <q-item-section avatar>
-          <q-btn flat round color="primary" icon="autorenew" @click="rotateJWT()"/>
+          <q-btn flat round color="primary" icon="autorenew" @click="rotateJWT()">
+            <q-tooltip>Renew Session</q-tooltip>
+          </q-btn>
         </q-item-section>
       </q-item>
       <q-item clickable @click="logout()">
