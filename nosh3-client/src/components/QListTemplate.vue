@@ -859,6 +859,7 @@ export default defineComponent({
           results_document_references.push({'docs': []})
         }
       }
+      console.log(results)
       console.log(results_document_references)
       for (const c in results) {
         objectPath.set(state, 'rows.' + c + '.lock', true)
@@ -883,13 +884,9 @@ export default defineComponent({
           }
         } else {
           if (objectPath.has(results_document_references, c + 'docs.0')) {
-            for (const e in objectPath.get(results_document_references, c + '.docs')) {
-              const comp1 = objectPath.get(results_document_references, c + '.docs.' + e + '.context.encounter.0.reference')
-              const index1 = rows.findIndex((element) => element.doc.sync_id === comp1.replace('Encounter/', '').replace('urn:uuid:', ''))
-              objectPath.set(state, 'rows.' + index1 + '.document_reference', objectPath.get(results_document_references, c + '.docs.' + e))
-              objectPath.set(state, 'rows.' + index1 + '.lock_icon', 'lock')
-              objectPath.set(state, 'rows.' + index1 + '.lock_color', 'negative')
-            }
+            objectPath.set(state, 'rows.' + c + '.document_reference', objectPath.get(results_document_references, c + '.docs.0'))
+            objectPath.set(state, 'rows.' + c + '.lock_icon', 'lock')
+            objectPath.set(state, 'rows.' + c + '.lock_color', 'negative')
           }
         }
       }
