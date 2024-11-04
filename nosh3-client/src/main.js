@@ -7,7 +7,7 @@ import { Quasar } from 'quasar'
 import quasarUserOptions from './quasar-user-options'
 import { router } from './helpers'
 import { defineRule, configure } from 'vee-validate'
-import * as rules from '@vee-validate/rules'
+import { all as rules } from '@vee-validate/rules'
 
 const app = createApp(App)
 const pinia = createPinia()
