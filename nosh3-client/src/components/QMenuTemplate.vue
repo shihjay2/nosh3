@@ -78,7 +78,7 @@
           <q-item-label>Launch MAIA</q-item-label>
         </q-item-section>
         <q-item-section avatar>
-          <q-icon color="primary" style="font-size: 1.5em" name="chat_apps_script" />
+          <q-icon color="primary" style="font-size: 1.5em" name="prompt_suggestion" />
         </q-item-section>
       </q-item>
       <q-item v-if="state.type == 'pnosh'">

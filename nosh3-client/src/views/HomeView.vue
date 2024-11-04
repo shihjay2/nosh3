@@ -862,6 +862,7 @@ export default defineComponent({
       searchTerm: '',
       timeline_filter: [],
       timeline_scroll: false,
+      timeline_scroll_last_pos: 0,
       sort: 'alpha',
       within_page: false,
       openPageForm: false,
@@ -2725,12 +2726,20 @@ export default defineComponent({
         }
       }
     }
-    const timelineScroll = (info) => {
+    const timelineScroll = async(info) => {
       if (state.showTimeline) {
+        const last = state.timeline_scroll_last_pos
+        state.timeline_scroll_last_pos = info.position.top
         if (info.position.top > 0) {
           state.timeline_scroll = true
         } else {
           state.timeline_scroll = false
+          if (last > 0) {
+            await loadTimeline()
+            nextTick(() => {
+              qTimeline.value.focus()
+            })
+          }
         }
       }
     }
