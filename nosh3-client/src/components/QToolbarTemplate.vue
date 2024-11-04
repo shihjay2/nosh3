@@ -18,7 +18,7 @@
   <q-btn v-if="state.timeline && state.user.role === 'patient'" push flat round icon="policy" clickable @click="openTrustee('user')" color="deep-orange">
     <q-tooltip>Share Record</q-tooltip>
   </q-btn>
-  <q-btn v-if="state.maiaEnable && state.maia !== ''" push flat round icon="prompt_suggestion" clickable @click="openMAIA" color="deep-orange">
+  <q-btn v-if="state.maiaEnable && state.maia !== ''" push flat round icon="auto_awesome" clickable @click="openMAIA" color="deep-orange">
     <q-tooltip>Launch MAIA (Medical AI Assistant)</q-tooltip>
   </q-btn>
   <q-btn v-if="state.resource == 'medication_statements' && state.provider" push flat round icon="local_pharmacy" clickable @click="newPrescription">
