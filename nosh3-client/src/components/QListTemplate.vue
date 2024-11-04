@@ -883,7 +883,7 @@ export default defineComponent({
             }
           }
         } else {
-          if (objectPath.has(results_document_references, c + 'docs.0')) {
+          if (objectPath.has(results_document_references, c + '.docs.0')) {
             objectPath.set(state, 'rows.' + c + '.document_reference', objectPath.get(results_document_references, c + '.docs.0'))
             objectPath.set(state, 'rows.' + c + '.lock_icon', 'lock')
             objectPath.set(state, 'rows.' + c + '.lock_color', 'negative')
