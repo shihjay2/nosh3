@@ -438,6 +438,7 @@ export default defineComponent({
     var localDB4 = new PouchDB(prefix + 'medication_requests')
     var localDB5 = new PouchDB(prefix + 'users')
     var localDB6 = new PouchDB(prefix + 'binaries')
+    var localDB7 = new PouchDB(prefix + 'document_references')
     onMounted(async() => {
       state.auth = props.auth
       state.online = props.online
@@ -844,12 +845,19 @@ export default defineComponent({
     }
     const getBundle = async(rows) => {
       const results = []
+      const results_document_references = []
       for (const b of rows) {
         const result = await localDB3.find({selector: {'entry.0.resource.encounter.reference': {$eq: 'Encounter/' + b.id}, _id: {"$gte": null}}})
         if (result.docs.length > 0) {
           result.docs.sort((a1, b1) => moment(b1.timestamp) - moment(a1.timestamp))
         }
         results.push(result)
+        if (objectPath.has(b, 'doc.sync_id')) {
+          const result_document_reference = await localDB7.find({selector: {'context.encounter.0.reference': {'$regex': b.doc.sync_id}, _id: {"$gte": null}}})
+          results_document_references.push(result_document_reference)
+        } else {
+          results_document_references.push({'docs': []})
+        }
       }
       for (const c in results) {
         objectPath.set(state, 'rows.' + c + '.lock', true)
@@ -870,6 +878,16 @@ export default defineComponent({
               const history1 = objectPath.get(state, 'rows.' + index + '.bundle_history')
               history1.push(objectPath.get(results, c + '.docs.' + d))
               objectPath.set(state, 'rows.' + index + '.bundle_history', history1)
+            }
+          }
+        } else {
+          if (objectPath.has(results_document_references, c + 'docs.0')) {
+            for (const e in objectPath.get(results_document_references, c + '.docs')) {
+              const comp1 = objectPath.get(results_document_references, c + '.docs.' + e + '.context.encounter.0.reference')
+              const index1 = rows.findIndex((element) => element.doc.sync_id === comp1.replace('Encounter/', ''))
+              objectPath.set(state, 'rows.' + index1 + '.document_reference', objectPath.get(results_document_references, c + '.docs.' + e))
+              objectPath.set(state, 'rows.' + index1 + '.lock_icon', 'lock')
+              objectPath.set(state, 'rows.' + index1 + '.lock_color', 'negative')
             }
           }
         }
@@ -1078,6 +1096,8 @@ export default defineComponent({
           if (props.resource === 'encounters') {
             if (objectPath.has(b, 'bundle')) {
               emit('open-bundle', 'bundles', b.bundle, b.bundle_history)
+            } else if (objectPath.has(b, 'document_reference')) {
+              emit('open-file', b.document_reference.id, 'document_references', 'content')
             } else {
               if (props.provider) {
                 emit('open-page', id, props.resource, 'subjective')
