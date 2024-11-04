@@ -19,7 +19,7 @@
     <q-tooltip>Share Record</q-tooltip>
   </q-btn>
   <q-btn v-if="state.maiaEnable && state.maia !== ''" push flat round icon="chat_apps_script" clickable @click="openMAIA" color="deep-orange">
-    <q-tooltip>Launch MAIA (Medical AI Assistant)</q-tooltip>
+    <q-tooltip>Launch MAIA</q-tooltip>
   </q-btn>
   <q-btn v-if="state.resource == 'medication_statements' && state.provider" push flat round icon="local_pharmacy" clickable @click="newPrescription">
     <q-tooltip>New Prescription</q-tooltip>
