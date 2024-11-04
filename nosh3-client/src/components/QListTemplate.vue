@@ -859,6 +859,7 @@ export default defineComponent({
           results_document_references.push({'docs': []})
         }
       }
+      console.log(results_document_references)
       for (const c in results) {
         objectPath.set(state, 'rows.' + c + '.lock', true)
         objectPath.set(state, 'rows.' + c + '.lock_icon', 'lock_open')
