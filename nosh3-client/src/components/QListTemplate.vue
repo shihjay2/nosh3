@@ -947,6 +947,7 @@ export default defineComponent({
       emit('loading')
     }
     const loadList = async(status = 'all') => {
+      emit('loading')
       state.rows = []
       state.result = []
       let selector = {}
@@ -1057,6 +1058,7 @@ export default defineComponent({
           state.rows.sort(firstBy('status', {ignoreCase:true, direction:'asc'}).thenBy('title', {ignoreCase:true, direction:'asc'}))
         }
       }
+      emit('loading')
     }
     const lockThread = (id) => {
       emit('lock-thread', id)
