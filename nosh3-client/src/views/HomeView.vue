@@ -1718,6 +1718,13 @@ export default defineComponent({
                   }
                   objectPath.set(timelineItem, 'bundle_history', history)
                 }
+                const doc_ref_db = new PouchDB(prefix + 'document_references')
+                const doc_ref_db_res = await doc_ref_db.find({selector: {'context.encounter.0.reference': {'$regex': objectPath.get(result, 'docs.' + a + '.doc.sync_id')}, _id: {"$gte": null}}})
+                if (doc_ref_db_res.docs.length > 0) {
+                  if (!objectPath.has(timelineItem, 'bundle')) {
+                    objectPath.set(timelineItem, 'document_reference', objectPath.get(doc_ref_db_res, 'docs.0'))
+                  }
+                }
               }
               if (resource === 'document_references') {
                 if (objectPath.get(result, 'docs.' + a + '.contentType') === 'application/pdf') {
@@ -2270,19 +2277,21 @@ export default defineComponent({
         const b = state.timeline.find(a => a.id == id)
         if (b.resource === 'encounters') {
           if (objectPath.has(b, 'bundle')) {
-            openBundle('bundles', b.bundle, b.bundle_history)
+            await openBundle('bundles', b.bundle, b.bundle_history)
+          } else if (objectPath.has(b, 'document_reference')) {
+            await openFile(b.document_reference.id, 'document_references', 'content')
           } else {
             await loadResource(b.resource, 'all')
-            openPage(id, b.resource, 'subjective')
+            await openPage(id, b.resource, 'subjective')
           }
         } else {
           const json = await import('@/assets/ui/drawer.json')
           const c = json.rows.find(d => d.resource == b.resource)
           if (c.type === 'list') {
-            openList(b.resource, c.category)
+            await openList(b.resource, c.category)
           }
           if (c.type === 'page') {
-            openPage(b.resource, c.category)
+            await openPage(b.resource, c.category)
           }
         }
       }
