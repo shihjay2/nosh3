@@ -48,7 +48,7 @@ async function getTimeline(req, res) {
       }
       if (row.resource === 'document_references') {
         const doc = row.doc
-        if (doc.description !== 'AI Chat') {
+        // if (doc.description !== 'AI Chat') {
           if (objectPath.has(doc, 'content')) {
             for (const c in objectPath.get(doc, 'content')) {
               const binary_id = objectPath.get(doc, 'content.' + c + '.attachment.url').substring(objectPath.get(doc, 'content.' + c + '.attachment.url').indexOf('/') + 1)
@@ -72,7 +72,7 @@ async function getTimeline(req, res) {
               }
             }
           }
-        }
+        // }
       }
       for (const data of row.content) {
         if (row.style === 'p') {
