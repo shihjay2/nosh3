@@ -1718,13 +1718,17 @@ export default defineComponent({
                   }
                   objectPath.set(timelineItem, 'bundle_history', history)
                 }
-                const doc_ref_db = new PouchDB(prefix + 'document_references')
-                const doc_ref_db_res = await doc_ref_db.find({selector: {'context.encounter.0.reference': {'$regex': objectPath.get(result, 'docs.' + a + '.doc.sync_id')}, _id: {"$gte": null}}})
-                if (doc_ref_db_res.docs.length > 0) {
-                  if (!objectPath.has(timelineItem, 'bundle')) {
-                    objectPath.set(timelineItem, 'document_reference', objectPath.get(doc_ref_db_res, 'docs.0'))
+                if (objectPath.has(result, 'docs.' + a + '.doc.sync_id')) {
+                  const doc_ref_db = new PouchDB(prefix + 'document_references')
+                  const doc_ref_db_res = await doc_ref_db.find({selector: {'context.encounter.0.reference': {'$regex': objectPath.get(result, 'docs.' + a + '.doc.sync_id')}, _id: {"$gte": null}}})
+                  if (doc_ref_db_res.docs.length > 0) {
+                    if (!objectPath.has(timelineItem, 'bundle')) {
+                      objectPath.set(timelineItem, 'document_reference', objectPath.get(doc_ref_db_res, 'docs.0'))
+                    }
                   }
                 }
+                console.log(objectPath.has(result, 'docs.' + a + '.doc.sync_id'))
+                console.log(timelineItem)
               }
               if (resource === 'document_references') {
                 if (objectPath.get(result, 'docs.' + a + '.contentType') === 'application/pdf') {
