@@ -1704,7 +1704,7 @@ export default defineComponent({
               objectPath.set(timelineItem, 'style', base.uiListContent.contentStyle)
               if (resource === 'encounters') {
                 const bundle_db = new PouchDB(prefix + 'bundles')
-                const bundle_result = await bundle_db.find({selector: {'entry': {"$elemMatch": {"resource.encounter.reference": 'Encounter/' + objectPath.get(result, 'docs.' + a + '.doc.id')}}, _id: {"$gte": null}}})
+                const bundle_result = await bundle_db.find({selector: {'entry': {"$elemMatch": {"resource.encounter.reference": 'Encounter/' + objectPath.get(result, 'docs.' + a + '.id')}}, _id: {"$gte": null}}})
                 if (bundle_result.docs.length > 0) {
                   bundle_result.docs.sort((a1, b1) => moment(b1.timestamp) - moment(a1.timestamp))
                   const history = []
@@ -1718,7 +1718,7 @@ export default defineComponent({
                   }
                   objectPath.set(timelineItem, 'bundle_history', history)
                 }
-                if (objectPath.has(result, 'docs.' + a + '.doc.sync_id')) {
+                if (objectPath.has(result, 'docs.' + a + '.sync_id')) {
                   const doc_ref_db = new PouchDB(prefix + 'document_references')
                   const doc_ref_db_res = await doc_ref_db.find({selector: {'context.encounter.0.reference': {'$regex': objectPath.get(result, 'docs.' + a + '.doc.sync_id')}, _id: {"$gte": null}}})
                   if (doc_ref_db_res.docs.length > 0) {
@@ -1727,8 +1727,6 @@ export default defineComponent({
                     }
                   }
                 }
-                console.log(objectPath.has(result, 'docs.' + a + '.doc.sync_id'))
-                console.log(timelineItem)
               }
               if (resource === 'document_references') {
                 if (objectPath.get(result, 'docs.' + a + '.contentType') === 'application/pdf') {
