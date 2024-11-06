@@ -642,7 +642,7 @@
   <q-dialog v-model="state.upload_dump">
     <q-uploader
           :hide-upload-btn="true"
-          @added="uploadSync1"
+          @added="uploadDump1"
           accept=".json"
         />
   </q-dialog>
