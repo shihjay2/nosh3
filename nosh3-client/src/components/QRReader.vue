@@ -179,7 +179,7 @@ export default defineComponent({
     const onError = () => {
       console.error
     }
-    const timeout = () => {
+    const timeout = async() => {
       return new Promise((resolve) => {
         window.setTimeout(resolve, ms)
       })

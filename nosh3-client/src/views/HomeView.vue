@@ -1543,7 +1543,7 @@ export default defineComponent({
       await nextTick()
       patientSearch.value.focus()
     }
-    const getBase64 = (file) => {
+    const getBase64 = async(file) => {
       return new Promise((resolve) => {
         const reader = new FileReader()
         reader.readAsDataURL(file)
@@ -2842,7 +2842,7 @@ export default defineComponent({
     const uploadDump1 = async(files) => {
       for (const i in files) {
         try {
-          const data = getBase64(files[i])
+          const data = await getBase64(files[i])
           const json = JSON.parse(atob(data.substring(data.indexOf(',') + 1)))
           state.loading = true
           const notif = $q.notify({
@@ -2916,7 +2916,7 @@ export default defineComponent({
     const uploadSync1 = async(files) => {
       for (const i in files) {
         try {
-          const data = getBase64(files[i])
+          const data = await getBase64(files[i])
           const json = JSON.parse(atob(data.substring(data.indexOf(',') + 1)))
           if (!Array.isArray(state.oidc)) {
             state.oidc = []

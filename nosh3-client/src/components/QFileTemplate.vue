@@ -520,7 +520,7 @@ export default defineComponent({
       state.edit = true
       emit('update-toolbar', {type: 'file', resource: props.resource, category: props.category, action: 'Image Editor'})
     }
-    const getBase64 = (file) => {
+    const getBase64 = async(file) => {
       return new Promise((resolve) => {
         const reader = new FileReader()
         reader.readAsDataURL(file)
