@@ -2852,7 +2852,7 @@ export default defineComponent({
             message: 'Uploading FHIR to chart...',
             color: 'primary'
           })
-          let i = 0
+          let j = 0
           const total = objectPath.get(json, 'entry').length
           let resource = ''
           for (const doc of objectPath.get(json, 'entry')) {
@@ -2887,11 +2887,11 @@ export default defineComponent({
             // if (objectPath.has(doc, 'email')) {
             //   await sync('users', false, state.patient, true, doc.resource)
             // }
-            const counter = Number(i) + 1
+            const counter = Number(j) + 1
             notif({
               caption: counter + '/' + total + ': Imported ' + resource + ' into the chart'
             })
-            i++
+            j++
           }
           state.loading = false
           notif({
