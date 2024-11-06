@@ -2844,6 +2844,7 @@ export default defineComponent({
         try {
           const data = await getBase64(files[i])
           const json = JSON.parse(atob(data.substring(data.indexOf(',') + 1)))
+          state.sync_on = true
           state.loading = true
           const notif = $q.notify({
             group: false,
@@ -2855,51 +2856,67 @@ export default defineComponent({
           let j = 0
           const total = objectPath.get(json, 'entry').length
           let resource = ''
-          for (const doc of objectPath.get(json, 'entry')) {
-            objectPath.del(doc, 'resource._rev')
-            if (objectPath.has(doc, 'resource.resourceType')) {
-              if (objectPath.get(doc, 'resource.resourceType') !== 'Patient') {
-                resource = Case.snake(pluralize(objectPath.get(doc, 'resource.resourceType')))
-                if (resource === 'immunizations' ||
-                    resource === 'allergy_intolerances' ||
-                    resource === 'related_persons') {
-                  objectPath.set(doc, 'patient.reference', 'Patient/' + state.patient)
-                } else if (resource === 'tasks') {
-                  objectPath.set(doc, 'for.reference', 'Patient/' + state.patient)
-                } else {
-                  if (resource !== 'practitioners' &&
-                      resource !== 'organizations' &&
-                      resource !== 'appointments') {
-                    objectPath.set(doc, 'subject.reference', 'Patient/' + state.patient)
+          if (objectPath.has(json, 'resourceType')) {
+            if (objectPath.get(json, 'resourceType' === 'Bundle')) {
+              for (const doc of objectPath.get(json, 'entry')) {
+                objectPath.del(doc, 'resource._rev')
+                if (objectPath.has(doc, 'resource.resourceType')) {
+                  if (objectPath.get(doc, 'resource.resourceType') !== 'Patient') {
+                    resource = Case.snake(pluralize(objectPath.get(doc, 'resource.resourceType')))
+                    if (resource === 'immunizations' ||
+                        resource === 'allergy_intolerances' ||
+                        resource === 'related_persons') {
+                      objectPath.set(doc, 'patient.reference', 'Patient/' + state.patient)
+                    } else if (resource === 'tasks') {
+                      objectPath.set(doc, 'for.reference', 'Patient/' + state.patient)
+                    } else {
+                      if (resource !== 'practitioners' &&
+                          resource !== 'organizations' &&
+                          resource !== 'appointments') {
+                        objectPath.set(doc, 'subject.reference', 'Patient/' + state.patient)
+                      }
+                    }
+                    await sync(resource, false, state.patient, true, doc.resource)
                   }
                 }
-                await sync(resource, false, state.patient, true, doc.resource)
+                if (objectPath.has(doc, 'resource.events')) {
+                  resource = 'activities'
+                  await sync(resource, false, state.patient, true, doc.resource)
+                }
+                if (objectPath.has(doc, 'resource.timeline')) {
+                  resource = 'timeline'
+                  await sync(resource, false, state.patient, true, doc.resource)
+                }
+                // if (objectPath.has(doc, 'email')) {
+                //   await sync('users', false, state.patient, true, doc.resource)
+                // }
+                const counter = Number(j) + 1
+                notif({
+                  caption: counter + '/' + total + ': Imported ' + resource + ' into the chart'
+                })
+                j++
               }
+              state.loading = false
+              state.sync_on = false
+              await loadTimeline()
+              notif({
+                icon: 'done',
+                spinner: false,
+                message: 'All items uploaded into the chart!',
+                timeout: 2500
+              })
+            } else {
+              $q.notify({
+                message: 'Incorrect file format - not a FHIR bundle',
+                color: 'red'
+              })
             }
-            if (objectPath.has(doc, 'resource.events')) {
-              resource = 'activities'
-              await sync(resource, false, state.patient, true, doc.resource)
-            }
-            if (objectPath.has(doc, 'resource.timeline')) {
-              resource = 'timeline'
-              await sync(resource, false, state.patient, true, doc.resource)
-            }
-            // if (objectPath.has(doc, 'email')) {
-            //   await sync('users', false, state.patient, true, doc.resource)
-            // }
-            const counter = Number(j) + 1
-            notif({
-              caption: counter + '/' + total + ': Imported ' + resource + ' into the chart'
+          } else {
+            $q.notify({
+              message: 'Incorrect file format',
+              color: 'red'
             })
-            j++
           }
-          state.loading = false
-          notif({
-            icon: 'done',
-            spinner: false,
-            message: 'All items uploaded into the chart!',
-            timeout: 2500
-          })
           state.upload_dump = false
         } catch (e) {
           console.log(e)
