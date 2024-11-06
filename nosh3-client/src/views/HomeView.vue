@@ -639,6 +639,13 @@
           accept=".json"
         />
   </q-dialog>
+  <q-dialog v-model="state.upload_dup">
+    <q-uploader
+          :hide-upload-btn="true"
+          @added="uploadSync1"
+          accept=".json"
+        />
+  </q-dialog>
   <q-dialog v-model="state.showShare">
     <q-card>
       <q-card-section>
@@ -685,10 +692,18 @@
           </q-item>
           <q-item clickable @click="openDump()">
             <q-item-section>
-              <q-item-label>FHIR Dump</q-item-label>
+              <q-item-label>Chart Download</q-item-label>
             </q-item-section>
             <q-item-section avatar>
-              <q-icon color="primary" style="font-size: 1.5em" name="local_fire_department" />
+              <q-icon color="primary" style="font-size: 1.5em" name="file_download" />
+            </q-item-section>
+          </q-item>
+          <q-item clickable @click="uploadDump()">
+            <q-item-section>
+              <q-item-label>Chart Upload</q-item-label>
+            </q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" style="font-size: 1.5em" name="file_upload" />
             </q-item-section>
           </q-item>
           <q-item clickable @click="loadMarkdown()">
@@ -1003,7 +1018,8 @@ export default defineComponent({
       fhir_insurance: {},
       fhir_coverage: {},
       fhir_eob: {},
-      upload_sync: false
+      upload_sync: false,
+      upload_dump: false
     })
     const route = useRoute()
     const auth = useAuthStore()
@@ -2820,6 +2836,80 @@ export default defineComponent({
     const updateValue1 = (val, field, type) => {
       state.formMAIA[field] = val
     }
+    const uploadDump = () => {
+      state.upload_dump = true
+    }
+    const uploadDump1 = async(files) => {
+      for (const i in files) {
+        try {
+          const data = getBase64(files[i])
+          const json = JSON.parse(atob(data.substring(data.indexOf(',') + 1)))
+          state.loading = true
+          const notif = $q.notify({
+            group: false,
+            timeout: 0,
+            spinner: true,
+            message: 'Uploading FHIR to chart...',
+            color: 'primary'
+          })
+          let i = 0
+          const total = objectPath.get(json, 'entry').length
+          let resource = ''
+          for (const doc of objectPath.get(json, 'entry')) {
+            objectPath.del(doc, 'resource._rev')
+            if (objectPath.has(doc, 'resource.resourceType')) {
+              if (objectPath.get(doc, 'resource.resourceType') !== 'Patient') {
+                resource = Case.snake(pluralize(objectPath.get(doc, 'resource.resourceType')))
+                if (resource === 'immunizations' ||
+                    resource === 'allergy_intolerances' ||
+                    resource === 'related_persons') {
+                  objectPath.set(doc, 'patient.reference', 'Patient/' + state.patient)
+                } else if (resource === 'tasks') {
+                  objectPath.set(doc, 'for.reference', 'Patient/' + state.patient)
+                } else {
+                  if (resource !== 'practitioners' &&
+                      resource !== 'organizations' &&
+                      resource !== 'appointments') {
+                    objectPath.set(doc, 'subject.reference', 'Patient/' + state.patient)
+                  }
+                }
+                await sync(resource, false, state.patient, true, doc.resource)
+              }
+            }
+            if (objectPath.has(doc, 'resource.events')) {
+              resource = 'activities'
+              await sync(resource, false, state.patient, true, doc.resource)
+            }
+            if (objectPath.has(doc, 'resource.timeline')) {
+              resource = 'timeline'
+              await sync(resource, false, state.patient, true, doc.resource)
+            }
+            // if (objectPath.has(doc, 'email')) {
+            //   await sync('users', false, state.patient, true, doc.resource)
+            // }
+            const counter = Number(i) + 1
+            notif({
+              caption: counter + '/' + total + ': Imported ' + resource + ' into the chart'
+            })
+            i++
+          }
+          state.loading = false
+          notif({
+            icon: 'done',
+            spinner: false,
+            message: 'All items uploaded into the chart!',
+            timeout: 2500
+          })
+          state.upload_dump = false
+        } catch (e) {
+          console.log(e)
+          $q.notify({
+            message: 'Failed to upload file',
+            color: 'red'
+          })
+        }
+      }
+    }
     const uploadSync = () => {
       state.upload_sync = true
     }
@@ -2958,6 +3048,8 @@ export default defineComponent({
       updateUser,
       updateValue,
       updateValue1,
+      uploadDump,
+      uploadDump1,
       uploadSync,
       uploadSync1,
       verifyJWT,
