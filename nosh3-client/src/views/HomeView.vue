@@ -2846,18 +2846,18 @@ export default defineComponent({
           const json = JSON.parse(atob(data.substring(data.indexOf(',') + 1)))
           state.sync_on = true
           state.loading = true
-          const notif = $q.notify({
-            group: false,
-            timeout: 0,
-            spinner: true,
-            message: 'Uploading FHIR to chart...',
-            color: 'primary'
-          })
-          let j = 0
-          const total = objectPath.get(json, 'entry').length
-          let resource = ''
           if (objectPath.has(json, 'resourceType')) {
             if (objectPath.get(json, 'resourceType' === 'Bundle')) {
+              const notif = $q.notify({
+                group: false,
+                timeout: 0,
+                spinner: true,
+                message: 'Uploading FHIR to chart...',
+                color: 'primary'
+              })
+              let j = 0
+              let resource = ''
+              const total = objectPath.get(json, 'entry').length
               for (const doc of objectPath.get(json, 'entry')) {
                 objectPath.del(doc, 'resource._rev')
                 if (objectPath.has(doc, 'resource.resourceType')) {
