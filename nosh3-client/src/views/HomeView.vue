@@ -2844,10 +2844,10 @@ export default defineComponent({
         try {
           const data = await getBase64(files[i])
           const json = JSON.parse(atob(data.substring(data.indexOf(',') + 1)))
-          state.sync_on = true
-          state.loading = true
           if (objectPath.has(json, 'resourceType')) {
             if (objectPath.get(json, 'resourceType' === 'Bundle')) {
+              state.sync_on = true
+              state.loading = true
               const notif = $q.notify({
                 group: false,
                 timeout: 0,
@@ -2920,6 +2920,7 @@ export default defineComponent({
           state.upload_dump = false
         } catch (e) {
           console.log(e)
+          state.upload_dump = false
           $q.notify({
             message: 'Failed to upload file',
             color: 'red'
