@@ -1719,6 +1719,7 @@ export function common() {
     setEOB,
     setOIDC,
     setOptions,
+    sleep,
     sync,
     syncAll,
     syncEmailToUser,

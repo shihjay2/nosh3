@@ -825,7 +825,7 @@ export default defineComponent({
 },
   setup () {
     const $q = useQuasar()
-    const { addSchemaOptions, clearCoverage, clearEOB, clearOIDC, fetchJSON, fhirModel, fhirReplace, getCoverage, getEOB, getOIDC, getOIDCDebug, importFHIR, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, setOIDC, sync, syncAll, syncTooltip, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
+    const { addSchemaOptions, clearCoverage, clearEOB, clearOIDC, fetchJSON, fhirModel, fhirReplace, getCoverage, getEOB, getOIDC, getOIDCDebug, importFHIR, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, setOIDC, sleep, sync, syncAll, syncTooltip, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
     const state = reactive({
       menuVisible: false,
       showDrawer: false,
@@ -1656,6 +1656,10 @@ export default defineComponent({
       download(json2md(mdjs), 'nosh_timeline_' + Date.now() + '.md', 'text/markdown')
     }
     const loadTimeline = async() => {
+      // make sure sync is not occuring
+      while (state.sync_on) {
+        await sleep(2)
+      }
       state.loading = true
       state.timeline_scroll = false
       state.timeline = []
