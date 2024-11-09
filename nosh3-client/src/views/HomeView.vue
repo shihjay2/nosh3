@@ -658,6 +658,9 @@
               <q-btn v-if="state.sig_pad" push color="primary" icon="save" size="sm" clickable @click="signature_pad_save()">
                 <q-tooltip>Save</q-tooltip>
               </q-btn>
+              <q-btn push color="primary" icon="close" size="sm" clickable @click="signature_pad_close()">
+                <q-tooltip>Close</q-tooltip>
+              </q-btn>
             </q-btn-group>
           </div>
         </div>
@@ -1224,6 +1227,7 @@ export default defineComponent({
     watch(() => state.user, async(newVal, oldVal) => {
       if (newVal._rev === oldVal._rev) {
         await sync('users', false, state.patient, true, newVal)
+        console.log('Watch: user')
       }
     })
     watch(() => auth.user, async(newVal) => {
@@ -2652,6 +2656,12 @@ export default defineComponent({
     const signature_pad_clear = () => {
       return signature_pad.value?.clearCanvas && signature_pad.value?.clearCanvas()
     }
+    const signature_pad_close = () => {
+      state.sig_img = false
+      state.sig_pad = false
+      state.sig_img_data = ''
+      state.sig = false
+    }
     const signature_pad_edit = () => {
       state.sig_pad = true
       state.sig_img = false
@@ -2660,8 +2670,10 @@ export default defineComponent({
       if (objectPath.has(state, 'user.signature')) {
         state.sig_img_data = objectPath.get(state, 'user.signature')
         state.sig_img = true
+        state.sig_pad = false
       } else {
         state.sig_pad = true
+        state.sig_img = false
       }
       state.sig = true
     }
@@ -2669,6 +2681,7 @@ export default defineComponent({
       if (signature_pad.value?.saveSignature) {
         state.sig_img_data = signature_pad.value?.saveSignature()
         objectPath.set(state, 'user.signature', state.sig_img_data)
+
         $q.notify({
           message: 'Siganture saved!',
           color: 'primary',
@@ -3131,6 +3144,7 @@ export default defineComponent({
       setChatID,
       signature_pad,
       signature_pad_clear,
+      signature_pad_close,
       signature_pad_edit,
       signature_pad_open,
       signature_pad_save,
