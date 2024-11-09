@@ -30,6 +30,9 @@
   <q-btn v-if="state.add !== ''" push flat round icon="add" clickable @click="onFormOpen('add')">
     <q-tooltip>Add {{ state.add }}</q-tooltip>
   </q-btn>
+  <q-btn v-if="state.sig" push flat round icon="brush" clickable @click="openSignature()">
+    <q-tooltip>Signature</q-tooltip>
+  </q-btn>
   <q-btn v-if="state.list" push flat round icon="date_range" clickable @click="sortDate()">
     <q-tooltip>Sort by Descending Date</q-tooltip>
   </q-btn>
@@ -94,7 +97,7 @@ export default defineComponent({
   directives: {
     print
   },
-  emits: ['addendum-encounter', 'clear-all', 'clear-sync', 'close-container', 'dump-sync', 'import-all', 'lock-thread', 'new-prescription', 'open-chat', 'open-debug', 'open-detail', 'open-form', 'open-file', 'open-immunizationschedule', 'open-list', 'open-page', 'open-page-form', 'open-trustee', 'set-composition-section', 'sign-encounter', 'sort-alpha', 'sort-date', 'start-sync', 'upload-sync'],
+  emits: ['addendum-encounter', 'clear-all', 'clear-sync', 'close-container', 'dump-sync', 'import-all', 'lock-thread', 'new-prescription', 'open-chat', 'open-debug', 'open-detail', 'open-form', 'open-file', 'open-immunizationschedule', 'open-list', 'open-page', 'open-page-form', 'open-signature', 'open-trustee', 'set-composition-section', 'sign-encounter', 'sort-alpha', 'sort-date', 'start-sync', 'upload-sync'],
   setup (props, { emit }) {
     const auth = useAuthStore()
     const { fetchJSON } = common()
@@ -131,7 +134,8 @@ export default defineComponent({
       maia: '',
       timeline: false,
       maiaEnable: false,
-      user: {}
+      user: {},
+      sig: false
     })
     onMounted(async() => {
       const resources = await fetchJSON('resources', props.online)
@@ -228,6 +232,9 @@ export default defineComponent({
     }
     const openRelatedPersons = () => {
       emit('open-list', 'related_persons', 'all')
+    }
+    const openSignature = () => {
+      emit('open-signature')
     }
     const openTrustee = (view) => {
       emit('open-trustee', view)
@@ -327,6 +334,9 @@ export default defineComponent({
                   if (state.category == 'inbox') {
                     state.add = 'Message Thread'
                   }
+                } else if (state.resource == 'users' && state.category == 'me') {
+                  state.add = ''
+                  state.sig = true
                 } else {
                   state.add = state.titleCategory
                 }
@@ -382,6 +392,7 @@ export default defineComponent({
       openImmunizationSchedule,
       openMAIA,
       openRelatedPersons,
+      openSignature,
       openTrustee,
       setCompositionSection,
       signEncounter,

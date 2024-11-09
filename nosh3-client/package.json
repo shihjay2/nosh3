@@ -10,6 +10,7 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "@quasar/quasar-ui-qcalendar": "^4.0.0-beta.15",
+    "@selemondev/vue3-signature-pad": "^1.1.0",
     "@spruceid/ssx": "^2.1.0",
     "@vee-validate/rules": "^4.6.2",
     "@vueup/vue-quill": "^1.2.0",

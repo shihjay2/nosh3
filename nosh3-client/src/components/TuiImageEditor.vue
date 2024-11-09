@@ -242,6 +242,7 @@
 <script>
 import { defineComponent, reactive, ref, onMounted, watch } from "vue"
 import { useQuasar } from 'quasar'
+import { useAuthStore } from '@/stores'
 import ImageEditor from 'tui-image-editor'
 import objectPath from 'object-path'
 
@@ -295,6 +296,7 @@ export default defineComponent({
       shapeOptions: {},
       activeObjectId: '',
     })
+    const auth = useAuthStore()
     const tuiImageEditor = ref(null)
     var editorInstance
     onMounted(() => {
@@ -632,16 +634,16 @@ export default defineComponent({
       editorInstance.rotate(deg)
     }
     const imageStamp = () => {
-      let file
-      let imgUrl
-      file = event.target.files[0]
-      if (file) {
-        imgUrl = URL.createObjectURL(file)
-        editorInstance.loadImageFromURL(editorInstance.toDataURL(), 'FilterImage').then(() => {
-          editorInstance.addImageObject(imgUrl).then((objectProps) => {
-            URL.revokeObjectURL(file)
-            console.log(objectProps)
-          })
+      const user = auth.user
+      if (objectPath.has(user, 'signature')) {
+        editorInstance.addImageObject(objectPath.get(user, 'signature'))
+      } else {
+        $q.notify({
+          message: 'No signature set',
+          color: 'red',
+          actions: [
+            { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+          ]
         })
       }
     }

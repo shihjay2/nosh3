@@ -103,6 +103,7 @@
           @open-list="openList"
           @open-page="openPage"
           @open-page-form="openPageForm"
+          @open-signature="signature_pad_open"
           @open-trustee="openTrustee"
           @set-composition-section="setCompositionSection"
           @sign-encounter="signEncounter"
@@ -639,6 +640,42 @@
           accept=".json"
         />
   </q-dialog>
+  <q-dialog v-model="state.sig">
+    <q-card>
+      <q-card-section class="bg-grey-3">
+        <div class="q-pa-sm q-gutter-sm">
+          <div class="row">
+            <q-btn-group push>
+              <q-btn v-if="state.sig_img" push color="primary" icon="edit" clickable @click="signature_pad_edit()">
+                <q-tooltip>Edit</q-tooltip>
+              </q-btn>
+              <q-btn v-if="state.sig_pad" push color="primary" icon="undo" clickable @click="signature_pad_undo()">
+                <q-tooltip>Undo</q-tooltip>
+              </q-btn>
+              <q-btn v-if="state.sig_pad" push color="primary" icon="layers_clear" clickable @click="signature_pad_clear()">
+                <q-tooltip>Clear</q-tooltip>
+              </q-btn>
+              <q-btn v-if="state.sig_pad" push color="primary" icon="save" clickable @click="signature_pad_save()">
+                <q-tooltip>Save</q-tooltip>
+              </q-btn>
+            </q-btn-group>
+          </div>
+        </div>
+      </q-card-section>
+      <q-card-section v-if="state.sig_pad">
+        <VueSignaturePad
+          ref='signature_pad'
+          height='100px'
+          width='300px'
+          max-width=2
+          min-width=2
+        />
+      </q-card-section>
+      <q-card-section v-if="state.sig_img">
+        <q-img :src="state.sig_img_data" spinner-color="black" fit="fill" position="0 0"/>
+      </q-card-section>
+    </q-card>
+  </q-dialog>
   <q-dialog v-model="state.upload_dump">
     <q-uploader
           :hide-upload-btn="true"
@@ -792,6 +829,7 @@ import { useRoute } from 'vue-router'
 import {v4 as uuidv4} from 'uuid'
 import { VOffline } from 'v-offline'
 import VueQrious from 'vue-qrious'
+import { VueSignaturePad } from '@selemondev/vue3-signature-pad'
 import * as PouchDBFind from 'pouchdb-find'
 import download from 'downloadjs'
 PouchDB.plugin(PouchDBFind)
@@ -1019,7 +1057,12 @@ export default defineComponent({
       fhir_coverage: {},
       fhir_eob: {},
       upload_sync: false,
-      upload_dump: false
+      upload_dump: false,
+      // signature
+      sig: false,
+      sig_pad: false,
+      sig_img: false,
+      sig_img_data: '',
     })
     const route = useRoute()
     const auth = useAuthStore()
@@ -2604,6 +2647,39 @@ export default defineComponent({
     const setChatID = (id) => {
       state.id = id
     }
+    const signature_pad = ref()
+    const signature_pad_clear = () => {
+      return signature_pad.value?.clearCanvas && signature_pad.value?.clearCanvas()
+    }
+    const signature_pad_edit = () => {
+      state.sig_pad = true
+      state.sig_img = false
+    }
+    const signature_pad_open = () => {
+      if (objectPath.has(state, 'user.signature')) {
+        state.sig_img_data = objectPath.get(state, 'user.signature')
+        state.sig_img = true
+      } else {
+        state.sig_pad = true
+      }
+      state.sig = true
+    }
+    const signature_pad_save = () => {
+      if (signature_pad.value?.saveSignature) {
+        state.sig_img_data = signature_pad.value?.saveSignature()
+        objectPath.set(state, 'user.signature', state.sig_img_data)
+        $q.notify({
+          message: 'Siganture saved!',
+          color: 'primary',
+          actions: [
+            { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+          ]
+        })
+      }
+    }
+    const signature_pad_undo = () => {
+      return signature_pad.value?.undo && signature_pad.value?.undo()
+    }
     const signEncounter = async() => {
       const resources = ['compositions', 'observations', 'care_plans']
       const entries = []
@@ -3052,6 +3128,12 @@ export default defineComponent({
       setMAIA,
       searchTimeline,
       setChatID,
+      signature_pad,
+      signature_pad_clear,
+      signature_pad_edit,
+      signature_pad_open,
+      signature_pad_save,
+      signature_pad_undo,
       signEncounter,
       sortAlpha,
       sortDate,
