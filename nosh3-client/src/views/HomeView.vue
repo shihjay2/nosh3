@@ -646,16 +646,16 @@
         <div class="q-pa-sm q-gutter-sm">
           <div class="row">
             <q-btn-group push>
-              <q-btn v-if="state.sig_img" push color="primary" icon="edit" clickable @click="signature_pad_edit()">
+              <q-btn v-if="state.sig_img" push color="primary" icon="edit" size="sm" clickable @click="signature_pad_edit()">
                 <q-tooltip>Edit</q-tooltip>
               </q-btn>
-              <q-btn v-if="state.sig_pad" push color="primary" icon="undo" clickable @click="signature_pad_undo()">
+              <q-btn v-if="state.sig_pad" push color="primary" icon="undo" size="sm" clickable @click="signature_pad_undo()">
                 <q-tooltip>Undo</q-tooltip>
               </q-btn>
-              <q-btn v-if="state.sig_pad" push color="primary" icon="layers_clear" clickable @click="signature_pad_clear()">
+              <q-btn v-if="state.sig_pad" push color="primary" icon="layers_clear" size="sm" clickable @click="signature_pad_clear()">
                 <q-tooltip>Clear</q-tooltip>
               </q-btn>
-              <q-btn v-if="state.sig_pad" push color="primary" icon="save" clickable @click="signature_pad_save()">
+              <q-btn v-if="state.sig_pad" push color="primary" icon="save" size="sm" clickable @click="signature_pad_save()">
                 <q-tooltip>Save</q-tooltip>
               </q-btn>
             </q-btn-group>
@@ -859,6 +859,7 @@ export default defineComponent({
     QToolbarTemplate,
     QTrusteeTemplate,
     VOffline,
+    VueSignaturePad,
     VueQrious
 },
   setup () {

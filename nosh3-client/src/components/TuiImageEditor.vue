@@ -129,7 +129,7 @@
           </q-btn-group>
         </div>
         <div class="q-gutter-sm row" v-if="state.textActive">
-          <q-input v-model="state.fontSize" label="Font Size" class="my-input">
+          <q-input v-model="state.fontSize" dense label="Font Size" class="my-input">
             <template v-slot:append>
               <q-icon name="format_size" class="cursor-pointer">
                 <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -146,7 +146,7 @@
               </q-icon>
             </template>
           </q-input>
-          <q-input v-model="state.fontHex" label="Font Color" class="my-input">
+          <q-input v-model="state.fontHex" dense label="Font Color" class="my-input">
             <template v-slot:append>
               <q-icon name="colorize" class="cursor-pointer" :style="'color:' + state.fontHex">
                 <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -160,23 +160,23 @@
             </template>
           </q-input>
           <q-btn-group push>
-            <q-btn :color="state.fontBoldBtn" icon="format_bold" @click="fontBold()">
+            <q-btn :color="state.fontBoldBtn" icon="format_bold" size="sm" @click="fontBold()">
               <q-tooltip>Bold</q-tooltip>
             </q-btn>
-            <q-btn :color="state.fontItalicBtn" icon="format_italic" @click="fontItalic()">
+            <q-btn :color="state.fontItalicBtn" icon="format_italic" size="sm" @click="fontItalic()">
               <q-tooltip>Italic</q-tooltip>
             </q-btn>
-            <q-btn :color="state.fontUnderlineBtn" icon="format_underlined" @click="fontUnderline()">
+            <q-btn :color="state.fontUnderlineBtn" icon="format_underlined" size="sm" @click="fontUnderline()">
               <q-tooltip>Underline</q-tooltip>
             </q-btn>
-            <q-btn :color="state.fontStrikethroughBtn" icon="format_strikethrough" @click="fontStrikethrough()">
+            <q-btn :color="state.fontStrikethroughBtn" icon="format_strikethrough" size="sm" @click="fontStrikethrough()">
               <q-tooltip>Strikethrough</q-tooltip>
             </q-btn>
           </q-btn-group>
         </div>
         <div class="q-gutter-sm row" v-if="state.shapeActive">
           <q-checkbox v-model="state.shapeFillTransparent" label="Transparent Fill" class="my-input"/>
-          <q-input v-model="state.shapeFillHex" label="Fill Color" class="my-input">
+          <q-input v-model="state.shapeFillHex" dense label="Fill Color" class="my-input">
             <template v-slot:append>
               <q-icon name="colorize" class="cursor-pointer" :style="'color:' + state.shapeFillHex">
                 <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -189,7 +189,7 @@
               </q-icon>
             </template>
           </q-input>
-          <q-input v-model="state.shapeStrokeHex" label="Stroke Color" class="my-input">
+          <q-input v-model="state.shapeStrokeHex" dense label="Stroke Color" class="my-input">
             <template v-slot:append>
               <q-icon name="colorize" class="cursor-pointer" :style="'color:' + state.shapeStrokeHex">
                 <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -202,7 +202,7 @@
               </q-icon>
             </template>
           </q-input>
-          <q-input v-model="state.shapeStrokeWidth" label="Stroke Width" class="my-input">
+          <q-input v-model="state.shapeStrokeWidth" dense label="Stroke Width" class="my-input">
             <template v-slot:append>
               <q-icon name="brush" class="cursor-pointer">
                 <q-popup-proxy transition-show="scale" transition-hide="scale">
