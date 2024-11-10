@@ -2658,10 +2658,15 @@ export default defineComponent({
       return signature_pad.value?.clearCanvas && signature_pad.value?.clearCanvas()
     }
     const signature_pad_close = () => {
-      state.sig_img = false
-      state.sig_pad = false
-      state.sig_img_data = ''
-      state.sig = false
+      if (state.sig_pad) {
+        state.sig_img = true
+        state.sig_pad = false
+      } else {
+        state.sig_img = false
+        state.sig_pad = false
+        state.sig_img_data = ''
+        state.sig = false
+      }
     }
     const signature_pad_edit = () => {
       state.sig_pad = true

@@ -122,10 +122,10 @@
         </div>
         <div class="q-gutter-sm row" v-if="state.drawActive">
           <q-btn-group push>
-            <q-btn :color="state.arrowHeadBtn" icon="arrow_upward" @click="arrowHead()">
+            <q-btn :color="state.arrowHeadBtn" icon="arrow_upward" size="sm" @click="arrowHead()">
               <q-tooltip>Arrow Head</q-tooltip>
             </q-btn>
-            <q-btn :color="state.arrowTailBtn" icon="arrow_downward" @click="arrowTail()">
+            <q-btn :color="state.arrowTailBtn" icon="arrow_downward" size="sm" @click="arrowTail()">
               <q-tooltip>Arrow Tail</q-tooltip>
             </q-btn>
           </q-btn-group>
