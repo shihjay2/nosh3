@@ -89,7 +89,7 @@
           </q-btn-group>
         </div>
         <div class="q-gutter-sm row" v-if="state.drawActive">
-          <q-input v-model="state.brushWidth" label="Brush Width" class="my-input">
+          <q-input v-model="state.brushWidth" dense label="Brush Width" class="my-input">
             <template v-slot:append>
               <q-icon name="brush" class="cursor-pointer">
                 <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -106,7 +106,7 @@
               </q-icon>
             </template>
           </q-input>
-          <q-input v-model="state.brushHex" label="Brush Color" class="my-input">
+          <q-input v-model="state.brushHex" dense label="Brush Color" class="my-input">
             <template v-slot:append>
               <q-icon name="colorize" class="cursor-pointer" :style="'color:' + state.brushHex">
                 <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -119,6 +119,8 @@
               </q-icon>
             </template>
           </q-input>
+        </div>
+        <div class="q-gutter-sm row" v-if="state.drawActive">
           <q-btn-group push>
             <q-btn :color="state.arrowHeadBtn" icon="arrow_upward" @click="arrowHead()">
               <q-tooltip>Arrow Head</q-tooltip>
@@ -159,6 +161,8 @@
               </q-icon>
             </template>
           </q-input>
+        </div>
+        <div class="q-gutter-sm row" v-if="state.textActive">
           <q-btn-group push>
             <q-btn :color="state.fontBoldBtn" icon="format_bold" size="sm" @click="fontBold()">
               <q-tooltip>Bold</q-tooltip>
@@ -223,7 +227,6 @@
         <div class="q-gutter-sm row">
           <q-btn push icon="cancel" color="red" size="sm" @click="onCancel()" label="Cancel" />
           <q-btn push icon="save" color="primary" size="sm" @click="onSave()" label="Save" />
-          <q-circular-progress v-if="state.sending" indeterminate size="1em" color="light-blue" class="q-ma-md" />
         </div>
       </div>
     </q-card-section>
@@ -252,7 +255,7 @@ export default defineComponent({
     options: Object,
     image: Object
   },
-  emits: ['add-text', 'mousedown', 'object-activated', 'object-added', 'object-moved', 'object-scaled', 'redo-stack-changed', 'text-editing', 'undo-stack-changed', 'clear-invoke', 'on-save', 'on-cancel'],
+  emits: ['add-text', 'loading', 'mousedown', 'object-activated', 'object-added', 'object-moved', 'object-scaled', 'redo-stack-changed', 'text-editing', 'undo-stack-changed', 'clear-invoke', 'on-save', 'on-cancel'],
   setup(props, { emit }) {
     const $q = useQuasar()
     const state = reactive({
@@ -261,7 +264,6 @@ export default defineComponent({
       mode: 'pan',
       scroll: '',
       dialogWidth: '',
-      sending: false,
       undoDisable: false,
       redoDisable: false,
       // draw
@@ -655,7 +657,6 @@ export default defineComponent({
       emit('on-cancel')
     }
     const onSave = () => {
-      state.sending = true
       const base64 = editorInstance.toDataURL()
       emit('on-save', base64)
     }

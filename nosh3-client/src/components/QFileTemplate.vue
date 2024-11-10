@@ -593,6 +593,7 @@ export default defineComponent({
       console.log(props)
     }
     const onSave = async(data) => {
+      emit('loading')
       if (state.editPage == true) {
         objectPath.set(state, 'pagePng.' + state.page, data)
         const img0 = new Image
@@ -641,6 +642,7 @@ export default defineComponent({
         stopVideo()
         state.viewer = true
       }
+      emit('loading')
     }
     const onTextEditing = (props) => {
       console.log(props)

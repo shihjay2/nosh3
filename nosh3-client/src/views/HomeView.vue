@@ -676,16 +676,16 @@
         />
       </q-card-section>
       <q-card-section v-if="state.sig_img">
-        <q-img :src="state.sig_img_data" spinner-color="black" fit="fill" position="0 0"/>
+        <q-img :src="state.sig_img_data" spinner-color="black" width="300px" height="100px" position="0 0"/>
       </q-card-section>
     </q-card>
   </q-dialog>
   <q-dialog v-model="state.upload_dump">
     <q-uploader
-          :hide-upload-btn="true"
-          @added="uploadDump1"
-          accept=".json"
-        />
+      :hide-upload-btn="true"
+      @added="uploadDump1"
+      accept=".json"
+    />
   </q-dialog>
   <q-dialog v-model="state.showShare">
     <q-card>
@@ -1230,12 +1230,6 @@ export default defineComponent({
         state.patientListSearch = fuse.search(newVal)
       }
     })
-    // watch(() => state.user, async(newVal, oldVal) => {
-    //   if (newVal._rev === oldVal._rev) {
-    //     await sync('users', false, state.patient, true, newVal)
-    //     console.log('Watch: user state')
-    //   }
-    // })
     watch(() => auth.user, async(newVal) => {
       if (newVal) {
         console.log('Watch: user auth changed')
