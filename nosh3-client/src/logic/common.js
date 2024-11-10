@@ -1641,29 +1641,37 @@ export function common() {
     }
     return arr
   }
-  const updateUser = async(user, field, val) => {
-    let arr = []
-    if (objectPath.has(user, field)) {
-      arr = objectPath.get(user, field)
-    }
-    const a = arr.map(b => b.id).indexOf(val.id)
-    if (a === -1) {
-      arr.push(val)
-      if (field === 'charts') {
-        arr.sort((c, d) => d.date - c.date)
-      }
-      if (field === 'unsigned') {
-        arr.sort((c, d) => c.date - d.date)
-      }
-      objectPath.set(user, field, arr)
+  const updateUser = async(patient, field, val) => {
+    const prefix = getPrefix()
+    const auth_store = useAuthStore()
+    const userDB = new PouchDB(prefix + 'users')
+    const user = await userDB.get(auth_store.user.id)
+    if (field === 'signature') {
+      objectPath.set(user, field, val)
     } else {
-      if (field === 'charts') {
-        arr.splice(a, 1)
+      let arr = []
+      if (objectPath.has(user, field)) {
+        arr = objectPath.get(user, field)
+      }
+      const a = arr.map(b => b.id).indexOf(val.id)
+      if (a === -1) {
         arr.push(val)
+        if (field === 'charts') {
+          arr.sort((c, d) => d.date - c.date)
+        }
+        if (field === 'unsigned') {
+          arr.sort((c, d) => c.date - d.date)
+        }
         objectPath.set(user, field, arr)
+      } else {
+        if (field === 'charts') {
+          arr.splice(a, 1)
+          arr.push(val)
+          objectPath.set(user, field, arr)
+        }
       }
     }
-    return user
+    await sync('users', false, patient, true, user)
   }
   const verifyJWT = async(online) => {
     if (online) {

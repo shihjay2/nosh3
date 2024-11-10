@@ -537,7 +537,7 @@ export default defineComponent({
                 id: encounter.id,
                 date: moment().unix()
               }
-              state.user = await updateUser(state.user, 'unsigned', unsigned, state.online, state.couchdb, state.auth)
+              state.user = await updateUser(state.patient, 'unsigned', unsigned)
             }
           }
         }

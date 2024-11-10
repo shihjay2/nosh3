@@ -635,19 +635,19 @@ export default defineComponent({
           if (state.resource == 'users' && doc.id === state.user.id) {
             state.user = doc
           }
-          if (state.resource == 'compositions') {
-            if (state.user.reference === doc.author[0].reference) {
-              const encounterDB = new PouchDB('encounters')
-              const encounter = await encounterDB.get(doc.encounter.reference.split('/').slice(-1).join(''))
-              const unsigned = {
-                name: encounter.reasonCode[0].text,
-                url: location.protocol + '//' + location.host + location.pathname + '?encounter=' + encounter.id,
-                id: encounter.id,
-                date: moment().unix()
-              }
-              state.user = await updateUser(state.user, 'unsigned', unsigned)
-            }
-          }
+          // if (state.resource == 'compositions') {
+          //   if (state.user.reference === doc.author[0].reference) {
+          //     const encounterDB = new PouchDB('encounters')
+          //     const encounter = await encounterDB.get(doc.encounter.reference.split('/').slice(-1).join(''))
+          //     const unsigned = {
+          //       name: encounter.reasonCode[0].text,
+          //       url: location.protocol + '//' + location.host + location.pathname + '?encounter=' + encounter.id,
+          //       id: encounter.id,
+          //       date: moment().unix()
+          //     }
+          //     state.user = await updateUser(state.user, 'unsigned', unsigned)
+          //   }
+          // }
           state.id = id
         }
         if (state.resource == 'patients') {

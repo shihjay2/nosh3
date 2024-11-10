@@ -635,10 +635,10 @@
   </q-dialog>
   <q-dialog v-model="state.upload_sync">
     <q-uploader
-          :hide-upload-btn="true"
-          @added="uploadSync1"
-          accept=".json"
-        />
+      :hide-upload-btn="true"
+      @added="uploadSync1"
+      accept=".json"
+    />
   </q-dialog>
   <q-dialog v-model="state.sig">
     <q-card>
@@ -672,6 +672,7 @@
           width='300px'
           max-width=2
           min-width=2
+          :options="state.sig_options"
         />
       </q-card-section>
       <q-card-section v-if="state.sig_img">
@@ -1067,6 +1068,10 @@ export default defineComponent({
       sig_pad: false,
       sig_img: false,
       sig_img_data: '',
+      sig_options: {
+        penColor: "rgb(0, 0, 0)",
+        backgroundColor: "rgb(255,255,255)"
+      }
     })
     const route = useRoute()
     const auth = useAuthStore()
@@ -1110,6 +1115,7 @@ export default defineComponent({
       // const userDB = new PouchDB(state.couchdb + prefix + 'users', state.auth)
       try {
         const user = await userDB.get(auth.user.id)
+        state.user = user
         const [ user_type ] = user.reference.split('/')
         if (user_type == 'Practitioner') {
           state.provider = true
@@ -1130,7 +1136,7 @@ export default defineComponent({
                 id: result.docs[0].id,
                 date: moment().unix()
               }
-              state.user = await updateUser(user, 'charts', chart)
+              await updateUser(state.patient, 'charts', chart)
               if (route.query.encounter !== undefined) {
                 openPage(route.query.encounter, 'encounters', 'subjective')
               } else if (route.query.oidc !== undefined) {
@@ -1224,14 +1230,15 @@ export default defineComponent({
         state.patientListSearch = fuse.search(newVal)
       }
     })
-    watch(() => state.user, async(newVal, oldVal) => {
-      if (newVal._rev === oldVal._rev) {
-        await sync('users', false, state.patient, true, newVal)
-        console.log('Watch: user')
-      }
-    })
+    // watch(() => state.user, async(newVal, oldVal) => {
+    //   if (newVal._rev === oldVal._rev) {
+    //     await sync('users', false, state.patient, true, newVal)
+    //     console.log('Watch: user state')
+    //   }
+    // })
     watch(() => auth.user, async(newVal) => {
       if (newVal) {
+        console.log('Watch: user auth changed')
         state.user = newVal
       }
     })
@@ -1432,7 +1439,7 @@ export default defineComponent({
                 id: encounter.id,
                 date: moment().unix()
               }
-              state.user = await updateUser(state.user, 'unsigned', unsigned)
+              await updateUser(state.patient, 'unsigned', unsigned)
             }
           }
           state.id = id
@@ -2677,11 +2684,10 @@ export default defineComponent({
       }
       state.sig = true
     }
-    const signature_pad_save = () => {
+    const signature_pad_save = async() => {
       if (signature_pad.value?.saveSignature) {
         state.sig_img_data = signature_pad.value?.saveSignature()
-        objectPath.set(state, 'user.signature', state.sig_img_data)
-
+        await updateUser(state.patient, 'signature', state.sig_img_data)
         $q.notify({
           message: 'Siganture saved!',
           color: 'primary',
