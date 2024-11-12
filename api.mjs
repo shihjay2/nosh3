@@ -21,7 +21,7 @@ router.get('/:pid/Timeline', verifyJWT, getTimeline)
 router.put('/:pid/md', verifyJWT, putMarkdown)
 
 async function getTimeline(req, res) {
-  req.setTimeout(0)
+  // req.setTimeout(0)
   let prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.pid + '_'
@@ -106,6 +106,7 @@ async function getTimeline(req, res) {
     //     mdjs.push({ul: ul_arr1})
     //   }
     // }
+    console.log(mdjs)
     res.status(200)
     res.setHeader('Content-type', "text/markdown")
     res.setHeader('Content-disposition', 'attachment; filename=nosh_timeline_'  + Date.now() + '.md')
