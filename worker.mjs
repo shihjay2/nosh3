@@ -106,5 +106,4 @@ async function process (opts) {
   }
 }
 
-const result = await process(workerData)
-parentPort.postMessage(result)
+parentPort.postMessage(process(workerData))
