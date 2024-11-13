@@ -8,12 +8,13 @@ import PouchDBFind from 'pouchdb-find'
 PouchDB.plugin(PouchDBFind)
 import settings from './settings.mjs'
 import TurndownService from 'turndown'
-import { isMarkdown, markdownParse, urlFix } from './core.mjs'
+import { isMarkdown, markdownParse, sync, urlFix } from './core.mjs'
 import { parentPort, workerData } from 'worker_threads'
 
 const mdbuild = async(opts) => {
   try {
-    const db = new PouchDB(urlFix(settings.couchdb_uri) + opts.prefix + 'timeline', settings.couchdb_auth)
+    await sync('timeline', opts.pid)
+    const db = new PouchDB(opts.prefix + 'timeline')
     const process_db = new PouchDB(urlFix(settings.couchdb_uri) + 'timeline_process', settings.couchdb_auth)
     const process_doc = await process_db.get(opts.process_id)
     const timeline_result = await db.allDocs({
