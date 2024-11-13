@@ -1,16 +1,13 @@
 import dotenv from 'dotenv'
 dotenv.config()
-import Case from 'case'
 import express from 'express'
-import json2md from 'json2md'
 import moment from 'moment'
 import objectPath from 'object-path'
-import pluralize from 'pluralize'
 import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
-import TurndownService from 'turndown'
 import { v4 as uuidv4 } from 'uuid'
-import { eventAdd, eventUser, isMarkdown, markdownParse, pollSet, sync, urlFix, verifyJWT } from './core.mjs'
+import { eventAdd, eventUser, isMarkdown, pollSet, sync, urlFix, verifyJWT } from './core.mjs'
+import { Worker } from 'node:worker_threads'
 
 const router = express.Router()
 import PouchDBFind from 'pouchdb-find'
@@ -26,93 +23,47 @@ async function getTimeline(req, res) {
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.pid + '_'
   }
-  await sync('timeline', req.params.pid)
-  const db = new PouchDB(prefix + 'timeline')
-  const timeline_result = await db.allDocs({
-    include_docs: true,
-    attachments: true,
-    startkey: 'nosh_'
-  })
-  const db_binary = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'binaries', settings.couchdb_auth)
-  if (timeline_result.rows.length > 0) {
-    const timeline = objectPath.get(timeline_result, 'rows.0.doc.timeline')
-    const mdjs = []
-    for (const row of timeline) {
-      const ul_arr = []
-      if (row.id !== 'intro') {
-        mdjs.push({h3: Case.title(pluralize.singular(row.resource)) + ' Details'})
-        ul_arr.push('**Date**: ' + moment(row.date).format('MMMM DD, YYYY'))
-        ul_arr.push('**' + Case.title(pluralize.singular(row.resource)) + '**: ' + row.title)
-      } else {
-        mdjs.push({h3: 'Patient Information'})
-      }
-      if (row.resource === 'document_references') {
-        const doc = row.doc
-        // if (doc.description !== 'AI Chat') {
-          if (objectPath.has(doc, 'content')) {
-            for (const c in objectPath.get(doc, 'content')) {
-              const binary_id = objectPath.get(doc, 'content.' + c + '.attachment.url').substring(objectPath.get(doc, 'content.' + c + '.attachment.url').indexOf('/') + 1)
-              const binary_doc = await db_binary.get(binary_id)
-              const data = atob(objectPath.get(binary_doc, 'data'))
-              if (objectPath.get(doc, 'content.' + c + '.attachment.contentType').includes('text/plain')) {
-                if (isMarkdown(data)) {
-                  const md_arr = markdownParse(data)
-                  for (const md_arr_row of md_arr) {
-                    mdjs.push(md_arr_row)
-                  }
-                }
-              }
-              if (objectPath.get(doc, 'content.' + c + '.attachment.contentType').includes('text/html')) {
-                const turndownService = new TurndownService()
-                const md = turndownService.turndown(data)
-                const md_arr1 = markdownParse(md)
-                for (const md_arr_row1 of md_arr1) {
-                  mdjs.push(md_arr_row1)
-                }
-              }
-            }
-          }
-        // }
-      }
-      for (const data of row.content) {
-        if (row.style === 'p') {
-          ul_arr.push('**' + data.key + '**: ' + data.value)
-        }
-        if (row.style === 'list') {
-          ul_arr.push('**Display**: ' + data)
-        }
-      }
-      mdjs.push({ul: ul_arr})
+  const process_db = new PouchDB('timeline_process')
+  if (Object.keys(req.query).length === 0) {
+    await process_db.info()
+    const id = 'nosh_' + uuidv4()
+    await process_db.put({
+      _id: id,
+      status: 'pending',
+      pid: req.params.pid,
+      timestamp: moment().unix(),
+      data: '',
+    })
+    const opts = {
+      pid: req.params.pid,
+      process_id: id,
+      prefix: prefix,
     }
-    // get observations
-    // const observations = objectPath.get(timeline_result, 'rows.0.doc.observations')
-    // if (observations.length > 0) {
-    //   mdjs.push({h2: 'Observations'})
-    // }
-    // for (const row1 of observations) {
-    //   if (row1.doc.category[0].coding[0].code !== 'vital-signs') {
-    //     const ul_arr1 = []
-    //     mdjs.push({h3: Case.title(pluralize.singular(row1.resource)) + ' Details'})
-    //     ul_arr1.push('**Date**: ' + moment(row1.date).format('MMMM DD, YYYY'))
-    //     ul_arr1.push('**' + Case.title(pluralize.singular(row1.resource)) + '**: ' + row1.title)
-    //     for (const data1 of row1.content) {
-    //       if (row1.style === 'p') {
-    //         ul_arr1.push('**' + data1.key + '**: ' + data1.value)
-    //       }
-    //       if (row1.style === 'list') {
-    //         ul_arr1.push('**Display**: ' + data1)
-    //       }
-    //     }
-    //     mdjs.push({ul: ul_arr1})
-    //   }
-    // }
-    console.log(mdjs)
-    res.status(200)
-    res.setHeader('Content-type', "text/markdown")
-    res.setHeader('Content-disposition', 'attachment; filename=nosh_timeline_'  + Date.now() + '.md')
-    res.send(json2md(mdjs))
+    res.status(200).json({process: id})
+    const worker = new Worker('./worker.mjs', { workerData: opts })
+    worker.on('message', (result) => {
+      console.log(result)
+    })
   } else {
-    res.status(404)
+    if (objectPath.has(req, 'query.process')) {
+      try {
+        const process_doc = await process_db.get(req.query.process)
+        if (process_doc.status === 'pending') {
+          res.sendStatus(404)
+        } else {
+          res.status(200)
+          res.setHeader('Content-type', "text/markdown")
+          res.setHeader('Content-disposition', 'attachment; filename=nosh_timeline_'  + Date.now() + '.md')
+          res.send(atob(objectPath.get(process_doc, 'data')))
+        }
+      } catch (e) {
+        console.log(e)
+        res.status(401).send('Unauthorized')
+      }
+    } else {
+      console.log('no query item')
+      res.status(401).send('Unauthorized')
+    }
   }
 }
 
