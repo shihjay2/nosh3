@@ -100,6 +100,8 @@ async function authenticate(req, res) {
           },
           "jwt": ""
         }
+        objectPath.set(payload, '_gnap.access_token.manage.uri', '')
+        objectPath.set(payload, '_gnap.access_token.manage.access_token.value', '')
         if (!objectPath.has(result_users, 'docs.0.defaults')) {
           const user_doc = await db_users.get(result_users.docs[0]._id)
           const defaults = {
