@@ -44,6 +44,10 @@ async function getTimeline(req, res) {
     worker.on('message', (result) => {
       console.log(result)
     })
+    worker.on('error', (error) => {
+      console.log('worker error')
+      console.log(error)
+    })
   } else {
     if (objectPath.has(req, 'query.process')) {
       try {

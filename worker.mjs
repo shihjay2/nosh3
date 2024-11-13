@@ -11,7 +11,10 @@ import TurndownService from 'turndown'
 import { isMarkdown, markdownParse, sync, urlFix } from './core.mjs'
 import { parentPort, workerData } from 'worker_threads'
 
+console.log(workerData)
+
 async function process (opts) {
+  console.log(opts)
   await sync('timeline', opts.pid)
   const db = new PouchDB(opts.prefix + 'timeline')
   const process_db = new PouchDB('timeline_process')
