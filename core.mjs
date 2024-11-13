@@ -767,7 +767,7 @@ async function sync(resource, patient_id='', save=false, data={}) {
     pin = await getPIN(patient_id)
   }
   const local = new PouchDB(prefix + resource)
-  if (resource !== 'users') {
+  if (resource !== 'users' && resource !== 'presentations' && resource !== 'binaries') {
     await local.setPassword(pin, {name: urlFix(settings.couchdb_uri) + prefix + resource, opts: settings.couchdb_auth})
   }
   if (save) {

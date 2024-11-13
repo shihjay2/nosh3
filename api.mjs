@@ -24,6 +24,7 @@ async function getTimeline(req, res) {
     prefix = req.params.pid + '_'
   }
   const process_db = new PouchDB('timeline_process')
+  const process_db_remote = new PouchDB(urlFix(settings.couchdb_uri) + 'timeline_process', settings.couchdb_auth)
   if (Object.keys(req.query).length === 0) {
     await process_db.info()
     const id = 'nosh_' + uuidv4()
@@ -33,6 +34,11 @@ async function getTimeline(req, res) {
       pid: req.params.pid,
       timestamp: moment().unix(),
       data: '',
+    })
+    await process_db.sync(process_db_remote).on('complete', () => {
+      console.log('PouchDB sync complete for DB: timeline_process')
+    }).on('error', (err) => {
+      console.log(err)
     })
     const opts = {
       pid: req.params.pid,

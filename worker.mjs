@@ -15,11 +15,9 @@ console.log(workerData)
 
 const timeline = async(opts) => {
   try {
-    console.log('starting...')
-    console.log(opts)
-    await sync('timeline', opts.pid)
-    const db = new PouchDB(opts.prefix + 'timeline')
-    const process_db = new PouchDB('timeline_process')
+    // await sync('timeline', opts.pid)
+    const db = new PouchDB(urlFix(settings.couchdb_uri) + opts.prefix + 'timeline', settings.couchdb_auth)
+    const process_db = new PouchDB(urlFix(settings.couchdb_uri) + 'timeline_process', settings.couchdb_auth)
     const process_doc = await process_db.get(opts.process_id)
     const timeline_result = await db.allDocs({
       include_docs: true,
@@ -113,5 +111,4 @@ const timeline = async(opts) => {
 }
 
 const result = await timeline(workerData)
-console.log(result)
 parentPort.postMessage(result)
