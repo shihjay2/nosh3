@@ -26,34 +26,47 @@ async function getTimeline(req, res) {
   const process_db = new PouchDB('timeline_process')
   const process_db_remote = new PouchDB(urlFix(settings.couchdb_uri) + 'timeline_process', settings.couchdb_auth)
   if (Object.keys(req.query).length === 0) {
-    await process_db.info()
-    const id = 'nosh_' + uuidv4()
-    await process_db.put({
-      _id: id,
-      status: 'pending',
-      pid: req.params.pid,
-      timestamp: moment().unix(),
-      data: '',
+    await sync('timeline', req.params.pid)
+    const db = new PouchDB(prefix + 'timeline')
+    const timeline_result = await db.allDocs({
+      include_docs: true,
+      attachments: true,
+      startkey: 'nosh_'
     })
-    await process_db.sync(process_db_remote).on('complete', () => {
-      console.log('PouchDB sync complete for DB: timeline_process')
-    }).on('error', (err) => {
-      console.log(err)
-    })
-    const opts = {
-      pid: req.params.pid,
-      process_id: id,
-      prefix: prefix,
+    if (timeline_result.rows.length > 0) {
+      const timeline = objectPath.get(timeline_result, 'rows.0.doc.timeline')
+      await process_db.info()
+      const id = 'nosh_' + uuidv4()
+      await process_db.put({
+        _id: id,
+        status: 'pending',
+        pid: req.params.pid,
+        timestamp: moment().unix(),
+        data: '',
+      })
+      await process_db.sync(process_db_remote).on('complete', () => {
+        console.log('PouchDB sync complete for DB: timeline_process')
+      }).on('error', (err) => {
+        console.log(err)
+      })
+      const opts = {
+        pid: req.params.pid,
+        process_id: id,
+        prefix: prefix,
+        timeline: timeline
+      }
+      res.status(200).json({process: id})
+      const worker = new Worker('./worker.mjs', { workerData: opts })
+      worker.on('message', (result) => {
+        console.log(result)
+      })
+      worker.on('error', (error) => {
+        console.log('worker error')
+        console.log(error)
+      })
+    } else {
+      res.sendStatus(404)
     }
-    res.status(200).json({process: id})
-    const worker = new Worker('./worker.mjs', { workerData: opts })
-    worker.on('message', (result) => {
-      console.log(result)
-    })
-    worker.on('error', (error) => {
-      console.log('worker error')
-      console.log(error)
-    })
   } else {
     if (objectPath.has(req, 'query.process')) {
       try {
