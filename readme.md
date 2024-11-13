@@ -294,6 +294,62 @@ Below examples are where
   "purpose": "Clinical - Routine"
 }
 ```
+### Non-FHIR API endpoints
+There are several additional API endpoints available in NOSH that are not part of the FHIR specifications.
+#### Timeline
+```
+GET https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_yyy/Timeline
+```
+Due to the expensive (time and computing) nature of compiling and building a timeline in Markdown format, the timeline endpoint intially returns a unique, one-time process ID specified by the JSON object key named process:
+```
+{process: nosh_***}
+```
+Afterwards, the client uses this process ID in subsequent calls the the same endpoint, but this time, including a process query parameter.
+```
+GET https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_yyy/Timeline?process=nosh_***
+```
+If the response status code is 404, then it means that the timeline is still in the process of building and compiling.
+If the response status oode is 200, the result is a text file in Markdown format.  Below is an example in Typescript where `jwt` is the authorization token received from a GNAP authorization server after successful user authentication:
+```
+async function sleep(seconds: number) {
+  return new Promise((resolve) => setTimeout(resolve, seconds * 1000))
+}
+async function example(jwt:string) {
+  const opts = {
+    method: "GET",
+    headers: {
+      'Content-type': 'text/plain',
+      'Authorization': `Bearer ${jwt}`
+    }
+  }
+  const result = await fetch("https://nosh-app-mj3xd.ondigitalocean.app/api/nosh_2c23641c-c1b4-4f5c-92e8-c749c54a34da/Timeline", opts).then((res) => res.json())
+  let a = false
+  let b = 0
+  let md = null
+  while (!a && b < 100) {
+    await sleep(3)
+    const response = await fetch("https://nosh-app-mj3xd.ondigitalocean.app/api/nosh_2c23641c-c1b4-4f5c-92e8-c749c54a34da/Timeline?process=" + result.process, opts)
+    if (response.status === 200) {
+      a = true
+      md = await response.text()
+      console.log('Timeline in Markdown format!')
+      console.log(md)
+    }
+    if (response.status === 404) {
+      console.log('pending')
+    }
+    if (response.status === 401) {
+      a = true
+      console.log('unauthorized')
+    }
+    b++
+  }
+}
+```
+#### Markdown document upload
+```
+PUT https://nosh-app-xxx.ondigitalocean.app/fhir/api/nosh_yyy/md
+```
 
 ## Contributing To NOSH ChartingSystem
 
