@@ -13,7 +13,7 @@ import { parentPort, workerData } from 'worker_threads'
 
 console.log(workerData)
 
-async function process (opts) {
+async function timeline (opts) {
   console.log(opts)
   await sync('timeline', opts.pid)
   const db = new PouchDB(opts.prefix + 'timeline')
@@ -106,4 +106,6 @@ async function process (opts) {
   }
 }
 
-parentPort.postMessage(process(workerData))
+const result = await timeline(workerData)
+console.log(result)
+parentPort.postMessage(result)
