@@ -15,6 +15,12 @@ const mdbuild = async(opts) => {
   try {
     const process_db = new PouchDB(urlFix(settings.couchdb_uri) + 'timeline_process', settings.couchdb_auth)
     const process_doc = await process_db.get(opts.process_id)
+    const process_doc_exp = await process_db.find({selector: {'timestamp': {"$lt": moment().subtract({hours: 2}).unix()}}})
+    if (process_doc_exp.docs.length > 0) {
+      for (const exp_doc of process_doc_exp.docs) {
+        await process_db.remove(exp_doc)
+      }
+    }
     const db_binary = new PouchDB(urlFix(settings.couchdb_uri) + opts.prefix + 'binaries', settings.couchdb_auth)
     const mdjs = []
     for (const row of opts.timeline) {
