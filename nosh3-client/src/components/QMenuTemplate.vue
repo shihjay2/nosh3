@@ -65,7 +65,7 @@
           <q-icon color="primary" style="font-size: 1.5em" name="receipt_long" />
         </q-item-section>
       </q-item>
-      <q-item clickable @click="setMAIA()">
+      <q-item v-if="state.type == 'pnosh'" clickable @click="setMAIA()">
         <q-item-section>
           <q-item-label>Set MAIA URL</q-item-label>
         </q-item-section>
@@ -73,7 +73,7 @@
           <q-icon color="primary" style="font-size: 1.5em" name="link" />
         </q-item-section>
       </q-item>
-      <q-item v-if="state.maia !== ''" clickable @click="openMAIA()">
+      <q-item v-if="state.type == 'pnosh' && state.maia !== ''" clickable @click="openMAIA()">
         <q-item-section>
           <q-item-label>Launch MAIA</q-item-label>
         </q-item-section>

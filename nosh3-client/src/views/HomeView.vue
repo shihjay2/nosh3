@@ -1630,6 +1630,7 @@ export default defineComponent({
         }
       }
       await clearSync()
+      state.sync_on = false
       await loadTimeline()
       state.loading = false
       notif({
@@ -1638,7 +1639,6 @@ export default defineComponent({
         message: 'All synced external resources have been imported!',
         timeout: 2500
       })
-      state.sync_on = false
     }
     const loading = () => {
       if (state.loading === true) {

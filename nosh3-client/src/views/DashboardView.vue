@@ -96,7 +96,6 @@
     </q-header>
     <q-drawer
       v-model="state.menuVisible"
-      show-if-above
       bordered
       :width="250"
       :breakpoint="500"

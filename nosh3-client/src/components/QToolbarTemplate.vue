@@ -285,7 +285,9 @@ export default defineComponent({
         state.titleResource = 'Timeline'
         state.iconResource = 'timeline'
         state.timeline = true
-        state.maiaEnable = true
+        if (auth.type === 'pnosh') {
+          state.maiaEnable = true
+        }
       } else {
         state.base = await import('@/assets/fhir/' + toolbar.resource + '.json')
         if (typeof state.base.pageOpen !== 'undefined') {
@@ -369,7 +371,9 @@ export default defineComponent({
           state.relatedPersons = true
         }
         if (toolbar.resource === 'document_references') {
-          state.maiaEnable = true
+          if (auth.type === 'pnosh') {
+            state.maiaEnable = true
+          }
         }
       }
     }
