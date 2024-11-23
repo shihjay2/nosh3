@@ -799,7 +799,7 @@ import { defineComponent, nextTick, onMounted, reactive, ref, watch, watchEffect
 import { useWebWorkerFn } from '@vueuse/core'
 import { useQuasar } from 'quasar'
 import { common } from '@/logic/common'
-import { worker } from '@/logic/worker'
+import { timeline_worker } from '@/logic/worker'
 import axios from 'axios'
 import Case from 'case'
 import ActivitiesDialog from '@/components/ActivitiesDialog.vue'
@@ -1721,9 +1721,10 @@ export default defineComponent({
         patientGender: state.patientGender,
         prefix: prefix
       }
-      const { workerFn } = useWebWorkerFn(worker(opts))
-      const timeline = await workerFn()
-      state.timeline = timeline
+      const { workerFn } = useWebWorkerFn(timeline_worker(opts))
+      state.timeline = await workerFn()
+      // state.timeline = timeline
+      console.log(state.timeline)
       const timelineDB = new PouchDB(prefix + 'timeline')
       const result = await timelineDB.allDocs({
         include_docs: true,

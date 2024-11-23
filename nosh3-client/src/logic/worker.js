@@ -8,7 +8,7 @@ const { addSchemaOptions, fetchJSON, fhirReplace, loadSelect } = common()
 import * as PouchDBFind from 'pouchdb-find'
 PouchDB.plugin(PouchDBFind)
 
-export async function worker(opts) {
+export async function timeline_worker(opts) {
   // opts.online, opts.patient, opts.patientName, opts.patientDOB, opts.patientGender, opts.prefix
   const resources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references']
   const json = await import('@/assets/ui/drawer.json')
@@ -194,6 +194,5 @@ export async function worker(opts) {
     timeline.push(timelineIntro)
   }
   // Send the result back to the main thread
-  console.log(timeline)
   return timeline
 }
