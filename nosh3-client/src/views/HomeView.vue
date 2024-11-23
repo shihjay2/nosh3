@@ -796,8 +796,10 @@
 
 <script>
 import { defineComponent, nextTick, onMounted, reactive, ref, watch, watchEffect } from 'vue'
+import { useWebWorkerFn } from '@vueuse/core'
 import { useQuasar } from 'quasar'
 import { common } from '@/logic/common'
+import { worker } from '@/logic/worker'
 import axios from 'axios'
 import Case from 'case'
 import ActivitiesDialog from '@/components/ActivitiesDialog.vue'
@@ -1705,6 +1707,24 @@ export default defineComponent({
       download(json2md(mdjs), 'nosh_timeline_' + Date.now() + '.md', 'text/markdown')
     }
     const loadTimeline = async() => {
+      while (state.sync_on) {
+        await sleep(2)
+      }
+      state.loading = true
+      state.timeline_scroll = false
+      state.timeline = []
+      const opts = {
+        online: state.online,
+        patient: state.patient,
+        patientName: state.patientName,
+        patientDOB: state.patientDOB,
+        patientGender: state.patientGender
+      }
+      const { workerFn } = useWebWorkerFn(worker(opts))
+      state.timeline = await workerFn()
+      state.loading = false
+    }
+    const loadTimeline_old = async() => {
       // make sure sync is not occuring
       while (state.sync_on) {
         await sleep(2)

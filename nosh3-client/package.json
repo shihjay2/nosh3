@@ -14,6 +14,7 @@
     "@spruceid/ssx": "^2.1.0",
     "@vee-validate/rules": "^4.6.2",
     "@vueup/vue-quill": "^1.2.0",
+    "@vueuse/core": "^11.3.0",
     "all-object-keys": "^2.2.0",
     "ascvdcalc": "^1.0.5",
     "axios": "^0.27.2",
