@@ -194,5 +194,6 @@ export async function worker(opts) {
     timeline.push(timelineIntro)
   }
   // Send the result back to the main thread
+  console.log(timeline)
   return timeline
 }

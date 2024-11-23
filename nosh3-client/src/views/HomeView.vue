@@ -1721,8 +1721,9 @@ export default defineComponent({
         patientGender: state.patientGender,
         prefix: prefix
       }
-      const { workerFn } = useWebWorkerFn(await worker(opts))
-      state.timeline = await workerFn()
+      const { workerFn } = useWebWorkerFn(worker(opts))
+      const timeline = await workerFn()
+      state.timeline = timeline
       const timelineDB = new PouchDB(prefix + 'timeline')
       const result = await timelineDB.allDocs({
         include_docs: true,
