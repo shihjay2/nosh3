@@ -4,7 +4,7 @@ import moment from 'moment'
 import objectPath from 'object-path'
 import pluralize from 'pluralize'
 import PouchDB from 'pouchdb-browser'
-const { addSchemaOptions, fetchJSON, fhirReplace, loadSelect, sync } = common()
+const { addSchemaOptions, fetchJSON, fhirReplace, loadSelect } = common()
 import * as PouchDBFind from 'pouchdb-find'
 PouchDB.plugin(PouchDBFind)
 
@@ -192,30 +192,6 @@ export async function worker(opts) {
   // observations.sort((g, h) => h.date - g.date)
   if (activitiesResult.docs.length == 0) {
     timeline.push(timelineIntro)
-  }
-  const timelineDB = new PouchDB(opts.prefix + 'timeline')
-  const result = await timelineDB.allDocs({
-    include_docs: true,
-    attachments: true,
-    startkey: 'nosh_'
-  })
-  if (result.rows.length > 0) {
-    const doc = objectPath.get(result, 'rows.0.doc')
-    if (JSON.stringify(objectPath.get(doc, 'timeline')) !== JSON.stringify(timeline)) {
-    // if (JSON.stringify(objectPath.get(doc, 'timeline')) !== JSON.stringify(timeline) || JSON.stringify(objectPath.get(doc, 'observations')) !== JSON.stringify(observations)) {
-      objectPath.set(doc, 'timeline', timeline)
-      // objectPath.set(doc, 'observations', observations)
-      await sync('timeline', false, opts.patient, true, doc)
-    }
-  } else {
-    const id = 'nosh_' + uuidv4()
-    const doc1 = {
-      '_id': id,
-      'id': id,
-      'timeline': timeline,
-      // 'observations': observations
-    }
-    await sync('timeline', opts.online, opts.patient, true, doc1)
   }
   // Send the result back to the main thread
   return timeline

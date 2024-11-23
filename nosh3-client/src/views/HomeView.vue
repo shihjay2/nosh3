@@ -1723,6 +1723,30 @@ export default defineComponent({
       }
       const { workerFn } = useWebWorkerFn(worker(opts))
       state.timeline = await workerFn()
+      const timelineDB = new PouchDB(prefix + 'timeline')
+      const result = await timelineDB.allDocs({
+        include_docs: true,
+        attachments: true,
+        startkey: 'nosh_'
+      })
+      if (result.rows.length > 0) {
+        const doc = objectPath.get(result, 'rows.0.doc')
+        if (JSON.stringify(objectPath.get(doc, 'timeline')) !== JSON.stringify(state.timeline)) {
+        // if (JSON.stringify(objectPath.get(doc, 'timeline')) !== JSON.stringify(timeline) || JSON.stringify(objectPath.get(doc, 'observations')) !== JSON.stringify(observations)) {
+          objectPath.set(doc, 'timeline', state.timeline)
+          // objectPath.set(doc, 'observations', observations)
+          await sync('timeline', false, state.patient, true, doc)
+        }
+      } else {
+        const id = 'nosh_' + uuidv4()
+        const doc1 = {
+          '_id': id,
+          'id': id,
+          'timeline': state.timeline,
+          // 'observations': observations
+        }
+        await sync('timeline', state.online, state.patient, true, doc1)
+      }
       state.loading = false
     }
     const loadTimeline_old = async() => {
