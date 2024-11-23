@@ -9,7 +9,7 @@ import * as PouchDBFind from 'pouchdb-find'
 PouchDB.plugin(PouchDBFind)
 
 export async function worker(opts) {
-  // opts.online, opts.patient, opts.patientName, opts.patientDOB, opts.patientGender
+  // opts.online, opts.patient, opts.patientName, opts.patientDOB, opts.patientGender, opts.prefix
   const resources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references']
   const json = await import('@/assets/ui/drawer.json')
   const drawer = json.rows
@@ -51,7 +51,7 @@ export async function worker(opts) {
       schema = addSchemaOptions('category', docClassCodes, 'Code', 'Display', schema, 'http://loinc.org')
       schema = addSchemaOptions('category', [{'Code': 'clinical-note', 'Display': 'Clinical Note'}], 'Code', 'Display', schema, 'http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category')
     }
-    const db = new PouchDB(prefix + resource)
+    const db = new PouchDB(opts.prefix + resource)
     try {
       const result = await db.find({selector: {[base.patientField]: {$eq: 'Patient/' + opts.patient }, _id: {"$gte": null}}})
       if (resource !== 'observations') {
@@ -69,7 +69,7 @@ export async function worker(opts) {
           objectPath.set(timelineItem, 'keys', base.fuse)
           objectPath.set(timelineItem, 'style', base.uiListContent.contentStyle)
           if (resource === 'encounters') {
-            const bundle_db = new PouchDB(prefix + 'bundles')
+            const bundle_db = new PouchDB(opts.prefix + 'bundles')
             const bundle_result = await bundle_db.find({selector: {'entry': {"$elemMatch": {"resource.encounter.reference": 'Encounter/' + objectPath.get(result, 'docs.' + a + '.id')}}, _id: {"$gte": null}}})
             if (bundle_result.docs.length > 0) {
               bundle_result.docs.sort((a1, b1) => moment(b1.timestamp) - moment(a1.timestamp))
@@ -85,7 +85,7 @@ export async function worker(opts) {
               objectPath.set(timelineItem, 'bundle_history', history)
             }
             if (objectPath.has(result, 'docs.' + a + '.sync_id')) {
-              const doc_ref_db = new PouchDB(prefix + 'document_references')
+              const doc_ref_db = new PouchDB(opts.prefix + 'document_references')
               const doc_ref_db_res = await doc_ref_db.find({selector: {'context.encounter.0.reference': {'$regex': objectPath.get(result, 'docs.' + a + '.sync_id')}, _id: {"$gte": null}}})
               if (doc_ref_db_res.docs.length > 0) {
                 if (!objectPath.has(timelineItem, 'bundle')) {
@@ -168,7 +168,7 @@ export async function worker(opts) {
       console.log(err)
     }
   }
-  const activitiesDb = new PouchDB(prefix + 'activities')
+  const activitiesDb = new PouchDB(opts.prefix + 'activities')
   const activitiesResult = await activitiesDb.find({selector: {event: {$eq: 'Chart Created' }, _id: {"$gte": null}}})
   const timelineIntro = {
     id: 'intro',
@@ -193,7 +193,7 @@ export async function worker(opts) {
   if (activitiesResult.docs.length == 0) {
     timeline.push(timelineIntro)
   }
-  const timelineDB = new PouchDB(prefix + 'timeline')
+  const timelineDB = new PouchDB(opts.prefix + 'timeline')
   const result = await timelineDB.allDocs({
     include_docs: true,
     attachments: true,

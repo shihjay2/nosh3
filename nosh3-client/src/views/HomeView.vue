@@ -1718,7 +1718,8 @@ export default defineComponent({
         patient: state.patient,
         patientName: state.patientName,
         patientDOB: state.patientDOB,
-        patientGender: state.patientGender
+        patientGender: state.patientGender,
+        prefix: prefix
       }
       const { workerFn } = useWebWorkerFn(worker(opts))
       state.timeline = await workerFn()
