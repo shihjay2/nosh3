@@ -1938,7 +1938,9 @@ export default defineComponent({
         objectPath.set(timelineIntro, 'date', new Date(activitiesResult.docs[0].datetime))
         timeline.push(timelineIntro)
       }
-      timeline.sort((c, d) => d.date - c.date)
+      // timeline.sort((c, d) => d.date - c.date)
+      const { workerFn } = useWebWorkerFn(timelineSort(timeline))
+      timeline = await workerFn()
       // observations.sort((g, h) => h.date - g.date)
       if (activitiesResult.docs.length == 0) {
         timeline.push(timelineIntro)
@@ -2916,6 +2918,10 @@ export default defineComponent({
         }
       }
     }
+    const timelineSort = (timeline) => {
+      timeline.sort((c, d) => d.date - c.date)
+      return timeline
+    }
     const unset = (type) => {
       if (type == 'encounters') {
         const a = state.encounter
@@ -3210,6 +3216,7 @@ export default defineComponent({
       syncAll,
       syncProcess,
       timelineScroll,
+      timelineSort,
       thread,
       threadEarlier,
       threadLater,
