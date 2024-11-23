@@ -5,6 +5,7 @@ import objectPath from 'object-path'
 import pluralize from 'pluralize'
 import PouchDB from 'pouchdb-browser'
 const { addSchemaOptions, fetchJSON, fhirReplace, loadSelect, sync } = common()
+import * as PouchDBFind from 'pouchdb-find'
 PouchDB.plugin(PouchDBFind)
 
 export async function worker(opts) {
