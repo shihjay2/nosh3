@@ -1704,7 +1704,7 @@ export default defineComponent({
       }
       download(json2md(mdjs), 'nosh_timeline_' + Date.now() + '.md', 'text/markdown')
     }
-    const loadTimeline = async() => {
+    const loadTimeline_new = async() => {
       while (state.sync_on) {
         await sleep(2)
       }
@@ -1751,7 +1751,7 @@ export default defineComponent({
       }
       state.loading = false
     }
-    const loadTimeline_old = async() => {
+    const loadTimeline = async() => {
       // make sure sync is not occuring
       while (state.sync_on) {
         await sleep(2)
