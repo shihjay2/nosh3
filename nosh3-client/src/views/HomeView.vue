@@ -1706,7 +1706,7 @@ export default defineComponent({
       }
       download(json2md(mdjs), 'nosh_timeline_' + Date.now() + '.md', 'text/markdown')
     }
-    const loadTimeline = async() => {
+    const loadTimeline_new = async() => {
       while (state.sync_on) {
         await sleep(2)
       }
@@ -1750,7 +1750,7 @@ export default defineComponent({
       }
       state.loading = false
     }
-    const loadTimeline_old = async() => {
+    const loadTimeline= async() => {
       // make sure sync is not occuring
       while (state.sync_on) {
         await sleep(2)
@@ -1762,7 +1762,7 @@ export default defineComponent({
       const resources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references']
       const json = await import('@/assets/ui/drawer.json')
       const drawer = json.rows
-      const timeline = []
+      let timeline = []
       // const observations = []
       for (const resource of resources) {
         const base = await import('@/assets/fhir/' + resource + '.json')
