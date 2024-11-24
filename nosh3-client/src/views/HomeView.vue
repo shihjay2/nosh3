@@ -1937,10 +1937,10 @@ export default defineComponent({
         objectPath.set(timelineIntro, 'date', new Date(activitiesResult.docs[0].datetime))
         timeline.push(timelineIntro)
       }
-      // timeline.sort((c, d) => d.date - c.date)
-      const { workerFn } = useWebWorkerFn(timelineSort)
-      timeline = await workerFn(timeline)
-      // observations.sort((g, h) => h.date - g.date)
+      timeline.sort((c, d) => d.date - c.date)
+      // const { workerFn } = useWebWorkerFn(timelineSort)
+      // timeline = await workerFn(timeline)
+      // // observations.sort((g, h) => h.date - g.date)
       if (activitiesResult.docs.length == 0) {
         timeline.push(timelineIntro)
       }
