@@ -796,6 +796,7 @@
 
 <script>
 import { defineComponent, nextTick, onMounted, reactive, ref, watch, watchEffect } from 'vue'
+import { useWebWorkerFn } from '@vueuse/core'
 import { useQuasar } from 'quasar'
 import { common } from '@/logic/common'
 import axios from 'axios'
@@ -1719,11 +1720,6 @@ export default defineComponent({
         patientGender: state.patientGender,
         prefix: prefix
       }
-      const timeline_worker = new Worker(new URL("../logic/worker.js", import.meta.url))
-      timeline_worker.postMessage(opts)
-      timeline_worker.onmessage = (event) => {
-        state.timeline = event.data
-      }
       console.log(state.timeline)
       const timelineDB = new PouchDB(prefix + 'timeline')
       const result = await timelineDB.allDocs({
@@ -1938,7 +1934,9 @@ export default defineComponent({
         objectPath.set(timelineIntro, 'date', new Date(activitiesResult.docs[0].datetime))
         timeline.push(timelineIntro)
       }
-      timeline.sort((c, d) => d.date - c.date)
+      // timeline.sort((c, d) => d.date - c.date)
+      const { workerFn } = useWebWorkerFn(timelineSort)
+      timeline = await workerFn(timeline)
       // observations.sort((g, h) => h.date - g.date)
       if (activitiesResult.docs.length == 0) {
         timeline.push(timelineIntro)
@@ -2916,6 +2914,10 @@ export default defineComponent({
         }
       }
     }
+    const timelineSort = (timeline) => {
+      timeline.sort((c, d) => d.date - c.date)
+      return timeline
+    }
     const unset = (type) => {
       if (type == 'encounters') {
         const a = state.encounter
@@ -3210,6 +3212,7 @@ export default defineComponent({
       syncAll,
       syncProcess,
       timelineScroll,
+      timelineSort,
       thread,
       threadEarlier,
       threadLater,
