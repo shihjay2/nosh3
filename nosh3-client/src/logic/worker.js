@@ -8,8 +8,8 @@ const { addSchemaOptions, fetchJSON, fhirReplace, loadSelect } = common()
 import * as PouchDBFind from 'pouchdb-find'
 PouchDB.plugin(PouchDBFind)
 
-export async function timeline_worker(opts) {
-  // opts.online, opts.patient, opts.patientName, opts.patientDOB, opts.patientGender, opts.prefix
+self.onmessage = async(event) => {
+  // event.data.online, event.data.patient, event.data.patientName, event.data.patientDOB, event.data.patientGender, event.data.prefix
   const resources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references']
   const json = await import('@/assets/ui/drawer.json')
   const drawer = json.rows
@@ -28,32 +28,32 @@ export async function timeline_worker(opts) {
       }
     }
     if (resource === 'immunizations') {
-      const actSites = await fetchJSON('actSites', opts.online)
+      const actSites = await fetchJSON('actSites', event.data.online)
       schema = addSchemaOptions('site', actSites.concept[0].concept[0].concept, 'code', 'display', schema)
     }
     if (resource === 'medication_statements') {
-      const doseform = await fetchJSON('doseform', opts.online)
-      const routes = await fetchJSON('routes', opts.online)
+      const doseform = await fetchJSON('doseform', event.data.online)
+      const routes = await fetchJSON('routes', event.data.online)
       schema = addSchemaOptions('doseUnit', doseform.concept, 'code', 'display', schema)
       schema = addSchemaOptions('route', routes, 'code', 'desc', schema)
     }
     if (resource === 'encounters') {
-      const serviceTypes = await fetchJSON('serviceTypes', opts.online)
+      const serviceTypes = await fetchJSON('serviceTypes', event.data.online)
       schema = addSchemaOptions('serviceType', serviceTypes, 'Code', 'Display', schema)
-      const encounterTypes = await fetchJSON('encounterTypes', opts.online)
+      const encounterTypes = await fetchJSON('encounterTypes', event.data.online)
       schema = addSchemaOptions('type', encounterTypes, 'Code', 'Display', schema)
       schema = await loadSelect('practitioners', 'participant', schema)
     }
     if (resource === 'document_references') {
-      const docTypeCodes = await fetchJSON('docTypeCodes', opts.online)
-      const docClassCodes = await fetchJSON('docClassCodes', opts.online)
+      const docTypeCodes = await fetchJSON('docTypeCodes', event.data.online)
+      const docClassCodes = await fetchJSON('docClassCodes', event.data.online)
       schema = addSchemaOptions('type', docTypeCodes, 'Code', 'Display', schema, 'http://loinc.org')
       schema = addSchemaOptions('category', docClassCodes, 'Code', 'Display', schema, 'http://loinc.org')
       schema = addSchemaOptions('category', [{'Code': 'clinical-note', 'Display': 'Clinical Note'}], 'Code', 'Display', schema, 'http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category')
     }
-    const db = new PouchDB(opts.prefix + resource)
+    const db = new PouchDB(event.data.prefix + resource)
     try {
-      const result = await db.find({selector: {[base.patientField]: {$eq: 'Patient/' + opts.patient }, _id: {"$gte": null}}})
+      const result = await db.find({selector: {[base.patientField]: {$eq: 'Patient/' + event.data.patient }, _id: {"$gte": null}}})
       if (resource !== 'observations') {
         for (const a in result.docs) {
           const timelineItem = {}
@@ -69,7 +69,7 @@ export async function timeline_worker(opts) {
           objectPath.set(timelineItem, 'keys', base.fuse)
           objectPath.set(timelineItem, 'style', base.uiListContent.contentStyle)
           if (resource === 'encounters') {
-            const bundle_db = new PouchDB(opts.prefix + 'bundles')
+            const bundle_db = new PouchDB(event.data.prefix + 'bundles')
             const bundle_result = await bundle_db.find({selector: {'entry': {"$elemMatch": {"resource.encounter.reference": 'Encounter/' + objectPath.get(result, 'docs.' + a + '.id')}}, _id: {"$gte": null}}})
             if (bundle_result.docs.length > 0) {
               bundle_result.docs.sort((a1, b1) => moment(b1.timestamp) - moment(a1.timestamp))
@@ -85,7 +85,7 @@ export async function timeline_worker(opts) {
               objectPath.set(timelineItem, 'bundle_history', history)
             }
             if (objectPath.has(result, 'docs.' + a + '.sync_id')) {
-              const doc_ref_db = new PouchDB(opts.prefix + 'document_references')
+              const doc_ref_db = new PouchDB(event.data.prefix + 'document_references')
               const doc_ref_db_res = await doc_ref_db.find({selector: {'context.encounter.0.reference': {'$regex': objectPath.get(result, 'docs.' + a + '.sync_id')}, _id: {"$gte": null}}})
               if (doc_ref_db_res.docs.length > 0) {
                 if (!objectPath.has(timelineItem, 'bundle')) {
@@ -110,7 +110,7 @@ export async function timeline_worker(opts) {
         //   schema = await loadSelect('practitioners', 'performer', schema)
         //   if (category !== 'exam' && category !== 'vital-signs' && category !== 'social-history' && category !== 'all') {
         //     const category1 = Case.camel(category)
-        //     const category2 = await fetchJSON(category1, opts.online)
+        //     const category2 = await fetchJSON(category1, event.data.online)
         //     if (category === 'activity') {
         //       const a = []
         //       for (const b of category2) {
@@ -168,7 +168,7 @@ export async function timeline_worker(opts) {
       console.log(err)
     }
   }
-  const activitiesDb = new PouchDB(opts.prefix + 'activities')
+  const activitiesDb = new PouchDB(event.data.prefix + 'activities')
   const activitiesResult = await activitiesDb.find({selector: {event: {$eq: 'Chart Created' }, _id: {"$gte": null}}})
   const timelineIntro = {
     id: 'intro',
@@ -177,9 +177,9 @@ export async function timeline_worker(opts) {
     icon: 'celebration',
     date: null,
     content: [
-      {key: 'Name', value: opts.patientName},
-      {key: 'Date of Birth', value: opts.patientDOB},
-      {key: 'Gender', value: opts.patientGender}
+      {key: 'Name', value: event.data.patientName},
+      {key: 'Date of Birth', value: event.data.patientDOB},
+      {key: 'Gender', value: event.data.patientGender}
     ],
     style: 'p'
   }
@@ -194,5 +194,5 @@ export async function timeline_worker(opts) {
     timeline.push(timelineIntro)
   }
   // Send the result back to the main thread
-  return timeline
+  self.postMessage(timeline)
 }

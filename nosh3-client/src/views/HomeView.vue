@@ -796,10 +796,8 @@
 
 <script>
 import { defineComponent, nextTick, onMounted, reactive, ref, watch, watchEffect } from 'vue'
-import { useWebWorkerFn } from '@vueuse/core'
 import { useQuasar } from 'quasar'
 import { common } from '@/logic/common'
-import { timeline_worker } from '@/logic/worker'
 import axios from 'axios'
 import Case from 'case'
 import ActivitiesDialog from '@/components/ActivitiesDialog.vue'
@@ -1706,7 +1704,7 @@ export default defineComponent({
       }
       download(json2md(mdjs), 'nosh_timeline_' + Date.now() + '.md', 'text/markdown')
     }
-    const loadTimeline_new = async() => {
+    const loadTimeline = async() => {
       while (state.sync_on) {
         await sleep(2)
       }
@@ -1721,9 +1719,11 @@ export default defineComponent({
         patientGender: state.patientGender,
         prefix: prefix
       }
-      const { workerFn } = useWebWorkerFn(timeline_worker(opts))
-      state.timeline = await workerFn()
-      // state.timeline = timeline
+      const timeline_worker = new Worker(new URL("../logic/worker.js", import.meta.url))
+      timeline_worker.postMessage(opts)
+      timeline_worker.onmessage = (event) => {
+        state.timeline = event.data
+      }
       console.log(state.timeline)
       const timelineDB = new PouchDB(prefix + 'timeline')
       const result = await timelineDB.allDocs({
@@ -1751,7 +1751,7 @@ export default defineComponent({
       }
       state.loading = false
     }
-    const loadTimeline = async() => {
+    const loadTimeline_old = async() => {
       // make sure sync is not occuring
       while (state.sync_on) {
         await sleep(2)
@@ -1938,11 +1938,7 @@ export default defineComponent({
         objectPath.set(timelineIntro, 'date', new Date(activitiesResult.docs[0].datetime))
         timeline.push(timelineIntro)
       }
-      // timeline.sort((c, d) => d.date - c.date)
-      const { workerFn } = useWebWorkerFn(
-        timeline => timeline.sort((c, d) => d.date - c.date)
-      )
-      timeline = await workerFn()
+      timeline.sort((c, d) => d.date - c.date)
       // observations.sort((g, h) => h.date - g.date)
       if (activitiesResult.docs.length == 0) {
         timeline.push(timelineIntro)
