@@ -799,6 +799,7 @@ import { defineComponent, nextTick, onMounted, reactive, ref, watch, watchEffect
 import { useWebWorkerFn } from '@vueuse/core'
 import { useQuasar } from 'quasar'
 import { common } from '@/logic/common'
+import { timeline_worker } from '@/logic/worker'
 import axios from 'axios'
 import Case from 'case'
 import ActivitiesDialog from '@/components/ActivitiesDialog.vue'
@@ -1705,7 +1706,7 @@ export default defineComponent({
       }
       download(json2md(mdjs), 'nosh_timeline_' + Date.now() + '.md', 'text/markdown')
     }
-    const loadTimeline_new = async() => {
+    const loadTimeline = async() => {
       while (state.sync_on) {
         await sleep(2)
       }
@@ -1720,6 +1721,8 @@ export default defineComponent({
         patientGender: state.patientGender,
         prefix: prefix
       }
+      const { workerFn } = useWebWorkerFn(timeline_worker)
+      state.timeline = await workerFn(opts)
       console.log(state.timeline)
       const timelineDB = new PouchDB(prefix + 'timeline')
       const result = await timelineDB.allDocs({
@@ -1747,7 +1750,7 @@ export default defineComponent({
       }
       state.loading = false
     }
-    const loadTimeline = async() => {
+    const loadTimeline_old = async() => {
       // make sure sync is not occuring
       while (state.sync_on) {
         await sleep(2)
