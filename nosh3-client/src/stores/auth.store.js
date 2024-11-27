@@ -25,7 +25,8 @@ export const useAuthStore = defineStore(localStorage.getItem('auth_id') || 'auth
     message: null,
     init_sync: false,
     maia: null,
-    maia_alt: null
+    maia_alt: null,
+    timeline_build: false
   }),
   persist: true,
   actions: {
@@ -66,6 +67,7 @@ export const useAuthStore = defineStore(localStorage.getItem('auth_id') || 'auth
       this.rotate_jwt_uri = null
       this.prefix = null
       this.maia = null
+      this.timeline_build = false
       if (route !== '/app/login') {
         location.reload()
       } else {
@@ -129,6 +131,12 @@ export const useAuthStore = defineStore(localStorage.getItem('auth_id') || 'auth
     },
     setStayLoggedIn(val) {
       this.stay_logged_in = val
+    },
+    setTimelineBuild() {
+      this.timeline_build = true
+    },
+    unsetTimelineBuild() {
+      this.timeline_build = false
     }
   }
 })

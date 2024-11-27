@@ -1,12 +1,12 @@
-import Case from 'case'
-import { common } from '@/logic/common'
-import moment from 'moment'
-import objectPath from 'object-path'
-import pluralize from 'pluralize'
-import PouchDB from 'pouchdb-browser'
-const { addSchemaOptions, fetchJSON, fhirReplace, loadSelect } = common()
-import * as PouchDBFind from 'pouchdb-find'
-PouchDB.plugin(PouchDBFind)
+// import Case from 'case'
+// import { common } from '@/logic/common'
+// import moment from 'moment'
+// import objectPath from 'object-path'
+// import pluralize from 'pluralize'
+// import PouchDB from 'pouchdb-browser'
+// const { addSchemaOptions, fetchJSON, fhirReplace, loadSelect } = common()
+// import * as PouchDBFind from 'pouchdb-find'
+// PouchDB.plugin(PouchDBFind)
 
 export async function timeline_worker(opts) {
   // opts.online, opts.patient, opts.patientName, opts.patientDOB, opts.patientGender, opts.prefix

@@ -173,6 +173,7 @@ import TuiImageEditor from './TuiImageEditor.vue'
 import PDFDocument from './PDFDocument.vue'
 import {v4 as uuidv4} from 'uuid'
 import { QuillEditor } from '@vueup/vue-quill'
+import { useAuthStore } from '@/stores'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 
 export default defineComponent({
@@ -200,6 +201,7 @@ export default defineComponent({
   },
   emits: ['update-toolbar', 'loading', 'load-timeline', 'reload-drawer', 'open-detail-complete', 'close-container'],
   setup(props, { emit }) {
+    const auth = useAuthStore()
     const $q = useQuasar()
     const { addSchemaOptions, getPrefix, isMarkdown, sync } = common()
     const state = reactive({
@@ -506,10 +508,12 @@ export default defineComponent({
           state.fhir1 = JSON.stringify(state.fhir, null, "  ")
           state.detailsPending = false
           emit('reload-drawer', props.resource)
+          auth.setTimelineBuild()
           emit('load-timeline')
         }
       } else {
         if (id !== '') {
+          auth.setTimelineBuild()
           emit('load-timeline')
         }
       }

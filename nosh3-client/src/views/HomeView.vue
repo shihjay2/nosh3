@@ -799,7 +799,6 @@ import { defineComponent, nextTick, onMounted, reactive, ref, watch, watchEffect
 import { useWebWorkerFn } from '@vueuse/core'
 import { useQuasar } from 'quasar'
 import { common } from '@/logic/common'
-import { timeline_worker } from '@/logic/worker'
 import axios from 'axios'
 import Case from 'case'
 import ActivitiesDialog from '@/components/ActivitiesDialog.vue'
@@ -870,7 +869,7 @@ export default defineComponent({
 },
   setup () {
     const $q = useQuasar()
-    const { addSchemaOptions, clearCoverage, clearEOB, clearOIDC, fetchJSON, fhirModel, fhirReplace, getCoverage, getEOB, getOIDC, getOIDCDebug, importFHIR, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, setOIDC, sleep, sync, syncAll, syncTooltip, syncSome, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
+    const { addSchemaOptions, clearCoverage, clearEOB, clearOIDC, fetchJSON, fhirModel, fhirReplace, getCoverage, getEOB, getOIDC, getOIDCDebug, importFHIR, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, setOIDC, sleep, sync, syncAll, syncTooltip, syncSome, timelineResources, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
     const state = reactive({
       menuVisible: false,
       showDrawer: false,
@@ -1207,10 +1206,14 @@ export default defineComponent({
     })
     watch(() => state.showTimeline, async(newVal) => {
       if (newVal) {
-        await loadTimeline()
-        nextTick(() => {
-          qTimeline.value.focus()
-        })
+        if (state.searchTerm !== '') {
+          searchTimeline(state.searchTerm)
+        } else {
+          await loadTimeline()
+          nextTick(() => {
+            qTimeline.value.focus()
+          })
+        }
       }
     })
     watch(() => state.searchTerm, async(newVal) => {
@@ -1633,6 +1636,10 @@ export default defineComponent({
       }
       await clearSync()
       state.sync_on = false
+      notif({
+        caption: 'Building timeline...'
+      })
+      auth.setTimelineBuild()
       await loadTimeline()
       state.loading = false
       notif({
@@ -1706,270 +1713,244 @@ export default defineComponent({
       }
       download(json2md(mdjs), 'nosh_timeline_' + Date.now() + '.md', 'text/markdown')
     }
-    const loadTimeline_new = async() => {
-      while (state.sync_on) {
-        await sleep(2)
-      }
-      state.loading = true
-      state.timeline_scroll = false
-      state.timeline = []
-      const opts = {
-        online: state.online,
-        patient: state.patient,
-        patientName: state.patientName,
-        patientDOB: state.patientDOB,
-        patientGender: state.patientGender,
-        prefix: prefix
-      }
-      const { workerFn } = useWebWorkerFn(timeline_worker)
-      state.timeline = await workerFn(opts)
-      console.log(state.timeline)
+    const loadTimeline = async() => {
       const timelineDB = new PouchDB(prefix + 'timeline')
       const result = await timelineDB.allDocs({
         include_docs: true,
         attachments: true,
         startkey: 'nosh_'
       })
+      let build = false
       if (result.rows.length > 0) {
-        const doc = objectPath.get(result, 'rows.0.doc')
-        if (JSON.stringify(objectPath.get(doc, 'timeline')) !== JSON.stringify(state.timeline)) {
-        // if (JSON.stringify(objectPath.get(doc, 'timeline')) !== JSON.stringify(timeline) || JSON.stringify(objectPath.get(doc, 'observations')) !== JSON.stringify(observations)) {
-          objectPath.set(doc, 'timeline', state.timeline)
-          // objectPath.set(doc, 'observations', observations)
-          await sync('timeline', false, state.patient, true, doc)
-        }
-      } else {
-        const id = 'nosh_' + uuidv4()
-        const doc1 = {
-          '_id': id,
-          'id': id,
-          'timeline': state.timeline,
-          // 'observations': observations
-        }
-        await sync('timeline', state.online, state.patient, true, doc1)
-      }
-      state.loading = false
-    }
-    const loadTimeline= async() => {
-      // make sure sync is not occuring
-      while (state.sync_on) {
-        await sleep(2)
-      }
-      state.loading = true
-      state.timeline_scroll = false
-      state.timeline = []
-      // const resources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references', 'observations']
-      const resources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references']
-      const json = await import('@/assets/ui/drawer.json')
-      const drawer = json.rows
-      let timeline = []
-      // const observations = []
-      for (const resource of resources) {
-        const base = await import('@/assets/fhir/' + resource + '.json')
-        const resource1 = drawer.find(item => item.resource === resource)
-        const title = 'New ' + Case.title(pluralize.singular(resource))
-        let schema = []
-        if (resource !== 'observations') {
-          if (resource !== 'encounters') {
-            schema = base.uiSchema.flat()
-          } else {
-            schema = base.new.uiSchema.flat()
+        const index_row = result.rows.findIndex(e => e.reference === 'document_references')
+        if (index_row > -1) {
+          if (!objectPath.has(result, 'rows.' + index_row + '.binaries')) {
+            build = true
           }
         }
-        if (resource === 'immunizations') {
-          state.actSites = await fetchJSON('actSites', state.online)
-          schema = addSchemaOptions('site', state.actSites.concept[0].concept[0].concept, 'code', 'display', schema)
+      }
+      if (auth.timeline_build || result.rows.length == 0 || build) {
+        console.log('building timeline')
+        while (state.sync_on) {
+          await sleep(2)
         }
-        if (resource === 'medication_statements') {
-          state.doseform = await fetchJSON('doseform', state.online)
-          state.routes = await fetchJSON('routes', state.online)
-          schema = addSchemaOptions('doseUnit', state.doseform.concept, 'code', 'display', schema)
-          schema = addSchemaOptions('route', state.routes, 'code', 'desc', schema)
-        }
-        if (resource === 'encounters') {
-          state.serviceTypes = await fetchJSON('serviceTypes', state.online)
-          schema = addSchemaOptions('serviceType', state.serviceTypes, 'Code', 'Display', schema)
-          state.encounterTypes = await fetchJSON('encounterTypes', state.online)
-          schema = addSchemaOptions('type', state.encounterTypes, 'Code', 'Display', schema)
-          schema = await loadSelect('practitioners', 'participant', schema)
-        }
-        if (resource === 'document_references') {
-          state.docTypeCodes = await fetchJSON('docTypeCodes', state.online)
-          state.docClassCodes = await fetchJSON('docClassCodes', state.online)
-          schema = addSchemaOptions('type', state.docTypeCodes, 'Code', 'Display', schema, 'http://loinc.org')
-          schema = addSchemaOptions('category', state.docClassCodes, 'Code', 'Display', schema, 'http://loinc.org')
-          schema = addSchemaOptions('category', [{'Code': 'clinical-note', 'Display': 'Clinical Note'}], 'Code', 'Display', schema, 'http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category')
-        }
-        const db = new PouchDB(prefix + resource)
-        try {
-          const result = await db.find({selector: {[base.patientField]: {$eq: 'Patient/' + state.patient }, _id: {"$gte": null}}})
+        state.loading = true
+        state.timeline_scroll = false
+        state.timeline = []
+        // const resources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references', 'observations']
+        // const resources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references']
+        const json = await import('@/assets/ui/drawer.json')
+        const drawer = json.rows
+        let timeline = []
+        // const observations = []
+        for (const resource of timelineResources) {
+          const base = await import('@/assets/fhir/' + resource + '.json')
+          const resource1 = drawer.find(item => item.resource === resource)
+          const title = 'New ' + Case.title(pluralize.singular(resource))
+          let schema = []
           if (resource !== 'observations') {
-            for (const a in result.docs) {
-              const timelineItem = {}
-              objectPath.set(timelineItem, 'id', objectPath.get(result, 'docs.' + a + '.id'))
-              objectPath.set(timelineItem, 'title', fhirReplace('title', base, result.docs[a], schema))
-              objectPath.set(timelineItem, 'subtitle', objectPath.get(result, 'docs.' + a + '.' + base.timelineDate) + ', ' + title)
-              objectPath.set(timelineItem, 'content', fhirReplace('content', base, result.docs[a], schema))
-              objectPath.set(timelineItem, 'extended', fhirReplace('extended', base, result.docs[a], schema))
-              objectPath.set(timelineItem, 'status', fhirReplace('status', base, result.docs[a], schema))
-              objectPath.set(timelineItem, 'date', new Date(objectPath.get(result, 'docs.' + a + '.' + base.timelineDate)))
-              objectPath.set(timelineItem, 'icon', resource1.icon)
-              objectPath.set(timelineItem, 'resource', resource)
-              objectPath.set(timelineItem, 'keys', base.fuse)
-              objectPath.set(timelineItem, 'style', base.uiListContent.contentStyle)
-              if (resource === 'encounters') {
-                const bundle_db = new PouchDB(prefix + 'bundles')
-                const bundle_result = await bundle_db.find({selector: {'entry': {"$elemMatch": {"resource.encounter.reference": 'Encounter/' + objectPath.get(result, 'docs.' + a + '.id')}}, _id: {"$gte": null}}})
-                if (bundle_result.docs.length > 0) {
-                  bundle_result.docs.sort((a1, b1) => moment(b1.timestamp) - moment(a1.timestamp))
-                  const history = []
-                  for (const b in bundle_result.docs) {
-                    if (!objectPath.has(timelineItem, 'bundle')) {
-                      objectPath.set(timelineItem, 'bundle', objectPath.get(bundle_result, 'docs.' + b))
-                      history.push(objectPath.get(bundle_result, 'docs.' + b))
-                    } else {
-                      history.push(objectPath.get(bundle_result, 'docs.' + b))
-                    }
-                  }
-                  objectPath.set(timelineItem, 'bundle_history', history)
-                }
-                if (objectPath.has(result, 'docs.' + a + '.sync_id')) {
-                  const doc_ref_db = new PouchDB(prefix + 'document_references')
-                  const doc_ref_db_res = await doc_ref_db.find({selector: {'context.encounter.0.reference': {'$regex': objectPath.get(result, 'docs.' + a + '.sync_id')}, _id: {"$gte": null}}})
-                  if (doc_ref_db_res.docs.length > 0) {
-                    if (!objectPath.has(timelineItem, 'bundle')) {
-                      objectPath.set(timelineItem, 'document_reference', objectPath.get(doc_ref_db_res, 'docs.0'))
-                    }
-                  }
-                }
-              }
-              if (resource === 'document_references') {
-                if (objectPath.get(result, 'docs.' + a + '.contentType') === 'application/pdf') {
-                  objectPath.del(result, 'docs.' + a + '.data')
-                }
-              }
-              objectPath.set(timelineItem, 'doc', objectPath.get(result, 'docs.' + a))
-              timeline.push(timelineItem)
+            if (resource !== 'encounters') {
+              schema = base.uiSchema.flat()
+            } else {
+              schema = base.new.uiSchema.flat()
             }
-          } else {
-            // for (const f in result.docs) {
-            //   const category = result.docs[f].category[0].coding[0].code
-            //   const sub = base.categories.find(o => o.value === category)
-            //   let schema = sub.uiSchema.flat()
-            //   schema = await loadSelect('practitioners', 'performer', schema)
-            //   if (category !== 'exam' && category !== 'vital-signs' && category !== 'social-history' && category !== 'all') {
-            //     const category1 = Case.camel(category)
-            //     const category2 = await fetchJSON(category1, state.online)
-            //     if (category === 'activity') {
-            //       const a = []
-            //       for (const b of category2) {
-            //         a.push(b)
-            //       }
-            //       objectPath.set(select, category, a)
-            //     }
-            //     const observationsCodes = []
-            //     let c1 = 0
-            //     let d1 = ''
-            //     const f1 = []
-            //     for (const e1 of category2) {
-            //       if (category === 'activity') {
-            //         if (!f1.includes(objectPath.get(e1, 'CF_CODE10'))) {
-            //           objectPath.set(observationsCodes, c1 + '.code', objectPath.get(e1, 'CF_CODE10'))
-            //           f1.push(objectPath.get(e1, 'CF_CODE10'))
-            //           if (objectPath.get(e1, 'Description') !== '') {
-            //             d1 = objectPath.get(e1, 'Description') + ' | '
-            //           } else {
-            //             d1 = objectPath.get(e1, 'Common Term') + ' | '
-            //           }
-            //           d1 = d1 + objectPath.get(e1, 'REFID')
-            //           objectPath.set(observationsCodes, c1 + '.display', d1)
-            //           c1 = c1 + 1
-            //         }
-            //       } else {
-            //         if (!objectPath.has(e1, 'span')) {
-            //           if (objectPath.has(e1, 'a.small')) {
-            //             objectPath.set(observationsCodes, c1 + '.code', objectPath.get(e1, 'a.small'))
-            //             objectPath.set(observationsCodes, c1 + '.display', objectPath.get(e1, '#text'))
-            //             c1 = c1 + 1
-            //           }
-            //         }
-            //       }
-            //     }
-            //     schema = addSchemaOptions('code', observationsCodes, 'code', 'display', schema)
-            //   }
-            //   const objsItem = {}
-            //   objectPath.set(objsItem, 'id', objectPath.get(result, 'docs.' + f + '.id'))
-            //   objectPath.set(objsItem, 'title', fhirReplace('title', base, result.docs[f], schema))
-            //   objectPath.set(objsItem, 'subtitle', objectPath.get(result, 'docs.' + f + '.' + base.timelineDate) + ', ' + title)
-            //   objectPath.set(objsItem, 'content', fhirReplace('content', base, result.docs[f], schema))
-            //   objectPath.set(objsItem, 'extended', fhirReplace('extended', base, result.docs[f], schema))
-            //   objectPath.set(objsItem, 'status', fhirReplace('status', base, result.docs[f], schema))
-            //   objectPath.set(objsItem, 'date', new Date(objectPath.get(result, 'docs.' + f + '.' + base.timelineDate)))
-            //   objectPath.set(objsItem, 'icon', resource1.icon)
-            //   objectPath.set(objsItem, 'resource', resource)
-            //   objectPath.set(objsItem, 'doc', objectPath.get(result, 'docs.' + f))
-            //   objectPath.set(objsItem, 'keys', base.fuse)
-            //   objectPath.set(objsItem, 'style', base.uiListContent.contentStyle)
-            //   observations.push(objsItem)
-            // }
           }
-        } catch (err) {
-          console.log(err)
+          if (resource === 'immunizations') {
+            state.actSites = await fetchJSON('actSites', state.online)
+            schema = addSchemaOptions('site', state.actSites.concept[0].concept[0].concept, 'code', 'display', schema)
+          }
+          if (resource === 'medication_statements') {
+            state.doseform = await fetchJSON('doseform', state.online)
+            state.routes = await fetchJSON('routes', state.online)
+            schema = addSchemaOptions('doseUnit', state.doseform.concept, 'code', 'display', schema)
+            schema = addSchemaOptions('route', state.routes, 'code', 'desc', schema)
+          }
+          if (resource === 'encounters') {
+            state.serviceTypes = await fetchJSON('serviceTypes', state.online)
+            schema = addSchemaOptions('serviceType', state.serviceTypes, 'Code', 'Display', schema)
+            state.encounterTypes = await fetchJSON('encounterTypes', state.online)
+            schema = addSchemaOptions('type', state.encounterTypes, 'Code', 'Display', schema)
+            schema = await loadSelect('practitioners', 'participant', schema)
+          }
+          if (resource === 'document_references') {
+            state.docTypeCodes = await fetchJSON('docTypeCodes', state.online)
+            state.docClassCodes = await fetchJSON('docClassCodes', state.online)
+            schema = addSchemaOptions('type', state.docTypeCodes, 'Code', 'Display', schema, 'http://loinc.org')
+            schema = addSchemaOptions('category', state.docClassCodes, 'Code', 'Display', schema, 'http://loinc.org')
+            schema = addSchemaOptions('category', [{'Code': 'clinical-note', 'Display': 'Clinical Note'}], 'Code', 'Display', schema, 'http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category')
+          }
+          const db = new PouchDB(prefix + resource)
+          try {
+            const result = await db.find({selector: {[base.patientField]: {$eq: 'Patient/' + state.patient }, _id: {"$gte": null}}})
+            if (resource !== 'observations') {
+              for (const a in result.docs) {
+                const timelineItem = {}
+                objectPath.set(timelineItem, 'id', objectPath.get(result, 'docs.' + a + '.id'))
+                objectPath.set(timelineItem, 'title', fhirReplace('title', base, result.docs[a], schema))
+                objectPath.set(timelineItem, 'subtitle', objectPath.get(result, 'docs.' + a + '.' + base.timelineDate) + ', ' + title)
+                objectPath.set(timelineItem, 'content', fhirReplace('content', base, result.docs[a], schema))
+                objectPath.set(timelineItem, 'extended', fhirReplace('extended', base, result.docs[a], schema))
+                objectPath.set(timelineItem, 'status', fhirReplace('status', base, result.docs[a], schema))
+                objectPath.set(timelineItem, 'date', new Date(objectPath.get(result, 'docs.' + a + '.' + base.timelineDate)))
+                objectPath.set(timelineItem, 'icon', resource1.icon)
+                objectPath.set(timelineItem, 'resource', resource)
+                objectPath.set(timelineItem, 'keys', base.fuse)
+                objectPath.set(timelineItem, 'style', base.uiListContent.contentStyle)
+                if (resource === 'encounters') {
+                  const bundle_db = new PouchDB(prefix + 'bundles')
+                  const bundle_result = await bundle_db.find({selector: {'entry': {"$elemMatch": {"resource.encounter.reference": 'Encounter/' + objectPath.get(result, 'docs.' + a + '.id')}}, _id: {"$gte": null}}})
+                  if (bundle_result.docs.length > 0) {
+                    bundle_result.docs.sort((a1, b1) => moment(b1.timestamp) - moment(a1.timestamp))
+                    const history = []
+                    for (const b in bundle_result.docs) {
+                      if (!objectPath.has(timelineItem, 'bundle')) {
+                        objectPath.set(timelineItem, 'bundle', objectPath.get(bundle_result, 'docs.' + b))
+                        history.push(objectPath.get(bundle_result, 'docs.' + b))
+                      } else {
+                        history.push(objectPath.get(bundle_result, 'docs.' + b))
+                      }
+                    }
+                    objectPath.set(timelineItem, 'bundle_history', history)
+                  }
+                  if (objectPath.has(result, 'docs.' + a + '.sync_id')) {
+                    const doc_ref_db = new PouchDB(prefix + 'document_references')
+                    const doc_ref_db_res = await doc_ref_db.find({selector: {'context.encounter.0.reference': {'$regex': objectPath.get(result, 'docs.' + a + '.sync_id')}, _id: {"$gte": null}}})
+                    if (doc_ref_db_res.docs.length > 0) {
+                      if (!objectPath.has(timelineItem, 'bundle')) {
+                        objectPath.set(timelineItem, 'document_reference', objectPath.get(doc_ref_db_res, 'docs.0'))
+                      }
+                    }
+                  }
+                }
+                if (resource === 'document_references') {
+                  const binary_ids = []
+                  for (const c in objectPath.get(result, 'docs.' + a + '.content')) {
+                    const binary_id = objectPath.get(result, 'docs.' + a + '.content.' + c + '.attachment.url').substring(objectPath.get(result, 'docs.' + a + '.content.' + c + '.attachment.url').indexOf('/') + 1)
+                    binary_ids.push(binary_id)
+                  }
+                  objectPath.set(timelineItem, 'binaries', binary_ids)
+                }
+                timeline.push(timelineItem)
+              }
+            } else {
+              // for (const f in result.docs) {
+              //   const category = result.docs[f].category[0].coding[0].code
+              //   const sub = base.categories.find(o => o.value === category)
+              //   let schema = sub.uiSchema.flat()
+              //   schema = await loadSelect('practitioners', 'performer', schema)
+              //   if (category !== 'exam' && category !== 'vital-signs' && category !== 'social-history' && category !== 'all') {
+              //     const category1 = Case.camel(category)
+              //     const category2 = await fetchJSON(category1, state.online)
+              //     if (category === 'activity') {
+              //       const a = []
+              //       for (const b of category2) {
+              //         a.push(b)
+              //       }
+              //       objectPath.set(select, category, a)
+              //     }
+              //     const observationsCodes = []
+              //     let c1 = 0
+              //     let d1 = ''
+              //     const f1 = []
+              //     for (const e1 of category2) {
+              //       if (category === 'activity') {
+              //         if (!f1.includes(objectPath.get(e1, 'CF_CODE10'))) {
+              //           objectPath.set(observationsCodes, c1 + '.code', objectPath.get(e1, 'CF_CODE10'))
+              //           f1.push(objectPath.get(e1, 'CF_CODE10'))
+              //           if (objectPath.get(e1, 'Description') !== '') {
+              //             d1 = objectPath.get(e1, 'Description') + ' | '
+              //           } else {
+              //             d1 = objectPath.get(e1, 'Common Term') + ' | '
+              //           }
+              //           d1 = d1 + objectPath.get(e1, 'REFID')
+              //           objectPath.set(observationsCodes, c1 + '.display', d1)
+              //           c1 = c1 + 1
+              //         }
+              //       } else {
+              //         if (!objectPath.has(e1, 'span')) {
+              //           if (objectPath.has(e1, 'a.small')) {
+              //             objectPath.set(observationsCodes, c1 + '.code', objectPath.get(e1, 'a.small'))
+              //             objectPath.set(observationsCodes, c1 + '.display', objectPath.get(e1, '#text'))
+              //             c1 = c1 + 1
+              //           }
+              //         }
+              //       }
+              //     }
+              //     schema = addSchemaOptions('code', observationsCodes, 'code', 'display', schema)
+              //   }
+              //   const objsItem = {}
+              //   objectPath.set(objsItem, 'id', objectPath.get(result, 'docs.' + f + '.id'))
+              //   objectPath.set(objsItem, 'title', fhirReplace('title', base, result.docs[f], schema))
+              //   objectPath.set(objsItem, 'subtitle', objectPath.get(result, 'docs.' + f + '.' + base.timelineDate) + ', ' + title)
+              //   objectPath.set(objsItem, 'content', fhirReplace('content', base, result.docs[f], schema))
+              //   objectPath.set(objsItem, 'extended', fhirReplace('extended', base, result.docs[f], schema))
+              //   objectPath.set(objsItem, 'status', fhirReplace('status', base, result.docs[f], schema))
+              //   objectPath.set(objsItem, 'date', new Date(objectPath.get(result, 'docs.' + f + '.' + base.timelineDate)))
+              //   objectPath.set(objsItem, 'icon', resource1.icon)
+              //   objectPath.set(objsItem, 'resource', resource)
+              //   objectPath.set(objsItem, 'doc', objectPath.get(result, 'docs.' + f))
+              //   objectPath.set(objsItem, 'keys', base.fuse)
+              //   objectPath.set(objsItem, 'style', base.uiListContent.contentStyle)
+              //   observations.push(objsItem)
+              // }
+            }
+          } catch (err) {
+            console.log(err)
+          }
         }
-      }
-      const activitiesDb = new PouchDB(prefix + 'activities')
-      const activitiesResult = await activitiesDb.find({selector: {event: {$eq: 'Chart Created' }, _id: {"$gte": null}}})
-      const timelineIntro = {
-        id: 'intro',
-        title: 'New Chart Created',
-        subtitle: 'Timeline Starts Here',
-        icon: 'celebration',
-        date: null,
-        content: [
-          {key: 'Name', value: state.patientName},
-          {key: 'Date of Birth', value: state.patientDOB},
-          {key: 'Gender', value: state.patientGender}
-        ],
-        style: 'p'
-      }
-      if (activitiesResult.docs.length > 0) {
-        objectPath.set(timelineIntro, 'subtitle', moment(activitiesResult.docs[0].datetime).format("YYYY-MM-DD"))
-        objectPath.set(timelineIntro, 'date', new Date(activitiesResult.docs[0].datetime))
-        timeline.push(timelineIntro)
-      }
-      timeline.sort((c, d) => d.date - c.date)
-      // const { workerFn } = useWebWorkerFn(timelineSort)
-      // timeline = await workerFn(timeline)
-      // // observations.sort((g, h) => h.date - g.date)
-      if (activitiesResult.docs.length == 0) {
-        timeline.push(timelineIntro)
-      }
-      state.timeline = timeline
-      const timelineDB = new PouchDB(prefix + 'timeline')
-      const result = await timelineDB.allDocs({
-        include_docs: true,
-        attachments: true,
-        startkey: 'nosh_'
-      })
-      if (result.rows.length > 0) {
-        const doc = objectPath.get(result, 'rows.0.doc')
-        if (JSON.stringify(objectPath.get(doc, 'timeline')) !== JSON.stringify(timeline)) {
-        // if (JSON.stringify(objectPath.get(doc, 'timeline')) !== JSON.stringify(timeline) || JSON.stringify(objectPath.get(doc, 'observations')) !== JSON.stringify(observations)) {
-          objectPath.set(doc, 'timeline', timeline)
-          // objectPath.set(doc, 'observations', observations)
-          await sync('timeline', false, state.patient, true, doc)
+        const activitiesDb = new PouchDB(prefix + 'activities')
+        const activitiesResult = await activitiesDb.find({selector: {event: {$eq: 'Chart Created' }, _id: {"$gte": null}}})
+        const timelineIntro = {
+          id: 'intro',
+          title: 'New Chart Created',
+          subtitle: 'Timeline Starts Here',
+          icon: 'celebration',
+          date: null,
+          content: [
+            {key: 'Name', value: state.patientName},
+            {key: 'Date of Birth', value: state.patientDOB},
+            {key: 'Gender', value: state.patientGender}
+          ],
+          style: 'p'
         }
+        if (activitiesResult.docs.length > 0) {
+          objectPath.set(timelineIntro, 'subtitle', moment(activitiesResult.docs[0].datetime).format("YYYY-MM-DD"))
+          objectPath.set(timelineIntro, 'date', new Date(activitiesResult.docs[0].datetime))
+          timeline.push(timelineIntro)
+        }
+        // timeline.sort((c, d) => d.date - c.date)
+        const { workerFn } = useWebWorkerFn(timelineSort)
+        timeline = await workerFn(timeline)
+        // // observations.sort((g, h) => h.date - g.date)
+        if (activitiesResult.docs.length == 0) {
+          timeline.push(timelineIntro)
+        }
+        state.timeline = timeline
+        if (result.rows.length > 0) {
+          const doc = objectPath.get(result, 'rows.0.doc')
+          if (JSON.stringify(objectPath.get(doc, 'timeline')) !== JSON.stringify(timeline)) {
+          // if (JSON.stringify(objectPath.get(doc, 'timeline')) !== JSON.stringify(timeline) || JSON.stringify(objectPath.get(doc, 'observations')) !== JSON.stringify(observations)) {
+            objectPath.set(doc, 'timeline', timeline)
+            // objectPath.set(doc, 'observations', observations)
+            await sync('timeline', false, state.patient, true, doc)
+          }
+        } else {
+          const id = 'nosh_' + uuidv4()
+          const doc1 = {
+            '_id': id,
+            'id': id,
+            'timeline': timeline,
+            // 'observations': observations
+          }
+          await sync('timeline', state.online, state.patient, true, doc1)
+        }
+        auth.unsetTimelineBuild()
+        state.loading = false
       } else {
-        const id = 'nosh_' + uuidv4()
-        const doc1 = {
-          '_id': id,
-          'id': id,
-          'timeline': timeline,
-          // 'observations': observations
+        if (result.rows.length > 0) {
+          state.timeline = objectPath.get(result, 'rows.0.doc.timeline')
         }
-        await sync('timeline', state.online, state.patient, true, doc1)
       }
-      state.loading = false
     }
     const lockThread = async(id) => {
       const localDB = new PouchDB(prefix + 'communications')
@@ -2647,11 +2628,10 @@ export default defineComponent({
       state.showMAIA = true
     }
     const searchTimeline = (searchTerm) => {
-      const resources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references']
       const arr2 = []
       const arr3 = []
       state.timeline_filter = []
-      for (const resource of resources) {
+      for (const resource of timelineResources) {
         const arr = state.timeline.filter(a => a.resource === resource)
         if (arr.length > 0) {
           const all_keys = require('all-object-keys')
@@ -3049,6 +3029,7 @@ export default defineComponent({
               }
               state.loading = false
               state.sync_on = false
+              auth.setTimelineBuild()
               await loadTimeline()
               notif({
                 icon: 'done',

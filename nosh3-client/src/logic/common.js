@@ -17,6 +17,7 @@ PouchDB.plugin(PouchDBFind)
 PouchDB.plugin(comdb)
 import {v4 as uuidv4} from 'uuid'
 import { useAuthStore } from '@/stores'
+import { useWebWorkerFn } from '@vueuse/core'
 
 export function common() {
   const addSchemaOptions = (id, arr, val, label, schema, system='') => {
@@ -1462,6 +1463,9 @@ export function common() {
         auth_store.update(data)
       }
       auth_store.setSyncResource(resource)
+      if (timelineResources.includes(resource)) {
+        auth_store.setTimelineBuild()
+      }
       await eventAdd('Updated ' + pluralize.singular(resource.replace('_statements', '')), patient_id, opts)
     }
     if (online) {
@@ -1597,6 +1601,7 @@ export function common() {
   }
   const syncState = reactive({ total: 0, complete: 0 })
   const syncTooltip = reactive({ text: '' })
+  const timelineResources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references']
   const thread = async(doc, online, patient_id) => {
     let arr = []
     arr.push(doc)
@@ -1734,6 +1739,7 @@ export function common() {
     syncSome,
     syncState,
     syncTooltip,
+    timelineResources,
     thread,
     threadEarlier,
     threadLater,
