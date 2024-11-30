@@ -69,6 +69,12 @@
   <q-btn v-if="state.oidc" push flat round icon="delete_sweep" clickable @click="clearAll()">
     <q-tooltip>Clear Everything</q-tooltip>
   </q-btn>
+  <q-btn v-if="state.oidc" push flat round icon="build" clickable @click="timelineRebuild()">
+    <q-tooltip>Rebuild Timeline</q-tooltip>
+  </q-btn>
+  <q-btn v-if="state.oidc" push flat round icon="phonelink_erase" clickable @click="destroyDB()">
+    <q-tooltip>Destroy PouchDB</q-tooltip>
+  </q-btn>
   <q-btn v-if="!state.timeline" push flat round icon="close" clickable @click="closeContainer()">
     <q-tooltip>Close</q-tooltip>
   </q-btn>
@@ -97,7 +103,7 @@ export default defineComponent({
   directives: {
     print
   },
-  emits: ['addendum-encounter', 'clear-all', 'clear-sync', 'close-container', 'dump-sync', 'import-all', 'lock-thread', 'new-prescription', 'open-chat', 'open-debug', 'open-detail', 'open-form', 'open-file', 'open-immunizationschedule', 'open-list', 'open-page', 'open-page-form', 'open-signature', 'open-trustee', 'set-composition-section', 'sign-encounter', 'sort-alpha', 'sort-date', 'start-sync', 'upload-sync'],
+  emits: ['addendum-encounter', 'clear-all', 'clear-sync', 'close-container', 'dump-sync', 'import-all', 'lock-thread', 'new-prescription', 'open-chat', 'open-debug', 'open-detail', 'open-form', 'open-file', 'open-immunizationschedule', 'open-list', 'open-page', 'open-page-form', 'open-signature', 'open-trustee', 'set-composition-section', 'sign-encounter', 'sort-alpha', 'sort-date', 'start-sync', 'timeline-rebuild', 'upload-sync'],
   setup (props, { emit }) {
     const auth = useAuthStore()
     const { fetchJSON } = common()
@@ -177,6 +183,10 @@ export default defineComponent({
     const closeContainer = () => {
       emit('close-container')
     }
+    const destroyDB = async() => {
+      const dbs = await window.indexedDB.databases()
+      dbs.forEach(db => { window.indexedDB.deleteDatabase(db.name) })
+    }
     const dumpSync = () => {
       emit('dump-sync')
     }
@@ -250,6 +260,9 @@ export default defineComponent({
     }
     const sortTitle = () => {
       emit('sort-alpha')
+    }
+    const timelineRebuild = () => {
+      emit('timeline-rebuild', true)
     }
     const updateToolbar = async(toolbar) => {
       state.base = {}
@@ -385,6 +398,7 @@ export default defineComponent({
       clearAll,
       clearSync,
       closeContainer,
+      destroyDB,
       dumpSync,
       fetchJSON,
       importAll,
@@ -402,6 +416,7 @@ export default defineComponent({
       signEncounter,
       sortDate,
       sortTitle,
+      timelineRebuild,
       updateToolbar,
       uploadSync,
       state

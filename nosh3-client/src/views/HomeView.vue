@@ -117,6 +117,7 @@
           @import-all="importAll"
           @upload-sync="uploadSync"
           @start-sync="startSync"
+          @timeline-rebuild="loadTimeline"
           :toolbar-object="state.toolbarObject"
           :encounter="state.encounter"
           :id="state.id"
