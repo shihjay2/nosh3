@@ -1188,6 +1188,7 @@ async function timelineUpdate(work_arr, action, patient_id) {
     attachments: true,
     startkey: 'nosh_'
   })
+  let timeline_old = []
   let timeline = []
   let timeline_doc = {}
   let timeline_return = []
@@ -1195,6 +1196,9 @@ async function timelineUpdate(work_arr, action, patient_id) {
     if (action == 'delete') {
       if (result.rows.length > 0) {
         timeline_doc = objectPath.get(result, 'rows.0.doc')
+        if (timeline_old.length === 0) {
+          timeline_old = objectPath.get(result, 'rows.0.doc.timeline')
+        }
         const check = objectPath.get(result, 'rows.0.doc.timeline').filter((row) => row.id === work_item.id && row.resource === work_item.resource)
         if (check !== -1) {
           const del_timeline = objectPath.get(result, 'rows.0.doc.timeline').filter((row) => row.id !== work_item.id)
@@ -1204,6 +1208,13 @@ async function timelineUpdate(work_arr, action, patient_id) {
         }
       }
     } else {
+      if (result.rows.length > 0) {
+        timeline_doc = objectPath.get(result, 'rows.0.doc')
+        if (timeline_old.length === 0) {
+          timeline_old = objectPath.get(result, 'rows.0.doc.timeline')
+        }
+        timeline_old = timeline_old.filter((row) => row.id === work_item.id && row.resource === work_item.resource)
+      }
       const json = fetchJSON('/ui/drawer')
       const drawer = json.rows
       const base = fetchJSON('/fhir/' + work_item.resource)
@@ -1295,18 +1306,8 @@ async function timelineUpdate(work_arr, action, patient_id) {
   if (result.rows.length > 0) {
     if (action === 'update') {
       timeline_doc = objectPath.get(result, 'rows.0.doc')
-      let old_timeline = {}
-      const check = objectPath.get(result, 'rows.0.doc.timeline').filter((row) => row.id === work_item.id && row.resource === work_item.resource)
-      if (check !== -1) {
-        console.log('update')
-        console.log(check)
-        old_timeline = check
-      } else {
-        console.log('add')
-        old_timeline = objectPath.get(result, 'rows.0.doc.timeline')
-        console.log(old_timeline)
-      }
-      const new_timeline = [...timeline, ...old_timeline]
+      console.log(timeline_old)
+      const new_timeline = [...timeline, ...timeline_old]
       new_timeline.sort((c, d) => d.date - c.date)
       objectPath.set(timeline_doc, 'timeline', new_timeline)
       await sync('timeline', patient_id, true, timeline_doc)
