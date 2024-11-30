@@ -1209,8 +1209,8 @@ export default defineComponent({
         if (state.searchTerm !== '') {
           searchTimeline(state.searchTerm)
         } else {
-          auth.setTimelineBuild()
-          await loadTimeline(true)
+          // auth.setTimelineBuild()
+          await loadTimeline()
           nextTick(() => {
             qTimeline.value.focus()
           })
