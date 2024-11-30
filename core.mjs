@@ -1213,7 +1213,7 @@ async function timelineUpdate(work_arr, action, patient_id) {
         if (timeline_old.length === 0) {
           timeline_old = objectPath.get(result, 'rows.0.doc.timeline')
         }
-        timeline_old = timeline_old.filter((row) => row.id === work_item.id && row.resource === work_item.resource)
+        timeline_old = timeline_old.filter((row) => row.id !== work_item.id && row.resource !== work_item.resource)
       }
       const json = fetchJSON('/ui/drawer')
       const drawer = json.rows
