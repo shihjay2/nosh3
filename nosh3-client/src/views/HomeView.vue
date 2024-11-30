@@ -1713,7 +1713,7 @@ export default defineComponent({
       }
       download(json2md(mdjs), 'nosh_timeline_' + Date.now() + '.md', 'text/markdown')
     }
-    const loadTimeline = async() => {
+    const loadTimeline_new = async() => {
       const timelineDB = new PouchDB(prefix + 'timeline')
       const result = await timelineDB.allDocs({
         include_docs: true,
@@ -1726,7 +1726,7 @@ export default defineComponent({
         state.timeline = await timelineUpdate([], 'update')
       }
     }
-    const loadTimeline_old = async() => {
+    const loadTimeline = async() => {
       const timelineDB = new PouchDB(prefix + 'timeline')
       const result = await timelineDB.allDocs({
         include_docs: true,

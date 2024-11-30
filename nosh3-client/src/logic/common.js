@@ -1638,7 +1638,7 @@ export function common() {
           if (timeline_old.length === 0) {
             timeline_old = objectPath.get(result, 'rows.0.doc.timeline')
           }
-          timeline_old = timeline_old.filter((row) => row.id === work_item.id && row.resource === work_item.resource)
+          timeline_old = timeline_old.filter((row) => row.id !== work_item.id && row.resource !== work_item.resource)
         }
         const json = await import('@/assets/ui/drawer.json')
         const drawer = json.rows
