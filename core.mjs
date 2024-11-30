@@ -1298,9 +1298,13 @@ async function timelineUpdate(work_arr, action, patient_id) {
       let old_timeline = {}
       const check = objectPath.get(result, 'rows.0.doc.timeline').filter((row) => row.id === work_item.id && row.resource === work_item.resource)
       if (check !== -1) {
+        console.log('update')
+        console.log(check)
         old_timeline = check
       } else {
+        console.log('add')
         old_timeline = objectPath.get(result, 'rows.0.doc.timeline')
+        console.log(old_timeline)
       }
       const new_timeline = [...timeline, ...old_timeline]
       new_timeline.sort((c, d) => d.date - c.date)
