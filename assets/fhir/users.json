@@ -1,0 +1,356 @@
+{
+  "fhir" : {
+    "resourceType": "User",
+    "id": "",
+    "active": ""
+  },
+  "resourceName": "User",
+  "activeField": "active",
+  "divContent": "{display}",
+  "pageOpen": true,
+  "uiListContent": {
+    "title": "{display}",
+    "subhead": "{email}",
+    "contentFields": ["did", "npi", "role", "active"],
+    "contentStyle": "p",
+    "extended": "",
+    "status": "{active}"
+  },
+  "uiSchema": [
+    {
+      "id": "display",
+      "label": "Display Name",
+      "model": "display",
+      "type": "text",
+      "rules": "required"
+    },
+    {
+      "id": "email",
+      "label": "Email",
+      "model": "email",
+      "type": "email",
+      "placeholder": "yourname@email.com",
+      "rules": "required"
+    },
+    [
+      {
+        "id": "active",
+        "label": "Active",
+        "model": "active",
+        "type": "checkbox",
+        "rules": ""
+      },
+      {
+        "id": "role",
+        "label": "Role",
+        "model": "role",
+        "type": "select",
+        "options": [
+          {"value": "patient", "label": "Patient"},
+          {"value": "provider", "label": "Provider"},
+          {"value": "support", "label": "Support"},
+          {"value": "proxy", "label": "Proxy"}
+        ],
+        "rules": "required"
+      }
+    ],
+    {
+      "id": "did",
+      "label": "DID",
+      "model": "did",
+      "hidden": true
+    },
+    {
+      "id": "npi",
+      "label": "NPI",
+      "model": "npi",
+      "hidden": true
+    },
+    {
+      "id": "reference",
+      "label": "Reference",
+      "model": "reference",
+      "hidden": true
+    }
+  ],
+  "me": {
+    "uiPageContent": {
+      "contentStyle": "p"
+    },
+    "resourceName": "Me",
+    "uiSchema": [
+      {
+        "id": "display",
+        "label": "Display Name",
+        "model": "display",
+        "type": "text",
+        "rules": "required",
+        "category": "me"
+      },
+      {
+        "id": "email",
+        "label": "Email",
+        "model": "email",
+        "type": "email",
+        "placeholder": "yourname@email.com",
+        "rules": "required",
+        "category": "me"
+      },
+      [
+        {
+          "id": "active",
+          "label": "Active",
+          "model": "active",
+          "type": "checkbox",
+          "rules": "",
+          "category": "me"
+        },
+        {
+          "id": "role",
+          "label": "Role",
+          "model": "role",
+          "type": "select",
+          "options": [
+            {"value": "patient", "label": "Patient"},
+            {"value": "provider", "label": "Provider"},
+            {"value": "support", "label": "Support"},
+            {"value": "proxy", "label": "Proxy"}
+          ],
+          "rules": "required",
+          "category": "me"
+        }
+      ],
+      {
+        "id": "did",
+        "label": "DID",
+        "model": "did",
+        "hidden": true,
+        "category": "me"
+      },
+      {
+        "id": "npi",
+        "label": "NPI",
+        "model": "npi",
+        "hidden": true,
+        "category": "me"
+      },
+      {
+        "id": "reference",
+        "label": "Reference",
+        "model": "reference",
+        "hidden": true,
+        "category": "me"
+      }
+    ]
+  },
+  "templates": {
+    "uiListContent": {
+      "title": "{id}",
+      "subhead": "",
+      "contentFields": ["text"],
+      "contentStyle": "p",
+      "extended": "",
+      "status": ""
+    },
+    "resourceName": "Template",
+    "uiSchema": [
+      {
+        "id": "id",
+        "label": "Shortcut",
+        "modelParent": "templates",
+        "model": "id",
+        "type": "text",
+        "rules": "required",
+        "category": "templates"
+      },
+      {
+        "id": "text",
+        "label": "Text",
+        "modelParent": "templates",
+        "model": "text",
+        "type": "text",
+        "rules": "required",
+        "category": "templates"
+      }
+    ]
+  },
+  "defaults": {
+    "uiPageContent": {
+      "contentStyle": "p"
+    },
+    "resourceName": "Default",
+    "uiSchema": [
+      [
+        {
+          "id": "class",
+          "label": "Encounter Class",
+          "model": "defaults.class",
+          "type": "select",
+          "options": [
+            {"value": "AMB", "label": "Ambulatory"},
+            {"value": "VR", "label": "Virtual"},
+            {"value": "HH", "label": "Home Health"},
+            {"value": "EMER", "label": "Emergency"},
+            {"value": "IMP", "label": "Inpatient Encounter"},
+            {"value": "ACUTE", "label": "Inpatient Acute"},
+            {"value": "NONAC", "label": "Inpatient Non-Acute"},
+            {"value": "OBSENC", "label": "Observation Encounter"},
+            {"value": "PRENC", "label": "Pre-admission"},
+            {"value": "SS", "label": "Short Stay"},
+            {"value": "FLD", "label": "Field"}
+          ],
+          "category": "defaults"
+        },
+        {
+          "id": "type",
+          "label": "Encounter Type",
+          "model": "defaults.type",
+          "type": "select",
+          "options": [],
+          "category": "defaults"
+        },
+        {
+          "id": "serviceType",
+          "label": "Service Type",
+          "model": "defaults.serviceType",
+          "type": "select",
+          "options": [],
+          "category": "defaults"
+        }
+      ],
+      [
+        {
+          "id": "serviceCategory",
+          "label": "Service Category",
+          "model": "defaults.serviceCategory",
+          "type": "select",
+          "options": [],
+          "category": "defaults"
+        },
+        {
+          "id": "appointmentType",
+          "label": "Appointment Type",
+          "model": "defaults.appointmentType",
+          "type": "select",
+          "options": [
+            {"value": "ROUTINE", "label": "Routine appointment"},
+            {"value": "CHECKUP", "label": "A routine check-up, such as an annual physical"},
+            {"value": "EMERGENCY", "label": "Emergency appointment"},
+            {"value": "FOLLOWUP", "label": "A follow up visit from a previous appointment"},
+            {"value": "WALKIN", "label": "A previously unscheduled walk-in visit"}
+          ],
+          "category": "defaults"
+        }
+      ],
+      [
+        {
+          "id": "category",
+          "label": "Composition Category",
+          "model": "defaults.category",
+          "type": "select",
+          "options": [],
+          "category": "defaults"
+        },
+        {
+          "id": "code",
+          "label": "Composition Type",
+          "model": "defaults.code",
+          "type": "select",
+          "options": [],
+          "category": "defaults"
+        }
+      ]
+    ]
+  },
+  "new": {
+    "resourceName": "User",
+    "uiSchema": [
+      {
+        "id": "display",
+        "label": "Display Name",
+        "model": "display",
+        "type": "text",
+        "rules": "required"
+      },
+      {
+        "id": "email",
+        "label": "Email",
+        "model": "email",
+        "type": "email",
+        "placeholder": "yourname@email.com",
+        "rules": "required"
+      },
+      [
+        {
+          "id": "active",
+          "label": "Active",
+          "model": "active",
+          "type": "checkbox",
+          "rules": ""
+        },
+        {
+          "id": "role",
+          "label": "Role",
+          "model": "role",
+          "type": "select",
+          "options": [
+            {"value": "patient", "label": "Patient"},
+            {"value": "provider", "label": "Provider"},
+            {"value": "support", "label": "Support"},
+            {"value": "proxy", "label": "Proxy"}
+          ],
+          "rules": "required"
+        }
+      ],
+      {
+        "id": "did",
+        "label": "DID",
+        "model": "did",
+        "hidden": true
+      },
+      {
+        "id": "npi",
+        "label": "NPI",
+        "model": "npi",
+        "hidden": true
+      },
+      {
+        "id": "reference",
+        "label": "Reference",
+        "model": "reference",
+        "hidden": true
+      }
+    ]
+  },
+  "tabs": [
+    {
+      "category": "me",
+      "label": "Me",
+      "template": "info",
+      "resource": "users"
+    },
+    {
+      "category": "templates",
+      "label": "My Templates",
+      "template": "card",
+      "resource": "users",
+      "columns": [
+        {
+          "label": "Shortcut",
+          "field": "id",
+          "isKey": true
+        },
+        {
+          "label": "Text",
+          "field": "text"
+        }
+      ]
+    },
+    {
+      "category": "defaults",
+      "label": "My Defaults",
+      "template": "info",
+      "resource": "users"
+    }
+  ]
+}

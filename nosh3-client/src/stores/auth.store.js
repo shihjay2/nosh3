@@ -26,7 +26,10 @@ export const useAuthStore = defineStore(localStorage.getItem('auth_id') || 'auth
     init_sync: false,
     maia: null,
     maia_alt: null,
-    timeline_build: false
+    timeline_build: false,
+    patient_dob: null,
+    patient_name: null,
+    patient_gender: null
   }),
   persist: true,
   actions: {
@@ -107,6 +110,11 @@ export const useAuthStore = defineStore(localStorage.getItem('auth_id') || 'auth
     },
     setPatient(patient) {
       this.patient = patient
+    },
+    setPatientInfo(info) {
+      this.patient_dob = info.patient_dob
+      this.patient_gender = info.patient_gender
+      this.patient_name = info.patient_name
     },
     setSync() {
       this.init_sync = true

@@ -20,6 +20,43 @@ PouchDB.plugin(PouchDBFind)
 import comdb from 'comdb'
 PouchDB.plugin(comdb)
 
+function addSchemaOptions(id, arr, val, label, schema, system='') {
+  const options = []
+  for (const a of arr) {
+    const b = {}
+    if (a[val] !== undefined && a[val] !== 'notSelectable' ) {
+      b.value = a[val]
+      b.label = a[label]
+      if (system !== '') {
+        b.system = system
+      }
+      options.push(b)
+    }
+  }
+  for (const c in schema) {
+    if (Array.isArray(schema[c])) {
+      for (const d in schema[c]) {
+        if (id == schema[c][d].id) {
+          if (objectPath.has(schema, c + '.' + d + '.options')) {
+            objectPath.set(schema, c + '.' + d + '.options', objectPath.get(schema, c + '.' + d + '.options').concat(options))
+          } else {
+            objectPath.set(schema, c + '.' + d + '.options', options)
+          }
+        }
+      }
+    } else {
+      if (id == schema[c].id) {
+        if (objectPath.has(schema, c + '.options')) {
+          objectPath.set(schema, c + '.options', objectPath.get(schema, c + '.options').concat(options))
+        } else {
+          objectPath.set(schema, c + '.options', options)
+        }
+      }
+    }
+  }
+  return schema
+}
+
 async function couchdbConfig(section, key, value) {
   const opts = JSON.parse(JSON.stringify(settings.couchdb_auth))
   objectPath.set(opts, 'headers', {'Content-Type': 'application/json'})
@@ -385,6 +422,287 @@ async function eventUser(res, opts, prefix) {
   return opts
 }
 
+function fetchJSON(json) {
+  return JSON.parse(fs.readFileSync('./assets/' + json + '.json'))
+}
+
+function fhirDisplay(field, index='0') {
+  let model = field.display
+  if (typeof field.modelParent !== 'undefined') {
+    model = field.modelParent + '.0.'
+    if (typeof field.modelRoot !== 'undefined') {
+      if (field.modelArray == false) {
+        model += field.modelRoot + '.' + field.display
+      } else {
+        if (field.multiple == true) {
+          model += field.modelRoot + '.' + index + '.' + field.display
+        } else {
+          model += field.modelRoot + '.0.' + field.display
+        }
+      }
+    }
+  } else {
+    if (typeof field.modelRoot !== 'undefined') {
+      if (field.modelArray == false) {
+        model = field.modelRoot + '.' + field.display
+      } else {
+        if (field.multiple == true) {
+          model = field.modelRoot + '.' + index + '.' + field.display
+        } else {
+          model = field.modelRoot + '.0.' + field.display
+        }
+      }
+    }
+  }
+  return model
+}
+
+function fhirModel(field) {
+  let model = field.model
+  if (typeof field.modelParent !== 'undefined') {
+    model = field.modelParent + '.0.'
+    if (typeof field.modelRoot !== 'undefined') {
+      if (field.modelArray == false) {
+        model += field.modelRoot + '.' + field.model
+      } else {
+        if (field.multiple == true) {
+          model += field.modelRoot
+        } else {
+          model += field.modelRoot + '.0.' + field.model
+        }
+      }
+    }
+  } else {
+    if (typeof field.modelRoot !== 'undefined') {
+      if (field.modelArray == false) {
+        model = field.modelRoot + '.' + field.model
+      } else {
+        if (field.multiple == true) {
+          model = field.modelRoot
+        } else {
+          model = field.modelRoot + '.0.' + field.model
+        }
+      }
+    }
+  }
+  return model
+}
+
+function fhirReplace(key, base, result, uiSchema) {
+  const row = base.uiListContent[key]
+  let str = ''
+  let field = ''
+  let model = ''
+  let display_model = ''
+  if (key === 'content') {
+    const models = []
+    for (const a in base.uiListContent.contentFields) {
+      field = uiSchema.find(({ id }) => id === base.uiListContent.contentFields[a])
+      if (field !== undefined) {
+        model = fhirModel(field)
+        const obj = {}
+        if (objectPath.has(result, model)) {
+          obj['key'] = field.label
+          obj['value'] = objectPath.get(result, model)
+          if (typeof field.modelOne !== 'undefined') {
+            if (objectPath.has(result, model + '.' + field.modelOne + '.' + field.modelEnd)) {
+              obj['value'] = objectPath.get(result, model + '.' + field.modelOne + '.' + field.modelEnd)
+            }
+            if (objectPath.has(result, model + '.' + field.modelRange[0] + '.' + field.modelEnd)) {
+              obj['value'] = objectPath.get(result, model + '.' + field.modelRange[0] + '.' + field.modelEnd)
+              obj['value'] += ' to '
+              obj['value'] += objectPath.get(result, model + '.' + field.modelRange[1] + '.' + field.modelEnd)
+            }
+          }
+          if (typeof field.modelChoice !== 'undefined') {
+            for (const b in field.modelChoice) {
+              if (objectPath.has(result, model + '.' + field.modelChoice[b] + '.' + field.modelEnd)) {
+                obj['value'] = objectPath.get(result, model + '.' + field.modelChoice[b] + '.' + field.modelEnd)
+              }
+            }
+          }
+          if (typeof field.text !== 'undefined') {
+            if (objectPath.has(result, model + '.' + field.text)) {
+              obj['value'] = objectPath.get(result, model + '.' + field.text)
+            }
+          }
+          if (obj['value'] !== undefined && obj['value'] !== '') {
+            if (typeof field.options !== 'undefined') {
+              if (field.multiple === true) {
+                if (Array.isArray(obj['value'])) {
+                  let value = ''
+                  for (const c in obj['value']) {
+                    let d = {}
+                    if (typeof field.modelRoot !== 'undefined') {
+                      d = field.options.find(({ value }) => value === objectPath.get(obj['value'], c + '.' + field.model))
+                    } else {
+                      d = field.options.find(({ value }) => value === obj['value'][c])
+                    }
+                    if (c !== '0') {
+                      value += '; '
+                    }
+                    if (d !== undefined) {
+                      value += d.label
+                    } else {
+                      if (objectPath.has(field, 'display')) {
+                        const displayModel = fhirDisplay(field, c)
+                        value += objectPath.get(result, displayModel)
+                      } else {
+                        value += obj['value']
+                      }
+                    }
+                  }
+                  obj['value'] = value
+                } else {
+                  const e = field.options.find(({ value }) => value === obj['value'])
+                  if (e !== undefined) {
+                    obj['value'] = e.label
+                  } else {
+                    if (objectPath.has(field, 'display')) {
+                      const displayModel1 = fhirDisplay(field)
+                      obj['value'] = objectPath.get(result, displayModel1)
+                    }
+                  }
+                }
+              } else {
+                const f = field.options.find(({ value }) => value === obj['value'])
+                if (f !== undefined) {
+                  obj['value'] = f.label
+                } else {
+                  if (objectPath.has(field, 'display')) {
+                    const displayModel2 = fhirDisplay(field)
+                    obj['value'] = objectPath.get(result, displayModel2)
+                  }
+                }
+              }
+            }
+            if (base.fhir.resourceType == 'Composition' && field.id == 'text') {
+              obj['value'] = removeTags(obj['value'])
+            }
+            models.push(obj)
+          } else {
+            if (model.split('.').slice(-2).join('.') === 'coding.0.display') {
+              const alt_model = model.replace('coding.0.display', 'text')
+              if (objectPath.has(result, alt_model)) {
+                obj['value'] = objectPath.get(result, alt_model)
+              } else {
+                obj['value'] = ''
+              }
+            } else {
+              obj['value'] = ''
+            }
+          }
+        }
+      }
+    }
+    return models
+  } else {
+    const found = []
+    let rxp = /{([^}]+)}/g
+    let curMatch
+    let replaceWith = []
+    let mapping = {}
+    str = row
+    while((curMatch = rxp.exec(str))) {
+      found.push(curMatch[1])
+    }
+    for (const g in found) {
+      field = uiSchema.find(({ id }) => id === found[g])
+      model = fhirModel(field)
+      if (objectPath.has(result, model)) {
+        replaceWith[g] = objectPath.get(result, model)
+        if (typeof field.options !== 'undefined') {
+          if (field.multiple === true) {
+            if (Array.isArray(replaceWith[g])) {
+              let value = ''
+              for (const h in replaceWith[g]) {
+                let i = {}
+                if (typeof field.modelRoot !== 'undefined') {
+                  i = field.options.find(({ value }) => value === replaceWith[g][h][field.model])
+                } else {
+                  i = field.options.find(({ value }) => value === replaceWith[g][h])
+                }
+                if (h !== '0') {
+                  value += '; '
+                }
+                if (i !== undefined) {
+                  value += i.label
+                } else {
+                  display_model = fhirDisplay(field)
+                  if (objectPath.has(result, display_model)) {
+                    value = objectPath.get(result, display_model)
+                  } else {
+                    if (objectPath.has(field, 'alt_label_model')) {
+                      if (objectPath.has(result, objectPath.get(field, 'alt_label_model'))) {
+                        value = objectPath.get(result, objectPath.get(field, 'alt_label_model'))
+                      }
+                    }
+                  }
+                }
+              }
+              replaceWith[g] = value
+            } else {
+              const j = field.options.find(({ value }) => value === replaceWith[g])
+              if (j !== undefined) {
+                replaceWith[g] = j.label
+              } else {
+                display_model = fhirDisplay(field)
+                if (objectPath.has(result, display_model)) {
+                  replaceWith[g] = objectPath.get(result, display_model)
+                } else {
+                  if (objectPath.has(field, 'alt_label_model')) {
+                    if (objectPath.has(result, objectPath.get(field, 'alt_label_model'))) {
+                      replaceWith[g] = objectPath.get(result, objectPath.get(field, 'alt_label_model'))
+                    }
+                  }
+                }
+              }
+            }
+          } else {
+            const k = field.options.find(({ value }) => value === replaceWith[g])
+            if (k !== undefined) {
+              replaceWith[g] = k.label
+            } else {
+              display_model = fhirDisplay(field)
+              if (objectPath.has(result, display_model)) {
+                replaceWith[g] = objectPath.get(result, display_model)
+              } else {
+                if (objectPath.has(field, 'alt_label_model')) {
+                  if (objectPath.has(result, objectPath.get(field, 'alt_label_model'))) {
+                    replaceWith[g] = objectPath.get(result, objectPath.get(field, 'alt_label_model'))
+                  }
+                }
+              }
+            }
+          }
+        }
+      } else {
+        if (model.split('.').slice(-3).join('.') === 'coding.0.display') {
+          const alt_model = model.replace('coding.0.display', 'text')
+          if (objectPath.has(result, alt_model)) {
+            replaceWith[g] = objectPath.get(result, alt_model)
+          }
+        }
+        if (replaceWith[g] === undefined) {
+          if (objectPath.has(field, 'alt_model')) {
+            const alt_model1 = objectPath.get(field, 'alt_model')
+            if (objectPath.has(result, alt_model1)) {
+              replaceWith[g] = objectPath.get(result, alt_model1)
+            } else {
+              replaceWith[g] = 'Not Defined'
+            }
+          } else {
+            replaceWith[g] = 'Not Defined'
+          }
+        }
+      }
+    }
+    found.forEach((e,i) => mapping[`{${e}}`] = replaceWith[i])
+    str = str.replace(/\{\w+\}/ig, n => mapping[n])
+    return str
+  }
+}
+
 async function getAllKeys() {
   const keys = []
   let publicKey = ''
@@ -478,6 +796,32 @@ async function getPIN(patient_id) {
   }
 }
 
+async function getResource(resource, arr, patient_id) {
+  let prefix = ''
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    prefix = patient_id + '_'
+  }
+  const resourceDB = new PouchDB(prefix + resource)
+  const result = await resourceDB.allDocs({
+    include_docs: true,
+    attachments: true,
+    startkey: 'nosh_',
+  })
+  if (result.rows.length > 0) {
+    for (const a of result.rows) {
+      let label = 'No Name'
+      if (objectPath.has(a, 'doc.text.div')) {
+        label = removeTags(a.doc.text.div)
+      }
+      arr.push({
+        val: Case.pascal(pluralize.singular(resource)) + '/' + a.doc.id,
+        label: label
+      })
+    }
+  }
+  return arr
+}
+
 async function introspect(req, jwt, method, location) {
   try {
     const a = await fetch(urlFix(process.env.TRUSTEE_URL) + '/api/as/.well-known/gnap-as-rs')
@@ -540,6 +884,21 @@ function isMarkdown(text) {
   }
   const tokens = marked.lexer(text)
   return containsNonTextTokens(tokens)
+}
+
+async function loadSelect(resource, id, schema, patient_id) {
+  let arr = []
+  if (Array.isArray(resource)) {
+    for (const resource0 of resource) {
+      arr = await getResource(resource0, arr, patient_id)
+    }
+  } else {
+    arr = await getResource(resource, arr, patient_id)
+  }
+  if (arr.length > 0) {
+    schema = addSchemaOptions(id, arr, 'val', 'label', schema)
+  }
+  return schema
 }
 
 function markdownParse(text) {
@@ -693,6 +1052,15 @@ async function registerResources(patient_id='', protocol='', hostname='', email=
   }
 }
 
+function removeTags(str) {
+  if ((str===null) || (str==='')) {
+    return false
+  } else {
+    str = str.toString()
+    return str.replace( /(<([^>]+)>)/ig, '')
+  }
+}
+
 async function signRequest(doc, urlinput, method, req, auth='') {
   const keys = await getKeys()
   if (keys.length === 0) {
@@ -773,6 +1141,9 @@ async function sync(resource, patient_id='', save=false, data={}) {
   if (save) {
     const result = await local.put(data)
     await eventAdd('Updated ' + pluralize.singular(resource.replace('_statements', '')), {id: 'system', display: 'System', doc_db: resource, doc_id: result.id, diff: null}, patient_id)
+    if (timelineResources.includes(resource)) {
+      await timelineUpdate([{id: data._id, resource: resource}], 'update')
+    }
   }
   if (resource !== 'users' && resource !== 'presentations' && resource !== 'binaries') {
     const info = await local.info()
@@ -799,6 +1170,138 @@ async function sync(resource, patient_id='', save=false, data={}) {
       })
     } catch (e) {
       console.log(e)
+    }
+  }
+}
+
+const timelineResources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references']
+
+async function timelineUpdate(work_arr, action, patient_id) {
+  let prefix = ''
+  if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
+    prefix = patient_id + '_'
+  }
+  await sync('timeline', patient_id)
+  const timelineDB = new PouchDB(prefix + 'timeline')
+  const result = await timelineDB.allDocs({
+    include_docs: true,
+    attachments: true,
+    startkey: 'nosh_'
+  })
+  let timeline = []
+  let timeline_doc = {}
+  let timeline_return = []
+  for (const work_item of work_arr) {
+    if (action == 'delete') {
+      if (result.rows.length > 0) {
+        timeline_doc = objectPath.get(result, 'rows.0.doc')
+        const check = objectPath.get(result, 'rows.0.doc.timeline').filter((row) => row.id === work_item.id && row.resource === work_item.resource)
+        if (check !== -1) {
+          const del_timeline = objectPath.get(result, 'rows.0.doc.timeline').filter((row) => row.id !== work_item.id)
+          objectPath.set(timeline_doc, 'timeline', del_timeline)
+          await sync('timeline', patient_id, true, timeline_doc)
+          timeline_return = del_timeline
+        }
+      }
+    } else {
+      const json = fetchJSON('/ui/drawer')
+      const drawer = json.rows
+      const base = fetchJSON('/fhir/' + work_item.resource)
+      const resource1 = drawer.find(item => item.resource === work_item.resource)
+      const title = 'New ' + Case.title(pluralize.singular(work_item.resource))
+      let schema = []
+      if (work_item.resource !== 'observations') {
+        if (work_item.resource !== 'encounters') {
+          schema = base.uiSchema.flat()
+        } else {
+          schema = base.new.uiSchema.flat()
+        }
+      }
+      if (work_item.resource === 'immunizations') {
+        const actSites = fetchJSON('actSites')
+        schema = addSchemaOptions('site', actSites.concept[0].concept[0].concept, 'code', 'display', schema)
+      }
+      if (work_item.resource === 'medication_statements') {
+        const doseform = fetchJSON('doseform')
+        const routes = fetchJSON('routes')
+        schema = addSchemaOptions('doseUnit', doseform.concept, 'code', 'display', schema)
+        schema = addSchemaOptions('route', routes, 'code', 'desc', schema)
+      }
+      if (work_item.resource === 'encounters') {
+        const serviceTypes = fetchJSON('serviceTypes')
+        schema = addSchemaOptions('serviceType', serviceTypes, 'Code', 'Display', schema)
+        const encounterTypes = fetchJSON('encounterTypes')
+        schema = addSchemaOptions('type', encounterTypes, 'Code', 'Display', schema)
+        schema = await loadSelect('practitioners', 'participant', schema, patient_id)
+      }
+      if (work_item.resource === 'document_references') {
+        const docTypeCodes = fetchJSON('docTypeCodes')
+        const docClassCodes = fetchJSON('docClassCodes')
+        schema = addSchemaOptions('type', docTypeCodes, 'Code', 'Display', schema, 'http://loinc.org')
+        schema = addSchemaOptions('category', docClassCodes, 'Code', 'Display', schema, 'http://loinc.org')
+        schema = addSchemaOptions('category', [{'Code': 'clinical-note', 'Display': 'Clinical Note'}], 'Code', 'Display', schema, 'http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category')
+      }
+      const db = new PouchDB(prefix + work_item.resource)
+      const doc = await db.get(work_item.id)
+      const timelineItem = {}
+      objectPath.set(timelineItem, 'id', work_item.id)
+      objectPath.set(timelineItem, 'title', fhirReplace('title', base, doc, schema))
+      objectPath.set(timelineItem, 'subtitle', objectPath.get(doc,  base.timelineDate) + ', ' + title)
+      objectPath.set(timelineItem, 'content', fhirReplace('content', base, doc, schema))
+      objectPath.set(timelineItem, 'extended', fhirReplace('extended', base, doc, schema))
+      objectPath.set(timelineItem, 'status', fhirReplace('status', base, doc, schema))
+      objectPath.set(timelineItem, 'date', new Date(objectPath.get(doc, base.timelineDate)))
+      objectPath.set(timelineItem, 'icon', resource1.icon)
+      objectPath.set(timelineItem, 'resource', work_item.resource)
+      objectPath.set(timelineItem, 'keys', base.fuse)
+      objectPath.set(timelineItem, 'style', base.uiListContent.contentStyle)
+      if (work_item.resource === 'encounters') {
+        const bundle_db = new PouchDB(prefix + 'bundles')
+        const bundle_result = await bundle_db.find({selector: {'entry': {"$elemMatch": {"resource.encounter.reference": 'Encounter/' + work_item.id}}, _id: {"$gte": null}}})
+        if (bundle_result.docs.length > 0) {
+          bundle_result.docs.sort((a1, b1) => moment(b1.timestamp) - moment(a1.timestamp))
+          const history = []
+          for (const b in bundle_result.docs) {
+            if (!objectPath.has(timelineItem, 'bundle')) {
+              objectPath.set(timelineItem, 'bundle', objectPath.get(bundle_result, 'docs.' + b))
+              history.push(objectPath.get(bundle_result, 'docs.' + b))
+            } else {
+              history.push(objectPath.get(bundle_result, 'docs.' + b))
+            }
+          }
+          objectPath.set(timelineItem, 'bundle_history', history)
+        }
+        if (objectPath.has(doc, 'sync_id')) {
+          const doc_ref_db = new PouchDB(prefix + 'document_references')
+          const doc_ref_db_res = await doc_ref_db.find({selector: {'context.encounter.0.reference': {'$regex': objectPath.get(doc, 'sync_id')}, _id: {"$gte": null}}})
+          if (doc_ref_db_res.docs.length > 0) {
+            if (!objectPath.has(timelineItem, 'bundle')) {
+              objectPath.set(timelineItem, 'document_reference', objectPath.get(doc_ref_db_res, 'docs.0'))
+            }
+          }
+        }
+      }
+      if (work_item.resource === 'document_references') {
+        const binary_ids = []
+        for (const c in objectPath.get(doc, 'content')) {
+          const binary_id = objectPath.get(doc, 'content.' + c + '.attachment.url').substring(objectPath.get(doc, 'content.' + c + '.attachment.url').indexOf('/') + 1)
+          binary_ids.push(binary_id)
+        }
+        objectPath.set(timelineItem, 'binaries', binary_ids)
+      }
+      timeline.push(timelineItem)
+    }
+  }
+  if (result.rows.length > 0) {
+    if (action === 'update') {
+      timeline_doc = objectPath.get(result, 'rows.0.doc')
+      const new_timeline = [...timeline, ...objectPath.get(result, 'rows.0.doc.timeline')]
+      new_timeline.sort((c, d) => d.date - c.date)
+      objectPath.set(timeline_doc, 'timeline', new_timeline)
+      await sync('timeline', patient_id, true, timeline_doc)
+      return new_timeline
+    } else {
+      return timeline_return
     }
   }
 }
@@ -984,4 +1487,4 @@ async function verifyPIN(pin, patient_id) {
   }
 }
 
-export { couchdbConfig, couchdbDatabase, couchdbInstall, couchdbUpdate, createKeyPair, equals, eventAdd, eventUser, getAllKeys, getKeys, getName, getNPI, getPIN, introspect, isMarkdown, markdownParse, pollSet, registerResources, signRequest, sleep, sync, urlFix, userAdd, verify, verifyJWT, verifyPIN }
+export { addSchemaOptions, couchdbConfig, couchdbDatabase, couchdbInstall, couchdbUpdate, createKeyPair, equals, eventAdd, eventUser, fetchJSON, fhirDisplay, fhirModel, fhirReplace, getAllKeys, getKeys, getName, getNPI, getPIN, getResource, introspect, isMarkdown, loadSelect, markdownParse, pollSet, registerResources, removeTags, signRequest, sleep, sync, timelineResources, timelineUpdate, urlFix, userAdd, verify, verifyJWT, verifyPIN }

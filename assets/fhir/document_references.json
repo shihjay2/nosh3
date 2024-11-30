@@ -1,0 +1,105 @@
+{
+  "fhir" : {
+    "resourceType": "DocumentReference",
+    "id": "",
+    "status": "",
+    "subject": {
+      "reference": ""
+    },
+    "date": ""
+  },
+  "resourceName": "Document Reference",
+  "activeField": "status",
+  "patientField": "subject.reference",
+  "divContent": "{conditionText} [{conditionICD10}] (Date: {onsetDateTime})",
+  "defaultDate": [
+    {
+      "id": "date",
+      "format": "YYYY-MM-DD HH:mm"
+    }
+  ],
+  "timelineDate": "date",
+  "uiListContent": {
+    "title": "{type}",
+    "subhead": "{date}",
+    "contentFields": ["description", "status", "category"],
+    "contentStyle": "p",
+    "extended": "",
+    "status": "{status}"
+  },
+  "fuse": ["type.coding.0.display", "type.coding.0.code", "description", "category.coding.0.code", "categoy.coding.0.display", "status.coding.0.code", "meta.tag.0.display"],
+  "uiSchema": [
+    [
+      {
+        "id": "type",
+        "label": "Type",
+        "modelRoot": "type.coding",
+        "modelArray": true,
+        "model": "code",
+        "type": "select",
+        "options": [],
+        "display": "display",
+        "system": {
+          "model": "system",
+          "value": "http://loinc.org"
+        },
+        "alt_label_model": "type.text",
+        "rules": "required"
+      },
+      {
+        "id": "category",
+        "label": "Category",
+        "modelRoot": "category",
+        "modelArray": true,
+        "model": "coding.0.code",
+        "type": "select",
+        "options": [],
+        "multiple": true,
+        "display": "coding.0.display",
+        "system": {
+          "model": "coding.0.system"
+        },
+        "rules": "required"
+      }
+    ],
+    {
+      "id": "description",
+      "label": "Description",
+      "model": "description",
+      "type": "text",
+      "rules": "required"
+    },
+    [
+      {
+        "id": "status",
+        "label": "Status",
+        "model": "status",
+        "type": "select",
+        "options": [
+          {"value": "current", "label": "Current"},
+          {"value": "superseded", "label": "Superseded"},
+          {"value": "entered-in-error", "label": "Entered in Error"}
+        ],
+        "rules": "required"
+      },
+      {
+        "id": "date",
+        "label": "Date",
+        "model": "date",
+        "type": "datetime",
+        "rules": "required",
+        "mask": "####-##-## ##:##",
+        "placeholder": "YYYY-MM-DD HH:mm"
+      }
+    ],
+    {
+      "id": "tags",
+      "label": "Tags",
+      "modelRoot": "meta.tag",
+      "modelArray": true,
+      "model": "display",
+      "type": "tags",
+      "rules": ""
+    }
+  ]
+}

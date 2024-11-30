@@ -1,6 +1,5 @@
 import dotenv from 'dotenv'
 dotenv.config()
-import axios from 'axios'
 import Case from 'case'
 import express from 'express'
 import fastDiff from 'fast-diff'
@@ -10,7 +9,7 @@ import pluralize from 'pluralize'
 import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
 import { v4 as uuidv4 } from 'uuid'
-import { eventAdd, sync, urlFix, verifyJWT } from './core.mjs'
+import { eventAdd, sync, urlFix, verifyJWT, timelineResources, timelineUpdate } from './core.mjs'
 
 const router = express.Router()
 import PouchDBFind from 'pouchdb-find'
@@ -43,6 +42,9 @@ async function deleteSecuredResource(req, res) {
     }
     opts = await eventUser(res, opts, prefix)
     await eventAdd('Deleted ' + pluralize.singular(req.params.type.replace('_statements', '')), opts, req.params.pid)
+    if (timelineResources.includes(props.resource)) {
+      await timelineUpdate([{id: req.params.id, resource: Case.snake(pluralize(req.params.type))}], 'delete')
+    }
     await pollSet(req.params.pid, Case.snake(pluralize(req.params.type)))
     const endTime = performance.now()
     const diff = endTime - startTime

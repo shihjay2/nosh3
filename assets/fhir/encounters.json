@@ -1,0 +1,354 @@
+{
+  "fhir" : {
+    "resourceType": "Encounter",
+    "id": "",
+    "status": "",
+    "subject": {
+      "reference": ""
+    }
+  },
+  "resourceName": "Encounter",
+  "activeField": "status",
+  "patientField": "subject.reference",
+  "divContent": "{reasonCode} (Date of Service: {periodStart})",
+  "timelineDate": "period.start",
+  "uiListContent": {
+    "title": "{reasonCode}",
+    "subhead": "{periodStart}",
+    "contentFields": ["participant", "class", "serviceType"],
+    "contentStyle": "p",
+    "extended": "{priority}",
+    "status": ""
+  },
+  "uiSchema": [
+    [
+      {
+        "id": "class",
+        "label": "Encounter Class",
+        "modelRoot": "class",
+        "modelArray": false,
+        "model": "code",
+        "type": "select",
+        "options": [
+          {"value": "AMB", "label": "Ambulatory"},
+          {"value": "VR", "label": "Virtual"},
+          {"value": "HH", "label": "Home Health"},
+          {"value": "EMER", "label": "Emergency"},
+          {"value": "IMP", "label": "Inpatient Encounter"},
+          {"value": "ACUTE", "label": "Inpatient Acute"},
+          {"value": "NONAC", "label": "Inpatient Non-Acute"},
+          {"value": "OBSENC", "label": "Observation Encounter"},
+          {"value": "PRENC", "label": "Pre-admission"},
+          {"value": "SS", "label": "Short Stay"},
+          {"value": "FLD", "label": "Field"}
+        ],
+        "rules": "required",
+        "display": "display",
+        "system": {
+          "model": "system",
+          "value": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+        },
+        "category": "new"
+      },
+      {
+        "id": "type",
+        "label": "Encounter Type",
+        "modelRoot": "type.0.coding",
+        "model": "code",
+        "type": "select",
+        "options": [],
+        "rules": "required",
+        "display": "display",
+        "system": {
+          "model": "system",
+          "value": "http://snomed.info/sct"
+        },
+        "category": "new"
+      },
+      {
+        "id": "serviceType",
+        "label": "Service Type",
+        "modelRoot": "serviceType.coding",
+        "model": "code",
+        "type": "select",
+        "options": [],
+        "rules": "required",
+        "display": "display",
+        "system": {
+          "model": "system",
+          "value": "http://terminology.hl7.org/CodeSystem/service-type"
+        },
+        "category": "new"
+      }
+    ],
+    {
+      "id": "reasonCode",
+      "label": "Encounter Reason",
+      "modelRoot": "reasonCode",
+      "modelArray": true,
+      "model": "text",
+      "alt_model": "type.0.coding.0.display",
+      "type": "tags",
+      "rules": "required",
+      "category": "new"
+    },
+    {
+      "id": "participant",
+      "label": "Participants",
+      "modelRoot": "participant",
+      "modelArray": true,
+      "model": "individual.reference",
+      "type": "select",
+      "multiple": true,
+      "options": [],
+      "rules": "required",
+      "display": "individual.display",
+      "category": "new"
+    },
+    [
+      {
+        "id": "periodStart",
+        "label": "Date of Service (Start)",
+        "model": "period.start",
+        "type": "date",
+        "rules": "required",
+        "mask": "####-##-##",
+        "placeholder": "YYYY-MM-DD",
+        "category": "new"
+      },
+      {
+        "id": "priority",
+        "label": "Priority",
+        "modelRoot": "priority.coding",
+        "model": "code",
+        "type": "select",
+        "options": [
+          {"value": "R", "label": "Routine"},
+          {"value": "UR", "label": "Urgent"},
+          {"value": "S", "label": "STAT"},
+          {"value": "EM", "label": "Emergency"},
+          {"value": "EL", "label": "Elective"}
+        ],
+        "rules": "",
+        "display": "display",
+        "system": {
+          "model": "system",
+          "value": "https://www.hl7.org/fhir/v3/ActPriority/cs.html"
+        },
+        "category": "new"
+      },
+      {
+        "id": "status",
+        "label": "Status",
+        "model": "status",
+        "type": "select",
+        "options": [
+          {"value": "planned", "label": "Planned"},
+          {"value": "arrived", "label": "Arrived"},
+          {"value": "triaged", "label": "Triaged"},
+          {"value": "in-progress", "label": "In Progress"},
+          {"value": "onleave", "label": "On Leave"},
+          {"value": "finished", "label": "Finished"},
+          {"value": "cancelled", "label": "Cancelled"},
+          {"value": "entered-in-error", "label": "Entered In Error"},
+          {"value": "unknown", "label": "Unknown"}
+        ],
+        "rules": "required",
+        "category": "new"
+      }
+    ],
+    {
+      "id": "tags",
+      "label": "Tags",
+      "modelRoot": "meta.tag",
+      "modelArray": true,
+      "model": "display",
+      "type": "tags",
+      "rules": "",
+      "category":"new"
+    }
+  ],
+  "new": {
+    "resourceName": "Encounter",
+    "defaultDate": [
+      {
+        "id": "periodStart",
+        "format": "YYYY-MM-DD"
+      }
+    ],
+    "uiSchema": [
+      [
+        {
+          "id": "class",
+          "label": "Encounter Class",
+          "modelRoot": "class",
+          "modelArray": false,
+          "model": "code",
+          "type": "select",
+          "options": [
+            {"value": "AMB", "label": "Ambulatory"},
+            {"value": "VR", "label": "Virtual"},
+            {"value": "HH", "label": "Home Health"},
+            {"value": "EMER", "label": "Emergency"},
+            {"value": "IMP", "label": "Inpatient Encounter"},
+            {"value": "ACUTE", "label": "Inpatient Acute"},
+            {"value": "NONAC", "label": "Inpatient Non-Acute"},
+            {"value": "OBSENC", "label": "Observation Encounter"},
+            {"value": "PRENC", "label": "Pre-admission"},
+            {"value": "SS", "label": "Short Stay"},
+            {"value": "FLD", "label": "Field"}
+          ],
+          "rules": "required",
+          "display": "display",
+          "system": {
+            "model": "system",
+            "value": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+          },
+          "category": "new"
+        },
+        {
+          "id": "type",
+          "label": "Encounter Type",
+          "modelRoot": "type.0.coding",
+          "model": "code",
+          "type": "select",
+          "options": [],
+          "rules": "required",
+          "display": "display",
+          "system": {
+            "model": "system",
+            "value": "http://snomed.info/sct"
+          },
+          "category": "new"
+        },
+        {
+          "id": "serviceType",
+          "label": "Service Type",
+          "modelRoot": "serviceType.coding",
+          "model": "code",
+          "type": "select",
+          "options": [],
+          "rules": "required",
+          "display": "display",
+          "system": {
+            "model": "system",
+            "value": "http://terminology.hl7.org/CodeSystem/service-type"
+          },
+          "category": "new"
+        }
+      ],
+      {
+        "id": "reasonCode",
+        "label": "Encounter Reason",
+        "modelRoot": "reasonCode",
+        "modelArray": true,
+        "model": "text",
+        "alt_model": "type.0.coding.0.display",
+        "type": "tags",
+        "rules": "required",
+        "category": "new"
+      },
+      {
+        "id": "participant",
+        "label": "Participants",
+        "modelRoot": "participant",
+        "modelArray": true,
+        "model": "individual.reference",
+        "type": "select",
+        "multiple": true,
+        "options": [],
+        "rules": "required",
+        "display": "individual.display",
+        "category": "new"
+      },
+      [
+        {
+          "id": "periodStart",
+          "label": "Date of Service (Start)",
+          "model": "period.start",
+          "type": "date",
+          "rules": "required",
+          "mask": "####-##-##",
+          "placeholder": "YYYY-MM-DD",
+          "category": "new"
+        },
+        {
+          "id": "priority",
+          "label": "Priority",
+          "modelRoot": "priority.coding",
+          "model": "code",
+          "type": "select",
+          "options": [
+            {"value": "R", "label": "Routine"},
+            {"value": "UR", "label": "Urgent"},
+            {"value": "S", "label": "STAT"},
+            {"value": "EM", "label": "Emergency"},
+            {"value": "EL", "label": "Elective"}
+          ],
+          "rules": "",
+          "display": "display",
+          "system": {
+            "model": "system",
+            "value": "https://www.hl7.org/fhir/v3/ActPriority/cs.html"
+          },
+          "category": "new"
+        },
+        {
+          "id": "status",
+          "label": "Status",
+          "model": "status",
+          "type": "select",
+          "options": [
+            {"value": "planned", "label": "Planned"},
+            {"value": "arrived", "label": "Arrived"},
+            {"value": "triaged", "label": "Triaged"},
+            {"value": "in-progress", "label": "In Progress"},
+            {"value": "onleave", "label": "On Leave"},
+            {"value": "finished", "label": "Finished"},
+            {"value": "cancelled", "label": "Cancelled"},
+            {"value": "entered-in-error", "label": "Entered In Error"},
+            {"value": "unknown", "label": "Unknown"}
+          ],
+          "rules": "required",
+          "category": "new"
+        }
+      ],
+      {
+        "id": "tags",
+        "label": "Tags",
+        "modelRoot": "meta.tag",
+        "modelArray": true,
+        "model": "display",
+        "type": "tags",
+        "rules": "",
+        "category":"new"
+      }
+    ]
+  },
+  "tabs": [
+    {
+      "category": "subjective",
+      "label": "Subjective",
+      "template": "list",
+      "resource": "compositions"
+    },
+    {
+      "category": "assessment_plan",
+      "label": "Assessment and Plan",
+      "template": "list",
+      "resource": "care_plans"
+    },
+    {
+      "category": "objective",
+      "label": "Objective",
+      "template": "mixed",
+      "resource": "observations"
+    },
+    {
+      "category": "new",
+      "label": "Details",
+      "template": "form",
+      "resource": "encounters"
+    }
+  ]
+}

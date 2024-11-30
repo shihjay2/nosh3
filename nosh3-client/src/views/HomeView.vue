@@ -869,7 +869,7 @@ export default defineComponent({
 },
   setup () {
     const $q = useQuasar()
-    const { addSchemaOptions, clearCoverage, clearEOB, clearOIDC, fetchJSON, fhirModel, fhirReplace, getCoverage, getEOB, getOIDC, getOIDCDebug, importFHIR, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, setOIDC, sleep, sync, syncAll, syncTooltip, syncSome, timelineResources, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
+    const { addSchemaOptions, clearCoverage, clearEOB, clearOIDC, fetchJSON, fhirModel, fhirReplace, getCoverage, getEOB, getOIDC, getOIDCDebug, importFHIR, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, setOIDC, sleep, sync, syncAll, syncTooltip, syncSome, timelineResources, timelineUpdate, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
     const state = reactive({
       menuVisible: false,
       showDrawer: false,
@@ -1720,6 +1720,19 @@ export default defineComponent({
         attachments: true,
         startkey: 'nosh_'
       })
+      if (result.rows.length > 0) {
+        state.timeline = objectPath.get(result, 'rows.0.doc.timeline')
+      } else {
+        state.timeline = await timelineUpdate([], 'update')
+      }
+    }
+    const loadTimeline_old = async() => {
+      const timelineDB = new PouchDB(prefix + 'timeline')
+      const result = await timelineDB.allDocs({
+        include_docs: true,
+        attachments: true,
+        startkey: 'nosh_'
+      })
       let build = false
       if (result.rows.length > 0) {
         const index_row = result.rows.findIndex(e => e.reference === 'document_references')
@@ -2447,6 +2460,11 @@ export default defineComponent({
       state.patientAge = '' + moment().diff(doc.birthDate, 'years')
       state.patientGender = Case.title(doc.gender)
       state.patientDOB = doc.birthDate
+      auth.setPatientInfo({
+        patient_dob: state.patientDOB,
+        patient_name: state.patientName,
+        patient_gender: state.patientGender
+      })
       if (objectPath.has(doc, 'photo.0.data')) {
         state.patientPhoto = 'data:' + doc.photo[0].contentType + ';base64,' + doc.photo[0].data
       } else {

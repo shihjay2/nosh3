@@ -381,7 +381,7 @@ export default defineComponent({
   emits: ['care-plan', 'complete-task', 'composition', 'loading', 'lock-thread', 'new-prescription', 'open-bundle', 'open-chat', 'open-form', 'open-file', 'open-page', 'open-qr', 'reload-drawer', 'reload-complete', 'remove-oidc', 'set-composition-section'],
   setup (props, { emit }) {
     const $q = useQuasar()
-    const { addSchemaOptions, eventAdd, fetchJSON, fhirModel, fhirReplace, getPrefix, groupItems, importFHIR, inbox, loadSelect, removeTags, sync } = common()
+    const { addSchemaOptions, eventAdd, fetchJSON, fhirModel, fhirReplace, getPrefix, groupItems, importFHIR, inbox, loadSelect, removeTags, sync, timelineResources, timelineUpdate } = common()
     const state = reactive({
       auth: {},
       online: false,
@@ -633,6 +633,9 @@ export default defineComponent({
         diff: null
       }
       await eventAdd('Deleted ' + pluralize.singular(props.resource.replace('_statements', '').replace('_references', '')), props.patient, opts)
+      if (timelineResources.includes(props.resource)) {
+        await timelineUpdate([{id: doc._id, resource: props.resource}], 'delete')
+      }
       if (props.resource === 'conditions') {
         if (state.rows[index].history) {
           for (const a in state.rows[index].history) {

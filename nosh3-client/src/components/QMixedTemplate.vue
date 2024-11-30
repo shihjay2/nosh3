@@ -92,7 +92,7 @@ export default defineComponent({
   },
   emits: ['open-form', 'open-graph', 'reload-complete'],
   setup (props, { emit }) {
-    const { eventAdd, getPrefix } = common()
+    const { eventAdd, getPrefix, timelineResources, timelineUpdate } = common()
     const state = reactive({
       base: {},
       schema: {},
@@ -226,6 +226,9 @@ export default defineComponent({
         diff: null
       }
       await eventAdd('Deleted ' + pluralize.singular(props.resource.replace('_statements', '').replace('_references', '')), props.patient, opts)
+      if (timelineResources.includes(props.resource)) {
+        await timelineUpdate([{id: doc._id, resource: props.resource}], 'delete')
+      }
       await query()
     }
     const removeTags = (str) => {

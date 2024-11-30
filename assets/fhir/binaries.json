@@ -1,0 +1,8 @@
+{
+  "fhir" : {
+    "resourceType": "Binary",
+    "id": "",
+    "contentType": "",
+    "data": ""
+  }
+}

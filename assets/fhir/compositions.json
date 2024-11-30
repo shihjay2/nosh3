@@ -1,0 +1,231 @@
+{
+  "fhir" : {
+    "resourceType": "Composition",
+    "id": "",
+    "status": "",
+    "category": [
+      {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "",
+            "display": ""
+          }
+        ]
+      }
+    ],
+    "subject": {
+      "reference": ""
+    },
+    "encounter": {
+      "reference": ""
+    },
+    "author": [
+      {
+        "reference": "",
+        "display": ""
+      }
+    ],
+    "date": "",
+    "confidentiality": "",
+    "section": []
+  },
+  "resourceName": "Narrative",
+  "activeField": "status",
+  "patientField": "subject.reference",
+  "finalStatus": "final",
+  "divContent": "<p><b>Generated Narrative with Details</b></p><p><b>Title</b>: {title}</p><p><b>Type</b>: {code}</p><p><b>Date</b>: {datetime}</p><p><b>Status</b>: {status}</p><p><b>Author</b>: {author}</p><p><b>Confidentiality</b>: {confidentiality}</p>",
+  "indexField": "encounter.reference",
+  "indexRoot": "Encounter",
+  "defaultDate": [
+    {
+      "id": "datetime",
+      "format": "YYYY-MM-DD HH:mm"
+    }
+  ],
+  "uiListContent": {
+    "title": "{title}",
+    "subhead": "{datetime}",
+    "contentFields": ["category", "confidentiality", "status"],
+    "contentStyle": "p",
+    "extended": "",
+    "status": ""
+  },
+  "uiSchema": [
+    {
+      "id": "category",
+      "label": "Category",
+      "modelRoot": "category",
+      "modelArray": true,
+      "model": "coding.0.code",
+      "type": "select",
+      "options": [],
+      "display": "coding.0.display",
+      "system": {
+        "model": "coding.0.system",
+        "value": "http://loinc.org"
+      },
+      "rules": "required"
+    },
+    {
+      "id": "title",
+      "label": "Title",
+      "model": "title",
+      "hidden": true
+    },
+    {
+      "id": "code",
+      "label": "Type",
+      "modelRoot": "type",
+      "modelArray": false,
+      "model": "coding.0.code",
+      "type": "select",
+      "options": [],
+      "display": "coding.0.display",
+      "system": {
+        "model": "coding.0.system",
+        "value": "http://loinc.org"
+      },
+      "copy":  {
+        "id": "title"
+      },
+      "rules": "required"
+    },
+    [
+      {
+        "id": "datetime",
+        "label": "Narrative Date/Time",
+        "model": "date",
+        "type": "datetime",
+        "rules": "required",
+        "mask": "####-##-## ##:##",
+        "placeholder": "YYYY-MM-DD HH:mm"
+      },
+      {
+        "id": "confidentiality",
+        "label": "Confidential Level",
+        "model": "confidentiality",
+        "type": "select",
+        "options": [
+          {
+            "value": "U",
+            "label": "Unrestricted"
+          },
+          {
+            "value": "L",
+            "label": "Low"
+          },
+          {
+            "value": "M",
+            "label": "Moderate"
+          },
+          {
+            "value": "N",
+            "label": "Normal"
+          },
+          {
+            "value": "R",
+            "label": "Restricted"
+          },
+          {
+            "value": "V",
+            "label": "Very Restricted"
+          }
+        ],
+        "rules": "required"
+      }
+    ],
+    [
+      {
+        "id": "author",
+        "label": "Author",
+        "modelRoot": "author",
+        "modelArray": true,
+        "model": "reference",
+        "type": "select",
+        "options": [],
+        "rules": "required",
+        "display": "display"
+      },
+      {
+        "id": "status",
+        "label": "Status",
+        "model": "status",
+        "type": "select",
+        "options": [
+          {
+            "value": "preliminary",
+            "label": "Preliminary"
+          },
+          {
+            "value": "final",
+            "label": "Final"
+          },
+          {
+            "value": "amended",
+            "label": "Amended"
+          },
+          {
+            "value": "entered-in-error",
+            "label": "Entered In Error"
+          }
+        ],
+        "rules": "required"
+      }
+    ]
+  ],
+  "section": {
+    "uiSchema": [
+      {
+        "id": "section_title",
+        "label": "Title",
+        "modelParent": "section",
+        "model": "title",
+        "hidden": true
+      },
+      {
+        "id": "section_code",
+        "label": "Section Type",
+        "modelParent": "section",
+        "modelRoot": "coding.coding",
+        "modelArray": true,
+        "model": "code",
+        "type": "select",
+        "options": [],
+        "display": "display",
+        "system": {
+          "model": "system",
+          "value": "http://loinc.org"
+        },
+        "copy":  {
+          "id": "section_title"
+        },
+        "rules": "required",
+        "category": "section"
+      },
+      {
+        "id": "section_text",
+        "label": "Text",
+        "modelParent": "section",
+        "model": "text.div",
+        "type": "editor",
+        "rules": "required",
+        "div": true,
+        "category": "section"
+      },
+      {
+        "id": "section_author",
+        "label": "Author",
+        "modelParent": "section",
+        "modelRoot": "author",
+        "modelArray": true,
+        "model": "reference",
+        "type": "select",
+        "options": [],
+        "rules": "required",
+        "display": "display",
+        "category": "section"
+      }
+    ]
+  }
+}

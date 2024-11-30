@@ -1,0 +1,260 @@
+{
+  "fhir" : {
+    "resourceType": "Immunization",
+    "id": "",
+    "status": "",
+    "vaccineCode": {
+      "coding": [
+        {
+          "system": "http://hl7.org/fhir/sid/cvx",
+          "code": "",
+          "display": ""
+        }
+      ]
+    },
+    "patient": {
+      "reference": ""
+    },
+    "occurrenceDateTime": ""
+  },
+  "resourceName": "Immunization",
+  "activeField": "status",
+  "compField": "vaccineCode.coding.0.code",
+  "patientField": "patient.reference",
+  "divContent": "{immunizationText} [{immunizationCode}] (Date: {occurrenceDateTime})",
+  "defaultDate": [
+    {
+      "id": "occurrenceDateTime",
+      "format": "YYYY-MM-DD"
+    }
+  ],
+  "timelineDate": "occurrenceDateTime",
+  "uiListContent": {
+    "title": "{immunizationText} [{immunizationCode}]",
+    "subhead": "{occurrenceDateTime}",
+    "contentFields": ["manufacturer", "lotNumber", "expirationDate", "dose", "doseUnit", "route", "site"],
+    "contentStyle": "p",
+    "extended": "{note}",
+    "status": "{status}"
+  },
+  "uiSchema": [
+    [
+      {
+        "id": "immunizationText",
+        "label": "Vaccine",
+        "model": "vaccineCode.coding.0.display",
+        "type": "text",
+        "readonly": true,
+        "rules": "required"
+      },
+      {
+        "id": "immunizationCode",
+        "label": "CVX",
+        "model": "vaccineCode.coding.0.code",
+        "type": "text",
+        "readonly": true,
+        "rules": "required"
+      }
+    ],
+    {
+      "id": "occurrenceDateTime",
+      "label": "Date",
+      "model": "occurrenceDateTime",
+      "type": "date",
+      "rules": "required",
+      "mask": "####-##-##",
+      "placeholder": "YYYY-MM-DD"
+    },
+    [
+      {
+        "id": "primarySource",
+        "label": "Primary Source",
+        "model": "primarySource",
+        "type": "checkbox",
+        "rules": ""
+      },
+      {
+        "id": "reportOrigin",
+        "label": "Report Origin",
+        "modelRoot": "reportOrigin.coding",
+        "model": "code",
+        "type": "select",
+        "options": [
+          {"value": "provider", "label": "Other Provider"},
+          {"value": "record", "label": "Written Record"},
+          {"value": "recall", "label": "Parent/Guardian/Patient Recall"},
+          {"value": "school", "label": "School"}
+        ],
+        "display": "text",
+        "rules": ""
+      }
+    ],
+    [
+      {
+        "id": "dose",
+        "label": "Dose",
+        "modelRoot": "doseQuantity",
+        "modelArray": false,
+        "model": "value",
+        "system": {
+          "model": "system",
+          "value": "http://unitsofmeasure.org"
+        },
+        "type": "text",
+        "rules": ""
+      },
+      {
+        "id": "doseUnit",
+        "label": "Unit",
+        "modelRoot": "doseQuantity",
+        "modelArray": false,
+        "model": "code",
+        "type": "select",
+        "options": [
+          {"value": "ml", "label": "ml"},
+          {"value": "mg", "label": "mg"},
+          {"value": "mcg", "label": "mcg"}
+        ],
+        "readonly": true,
+        "rules": ""
+      },
+      {
+        "id": "route",
+        "label": "Route",
+        "modelRoot": "route.coding",
+        "modelArray": true,
+        "model": "code",
+        "type": "select",
+        "options": [
+          {"value": "IDINJ", "label": "Injection, intradermal"},
+          {"value": "IM", "label": "Injection, intramuscular"},
+          {"value": "NASINHLC", "label": "Inhalation, nasal"},
+          {"value": "IVINJ", "label": "Injection, intravenous"},
+          {"value": "PO", "label": "Swallow, oral"},
+          {"value": "SQ", "label": "Injection, subcutaneous"},
+          {"value": "TRNSDERM", "label": "Transdermal"}
+        ],
+        "display": "display",
+        "system": {
+          "model": "system",
+          "value": "https://www.hl7.org/fhir/v3/RouteOfAdministration/cs.html"
+        },
+        "rules": ""
+      }
+    ],
+    [
+      {
+        "id": "site",
+        "label": "Body Site",
+        "modelRoot": "site.coding",
+        "modelArray": true,
+        "model": "code",
+        "type": "autocomplete",
+        "options": [],
+        "display": "display",
+        "system": {
+          "model": "system",
+          "value": "http://terminology.hl7.org/CodeSystem/v3-ActSite"
+        },
+        "modelDefault": "site.text",
+        "rules": ""
+      },
+      {
+        "id": "expirationDate",
+        "label": "Expiration Date",
+        "model": "expirationDate",
+        "type": "date",
+        "rules": "",
+        "mask": "####-##-##",
+        "placeholder": "YYYY-MM-DD"
+      }
+    ],
+    [
+      {
+        "id": "manufacturer",
+        "label": "Manufacturer",
+        "model": "manufacturer.display",
+        "type": "text",
+        "rules": ""
+      },
+      {
+        "id": "lotNumber",
+        "label": "LOT number",
+        "model": "lotNumber",
+        "type": "text",
+        "rules": ""
+      },
+      {
+        "id": "isSubpotent",
+        "label": "Subpotent",
+        "model": "isSubpotent",
+        "type": "checkbox",
+        "rules": ""
+      }
+    ],
+    {
+      "id": "note",
+      "label": "Note",
+      "model": "note.text",
+      "type": "textarea",
+      "rules": ""
+    },
+    [
+      {
+        "id": "status",
+        "label": "Status",
+        "model": "status",
+        "type": "select",
+        "options": [
+          {"value": "completed", "label": "Completed"},
+          {"value": "entered-in-error", "label": "Entered in Error"},
+          {"value": "not-done", "label": "Not Done"}
+        ],
+        "rules": "required"
+      },
+      {
+        "id": "reasonCode",
+        "label": "Reason",
+        "modelRoot": "reasonCode.coding",
+        "modelArray": true,
+        "model": "code",
+        "type": "select",
+        "options": [
+          {"value": "429060002", "label": "Procedure to meet occupational requirement"},
+          {"value": "281657000", "label": "Travel vaccinations"}
+        ],
+        "display": "display",
+        "system": {
+          "model": "system",
+          "value": "http://snomed.info/sct"
+        },
+        "rules": ""
+      }
+    ],
+    {
+      "id": "tags",
+      "label": "Tags",
+      "modelRoot": "meta.tag",
+      "modelArray": true,
+      "model": "display",
+      "type": "tags",
+      "rules": ""
+    },
+    {
+      "id": "protocol",
+      "model": "protocolApplied",
+      "hidden": true
+    }
+  ],
+  "uiSearchBars": [
+    {
+      "bar": "searchVaccine",
+      "label": "Search Vaccine",
+      "code": "immunizationCode",
+      "text": "immunizationText",
+      "route": "route",
+      "doseUnit": "doseUnit",
+      "protocol": "protocol"
+    }
+  ]
+}
