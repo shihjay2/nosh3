@@ -1623,7 +1623,7 @@ export default defineComponent({
           for (const row of oidc[a].docs) {
             if (objectPath.has(row, 'rows')) {
               for (const doc of row.rows) {
-                await importFHIR(doc, row.resource, state.patient, oidc[a].origin)
+                await importFHIR(doc, row.resource, state.patient, oidc[a].origin, true)
                 reloadDrawer(row.resource)
                 const counter = Number(i) + 1
                 notif({
@@ -1635,13 +1635,15 @@ export default defineComponent({
           }
         }
       }
-      await clearSync()
-      state.sync_on = false
       notif({
         caption: 'Building timeline...'
       })
-      auth.setTimelineBuild()
-      await loadTimeline()
+      await timelineUpdate(auth.timeline_update, 'update')
+      auth.clearTimelineUpdate()
+      await clearSync()
+      state.sync_on = false
+      // auth.setTimelineBuild()
+      // await loadTimeline()
       state.loading = false
       notif({
         icon: 'done',
@@ -3026,7 +3028,7 @@ export default defineComponent({
                         objectPath.set(doc, 'subject.reference', 'Patient/' + state.patient)
                       }
                     }
-                    await sync(resource, false, state.patient, true, doc.resource)
+                    await sync(resource, false, state.patient, true, doc.resource, false, false)
                   }
                 }
                 if (objectPath.has(doc, 'resource.events')) {
@@ -3046,10 +3048,15 @@ export default defineComponent({
                 })
                 j++
               }
+              notif({
+                caption: 'Building timeline...'
+              })
+              await timelineUpdate(auth.timeline_update, 'update')
+              auth.clearTimelineUpdate()
               state.loading = false
               state.sync_on = false
-              auth.setTimelineBuild()
-              await loadTimeline()
+              // auth.setTimelineBuild()
+              // await loadTimeline()
               notif({
                 icon: 'done',
                 spinner: false,

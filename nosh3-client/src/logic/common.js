@@ -649,7 +649,7 @@ export function common() {
     }
     return ret
   }
-  const importFHIR = async(doc, resource, patient, origin) => {
+  const importFHIR = async(doc, resource, patient, origin, multiple=false) => {
     if (resource !== 'practitioners' && resource !== 'related_persons') {
       const id = 'nosh_' + uuidv4()
       objectPath.set(doc, 'sync_id', objectPath.get(doc, 'id'))
@@ -846,7 +846,11 @@ export function common() {
           objectPath.set(doc, 'subject.reference', 'Patient/' + patient)
         }
       }
-      await sync(resource, false, patient, true, doc)
+      if (multiple) {
+        await sync(resource, false, patient, true, doc, false, false)
+      } else {
+        await sync(resource, false, patient, true, doc)
+      }
     }
   }
   const importReference = async(resource, reference_id, origin, patient) => {
@@ -1426,7 +1430,7 @@ export function common() {
   const sleep = async(seconds) => {
     return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
   }
-  const sync = async(resource, online, patient_id, save=false, data={}, destroy=false, timeline=true, state={}) => {
+  const sync = async(resource, online, patient_id, save=false, data={}, destroy=false, timeline=true) => {
     const auth_store = useAuthStore()
     const couchdb = auth_store.couchdb
     const auth = {fetch: (url, opts) => {
@@ -1466,6 +1470,10 @@ export function common() {
       if (timeline) {
         if (timelineResources.includes(resource)) {
           await timelineUpdate([{id: data._id, resource: resource}], 'update')
+        }
+      } else {
+        if (timelineResources.includes(resource)) {
+          auth_store.setTimelineUpdate({id: data._id, resource: resource})
         }
       }
       await eventAdd('Updated ' + pluralize.singular(resource.replace('_statements', '')), patient_id, opts)

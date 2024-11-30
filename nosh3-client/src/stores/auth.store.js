@@ -27,6 +27,7 @@ export const useAuthStore = defineStore(localStorage.getItem('auth_id') || 'auth
     maia: null,
     maia_alt: null,
     timeline_build: false,
+    timeline_update: [],
     patient_dob: null,
     patient_name: null,
     patient_gender: null
@@ -142,6 +143,12 @@ export const useAuthStore = defineStore(localStorage.getItem('auth_id') || 'auth
     },
     setTimelineBuild() {
       this.timeline_build = true
+    },
+    setTimelineUpdate(item) {
+      this.timeline_update.push(item)
+    },
+    clearTimelineUpdate() {
+      this.timeline_update = []
     },
     unsetTimelineBuild() {
       this.timeline_build = false
