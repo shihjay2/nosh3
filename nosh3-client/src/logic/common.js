@@ -649,7 +649,7 @@ export function common() {
     }
     return ret
   }
-  const importFHIR = async(doc, resource, patient, origin, multiple=false) => {
+  const importFHIR = async(doc, resource, patient, origin) => {
     if (resource !== 'practitioners' && resource !== 'related_persons') {
       const id = 'nosh_' + uuidv4()
       objectPath.set(doc, 'sync_id', objectPath.get(doc, 'id'))
@@ -846,11 +846,7 @@ export function common() {
           objectPath.set(doc, 'subject.reference', 'Patient/' + patient)
         }
       }
-      if (multiple) {
-        await sync(resource, false, patient, true, doc, false, false)
-      } else {
-        await sync(resource, false, patient, true, doc)
-      }
+      await sync(resource, false, patient, true, doc)
     }
   }
   const importReference = async(resource, reference_id, origin, patient) => {
@@ -1430,7 +1426,7 @@ export function common() {
   const sleep = async(seconds) => {
     return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
   }
-  const sync = async(resource, online, patient_id, save=false, data={}, destroy=false, timeline=true) => {
+  const sync = async(resource, online, patient_id, save=false, data={}, destroy=false) => {
     const auth_store = useAuthStore()
     const couchdb = auth_store.couchdb
     const auth = {fetch: (url, opts) => {
@@ -1467,14 +1463,8 @@ export function common() {
         auth_store.update(data)
       }
       auth_store.setSyncResource(resource)
-      if (timeline) {
-        if (timelineResources.includes(resource)) {
-          await timelineUpdate([{id: data._id, resource: resource}], 'update')
-        }
-      } else {
-        if (timelineResources.includes(resource)) {
-          auth_store.setTimelineUpdate({id: data._id, resource: resource})
-        }
+      if (timelineResources.includes(resource)) {
+        await timelineUpdate({id: data._id, resource: resource, action: 'update'})
       }
       await eventAdd('Updated ' + pluralize.singular(resource.replace('_statements', '')), patient_id, opts)
     }
@@ -1612,7 +1602,7 @@ export function common() {
   const syncState = reactive({ total: 0, complete: 0 })
   const syncTooltip = reactive({ text: '' })
   const timelineResources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references']
-  const timelineUpdate = async(work_arr, action) => {
+  const timelineUpdate = async(opts) => {
     const state = useAuthStore()
     const prefix = getPrefix()
     const timelineDB = new PouchDB(prefix + 'timeline')
@@ -1621,133 +1611,118 @@ export function common() {
       attachments: true,
       startkey: 'nosh_'
     })
-    let timeline_old = []
     let timeline = []
     let timeline_doc = {}
-    let timeline_return = []
-    for (const work_item of work_arr) {
-      if (action == 'delete') {
-        if (result.rows.length > 0) {
-          timeline_doc = objectPath.get(result, 'rows.0.doc')
-          if (timeline_old.length === 0) {
-            timeline_old = objectPath.get(result, 'rows.0.doc.timeline')
-          }
-          const check = objectPath.get(result, 'rows.0.doc.timeline').filter((row) => row.id === work_item.id && row.resource === work_item.resource)
-          if (check !== -1) {
-            const del_timeline = objectPath.get(result, 'rows.0.doc.timeline').filter((row) => row.id !== work_item.id)
-            objectPath.set(timeline_doc, 'timeline', del_timeline)
-            await sync('timeline', false, state.patient, true, timeline_doc)
-            timeline_return = del_timeline
-          }
+    if (opts.action == 'delete') {
+      if (result.rows.length > 0) {
+        timeline_doc = objectPath.get(result, 'rows.0.doc')
+        const check = objectPath.get(result, 'rows.0.doc.timeline').filter((row) => row.id === opts.id && row.resource === opts.resource)
+        if (check !== -1) {
+          timeline = objectPath.get(result, 'rows.0.doc.timeline').filter((row) => row.id !== opts.id)
         }
-      } else {
-        if (result.rows.length > 0) {
-          timeline_doc = objectPath.get(result, 'rows.0.doc')
-          if (timeline_old.length === 0) {
-            timeline_old = objectPath.get(result, 'rows.0.doc.timeline')
-          }
-          timeline_old = timeline_old.filter((row) => row.id !== work_item.id && row.resource !== work_item.resource)
-        }
-        const json = await import('@/assets/ui/drawer.json')
-        const drawer = json.rows
-        const base = await import('@/assets/fhir/' + work_item.resource + '.json')
-        const resource1 = drawer.find(item => item.resource === work_item.resource)
-        const title = 'New ' + Case.title(pluralize.singular(work_item.resource))
-        let schema = []
-        if (work_item.resource !== 'observations') {
-          if (work_item.resource !== 'encounters') {
-            schema = base.uiSchema.flat()
-          } else {
-            schema = base.new.uiSchema.flat()
-          }
-        }
-        if (work_item.resource === 'immunizations') {
-          const actSites = await fetchJSON('actSites', state.online)
-          schema = addSchemaOptions('site', actSites.concept[0].concept[0].concept, 'code', 'display', schema)
-        }
-        if (work_item.resource === 'medication_statements') {
-          const doseform = await fetchJSON('doseform', state.online)
-          const routes = await fetchJSON('routes', state.online)
-          schema = addSchemaOptions('doseUnit', doseform.concept, 'code', 'display', schema)
-          schema = addSchemaOptions('route', routes, 'code', 'desc', schema)
-        }
-        if (work_item.resource === 'encounters') {
-          const serviceTypes = await fetchJSON('serviceTypes', state.online)
-          schema = addSchemaOptions('serviceType', serviceTypes, 'Code', 'Display', schema)
-          const encounterTypes = await fetchJSON('encounterTypes', state.online)
-          schema = addSchemaOptions('type', encounterTypes, 'Code', 'Display', schema)
-          schema = await loadSelect('practitioners', 'participant', schema)
-        }
-        if (work_item.resource === 'document_references') {
-          const docTypeCodes = await fetchJSON('docTypeCodes', state.online)
-          const docClassCodes = await fetchJSON('docClassCodes', state.online)
-          schema = addSchemaOptions('type', docTypeCodes, 'Code', 'Display', schema, 'http://loinc.org')
-          schema = addSchemaOptions('category', docClassCodes, 'Code', 'Display', schema, 'http://loinc.org')
-          schema = addSchemaOptions('category', [{'Code': 'clinical-note', 'Display': 'Clinical Note'}], 'Code', 'Display', schema, 'http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category')
-        }
-        const db = new PouchDB(prefix + work_item.resource)
-        const doc = await db.get(work_item.id)
-        const timelineItem = {}
-        objectPath.set(timelineItem, 'id', work_item.id)
-        objectPath.set(timelineItem, 'title', fhirReplace('title', base, doc, schema))
-        objectPath.set(timelineItem, 'subtitle', objectPath.get(doc,  base.timelineDate) + ', ' + title)
-        objectPath.set(timelineItem, 'content', fhirReplace('content', base, doc, schema))
-        objectPath.set(timelineItem, 'extended', fhirReplace('extended', base, doc, schema))
-        objectPath.set(timelineItem, 'status', fhirReplace('status', base, doc, schema))
-        objectPath.set(timelineItem, 'date', new Date(objectPath.get(doc, base.timelineDate)))
-        objectPath.set(timelineItem, 'icon', resource1.icon)
-        objectPath.set(timelineItem, 'resource', work_item.resource)
-        objectPath.set(timelineItem, 'keys', base.fuse)
-        objectPath.set(timelineItem, 'style', base.uiListContent.contentStyle)
-        if (work_item.resource === 'encounters') {
-          const bundle_db = new PouchDB(prefix + 'bundles')
-          const bundle_result = await bundle_db.find({selector: {'entry': {"$elemMatch": {"resource.encounter.reference": 'Encounter/' + work_item.id}}, _id: {"$gte": null}}})
-          if (bundle_result.docs.length > 0) {
-            bundle_result.docs.sort((a1, b1) => moment(b1.timestamp) - moment(a1.timestamp))
-            const history = []
-            for (const b in bundle_result.docs) {
-              if (!objectPath.has(timelineItem, 'bundle')) {
-                objectPath.set(timelineItem, 'bundle', objectPath.get(bundle_result, 'docs.' + b))
-                history.push(objectPath.get(bundle_result, 'docs.' + b))
-              } else {
-                history.push(objectPath.get(bundle_result, 'docs.' + b))
-              }
-            }
-            objectPath.set(timelineItem, 'bundle_history', history)
-          }
-          if (objectPath.has(doc, 'sync_id')) {
-            const doc_ref_db = new PouchDB(prefix + 'document_references')
-            const doc_ref_db_res = await doc_ref_db.find({selector: {'context.encounter.0.reference': {'$regex': objectPath.get(doc, 'sync_id')}, _id: {"$gte": null}}})
-            if (doc_ref_db_res.docs.length > 0) {
-              if (!objectPath.has(timelineItem, 'bundle')) {
-                objectPath.set(timelineItem, 'document_reference', objectPath.get(doc_ref_db_res, 'docs.0'))
-              }
-            }
-          }
-        }
-        if (work_item.resource === 'document_references') {
-          const binary_ids = []
-          for (const c in objectPath.get(doc, 'content')) {
-            const binary_id = objectPath.get(doc, 'content.' + c + '.attachment.url').substring(objectPath.get(doc, 'content.' + c + '.attachment.url').indexOf('/') + 1)
-            binary_ids.push(binary_id)
-          }
-          objectPath.set(timelineItem, 'binaries', binary_ids)
-        }
-        timeline.push(timelineItem)
       }
+    } else {
+      if (result.rows.length > 0) {
+        timeline_doc = objectPath.get(result, 'rows.0.doc')
+        timeline = objectPath.get(result, 'rows.0.doc.timeline')
+        const check = objectPath.get(result, 'rows.0.doc.timeline').filter((row) => row.id === opts.id && row.resource === opts.resource)
+        if (check !== -1) {
+          timeline = timeline.filter((row) => row.id !== opts.id)
+        }
+      }
+      const json = await import('@/assets/ui/drawer.json')
+      const drawer = json.rows
+      const base = await import('@/assets/fhir/' + opts.resource + '.json')
+      const resource1 = drawer.find(item => item.resource === opts.resource)
+      const title = 'New ' + Case.title(pluralize.singular(opts.resource))
+      let schema = []
+      if (opts.resource !== 'observations') {
+        if (opts.resource !== 'encounters') {
+          schema = base.uiSchema.flat()
+        } else {
+          schema = base.new.uiSchema.flat()
+        }
+      }
+      if (opts.resource === 'immunizations') {
+        const actSites = await fetchJSON('actSites', state.online)
+        schema = addSchemaOptions('site', actSites.concept[0].concept[0].concept, 'code', 'display', schema)
+      }
+      if (opts.resource === 'medication_statements') {
+        const doseform = await fetchJSON('doseform', state.online)
+        const routes = await fetchJSON('routes', state.online)
+        schema = addSchemaOptions('doseUnit', doseform.concept, 'code', 'display', schema)
+        schema = addSchemaOptions('route', routes, 'code', 'desc', schema)
+      }
+      if (opts.resource === 'encounters') {
+        const serviceTypes = await fetchJSON('serviceTypes', state.online)
+        schema = addSchemaOptions('serviceType', serviceTypes, 'Code', 'Display', schema)
+        const encounterTypes = await fetchJSON('encounterTypes', state.online)
+        schema = addSchemaOptions('type', encounterTypes, 'Code', 'Display', schema)
+        schema = await loadSelect('practitioners', 'participant', schema)
+      }
+      if (opts.resource === 'document_references') {
+        const docTypeCodes = await fetchJSON('docTypeCodes', state.online)
+        const docClassCodes = await fetchJSON('docClassCodes', state.online)
+        schema = addSchemaOptions('type', docTypeCodes, 'Code', 'Display', schema, 'http://loinc.org')
+        schema = addSchemaOptions('category', docClassCodes, 'Code', 'Display', schema, 'http://loinc.org')
+        schema = addSchemaOptions('category', [{'Code': 'clinical-note', 'Display': 'Clinical Note'}], 'Code', 'Display', schema, 'http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category')
+      }
+      const db = new PouchDB(prefix + opts.resource)
+      const doc = await db.get(opts.id)
+      const timelineItem = {}
+      objectPath.set(timelineItem, 'id', opts.id)
+      objectPath.set(timelineItem, 'title', fhirReplace('title', base, doc, schema))
+      objectPath.set(timelineItem, 'subtitle', objectPath.get(doc,  base.timelineDate) + ', ' + title)
+      objectPath.set(timelineItem, 'content', fhirReplace('content', base, doc, schema))
+      objectPath.set(timelineItem, 'extended', fhirReplace('extended', base, doc, schema))
+      objectPath.set(timelineItem, 'status', fhirReplace('status', base, doc, schema))
+      objectPath.set(timelineItem, 'date', new Date(objectPath.get(doc, base.timelineDate)))
+      objectPath.set(timelineItem, 'icon', resource1.icon)
+      objectPath.set(timelineItem, 'resource', opts.resource)
+      objectPath.set(timelineItem, 'keys', base.fuse)
+      objectPath.set(timelineItem, 'style', base.uiListContent.contentStyle)
+      if (opts.resource === 'encounters') {
+        const bundle_db = new PouchDB(prefix + 'bundles')
+        const bundle_result = await bundle_db.find({selector: {'entry': {"$elemMatch": {"resource.encounter.reference": 'Encounter/' + opts.id}}, _id: {"$gte": null}}})
+        if (bundle_result.docs.length > 0) {
+          bundle_result.docs.sort((a1, b1) => moment(b1.timestamp) - moment(a1.timestamp))
+          const history = []
+          for (const b in bundle_result.docs) {
+            if (!objectPath.has(timelineItem, 'bundle')) {
+              objectPath.set(timelineItem, 'bundle', objectPath.get(bundle_result, 'docs.' + b))
+              history.push(objectPath.get(bundle_result, 'docs.' + b))
+            } else {
+              history.push(objectPath.get(bundle_result, 'docs.' + b))
+            }
+          }
+          objectPath.set(timelineItem, 'bundle_history', history)
+        }
+        if (objectPath.has(doc, 'sync_id')) {
+          const doc_ref_db = new PouchDB(prefix + 'document_references')
+          const doc_ref_db_res = await doc_ref_db.find({selector: {'context.encounter.0.reference': {'$regex': objectPath.get(doc, 'sync_id')}, _id: {"$gte": null}}})
+          if (doc_ref_db_res.docs.length > 0) {
+            if (!objectPath.has(timelineItem, 'bundle')) {
+              objectPath.set(timelineItem, 'document_reference', objectPath.get(doc_ref_db_res, 'docs.0'))
+            }
+          }
+        }
+      }
+      if (opts.resource === 'document_references') {
+        const binary_ids = []
+        for (const c in objectPath.get(doc, 'content')) {
+          const binary_id = objectPath.get(doc, 'content.' + c + '.attachment.url').substring(objectPath.get(doc, 'content.' + c + '.attachment.url').indexOf('/') + 1)
+          binary_ids.push(binary_id)
+        }
+        objectPath.set(timelineItem, 'binaries', binary_ids)
+      }
+      timeline.push(timelineItem)
     }
     if (result.rows.length > 0) {
-      if (action === 'update') {
-        timeline_doc = objectPath.get(result, 'rows.0.doc')
-        console.log(timeline_old)
-        const new_timeline = [...timeline, ...timeline_old]
-        new_timeline.sort((c, d) => d.date - c.date)
-        objectPath.set(timeline_doc, 'timeline', new_timeline)
-        await sync('timeline', false, state.patient, true, timeline_doc)
-        return new_timeline
-      } else {
-        return timeline_return
+      if (opts.action === 'update') {
+        timeline.sort((c, d) => d.date - c.date)
       }
+      objectPath.set(timeline_doc, 'timeline', timeline)
+      await sync('timeline', false, state.patient, true, timeline_doc)
     } else {
       // brand new timeline
       const activitiesDb = new PouchDB(prefix + 'activities')
@@ -1778,8 +1753,8 @@ export function common() {
         // 'observations': observations
       }
       await sync('timeline', false, state.patient, true, doc1)
-      return timeline
     }
+    return timeline
   }
   const thread = async(doc, online, patient_id) => {
     let arr = []

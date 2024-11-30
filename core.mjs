@@ -1176,7 +1176,7 @@ async function sync(resource, patient_id='', save=false, data={}) {
 
 const timelineResources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references']
 
-async function timelineUpdate(work_arr, action, patient_id) {
+async function timelineUpdate(opts, patient_id) {
   let prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = patient_id + '_'
@@ -1188,134 +1188,121 @@ async function timelineUpdate(work_arr, action, patient_id) {
     attachments: true,
     startkey: 'nosh_'
   })
-  let timeline_old = []
   let timeline = []
   let timeline_doc = {}
-  let timeline_return = []
-  for (const work_item of work_arr) {
-    if (action == 'delete') {
-      if (result.rows.length > 0) {
-        timeline_doc = objectPath.get(result, 'rows.0.doc')
-        if (timeline_old.length === 0) {
-          timeline_old = objectPath.get(result, 'rows.0.doc.timeline')
-        }
-        const check = objectPath.get(result, 'rows.0.doc.timeline').filter((row) => row.id === work_item.id && row.resource === work_item.resource)
-        if (check !== -1) {
-          const del_timeline = objectPath.get(result, 'rows.0.doc.timeline').filter((row) => row.id !== work_item.id)
-          objectPath.set(timeline_doc, 'timeline', del_timeline)
-          await sync('timeline', patient_id, true, timeline_doc)
-          timeline_return = del_timeline
-        }
+  if (opts.action == 'delete') {
+    if (result.rows.length > 0) {
+      timeline_doc = objectPath.get(result, 'rows.0.doc')
+      const check = objectPath.get(result, 'rows.0.doc.timeline').filter((row) => row.id === opts.id && row.resource === opts.resource)
+      if (check !== -1) {
+        timeline = objectPath.get(result, 'rows.0.doc.timeline').filter((row) => row.id !== opts.id)
       }
-    } else {
-      if (result.rows.length > 0) {
-        timeline_doc = objectPath.get(result, 'rows.0.doc')
-        if (timeline_old.length === 0) {
-          timeline_old = objectPath.get(result, 'rows.0.doc.timeline')
-        }
-        timeline_old = timeline_old.filter((row) => row.id !== work_item.id && row.resource !== work_item.resource)
-      }
-      const json = fetchJSON('/ui/drawer')
-      const drawer = json.rows
-      const base = fetchJSON('/fhir/' + work_item.resource)
-      const resource1 = drawer.find(item => item.resource === work_item.resource)
-      const title = 'New ' + Case.title(pluralize.singular(work_item.resource))
-      let schema = []
-      if (work_item.resource !== 'observations') {
-        if (work_item.resource !== 'encounters') {
-          schema = base.uiSchema.flat()
-        } else {
-          schema = base.new.uiSchema.flat()
-        }
-      }
-      if (work_item.resource === 'immunizations') {
-        const actSites = fetchJSON('actSites')
-        schema = addSchemaOptions('site', actSites.concept[0].concept[0].concept, 'code', 'display', schema)
-      }
-      if (work_item.resource === 'medication_statements') {
-        const doseform = fetchJSON('doseform')
-        const routes = fetchJSON('routes')
-        schema = addSchemaOptions('doseUnit', doseform.concept, 'code', 'display', schema)
-        schema = addSchemaOptions('route', routes, 'code', 'desc', schema)
-      }
-      if (work_item.resource === 'encounters') {
-        const serviceTypes = fetchJSON('serviceTypes')
-        schema = addSchemaOptions('serviceType', serviceTypes, 'Code', 'Display', schema)
-        const encounterTypes = fetchJSON('encounterTypes')
-        schema = addSchemaOptions('type', encounterTypes, 'Code', 'Display', schema)
-        schema = await loadSelect('practitioners', 'participant', schema, patient_id)
-      }
-      if (work_item.resource === 'document_references') {
-        const docTypeCodes = fetchJSON('docTypeCodes')
-        const docClassCodes = fetchJSON('docClassCodes')
-        schema = addSchemaOptions('type', docTypeCodes, 'Code', 'Display', schema, 'http://loinc.org')
-        schema = addSchemaOptions('category', docClassCodes, 'Code', 'Display', schema, 'http://loinc.org')
-        schema = addSchemaOptions('category', [{'Code': 'clinical-note', 'Display': 'Clinical Note'}], 'Code', 'Display', schema, 'http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category')
-      }
-      const db = new PouchDB(prefix + work_item.resource)
-      const doc = await db.get(work_item.id)
-      const timelineItem = {}
-      objectPath.set(timelineItem, 'id', work_item.id)
-      objectPath.set(timelineItem, 'title', fhirReplace('title', base, doc, schema))
-      objectPath.set(timelineItem, 'subtitle', objectPath.get(doc,  base.timelineDate) + ', ' + title)
-      objectPath.set(timelineItem, 'content', fhirReplace('content', base, doc, schema))
-      objectPath.set(timelineItem, 'extended', fhirReplace('extended', base, doc, schema))
-      objectPath.set(timelineItem, 'status', fhirReplace('status', base, doc, schema))
-      objectPath.set(timelineItem, 'date', new Date(objectPath.get(doc, base.timelineDate)))
-      objectPath.set(timelineItem, 'icon', resource1.icon)
-      objectPath.set(timelineItem, 'resource', work_item.resource)
-      objectPath.set(timelineItem, 'keys', base.fuse)
-      objectPath.set(timelineItem, 'style', base.uiListContent.contentStyle)
-      if (work_item.resource === 'encounters') {
-        const bundle_db = new PouchDB(prefix + 'bundles')
-        const bundle_result = await bundle_db.find({selector: {'entry': {"$elemMatch": {"resource.encounter.reference": 'Encounter/' + work_item.id}}, _id: {"$gte": null}}})
-        if (bundle_result.docs.length > 0) {
-          bundle_result.docs.sort((a1, b1) => moment(b1.timestamp) - moment(a1.timestamp))
-          const history = []
-          for (const b in bundle_result.docs) {
-            if (!objectPath.has(timelineItem, 'bundle')) {
-              objectPath.set(timelineItem, 'bundle', objectPath.get(bundle_result, 'docs.' + b))
-              history.push(objectPath.get(bundle_result, 'docs.' + b))
-            } else {
-              history.push(objectPath.get(bundle_result, 'docs.' + b))
-            }
-          }
-          objectPath.set(timelineItem, 'bundle_history', history)
-        }
-        if (objectPath.has(doc, 'sync_id')) {
-          const doc_ref_db = new PouchDB(prefix + 'document_references')
-          const doc_ref_db_res = await doc_ref_db.find({selector: {'context.encounter.0.reference': {'$regex': objectPath.get(doc, 'sync_id')}, _id: {"$gte": null}}})
-          if (doc_ref_db_res.docs.length > 0) {
-            if (!objectPath.has(timelineItem, 'bundle')) {
-              objectPath.set(timelineItem, 'document_reference', objectPath.get(doc_ref_db_res, 'docs.0'))
-            }
-          }
-        }
-      }
-      if (work_item.resource === 'document_references') {
-        const binary_ids = []
-        for (const c in objectPath.get(doc, 'content')) {
-          const binary_id = objectPath.get(doc, 'content.' + c + '.attachment.url').substring(objectPath.get(doc, 'content.' + c + '.attachment.url').indexOf('/') + 1)
-          binary_ids.push(binary_id)
-        }
-        objectPath.set(timelineItem, 'binaries', binary_ids)
-      }
-      timeline.push(timelineItem)
     }
+  } else {
+    if (result.rows.length > 0) {
+      timeline_doc = objectPath.get(result, 'rows.0.doc')
+      timeline = objectPath.get(result, 'rows.0.doc.timeline')
+      const check = objectPath.get(result, 'rows.0.doc.timeline').filter((row) => row.id === opts.id && row.resource === opts.resource)
+      if (check !== -1) {
+        timeline = timeline.filter((row) => row.id !== opts.id)
+      }
+    }
+    const json = fetchJSON('/ui/drawer')
+    const drawer = json.rows
+    const base = fetchJSON('/fhir/' + opts.resource)
+    const resource1 = drawer.find(item => item.resource === opts.resource)
+    const title = 'New ' + Case.title(pluralize.singular(opts.resource))
+    let schema = []
+    if (opts.resource !== 'observations') {
+      if (opts.resource !== 'encounters') {
+        schema = base.uiSchema.flat()
+      } else {
+        schema = base.new.uiSchema.flat()
+      }
+    }
+    if (opts.resource === 'immunizations') {
+      const actSites = fetchJSON('actSites')
+      schema = addSchemaOptions('site', actSites.concept[0].concept[0].concept, 'code', 'display', schema)
+    }
+    if (opts.resource === 'medication_statements') {
+      const doseform = fetchJSON('doseform')
+      const routes = fetchJSON('routes')
+      schema = addSchemaOptions('doseUnit', doseform.concept, 'code', 'display', schema)
+      schema = addSchemaOptions('route', routes, 'code', 'desc', schema)
+    }
+    if (opts.resource === 'encounters') {
+      const serviceTypes = fetchJSON('serviceTypes')
+      schema = addSchemaOptions('serviceType', serviceTypes, 'Code', 'Display', schema)
+      const encounterTypes = fetchJSON('encounterTypes')
+      schema = addSchemaOptions('type', encounterTypes, 'Code', 'Display', schema)
+      schema = await loadSelect('practitioners', 'participant', schema, patient_id)
+    }
+    if (opts.resource === 'document_references') {
+      const docTypeCodes = fetchJSON('docTypeCodes')
+      const docClassCodes = fetchJSON('docClassCodes')
+      schema = addSchemaOptions('type', docTypeCodes, 'Code', 'Display', schema, 'http://loinc.org')
+      schema = addSchemaOptions('category', docClassCodes, 'Code', 'Display', schema, 'http://loinc.org')
+      schema = addSchemaOptions('category', [{'Code': 'clinical-note', 'Display': 'Clinical Note'}], 'Code', 'Display', schema, 'http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category')
+    }
+    const db = new PouchDB(prefix + opts.resource)
+    const doc = await db.get(opts.id)
+    const timelineItem = {}
+    objectPath.set(timelineItem, 'id', opts.id)
+    objectPath.set(timelineItem, 'title', fhirReplace('title', base, doc, schema))
+    objectPath.set(timelineItem, 'subtitle', objectPath.get(doc,  base.timelineDate) + ', ' + title)
+    objectPath.set(timelineItem, 'content', fhirReplace('content', base, doc, schema))
+    objectPath.set(timelineItem, 'extended', fhirReplace('extended', base, doc, schema))
+    objectPath.set(timelineItem, 'status', fhirReplace('status', base, doc, schema))
+    objectPath.set(timelineItem, 'date', new Date(objectPath.get(doc, base.timelineDate)))
+    objectPath.set(timelineItem, 'icon', resource1.icon)
+    objectPath.set(timelineItem, 'resource', opts.resource)
+    objectPath.set(timelineItem, 'keys', base.fuse)
+    objectPath.set(timelineItem, 'style', base.uiListContent.contentStyle)
+    if (opts.resource === 'encounters') {
+      const bundle_db = new PouchDB(prefix + 'bundles')
+      const bundle_result = await bundle_db.find({selector: {'entry': {"$elemMatch": {"resource.encounter.reference": 'Encounter/' + opts.id}}, _id: {"$gte": null}}})
+      if (bundle_result.docs.length > 0) {
+        bundle_result.docs.sort((a1, b1) => moment(b1.timestamp) - moment(a1.timestamp))
+        const history = []
+        for (const b in bundle_result.docs) {
+          if (!objectPath.has(timelineItem, 'bundle')) {
+            objectPath.set(timelineItem, 'bundle', objectPath.get(bundle_result, 'docs.' + b))
+            history.push(objectPath.get(bundle_result, 'docs.' + b))
+          } else {
+            history.push(objectPath.get(bundle_result, 'docs.' + b))
+          }
+        }
+        objectPath.set(timelineItem, 'bundle_history', history)
+      }
+      if (objectPath.has(doc, 'sync_id')) {
+        const doc_ref_db = new PouchDB(prefix + 'document_references')
+        const doc_ref_db_res = await doc_ref_db.find({selector: {'context.encounter.0.reference': {'$regex': objectPath.get(doc, 'sync_id')}, _id: {"$gte": null}}})
+        if (doc_ref_db_res.docs.length > 0) {
+          if (!objectPath.has(timelineItem, 'bundle')) {
+            objectPath.set(timelineItem, 'document_reference', objectPath.get(doc_ref_db_res, 'docs.0'))
+          }
+        }
+      }
+    }
+    if (opts.resource === 'document_references') {
+      const binary_ids = []
+      for (const c in objectPath.get(doc, 'content')) {
+        const binary_id = objectPath.get(doc, 'content.' + c + '.attachment.url').substring(objectPath.get(doc, 'content.' + c + '.attachment.url').indexOf('/') + 1)
+        binary_ids.push(binary_id)
+      }
+      objectPath.set(timelineItem, 'binaries', binary_ids)
+    }
+    timeline.push(timelineItem)
   }
   if (result.rows.length > 0) {
-    if (action === 'update') {
-      timeline_doc = objectPath.get(result, 'rows.0.doc')
-      console.log(timeline_old)
-      const new_timeline = [...timeline, ...timeline_old]
-      new_timeline.sort((c, d) => d.date - c.date)
-      objectPath.set(timeline_doc, 'timeline', new_timeline)
-      await sync('timeline', patient_id, true, timeline_doc)
-      return new_timeline
-    } else {
-      return timeline_return
+    if (opts.action === 'update') {
+      timeline.sort((c, d) => d.date - c.date)
     }
+    objectPath.set(timeline_doc, 'timeline', timeline)
+    await sync('timeline', patient_id, true, timeline_doc)
+    
   }
+  return timeline
 }
 
 function urlFix(url) {
