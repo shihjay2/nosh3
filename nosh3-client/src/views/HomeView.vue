@@ -1623,7 +1623,7 @@ export default defineComponent({
           for (const row of oidc[a].docs) {
             if (objectPath.has(row, 'rows')) {
               for (const doc of row.rows) {
-                await importFHIR(doc, row.resource, state.patient, oidc[a].origin, true)
+                await importFHIR(doc, row.resource, state.patient, oidc[a].origin)
                 reloadDrawer(row.resource)
                 const counter = Number(i) + 1
                 notif({
@@ -1638,7 +1638,7 @@ export default defineComponent({
       notif({
         caption: 'Building timeline...'
       })
-      await timelineUpdate(auth.timeline_update, 'update')
+      // await timelineUpdate(auth.timeline_update, 'update')
       auth.clearTimelineUpdate()
       await clearSync()
       state.sync_on = false
