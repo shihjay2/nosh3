@@ -31,7 +31,7 @@ export const useAuthStore = defineStore(localStorage.getItem('auth_id') || 'auth
     patient_dob: null,
     patient_name: null,
     patient_gender: null,
-    online: false
+    online: true
   }),
   persist: true,
   actions: {
@@ -51,6 +51,7 @@ export const useAuthStore = defineStore(localStorage.getItem('auth_id') || 'auth
       this.patient = payload._nosh.patient
       this.prefix = payload._nosh.prefix
       this.maia = payload._nosh.maia
+      this.online = true
     },
     logout() {
       let route = '/app/login'

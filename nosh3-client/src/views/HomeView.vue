@@ -1279,7 +1279,6 @@ export default defineComponent({
     }
     const checkOnline = (e) => {
       state.online = e
-      console.log(e)
       auth.setOnline(e)
     }
     const clearAll = async() => {
