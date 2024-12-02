@@ -30,7 +30,8 @@ export const useAuthStore = defineStore(localStorage.getItem('auth_id') || 'auth
     timeline_update: [],
     patient_dob: null,
     patient_name: null,
-    patient_gender: null
+    patient_gender: null,
+    online: false
   }),
   persist: true,
   actions: {
@@ -152,6 +153,9 @@ export const useAuthStore = defineStore(localStorage.getItem('auth_id') || 'auth
     },
     unsetTimelineBuild() {
       this.timeline_build = false
+    },
+    setOnline(online) {
+      this.online = online
     }
   }
 })

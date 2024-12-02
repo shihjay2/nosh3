@@ -451,7 +451,7 @@ export default defineComponent({
       state.careplanDoc = props.care_plan_doc
       state.compositionDoc = props.composition_doc
       state.patient = props.patient
-      state.encounter = props.encounters
+      state.encounter = props.encounter
       state.provider = props.provider
       state.resource = props.resource
       const resources = await fetchJSON('resources', props.online)
@@ -556,6 +556,9 @@ export default defineComponent({
       }
       if (props.resource === 'medication_statements') {
         objectPath.set(doc, 'informationSource.reference', props.user.reference)
+      }
+      if (props.resource === 'observations') {
+        objectPath.set(doc, 'performer.0.reference', props.user.reference)
       }
       await sync(props.resource, false, props.patient, true, doc)
       await reloadList()
@@ -1325,7 +1328,7 @@ export default defineComponent({
       emit('open-form', 'add', resource, category, '', defaults)
     }
     const setPrescription = async(doc) => {
-      const a = await import('@/assets/fhir/medication_requests.json')
+      const a = await fetchJSON('fhir/medication_requests', props.online)
       const doc1 = a.fhir
       objectPath.set(doc1, 'medicationCodeableConcept.coding.0.display', objectPath.get(doc, 'medicationCodeableConcept.coding.0.display'))
       objectPath.set(doc1, 'medicationCodeableConcept.coding.0.code', objectPath.get(doc, 'medicationCodeableConcept.coding.0.code'))

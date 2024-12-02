@@ -1279,6 +1279,7 @@ export default defineComponent({
     }
     const checkOnline = (e) => {
       state.online = e
+      auth.setOnline(e)
     }
     const clearAll = async() => {
       state.loading = true
@@ -1452,7 +1453,7 @@ export default defineComponent({
           openPage(id, state.resource, state.category)
         }
       } else if (state.resource == 'medication_statements' && id !== '' && state.new_medication_request === true) {
-        const a = await import('@/assets/fhir/medication_requests.json')
+        const a = await fetchJSON('fhir/medication_requests', state.online)
         const doc1 = a.fhir
         objectPath.set(doc1, 'medicationCodeableConcept.coding.0.display', objectPath.get(doc, 'medicationCodeableConcept.coding.0.display'))
         objectPath.set(doc1, 'medicationCodeableConcept.coding.0.code', objectPath.get(doc, 'medicationCodeableConcept.coding.0.code'))
@@ -1662,7 +1663,7 @@ export default defineComponent({
     }
     const loadResource = async(resource, category) => {
       state.loading = true
-      state.base = await import('@/assets/fhir/' + resource + '.json')
+      state.base = await fetchJSON('fhir/' + resource, state.online)
       if (category === 'all') {
         state.schema = state.base.uiSchema
         state.divContent = state.base.divContent
@@ -1761,14 +1762,12 @@ export default defineComponent({
           state.loading = true
           state.timeline_scroll = false
           state.timeline = []
-          // const resources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references', 'observations']
-          // const resources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references']
-          const json = await import('@/assets/ui/drawer.json')
+          const json = await fetchJSON('ui/drawer', state.online)
           const drawer = json.rows
           let timeline = []
           // const observations = []
           for (const resource of timelineResources) {
-            const base = await import('@/assets/fhir/' + resource + '.json')
+            const base = await fetchJSON('fhir/' + resource, state.online)
             const resource1 = drawer.find(item => item.resource === resource)
             const title = 'New ' + Case.title(pluralize.singular(resource))
             let schema = []
@@ -1952,12 +1951,12 @@ export default defineComponent({
           state.timeline = timeline
           if (result.rows.length > 0) {
             const doc = objectPath.get(result, 'rows.0.doc')
-            if (JSON.stringify(objectPath.get(doc, 'timeline')) !== JSON.stringify(timeline)) {
+            // if (JSON.stringify(objectPath.get(doc, 'timeline')) !== JSON.stringify(timeline)) {
             // if (JSON.stringify(objectPath.get(doc, 'timeline')) !== JSON.stringify(timeline) || JSON.stringify(objectPath.get(doc, 'observations')) !== JSON.stringify(observations)) {
               objectPath.set(doc, 'timeline', timeline)
               // objectPath.set(doc, 'observations', observations)
               await sync('timeline', false, state.patient, true, doc)
-            }
+            // }
           } else {
             const id = 'nosh_' + uuidv4()
             const doc1 = {
@@ -2355,7 +2354,7 @@ export default defineComponent({
           }
         }
         state.pulldown_resource = 'observations'
-        state.pulldown_base = await import('@/assets/fhir/observations.json')
+        state.pulldown_base = await fetchJSON('fhir/observations', state.online)
         if (type === 'pregnancy') {
           objectPath.set(state, 'pulldown_doc.code.coding.0.code', '82810-3')
           objectPath.set(state, 'pulldown_doc.code.coding.0.display', 'Pregnancy Status')
@@ -2410,7 +2409,7 @@ export default defineComponent({
             await openPage(id, b.resource, 'subjective')
           }
         } else {
-          const json = await import('@/assets/ui/drawer.json')
+          const json = await fetchJSON('ui/drawer', state.online)
           const c = json.rows.find(d => d.resource == b.resource)
           if (c.type === 'list') {
             await openList(b.resource, c.category)
@@ -2610,7 +2609,7 @@ export default defineComponent({
         let text = ''
         const sections_arr = []
         const a = new PouchDB(prefix + resource)
-        const b = await import('@/assets/fhir/' + resource + '.json')
+        const b = await fetchJSON('fhir/' + resource, state.online)
         const result = await a.find({selector: {[b.activeField]: {$ne: 'inactive'}, _id: {"$gte": null}}})
         text = '<ul>'
         for (const c in result.docs) {
@@ -2778,7 +2777,7 @@ export default defineComponent({
       objectPath.set(bundleDoc, 'data', 'ewogICJhbGciOiAiUlMyNTYiLAogICJraWQiOiAiMTMzNzQ3MTQxMjU1IiwKICAiaWF0IjogMCwKICAiaXNzIjogIkM9R0IsIEw9TG9uZG9uLCBPVT1OdWFwYXkgQVBJLCBPPU51YXBheSwgQ049eWJvcXlheTkycSIsCiAgImI2NCI6IGZhbHNlLAogICJjcml0IjogWwogICAgImlhdCIsCiAgICAiaXNzIiwKICAgICJiNjQiCiAgXQp9..d_cZ46lwNiaFHAu_saC-Zz4rSzNbevWirO94EmBlbOwkB1L78vGbAnNjUsmFSU7t_HhL-cyMiQUDyRWswsEnlDljJsRi8s8ft48ipy2SMuZrjPpyYYMgink8nZZK7l-eFJcTiS9ZWezAAXF_IJFXSTO5ax9z6xty3zTNPNMV9W7aH8fEAvbUIiueOhH5xNHcsuqlOGygKdFz2rbjTGffoE_6zS4Dry-uX5mts2duLorobUimGsdlUcSM6P6vZEtcXaJCdjrT9tuFMh4CkX9nqk19Bq2z3i-SX4JCPvhD2r3ghRmX0gG08UcvyFVbrnVZJnpl4MU8V4Nr3-2M5URZOg')
       let base = ''
       for (const resource of resources) {
-        base = await import('@/assets/fhir/' + resource + '.json')
+        base = await fetchJSON('fhir/' + resource, state.online)
         const db = new PouchDB(prefix + resource)
         const results = await db.find({selector: {[base.indexField]: {$eq: [base.indexRoot] + '/' + state.encounter}, _id: {"$gte": null}}})
         for (const a in results.docs) {

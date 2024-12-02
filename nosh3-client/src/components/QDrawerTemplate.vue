@@ -110,6 +110,7 @@ import objectPath from 'object-path'
 import PouchDB from 'pouchdb-browser'
 import PouchDBFind from 'pouchdb-find'
 PouchDB.plugin(PouchDBFind)
+import { useAuthStore } from '@/stores'
 
 export default defineComponent({
   name: 'QDrawerTemplate',
@@ -132,7 +133,8 @@ export default defineComponent({
   },
   emits: ['open-care-opportunities', 'open-list', 'open-page', 'open-pulldown', 'reload-drawer-complete', 'unset'],
   setup (props, { emit }) {
-    const { getPrefix, observationStatus, observationStatusRaw } = common()
+    const { fetchJSON, getPrefix, observationStatus, observationStatusRaw } = common()
+    const auth = useAuthStore()
     const state = reactive({
       patientName: '',
       patientAge: '',
@@ -169,11 +171,11 @@ export default defineComponent({
       state.patientNickname = props.patientNickname
       state.patient = props.patient
       state.encounter = props.encounter
-      const resources = await import('@/assets/ui/drawer.json')
+      const resources = await fetchJSON('ui/drawer', auth.online)
       state.ui = resources.rows
       for (const a in state.ui) {
         if (typeof state.ui[a].resource !== 'undefined') {
-          state.base[a] = await import('@/assets/fhir/' + state.ui[a].resource + '.json')
+          state.base[a] = await fetchJSON('fhir/' + state.ui[a].resource, auth.online)
           state.resources.push(state.ui[a].resource)
           const count = await query(state.ui[a].resource, a)
           objectPath.set(state, 'ui.' + a + '.count', count)

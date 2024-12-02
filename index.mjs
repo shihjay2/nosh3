@@ -53,17 +53,32 @@ app.get('/app/error', (req, res) => {
   res.sendFile(client + "index.html")
 })
 
-app.get('/fetch/:file/:type?', (req, res) => {
+// app.get('/fetch/:file/:type?', (req, res) => {
+//   let type = 'json'
+//   if (req.params.type == 'txt') {
+//     type = 'txt'
+//   }
+//   let raw = {}
+//   if (type === 'json') {
+//     raw = fs.readFileSync('./assets/' + req.params.file + '.' + type)
+//     res.status(200).json(JSON.parse(raw))
+//   } else {
+//     raw = fs.readFileSync('./assets/' + req.params.file + '.' + type, 'utf-8')
+//     res.status(200).send(raw)
+//   }
+// })
+
+app.post('/fetch', (req, res) => {
   let type = 'json'
-  if (req.params.type == 'txt') {
+  if (req.body.type == 'txt') {
     type = 'txt'
   }
   let raw = {}
   if (type === 'json') {
-    raw = fs.readFileSync('./assets/' + req.params.file + '.' + type)
+    raw = fs.readFileSync('./assets/' + req.body.file + '.' + type)
     res.status(200).json(JSON.parse(raw))
   } else {
-    raw = fs.readFileSync('./assets/' + req.params.file + '.' + type, 'utf-8')
+    raw = fs.readFileSync('./assets/' + req.body.file + '.' + type, 'utf-8')
     res.status(200).send(raw)
   }
 })

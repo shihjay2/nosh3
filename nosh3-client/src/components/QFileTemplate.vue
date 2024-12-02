@@ -203,7 +203,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const auth = useAuthStore()
     const $q = useQuasar()
-    const { addSchemaOptions, getPrefix, isMarkdown, sync } = common()
+    const { addSchemaOptions, fetchJSON, getPrefix, isMarkdown, sync } = common()
     const state = reactive({
       fhir: {},
       fhir1: {},
@@ -289,7 +289,7 @@ export default defineComponent({
       state.online = props.online
       state.couchdb = props.couchdb
       state.pin = props.pin
-      state.base = await import('@/assets/fhir/' + props.resource + '.json')
+      state.base = await fetchJSON('fhir/' + props.resource, props.online)
       if (props.category == 'photo') {
         state.accept = "image/*"
         state.change = true

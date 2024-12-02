@@ -43,6 +43,7 @@ import jsum from 'jsum'
 import objectPath from 'object-path'
 import { SiweMessage } from '@spruceid/ssx'
 import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from 'vue-qrcode-reader'
+import { useAuthStore } from '@/stores'
 
 export default defineComponent({
   name: 'QRReader',
@@ -73,7 +74,8 @@ export default defineComponent({
       complete: '',
       doc: {}
     })
-    const { fhirReplace } = common()
+    const { fhirReplace, fetchJSON } = common()
+    const auth = useAuthStore()
     onMounted(async() => {
       
     })
@@ -117,13 +119,13 @@ export default defineComponent({
                   const service_request = doc.entry.find(c => c.resource.resourceType == 'ServiceRequest')
                   if (medication_request !== undefined) {
                     comp_doc = medication_request
-                    state.base = await import('@/assets/fhir/medication_requests.json')
+                    state.base = await fetchJSON('fhir/medication_requests', auth.online)
                     state.complete = 'Medication Request Completed'
                     comp_doc_type = 'Medication Request'
                   }
                   if (service_request !== undefined) {
                     comp_doc = service_request
-                    state.base = await import('@/assets/fhir/service_requests.json')
+                    state.base = await fetchJSON('fhir/service_requests', auth.online)
                     state.complete = 'Service Request Completed'
                     comp_doc_type = 'Service Request'
                   }

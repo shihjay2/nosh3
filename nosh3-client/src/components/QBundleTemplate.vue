@@ -83,7 +83,7 @@ export default defineComponent({
     online: Boolean
   },
   setup (props, { emit }) {
-    const { loadSchema } = common()
+    const { fetchJSON, loadSchema } = common()
     const state = reactive({
       base: {},
       doc: {},
@@ -93,7 +93,7 @@ export default defineComponent({
     onMounted(async() => {
       state.doc = props.doc
       state.online = props.online
-      state.base = await import('@/assets/fhir/bundles.json')
+      state.base = await fetchJSON('fhir/bundles', props.online)
       for (const a in state.base.tabs) {
         if (typeof state.base.tabs[a].resource !== 'undefined') {
           if (state.base.tabs[a].resource === 'compositions' || state.base.tabs[a].resource === 'care_plans') {
@@ -197,7 +197,7 @@ export default defineComponent({
       }
     }
     const loadResource = async(index, resource, category) => {
-      const a = await import('@/assets/fhir/' + resource + '.json')
+      const a = await fetchJSON('fhir/' + resource, props.online)
       objectPath.set(state, 'base.tabs.' + index + '.base', a)
       if (category === 'all') {
         objectPath.set(state, 'base.tabs.' + index + '.schema', a.uiSchema)

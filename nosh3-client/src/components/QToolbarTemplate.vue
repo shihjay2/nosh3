@@ -302,7 +302,7 @@ export default defineComponent({
           state.maiaEnable = true
         }
       } else {
-        state.base = await import('@/assets/fhir/' + toolbar.resource + '.json')
+        state.base = await fetchJSON('fhir/' + toolbar.resource, props.online)
         if (typeof state.base.pageOpen !== 'undefined') {
           state.pageOpen = state.base.pageOpen
         }

@@ -243,7 +243,7 @@ export default defineComponent({
   emits: ['care-plan', 'clear-default', 'composition', 'close-form', 'loading', 'reload-drawer', 'set-composition-section'],
   setup (props, { emit }) {
     const $q = useQuasar()
-    const { addSchemaOptions, bundleBuild, fetchTXT, getPrefix, removeTags, sync, syncEmailToUser } = common()
+    const { addSchemaOptions, bundleBuild, fetchJSON, fetchTXT, getPrefix, removeTags, sync, syncEmailToUser } = common()
     const myInput = ref(null)
     const mySearchInput = ref(null)
     const state = reactive({
@@ -1232,7 +1232,7 @@ export default defineComponent({
       if (props.resource === 'medication_requests' || props.resource === 'service_requests') {
         const entries = []
         const references = []
-        const composition = await import('@/assets/fhir/compositions.json')
+        const composition = await fetchJSON('fhir/compositions', props.online)
         const composition_doc = composition.fhir
         const composition_id = 'nosh_' + uuidv4()
         objectPath.set(composition_doc, 'id', composition_id)

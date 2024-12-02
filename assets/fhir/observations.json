@@ -1755,7 +1755,7 @@
     {
       "category": "laboratory",
       "label": "Laboratory",
-      "template": "list",
+      "template": "observation_list",
       "resource": "observations"
     },
     {
@@ -1767,7 +1767,7 @@
     {
       "category": "vital-signs",
       "label": "Vital Signs",
-      "template": "list",
+      "template": "observation_list",
       "resource": "observations"
     },
     {

@@ -59,7 +59,7 @@ export default defineComponent({
     schema: Object
   },
   setup (props, { emit }) {
-    const { addSchemaOptions, sync, syncEmailToUser } = common()
+    const { addSchemaOptions, fetchJSON, sync, syncEmailToUser } = common()
     const state = reactive({
       data: {},
       style: '',
@@ -72,7 +72,7 @@ export default defineComponent({
     onMounted(async() => {
       state.data = props.data
       state.result = props.result
-      state.base = await import('@/assets/fhir/' + state.data.resource + '.json')
+      state.base = await fetchJSON('fhir/' + state.data.resource, props.online)
       state.schema = props.schema
       fhirMap()
     })

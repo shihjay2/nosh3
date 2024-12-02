@@ -193,6 +193,65 @@
               :service_request_doc="state.service_request_doc"
             />
           </q-card-section>
+          <q-card-section v-if="tab2.template == 'observation_list'">
+            <QObservationListTemplate
+              v-if="state.showList"
+              @loading="loading"
+              @open-form="openForm"
+              @reload-complete="reloadComplete"
+              @reload-drawer="reloadDrawer"
+              @remove-oidc="removeOIDC"
+              :auth="state.auth"
+              :online="state.online"
+              :couchdb="state.couchdb"
+              :pin="state.pin"
+              :patient="state.patient"
+              :provider="state.provider"
+              :practitioner="state.practitioner"
+              :user="state.user"
+              :reload="state.tabReload"
+              :resource="tab2.resource"
+              :category="state.category"
+              :sort="state.sort"
+              :base="state.formbase"
+              :schema="state.schema"
+              :within_page="state.within_page"
+              :oidc="state.oidc"
+            />
+            <QFormTemplate
+              v-if="state.showForm"
+              @care-plan="setActiveCarePlan"
+              @clear-default="clearDefault"
+              @close-form="closeForm"
+              @loading="loading"
+              @reload-drawer="reloadDrawer"
+              :auth="state.auth"
+              :online="state.online"
+              :couchdb="state.couchdb"
+              :pin="state.pin"
+              :id="state.id"
+              :patient="state.patient"
+              :provider="state.provider"
+              :practitioner="state.practitioner"
+              :user="state.user"
+              :encounter="state.encounter"
+              :resource="state.resource"
+              :category="state.category"
+              :index="state.index"
+              :default="state.default"
+              :base="state.formbase"
+              :schema="state.schema"
+              :keys="state.key"
+              :sub_schema="state.sub_schema"
+              :select="state.select"
+              :div_content="state.divContent"
+              :search="state.search"
+              :care_plan_doc="state.careplanDoc"
+              :composition_doc="state.compositionDoc"
+              :medication_request_doc="state.medication_request_doc"
+              :service_request_doc="state.service_request_doc"
+            />
+          </q-card-section>
           <q-card-section v-if="tab2.template == 'mixed'">
             <QMixedTemplate
               v-if="state.showList"
@@ -306,6 +365,7 @@ import QFormTemplate from './QFormTemplate.vue'
 import QInfoTemplate from './QInfoTemplate.vue'
 import QListTemplate from './QListTemplate.vue'
 import QMixedTemplate from './QMixedTemplate.vue'
+import QObservationListTemplate from './QObservationListTemplate.vue'
 import QTableTemplate from './QTableTemplate.vue'
 import {v4 as uuidv4} from 'uuid'
 
@@ -317,6 +377,7 @@ export default defineComponent({
     QFormTemplate,
     QInfoTemplate,
     QListTemplate,
+    QObservationListTemplate,
     QMixedTemplate,
     QTableTemplate
   },
@@ -349,7 +410,7 @@ export default defineComponent({
   emits: ['care-plan', 'composition', 'loading', 'load-timeline', 'lock-thread', 'new-prescription', 'open-form', 'open-graph', 'open-page-form-complete', 'reload-complete', 'reload-drawer', 'remove-oidc', 'open-list', 'update-toolbar'],
   setup (props, { emit }) {
     const $q = useQuasar()
-    const { addSchemaOptions, getPrefix, loadSchema, fetchJSON, sync, updateUser } = common()
+    const { addSchemaOptions, fetchJSON, getPrefix, loadSchema, sync, updateUser } = common()
     const state = reactive({
       auth: {},
       online: false,
@@ -445,7 +506,7 @@ export default defineComponent({
       state.practitioner = props.practitioner
       state.user = props.user
       state.oidc = props.oidc
-      state.base = await import('@/assets/fhir/' + props.resource + '.json')
+      state.base = await fetchJSON('fhir/' + props.resource, props.online)
       if (props.resource !== 'encounters' && props.resource !== 'service_requests' && props.resource !== 'observations') {
         const doc = await localDB.get(props.id)
         objectPath.set(state, 'fhir', doc)
@@ -585,7 +646,7 @@ export default defineComponent({
                   bmi_doc = check1.docs[0]
                 } else {
                   const bmi_id = 'nosh_' + uuidv4()
-                  const observation_base = await import('@/assets/fhir/observations.json')
+                  const observation_base = await fetchJSON('fhir/observations', props.online)
                   bmi_doc = JSON.parse(JSON.stringify(observation_base.fhir))
                   objectPath.set(bmi_doc, 'id', bmi_id)
                   objectPath.set(bmi_doc, '_id', bmi_id)
@@ -794,7 +855,7 @@ export default defineComponent({
     }
     const loadResource = async(resource, category) => {
       emit('loading')
-      state.formbase = await import('@/assets/fhir/' + resource + '.json')
+      state.formbase = await fetchJSON('fhir/' + resource, props.online)
       if (category === 'all') {
         state.schema = state.formbase.uiSchema
         state.divContent = state.formbase.divContent

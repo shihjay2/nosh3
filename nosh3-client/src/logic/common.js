@@ -132,8 +132,9 @@ export function common() {
     }
   }
   const divBuild = async(resource, doc) => {
+    const auth_store = useAuthStore()
     let value = '<div xmlns="http://www.w3.org/1999/xhtml">'
-    const base = await import('@/assets/fhir/' + resource + '.json')
+    const base = await fetchJSON('fhir/' + resource, auth_store.online)
     const schema = base.uiSchema.flat()
     const divContent = base.divContent
     const found = []
@@ -220,38 +221,104 @@ export function common() {
     await db1.put(doc)
     await sync('activities', false, patient_id)
   }
-  const fetchJSON = async(type, online) => {
-    if (localStorage.getItem(type) === null) {
-      if (online) {
-        const a = await axios.get(window.location.origin + '/fetch/' + type)
-        localStorage.setItem(type, JSON.stringify(a.data))
-        return a.data
-      }
-    } else {
-      return JSON.parse(localStorage.getItem(type))
-    }
-  }
-  const fetchTXT = async(type, online) => {
-    if (localStorage.getItem(type) === null) {
-      if (online) {
-        const url = window.location.origin + '/fetch/' + type + '/txt'
-        const a = await axios.get(url)
-        const b = Papa.parse(a.data)
-        if (type === 'cvx') {
-          const c = b.data.filter(item => (item[4] == 'Active'))
-          localStorage.setItem(type, JSON.stringify(c))
-          return c
-        } else if (type === 'cvx_vis') {
-          const d = b.data.filter(item => (item[5] == 'Current'))
-          localStorage.setItem(type, JSON.stringify(d))
-          return d
-        } else {
-          localStorage.setItem(type, JSON.stringify(b))
-          return b
+  // const fetchJSON_old = async(type, online) => {
+  //   if (localStorage.getItem(type) === null) {
+  //     if (online) {
+  //       const a = await axios.get(window.location.origin + '/fetch/' + type)
+  //       localStorage.setItem(type, JSON.stringify(a.data))
+  //       return a.data
+  //     }
+  //   } else {
+  //     return JSON.parse(localStorage.getItem(type))
+  //   }
+  // }
+  const fetchJSON = async(file, online) => {
+    const db = new PouchDB('nosh_assets')
+    const result = await db.allDocs({
+      include_docs: true,
+      attachments: true,
+      startkey: 'nosh_'
+    })
+    if (online) {
+      let doc = {}
+      const response = await axios.post(window.location.origin + '/fetch', {file: file, type: 'json'})
+      if (result.rows.length > 0) {
+        doc = objectPath.get(result, 'rows.0.doc')
+        objectPath.set(doc, file, response.data)
+      } else {
+        doc = {
+          '_id': 'nosh_' + uuidv4(),
+          file: response.data,
         }
       }
+      await db.put(doc)
+      return response.data
     } else {
-      return JSON.parse(localStorage.getItem(type))
+      if (result.rows.length > 0) {
+        return objectPath.get(result, 'rows.0.doc.' + file)
+      } else {
+        return {}
+      }
+    }
+  }
+  // const fetchTXT_old = async(type, online) => {
+  //   if (localStorage.getItem(type) === null) {
+  //     if (online) {
+  //       const url = window.location.origin + '/fetch/' + type + '/txt'
+  //       const a = await axios.get(url)
+  //       const b = Papa.parse(a.data)
+  //       if (type === 'cvx') {
+  //         const c = b.data.filter(item => (item[4] == 'Active'))
+  //         localStorage.setItem(type, JSON.stringify(c))
+  //         return c
+  //       } else if (type === 'cvx_vis') {
+  //         const d = b.data.filter(item => (item[5] == 'Current'))
+  //         localStorage.setItem(type, JSON.stringify(d))
+  //         return d
+  //       } else {
+  //         localStorage.setItem(type, JSON.stringify(b))
+  //         return b
+  //       }
+  //     }
+  //   } else {
+  //     return JSON.parse(localStorage.getItem(type))
+  //   }
+  // }
+  const fetchTXT = async(file, online) => {
+    const db = new PouchDB('nosh_assets')
+    const result = await db.allDocs({
+      include_docs: true,
+      attachments: true,
+      startkey: 'nosh_'
+    })
+    if (online) {
+      let doc = {}
+      let response_final = {}
+      const response = await axios.post(window.location.origin + '/fetch', {file: file, type: 'txt'})
+      if (file === 'cvx') {
+        response_final = response.data.filter(item => (item[4] == 'Active'))
+      } else if (file === 'cvx_vis') {
+        response_final = response.data.filter(item => (item[5] == 'Current'))
+      } else {
+        response_final = response.data
+      }
+      if (result.rows.length > 0) {
+        doc = objectPath.get(result, 'rows.0.doc')
+        objectPath.set(doc, file, response_final)
+      } else {
+        doc = {
+          '_id': 'nosh_' + uuidv4(),
+          file: response_final,
+        }
+      }
+      await db.put(doc)
+      return response_final
+    } else {
+      if (result.rows.length > 0) {
+        return objectPath.get(result, 'rows.0.doc.' + file)
+      } else {
+        return {}
+      }
     }
   }
   const fhirDisplay = (field, index='0') => {
@@ -1631,9 +1698,9 @@ export function common() {
         }
       }
       if (objectPath.has(opts, 'id')) {
-        const json = await import('@/assets/ui/drawer.json')
+        const json = await fetchJSON('ui/drawer', state.online)
         const drawer = json.rows
-        const base = await import('@/assets/fhir/' + opts.resource + '.json')
+        const base = await fetchJSON('fhir/' + opts.resource, state.online)
         const resource1 = drawer.find(item => item.resource === opts.resource)
         const title = 'New ' + Case.title(pluralize.singular(opts.resource))
         let schema = []

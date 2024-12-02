@@ -273,7 +273,7 @@ export default defineComponent({
   emits: ['close-container', 'loading', 'open-form', 'reload-drawer', 'update-toolbar' ],
   setup(props, { emit }) {
     const $q = useQuasar()
-    const { addSchemaOptions, getPrefix, loadSelect, removeTags, sync } = common()
+    const { addSchemaOptions, fetchJSON, getPrefix, loadSelect, removeTags, sync } = common()
     const calendar = ref(null)
     const state = reactive({
       view: 'day',
@@ -315,7 +315,7 @@ export default defineComponent({
     var prefix = getPrefix()
     var localDB = new PouchDB(prefix + props.resource)
     onMounted(async() => {
-      state.base = await import('@/assets/fhir/' + props.resource + '.json')
+      state.base = await fetchJSON('fhir/' + props.resource, props.online)
       state.data = props.data
       state.patient = props.patient
       state.resource = props.resource

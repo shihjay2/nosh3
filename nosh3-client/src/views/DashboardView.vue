@@ -656,7 +656,7 @@ export default defineComponent({
           openPage(id, state.resource, state.category)
         }
       } else if (state.resource == 'medication_statements' && id !== '' && state.new_medication_request === true) {
-        const a = await import('@/assets/fhir/medication_requests.json')
+        const a = await fetchJSON('fhir/medication_requests', state.online)
         const doc1 = a.fhir
         objectPath.set(doc1, 'medicationCodeableConcept.coding.0.display', objectPath.get(doc, 'medicationCodeableConcept.coding.0.display'))
         objectPath.set(doc1, 'medicationCodeableConcept.coding.0.code', objectPath.get(doc, 'medicationCodeableConcept.coding.0.code'))
@@ -759,7 +759,7 @@ export default defineComponent({
     }
     const loadResource = async(resource, category) => {
       state.loading = true
-      state.base = await import('@/assets/fhir/' + resource + '.json')
+      state.base = await fetchJSON('fhir/' + resource, state.online)
       if (category === 'all') {
         state.schema = state.base.uiSchema
         state.divContent = state.base.divContent
