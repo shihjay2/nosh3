@@ -243,7 +243,7 @@ export function common() {
       let doc = {}
       const response = await axios.post(window.location.origin + '/fetch', {file: file, type: 'json'})
       if (result.rows.length > 0) {
-        doc = objectPath.get(result, 'rows.0.doc')
+        doc = await db.get(objectPath.get(result, 'rows.0.doc._id'))
         objectPath.set(doc, file, response.data)
       } else {
         doc = {
@@ -308,7 +308,7 @@ export function common() {
         response_final = b.data
       }
       if (result.rows.length > 0) {
-        doc = objectPath.get(result, 'rows.0.doc')
+        doc = await db.get(objectPath.get(result, 'rows.0.doc._id'))
         objectPath.set(doc, file, response_final)
       } else {
         doc = {
