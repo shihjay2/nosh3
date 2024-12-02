@@ -299,12 +299,13 @@ export function common() {
       let doc = {}
       let response_final = {}
       const response = await axios.post(window.location.origin + '/fetch', {file: file, type: 'txt'})
+      const b = Papa.parse(response.data)
       if (file === 'cvx') {
-        response_final = response.data.filter(item => (item[4] == 'Active'))
+        response_final = b.data.filter(item => (item[4] == 'Active'))
       } else if (file === 'cvx_vis') {
-        response_final = response.data.filter(item => (item[5] == 'Current'))
+        response_final = b.data.filter(item => (item[5] == 'Current'))
       } else {
-        response_final = response.data
+        response_final = b.data
       }
       if (result.rows.length > 0) {
         doc = objectPath.get(result, 'rows.0.doc')
@@ -315,7 +316,11 @@ export function common() {
           file: response_final,
         }
       }
-      await db.put(doc)
+      try {
+        await db.put(doc)
+      } catch (e) {
+        console.log(e)
+      }
       return response_final
     } else {
       if (result.rows.length > 0) {
