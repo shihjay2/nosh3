@@ -244,14 +244,12 @@ export function common() {
       const response = await axios.post(window.location.origin + '/fetch', {file: file, type: 'json'})
       if (result.rows.length > 0) {
         doc = await db.get(objectPath.get(result, 'rows.0.doc._id'))
-        console.log(doc)
-        objectPath.set(doc, file, response.data)
       } else {
         doc = {
           '_id': 'nosh_' + uuidv4(),
-          file: response.data,
         }
       }
+      objectPath.set(doc, file, response.data)
       try {
         await db.put(doc)
       } catch (e) {
@@ -311,13 +309,12 @@ export function common() {
       }
       if (result.rows.length > 0) {
         doc = await db.get(objectPath.get(result, 'rows.0.doc._id'))
-        objectPath.set(doc, file, response_final)
       } else {
         doc = {
           '_id': 'nosh_' + uuidv4(),
-          file: response_final,
         }
       }
+      objectPath.set(doc, file, response_final)
       try {
         await db.put(doc)
       } catch (e) {
