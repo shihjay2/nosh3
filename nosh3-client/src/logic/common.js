@@ -240,7 +240,7 @@ export function common() {
       startkey: 'nosh_'
     })
     if (online) {
-      let doc = doc = {
+      let doc = {
         '_id': 'nosh_' + uuidv4()
       }
       const response = await axios.post(window.location.origin + '/fetch', {file: file, type: 'json'})
