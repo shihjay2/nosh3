@@ -452,7 +452,11 @@ export default defineComponent({
       emit('loading')
     }
     const onFormOpen = (id) => {
-      emit('open-form', id, props.resource)
+      if (id === 'add') {
+        emit('open-form', id, props.resource)
+      } else {
+        emit('open-form', id, props.resource, props.category)
+      }
     }
     const reloadList = async(status = 'all') => {
       // state.rows = []
