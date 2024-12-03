@@ -43,7 +43,7 @@ async function deleteSecuredResource(req, res) {
     opts = await eventUser(res, opts, prefix)
     await eventAdd('Deleted ' + pluralize.singular(req.params.type.replace('_statements', '')), opts, req.params.pid)
     if (timelineResources.includes(props.resource)) {
-      await timelineUpdate([{id: req.params.id, resource: Case.snake(pluralize(req.params.type))}], 'delete')
+      await timelineUpdate({id: req.params.id, resource: Case.snake(pluralize(req.params.type))}, 'delete')
     }
     await pollSet(req.params.pid, Case.snake(pluralize(req.params.type)))
     const endTime = performance.now()
@@ -144,6 +144,7 @@ async function postSecuredResource(req, res) {
       }
       binary_opts = await eventUser(res, binary_opts, prefix)
       await eventAdd('Updated binary', binary_opts, req.params.pid)
+      await pollSet(req.params.pid, 'binaries')
     }
     const body = await db.put(req.body)
     await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
@@ -154,7 +155,6 @@ async function postSecuredResource(req, res) {
     }
     opts = await eventUser(res, opts, prefix)
     await eventAdd('Updated ' + pluralize.singular(req.params.type.replace('_statements', '')), opts, req.params.pid)
-    await pollSet(req.params.pid, Case.snake(pluralize(req.params.type)))
     res.set('ETag', 'W/"' + body.rev + '"')
     res.status(200).json(body)
   } catch(err) {
@@ -199,6 +199,7 @@ async function putSecuredResource(req, res) {
       }
       binary_opts = await eventUser(res, binary_opts, prefix)
       await eventAdd('Updated binary', binary_opts, req.params.pid)
+      await pollSet(req.params.pid, 'binaries')
     }
     const body = await db.put(req.body)
     await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
@@ -214,7 +215,6 @@ async function putSecuredResource(req, res) {
     }
     opts = await eventUser(res, opts, prefix)
     await eventAdd('Updated ' + pluralize.singular(req.params.type.replace('_statements', '')), opts, req.params.pid)
-    await pollSet(req.params.pid, Case.snake(pluralize(req.params.type)))
     res.set('ETag', 'W/"' + body.rev + '"')
     res.status(200).json(body)
   } catch(err) {
