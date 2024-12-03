@@ -43,7 +43,7 @@ async function deleteSecuredResource(req, res) {
     opts = await eventUser(res, opts, prefix)
     await eventAdd('Deleted ' + pluralize.singular(req.params.type.replace('_statements', '')), opts, req.params.pid)
     if (timelineResources.includes(Case.snake(pluralize(req.params.type)))) {
-      await timelineUpdate({id: req.params.id, resource: Case.snake(pluralize(req.params.type))}, 'delete')
+      await timelineUpdate({id: req.params.id, resource: Case.snake(pluralize(req.params.type)), action: 'delete'}, req.params.pid)
     }
     await pollSet(req.params.pid, Case.snake(pluralize(req.params.type)))
     const endTime = performance.now()
@@ -149,7 +149,7 @@ async function postSecuredResource(req, res) {
     const body = await db.put(req.body)
     await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
     if (timelineResources.includes(Case.snake(pluralize(req.params.type)))) {
-      await timelineUpdate({id: body.id, resource: Case.snake(pluralize(req.params.type))}, 'update')
+      await timelineUpdate({id: body.id, resource: Case.snake(pluralize(req.params.type)), action: 'update'}, req.params.pid)
     }
     let opts = {
       doc_db: Case.snake(pluralize(req.params.type)),
@@ -207,7 +207,7 @@ async function putSecuredResource(req, res) {
     const body = await db.put(req.body)
     await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
     if (timelineResources.includes(Case.snake(pluralize(req.params.type)))) {
-      await timelineUpdate({id: body.id, resource: Case.snake(pluralize(req.params.type))}, 'update')
+      await timelineUpdate({id: body.id, resource: Case.snake(pluralize(req.params.type)), action: 'update'}, req.params.pid)
     }
     if (prev_data !== '') {
       const diff_result = fastDiff(JSON.stringify(req.body), prev_data)

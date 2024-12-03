@@ -1143,7 +1143,7 @@ async function sync(resource, patient_id='', save=false, data={}) {
     await eventAdd('Updated ' + pluralize.singular(resource.replace('_statements', '')), {id: 'system', display: 'System', doc_db: resource, doc_id: result.id, diff: null}, patient_id)
     if (timelineResources.includes(resource)) {
       console.log('updating timeline because of ' + resource)
-      await timelineUpdate({id: data._id, resource: resource}, 'update')
+      await timelineUpdate({id: data._id, resource: resource, action: 'update'}, patient_id)
     }
   }
   if (resource !== 'users' && resource !== 'presentations' && resource !== 'binaries') {

@@ -143,7 +143,7 @@ async function putMarkdown(req, res) {
       const body = await db.put(doc)
       await db_binary.put(binary_doc)
       await sync('document_references', req.params.pid)
-      await timelineUpdate({id: id, resource: 'document_references'}, 'update')
+      await timelineUpdate({id: id, resource: 'document_references', action: 'update'}, req.params.pid)
       let opts = {
         doc_db: 'document_references',
         doc_id: id,
