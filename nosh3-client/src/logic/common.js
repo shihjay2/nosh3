@@ -254,6 +254,7 @@ export function common() {
       try {
         await db.put(doc)
       } catch (e) {
+        console.log(file)
         console.log(e)
       }
       return response.data
