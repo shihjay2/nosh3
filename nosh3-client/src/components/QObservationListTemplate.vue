@@ -318,7 +318,7 @@ export default defineComponent({
         for (const doc of groups_arr[a].docs) {
           const content_item = {}
           objectPath.set(content_item, 'id', doc._id)
-          objectPath.set(content_item, 'title', fhirReplace('title', state.base, doc, props.schema.flat()))
+          objectPath.set(content_item, 'title', fhirReplace('title', state.base, doc, props.schema.flat()).split('- ')[1])
           const content_val_arr = fhirReplace('content', state.base, doc, props.schema.flat())
           objectPath.set(content_item, 'text', objectPath.get(content_val_arr, '0.value') + ' ' + objectPath.get(content_val_arr, '1.value'))
           if (objectPath.has(doc, 'interpretation.0.coding0.status')) {
@@ -383,7 +383,7 @@ export default defineComponent({
                     for (const doc of oidc_groups_arr[a].docs) {
                       const content_item = {}
                       objectPath.set(content_item, 'id', doc._id)
-                      objectPath.set(content_item, 'title', fhirReplace('title', state.base, doc, props.schema.flat()))
+                      objectPath.set(content_item, 'title', fhirReplace('title', state.base, doc, props.schema.flat()).split('- ')[1])
                       const content_val_arr = fhirReplace('content', state.base, doc, props.schema.flat())
                       objectPath.set(content_item, 'text', objectPath.get(content_val_arr, '0.value') + ' ' + objectPath.get(content_val_arr, '1.value'))
                       if (objectPath.has(doc, 'interpretation.0.coding0.status')) {

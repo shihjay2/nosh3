@@ -251,7 +251,6 @@ export function common() {
       try {
         await db.put(doc)
       } catch (e) {
-        console.log(file)
         console.log(e)
       }
       return response.data
@@ -294,7 +293,9 @@ export function common() {
       startkey: 'nosh_'
     })
     if (online) {
-      let doc = {}
+      let doc = {
+        '_id': 'nosh_' + uuidv4(),
+      }
       let response_final = {}
       const response = await axios.post(window.location.origin + '/fetch', {file: file, type: 'txt'})
       const b = Papa.parse(response.data)
@@ -307,10 +308,6 @@ export function common() {
       }
       if (result.rows.length > 0) {
         doc = await db.get(objectPath.get(result, 'rows.0.doc._id'))
-      } else {
-        doc = {
-          '_id': 'nosh_' + uuidv4(),
-        }
       }
       objectPath.set(doc, file, response_final)
       try {
