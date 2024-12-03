@@ -42,7 +42,7 @@ async function deleteSecuredResource(req, res) {
     }
     opts = await eventUser(res, opts, prefix)
     await eventAdd('Deleted ' + pluralize.singular(req.params.type.replace('_statements', '')), opts, req.params.pid)
-    if (timelineResources.includes(props.resource)) {
+    if (timelineResources.includes(Case.snake(pluralize(req.params.type)))) {
       await timelineUpdate({id: req.params.id, resource: Case.snake(pluralize(req.params.type))}, 'delete')
     }
     await pollSet(req.params.pid, Case.snake(pluralize(req.params.type)))
@@ -148,6 +148,9 @@ async function postSecuredResource(req, res) {
     }
     const body = await db.put(req.body)
     await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
+    if (timelineResources.includes(Case.snake(pluralize(req.params.type)))) {
+      await timelineUpdate({id: body.id, resource: Case.snake(pluralize(req.params.type))}, 'update')
+    }
     let opts = {
       doc_db: Case.snake(pluralize(req.params.type)),
       doc_id: body.id,
@@ -203,6 +206,9 @@ async function putSecuredResource(req, res) {
     }
     const body = await db.put(req.body)
     await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
+    if (timelineResources.includes(Case.snake(pluralize(req.params.type)))) {
+      await timelineUpdate({id: body.id, resource: Case.snake(pluralize(req.params.type))}, 'update')
+    }
     if (prev_data !== '') {
       const diff_result = fastDiff(JSON.stringify(req.body), prev_data)
       console.log(diff_result)

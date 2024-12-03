@@ -6,7 +6,7 @@ import objectPath from 'object-path'
 import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
 import { v4 as uuidv4 } from 'uuid'
-import { eventAdd, eventUser, isMarkdown, pollSet, sync, urlFix, verifyJWT } from './core.mjs'
+import { eventAdd, eventUser, isMarkdown, pollSet, sync, timelineResources, timelineUpdate, urlFix, verifyJWT } from './core.mjs'
 import { Worker } from 'node:worker_threads'
 
 const router = express.Router()
@@ -143,6 +143,7 @@ async function putMarkdown(req, res) {
       const body = await db.put(doc)
       await db_binary.put(binary_doc)
       await sync('document_references', req.params.pid)
+      await timelineUpdate({id: id, resource: 'document_references'}, 'update')
       let opts = {
         doc_db: 'document_references',
         doc_id: id,
