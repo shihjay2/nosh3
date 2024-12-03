@@ -1741,6 +1741,7 @@ export default defineComponent({
       if (!rebuild) {
         if (result.rows.length > 0) {
         state.timeline = objectPath.get(result, 'rows.0.doc.timeline')
+        console.log(state.timeline)
         } else {
           state.timeline = await timelineUpdate([], 'update')
         }
