@@ -446,7 +446,7 @@ export default defineComponent({
         if (status !== 'all') {
           state.rows = state.rows.filter(row => row.status == Case.title(status))
         }
-        sortTitle()
+        state.rows.sort(firstBy('status', {ignoreCase:true, direction:'asc'}).thenBy('title', {ignoreCase:true, direction:'desc'}))
       } catch (err) {
         console.log(err)
       }

@@ -244,6 +244,7 @@ export function common() {
       const response = await axios.post(window.location.origin + '/fetch', {file: file, type: 'json'})
       if (result.rows.length > 0) {
         doc = await db.get(objectPath.get(result, 'rows.0.doc._id'))
+        console.log(doc)
         objectPath.set(doc, file, response.data)
       } else {
         doc = {
