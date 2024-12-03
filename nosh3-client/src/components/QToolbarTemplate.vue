@@ -262,6 +262,7 @@ export default defineComponent({
       emit('sort-alpha')
     }
     const timelineRebuild = () => {
+      auth.setTimelineBuild()
       emit('timeline-rebuild', true)
     }
     const updateToolbar = async(toolbar) => {

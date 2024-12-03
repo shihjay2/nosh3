@@ -374,7 +374,7 @@ async function eventAdd(event, opts, patient_id='') {
     for (const a of check.rows) {
       if (objectPath.has(a, 'doc.diff')) {
         db.destroy()
-        const destroy_remote= new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'activities', settings.couchdb_auth)
+        const destroy_remote = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'activities', settings.couchdb_auth)
         destroy_remote.destroy()
       }
     }
@@ -1172,6 +1172,7 @@ async function sync(resource, patient_id='', save=false, data={}) {
       console.log(e)
     }
   }
+  await pollSet(patient_id, resource)
 }
 
 const timelineResources = ['encounters', 'conditions', 'medication_statements', 'immunizations', 'allergy_intolerances', 'document_references']
