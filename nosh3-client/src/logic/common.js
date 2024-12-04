@@ -1747,7 +1747,7 @@ export function common() {
         objectPath.set(timelineItem, 'content', fhirReplace('content', base, doc, schema))
         objectPath.set(timelineItem, 'extended', fhirReplace('extended', base, doc, schema))
         objectPath.set(timelineItem, 'status', fhirReplace('status', base, doc, schema))
-        objectPath.set(timelineItem, 'date', new Date(objectPath.get(doc, base.timelineDate)))
+        objectPath.set(timelineItem, 'date', moment(objectPath.get(doc, base.timelineDate)).unix())
         objectPath.set(timelineItem, 'icon', resource1.icon)
         objectPath.set(timelineItem, 'resource', opts.resource)
         objectPath.set(timelineItem, 'keys', base.fuse)
@@ -1791,7 +1791,7 @@ export function common() {
     }
     if (result.rows.length > 0) {
       if (opts.action === 'update') {
-        timeline.sort((c, d) => d.date.getTime() - c.date.getTime())
+        timeline.sort((c, d) => d.date - c.date)
       }
       objectPath.set(timeline_doc, 'timeline', timeline)
       await sync('timeline', false, state.patient, true, timeline_doc)
@@ -1814,7 +1814,7 @@ export function common() {
       }
       if (activitiesResult.docs.length > 0) {
         objectPath.set(timelineIntro, 'subtitle', moment(activitiesResult.docs[0].datetime).format("YYYY-MM-DD"))
-        objectPath.set(timelineIntro, 'date', new Date(activitiesResult.docs[0].datetime))
+        objectPath.set(timelineIntro, 'date', moment(activitiesResult.docs[0].datetime).unix())
       }
       timeline.push(timelineIntro)
       const id = 'nosh_' + uuidv4()
