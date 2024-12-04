@@ -2928,7 +2928,7 @@ export default defineComponent({
       }
     }
     const timelineSort = (timeline) => {
-      timeline.sort((c, d) => d.date - c.date)
+      timeline.sort((c, d) => d.date.getTime() - c.date.getTime())
       return timeline
     }
     const unset = (type) => {

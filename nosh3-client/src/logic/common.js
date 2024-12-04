@@ -1791,7 +1791,7 @@ export function common() {
     }
     if (result.rows.length > 0) {
       if (opts.action === 'update') {
-        timeline.sort((c, d) => d.date - c.date)
+        timeline.sort((c, d) => d.date.getTime() - c.date.getTime())
       }
       objectPath.set(timeline_doc, 'timeline', timeline)
       await sync('timeline', false, state.patient, true, timeline_doc)

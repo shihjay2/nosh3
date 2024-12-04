@@ -1300,7 +1300,7 @@ async function timelineUpdate(opts, patient_id) {
   }
   if (result.rows.length > 0) {
     if (opts.action === 'update') {
-      timeline.sort((c, d) => d.date - c.date)
+      timeline.sort((c, d) => d.date.getTime() - c.date.getTime())
     }
     objectPath.set(timeline_doc, 'timeline', timeline)
     await sync('timeline', patient_id, true, timeline_doc)
