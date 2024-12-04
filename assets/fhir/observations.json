@@ -879,7 +879,6 @@
             "model": "display",
             "type": "text",
             "readonly": true,
-            "rules": "required",
             "category": "laboratory"
           }
         ],
@@ -901,7 +900,6 @@
             "model": "performer.0.reference",
             "type": "select",
             "options": [],
-            "rules": "required",
             "category": "laboratory"
           }
         ],
