@@ -103,7 +103,7 @@ async function putMarkdown(req, res) {
       "subject": {
         "reference": 'Patient/' + req.params.pid
       },
-      "date": moment().utc().format('YYYY-MM-DD HH:mm'),
+      "date": moment().format('YYYY-MM-DD HH:mm'),
       "type": {
         "coding": [
           {
