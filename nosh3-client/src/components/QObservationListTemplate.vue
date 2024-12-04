@@ -25,7 +25,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label>{{ data.title }}</q-item-label>
-              <q-item-label caption>{{ data.text }}</q-item-label>
+              <q-item-label caption :class="data.text_color">{{ data.text }}</q-item-label>
             </q-item-section>
             <q-item-section side top>
               <q-btn flat round color="teal" icon="import_export" clickable @click="importRow(data.doc, data.doc._oidc_index, row.oidc)">
@@ -46,7 +46,7 @@
             </q-item-section>
             <q-item-section @click="onFormOpen(data.doc._id)">
               <q-item-label>{{ data.title }}</q-item-label>
-              <q-item-label caption>{{ data.text }}</q-item-label>
+              <q-item-label caption :class="data.text_color">{{ data.text }}</q-item-label>
               <q-item-label>
                 <q-chip v-if="data.author === 'patients'" icon="face" color="teal" text-color="white">Patient Submitted</q-chip>
               </q-item-label>
@@ -325,9 +325,11 @@ export default defineComponent({
             if (objectPath.get(doc, 'interpretation.0.coding0.status') !== 'N') {
               objectPath.set(content_item, 'icon', 'priority_high')
               objectPath.set(content_item, 'icon_color', 'red')
+              objectPath.set(content_item, 'text_color', 'text-red')
             } else {
               objectPath.set(content_item, 'icon', 'thumb_up')
               objectPath.set(content_item, 'icon_color', 'green')
+              objectPath.set(content_item, 'text_color', 'text-green-10')
             }
           }
           objectPath.set(content_item, 'doc', doc)
@@ -390,9 +392,11 @@ export default defineComponent({
                         if (objectPath.get(doc, 'interpretation.0.coding0.status') !== 'N') {
                           objectPath.set(content_item, 'icon', 'priority_high')
                           objectPath.set(content_item, 'icon_color', 'red')
+                          objectPath.set(content_item, 'text_color', 'text-red')
                         } else {
                           objectPath.set(content_item, 'icon', 'thumb_up')
                           objectPath.set(content_item, 'icon_color', 'green')
+                          objectPath.set(content_item, 'text_color', 'text-green-10')
                         }
                       }
                       objectPath.set(content_item, 'doc', doc)
