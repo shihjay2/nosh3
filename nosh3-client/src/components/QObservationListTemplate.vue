@@ -321,8 +321,8 @@ export default defineComponent({
           objectPath.set(content_item, 'title', fhirReplace('title', state.base, doc, props.schema.flat()).split('- ')[1])
           const content_val_arr = fhirReplace('content', state.base, doc, props.schema.flat())
           objectPath.set(content_item, 'text', objectPath.get(content_val_arr, '0.value') + ' ' + objectPath.get(content_val_arr, '1.value'))
-          if (objectPath.has(doc, 'interpretation.0.coding0.status')) {
-            if (objectPath.get(doc, 'interpretation.0.coding0.status') !== 'N') {
+          if (objectPath.has(doc, 'interpretation.0.coding.0.status')) {
+            if (objectPath.get(doc, 'interpretation.0.coding.0.status') !== 'N') {
               objectPath.set(content_item, 'icon', 'priority_high')
               objectPath.set(content_item, 'icon_color', 'red')
               objectPath.set(content_item, 'text_color', 'text-red')
@@ -331,6 +331,8 @@ export default defineComponent({
               objectPath.set(content_item, 'icon_color', 'green')
               objectPath.set(content_item, 'text_color', 'text-green-10')
             }
+          } else {
+            objectPath.set(content_item, 'text_color', 'text-green-10')
           }
           objectPath.set(content_item, 'doc', doc)
           objectPath.set(content_item, '.author', getAuthor(doc))
@@ -388,8 +390,8 @@ export default defineComponent({
                       objectPath.set(content_item, 'title', fhirReplace('title', state.base, doc, props.schema.flat()).split('- ')[1])
                       const content_val_arr = fhirReplace('content', state.base, doc, props.schema.flat())
                       objectPath.set(content_item, 'text', objectPath.get(content_val_arr, '0.value') + ' ' + objectPath.get(content_val_arr, '1.value'))
-                      if (objectPath.has(doc, 'interpretation.0.coding0.status')) {
-                        if (objectPath.get(doc, 'interpretation.0.coding0.status') !== 'N') {
+                      if (objectPath.has(doc, 'interpretation.0.coding.0.status')) {
+                        if (objectPath.get(doc, 'interpretation.0.coding.0.status') !== 'N') {
                           objectPath.set(content_item, 'icon', 'priority_high')
                           objectPath.set(content_item, 'icon_color', 'red')
                           objectPath.set(content_item, 'text_color', 'text-red')
@@ -398,6 +400,8 @@ export default defineComponent({
                           objectPath.set(content_item, 'icon_color', 'green')
                           objectPath.set(content_item, 'text_color', 'text-green-10')
                         }
+                      } else {
+                        objectPath.set(content_item, 'text_color', 'text-green-10')
                       }
                       objectPath.set(content_item, 'doc', doc)
                       objectPath.set(content_item, 'delete', 'y')
