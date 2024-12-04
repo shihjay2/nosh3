@@ -1256,7 +1256,7 @@ async function timelineUpdate(opts, patient_id) {
       objectPath.set(timelineItem, 'content', fhirReplace('content', base, doc, schema))
       objectPath.set(timelineItem, 'extended', fhirReplace('extended', base, doc, schema))
       objectPath.set(timelineItem, 'status', fhirReplace('status', base, doc, schema))
-      objectPath.set(timelineItem, 'date', moment(objectPath.get(doc, base.timelineDate)).unix())
+      objectPath.set(timelineItem, 'date', moment(objectPath.get(doc, base.timelineDate)).utc().unix())
       objectPath.set(timelineItem, 'icon', resource1.icon)
       objectPath.set(timelineItem, 'resource', opts.resource)
       objectPath.set(timelineItem, 'keys', base.fuse)

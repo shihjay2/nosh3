@@ -1747,7 +1747,7 @@ export function common() {
         objectPath.set(timelineItem, 'content', fhirReplace('content', base, doc, schema))
         objectPath.set(timelineItem, 'extended', fhirReplace('extended', base, doc, schema))
         objectPath.set(timelineItem, 'status', fhirReplace('status', base, doc, schema))
-        objectPath.set(timelineItem, 'date', moment(objectPath.get(doc, base.timelineDate)).unix())
+        objectPath.set(timelineItem, 'date', moment(objectPath.get(doc, base.timelineDate)).utc().unix())
         objectPath.set(timelineItem, 'icon', resource1.icon)
         objectPath.set(timelineItem, 'resource', opts.resource)
         objectPath.set(timelineItem, 'keys', base.fuse)
@@ -1814,7 +1814,7 @@ export function common() {
       }
       if (activitiesResult.docs.length > 0) {
         objectPath.set(timelineIntro, 'subtitle', moment(activitiesResult.docs[0].datetime).format("YYYY-MM-DD"))
-        objectPath.set(timelineIntro, 'date', moment(activitiesResult.docs[0].datetime).unix())
+        objectPath.set(timelineIntro, 'date', moment(activitiesResult.docs[0].datetime).utc().unix())
       }
       timeline.push(timelineIntro)
       const id = 'nosh_' + uuidv4()
