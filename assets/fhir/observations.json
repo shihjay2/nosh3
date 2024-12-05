@@ -201,7 +201,6 @@
             "model": "performer.0.reference",
             "type": "select",
             "options": [],
-            "rules": "required",
             "category": "vital-signs"
           }
         ],
@@ -381,7 +380,6 @@
             "model": "performer.0.reference",
             "type": "select",
             "options": [],
-            "rules": "required",
             "category": "exam"
           }
         ],
@@ -538,7 +536,6 @@
             "model": "performer.0.reference",
             "type": "select",
             "options": [],
-            "rules": "required",
             "category": "procedure"
           }
         ],
@@ -696,7 +693,6 @@
             "model": "performer.0.reference",
             "type": "select",
             "options": [],
-            "rules": "required",
             "category": "imgaging"
           }
         ],
@@ -1089,7 +1085,6 @@
             "model": "performer.0.reference",
             "type": "select",
             "options": [],
-            "rules": "required",
             "category": "survey"
           }
         ],
@@ -1246,7 +1241,6 @@
             "model": "performer.0.reference",
             "type": "select",
             "options": [],
-            "rules": "required",
             "category": "therapy"
           }
         ],
@@ -1422,7 +1416,6 @@
             "model": "performer.0.reference",
             "type": "select",
             "options": [],
-            "rules": "required",
             "category": "social-history"
           }
         ],
@@ -1620,7 +1613,6 @@
             "model": "performer.0.reference",
             "type": "select",
             "options": [],
-            "rules": "required",
             "category": "activity"
           }
         ],
