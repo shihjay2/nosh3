@@ -2016,7 +2016,6 @@ export default defineComponent({
     }
     const onSubmitPIN = async(values) => {
       const { pin } = values
-      console.log(moment.tz.guess())
       const result = await axios.post(window.location.origin + '/auth/pinSet', {pin: pin, patient: state.patient, tz: moment.tz.guess()})
       if (result.data.response === 'OK') {
         state.showPIN = false
@@ -2409,6 +2408,8 @@ export default defineComponent({
             await loadResource(b.resource, 'all')
             await openPage(id, b.resource, 'subjective')
           }
+        } else if (b.resource === 'document_references') {
+          await openFile(b.id, 'document_references', 'content')
         } else {
           const json = await fetchJSON('ui/drawer', state.online)
           const c = json.rows.find(d => d.resource == b.resource)

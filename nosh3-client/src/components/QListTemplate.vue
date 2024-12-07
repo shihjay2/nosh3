@@ -1045,8 +1045,14 @@ export default defineComponent({
       } else if (props.resource === 'bundles') {
         state.rows.sort((b, c) => moment(c.timestamp) - moment(b.timestamp))
       } else {
+        let sort_key = 'title'
+        let sort_direction = 'asc'
+        if (props.resource === 'encounters' || props.resource === 'document_references') {
+          sort_key = 'subhead'
+          sort_direction = 'desc'
+        }
         if (status === 'all') {
-          state.rows.sort(firstBy('status', {ignoreCase:true, direction:'asc'}).thenBy('title', {ignoreCase:true, direction:'asc'}))
+          state.rows.sort(firstBy('status', {ignoreCase:true, direction:'asc'}).thenBy(sort_key, {ignoreCase:true, direction:sort_direction}))
         }
         let active_arr = ['Active']
         if (props.resource === 'conditions') {
@@ -1057,11 +1063,11 @@ export default defineComponent({
         }
         if (status === 'active') {
           state.rows = state.rows.filter(row => active_arr.includes(row.status))
-          state.rows.sort(firstBy('status', {ignoreCase:true, direction:'asc'}).thenBy('title', {ignoreCase:true, direction:'asc'}))
+          state.rows.sort(firstBy('status', {ignoreCase:true, direction:'asc'}).thenBy(sort_key, {ignoreCase:true, direction:sort_direction}))
         }
         if (status === 'inactive') {
           state.rows = state.rows.filter(row => !active_arr.includes(row.status))
-          state.rows.sort(firstBy('status', {ignoreCase:true, direction:'asc'}).thenBy('title', {ignoreCase:true, direction:'asc'}))
+          state.rows.sort(firstBy('status', {ignoreCase:true, direction:'asc'}).thenBy(sort_key, {ignoreCase:true, direction:sort_direction}))
         }
       }
       emit('loading')
