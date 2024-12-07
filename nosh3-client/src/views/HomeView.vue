@@ -2016,8 +2016,8 @@ export default defineComponent({
     }
     const onSubmitPIN = async(values) => {
       const { pin } = values
-      console.log(moment().tz.guess())
-      const result = await axios.post(window.location.origin + '/auth/pinSet', {pin: pin, patient: state.patient, tz: moment().tz.guess()})
+      console.log(moment.tz.guess())
+      const result = await axios.post(window.location.origin + '/auth/pinSet', {pin: pin, patient: state.patient, tz: moment.tz.guess()})
       if (result.data.response === 'OK') {
         state.showPIN = false
         state.login = true
