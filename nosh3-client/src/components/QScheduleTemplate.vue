@@ -239,7 +239,7 @@ import { QCalendarDay } from '@quasar/quasar-ui-qcalendar/dist/QCalendarDay.esm.
 import { QCalendarMonth } from '@quasar/quasar-ui-qcalendar/dist/QCalendarMonth.esm.js'
 import { useQuasar } from 'quasar'
 import Case from 'case'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import objectPath from 'object-path'
 import PouchDB from 'pouchdb-browser'
 import PouchDBFind from 'pouchdb-find'

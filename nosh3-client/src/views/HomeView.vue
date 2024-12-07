@@ -810,7 +810,7 @@ import ImmunizationSchedule from '@/components/ImmunizationSchedule.vue'
 import InsuranceDialog from '@/components/InsuranceDialog.vue'
 import * as jose from 'jose'
 import json2md from 'json2md'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import objectPath from 'object-path'
 import OIDC from '@/components/OIDC.vue'
 import pluralize from 'pluralize'
@@ -2016,7 +2016,8 @@ export default defineComponent({
     }
     const onSubmitPIN = async(values) => {
       const { pin } = values
-      const result = await axios.post(window.location.origin + '/auth/pinSet', {pin: pin, patient: state.patient})
+      console.log(moment().tz.guess())
+      const result = await axios.post(window.location.origin + '/auth/pinSet', {pin: pin, patient: state.patient, tz: moment().tz.guess()})
       if (result.data.response === 'OK') {
         state.showPIN = false
         state.login = true

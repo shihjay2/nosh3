@@ -28,7 +28,7 @@
     "json2md": "^2.0.1",
     "mailgun.js": "^8.0.0",
     "marked": "^13.0.2",
-    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.46",
     "morgan": "^1.10.0",
     "object-path": "^0.11.8",
     "parse-full-name": "^1.2.6",

@@ -945,7 +945,8 @@ async function pinSet (req, res, next) {
   if (test) {
     const pin1 = {
       _id: req.body.patient,
-      pin: req.body.pin
+      pin: req.body.pin,
+      tz: req.body.tz
     }
     await pindb.put(pin1)
     res.status(200).json({ response: 'OK' })

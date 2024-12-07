@@ -1,12 +1,12 @@
 import dotenv from 'dotenv'
 dotenv.config()
 import express from 'express'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import objectPath from 'object-path'
 import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
 import { v4 as uuidv4 } from 'uuid'
-import { eventAdd, eventUser, isMarkdown, pollSet, sync, timelineResources, timelineUpdate, urlFix, verifyJWT } from './core.mjs'
+import { eventAdd, eventUser, getTZ, isMarkdown, pollSet, sync, timelineUpdate, urlFix, verifyJWT } from './core.mjs'
 import { Worker } from 'node:worker_threads'
 
 const router = express.Router()
@@ -95,6 +95,7 @@ async function putMarkdown(req, res) {
   const binary_id = 'nosh_' + uuidv4()
   const md = req.body.content
   if (isMarkdown(md)) {
+    const timezone = await getTZ(req.params.pid)
     const doc = {
       "_id": id,
       "resourceType": "DocumentReference",
@@ -103,7 +104,7 @@ async function putMarkdown(req, res) {
       "subject": {
         "reference": 'Patient/' + req.params.pid
       },
-      "date": moment().format('YYYY-MM-DD HH:mm'),
+      "date": moment().tz(timezone).format('YYYY-MM-DD HH:mm'),
       "type": {
         "coding": [
           {

@@ -3,13 +3,13 @@ dotenv.config()
 import Case from 'case'
 import express from 'express'
 import fastDiff from 'fast-diff'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import objectPath from 'object-path'
 import pluralize from 'pluralize'
 import PouchDB from 'pouchdb'
 import settings from './settings.mjs'
 import { v4 as uuidv4 } from 'uuid'
-import { eventAdd, sync, urlFix, verifyJWT, timelineResources, timelineUpdate } from './core.mjs'
+import { eventAdd, getTZ, sync, urlFix, verifyJWT, timelineResources, timelineUpdate } from './core.mjs'
 
 const router = express.Router()
 import PouchDBFind from 'pouchdb-find'
@@ -233,6 +233,7 @@ async function querySecuredResource(req, res) {
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.pid + '_'
   }
+  const timezone = await getTZ(req.params.pid)
   await sync(Case.snake(pluralize(req.params.type)), req.params.pid)
   const db = new PouchDB(prefix + Case.snake(pluralize(req.params.type)))
   const entries = []
@@ -261,7 +262,7 @@ async function querySecuredResource(req, res) {
     i++
   }
   const id = 'nosh_' + uuidv4()
-  const time = moment().format('YYYY-MM-DDTHH:mm:ss.SSSZ')
+  const time = moment().tz(timezone).format('YYYY-MM-DDTHH:mm:ss.SSSZ')
   res.status(200).json({
     resourceType: 'Bundle',
     id: id,

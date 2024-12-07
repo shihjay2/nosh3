@@ -52,7 +52,7 @@
 <script>
 import { reactive, onMounted } from 'vue'
 import { common } from '@/logic/common'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import PouchDB from 'pouchdb-browser'
 import PouchDBFind from 'pouchdb-find'
 import objectPath, { get } from 'object-path'

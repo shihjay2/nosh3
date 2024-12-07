@@ -8,7 +8,7 @@ import { createSigner, httpbis } from 'http-message-signatures'
 import { parseFullName } from 'parse-full-name'
 import * as jose from 'jose'
 import * as marked from 'marked'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import objectPath from 'object-path'
 import pluralize from 'pluralize'
 import PouchDB from 'pouchdb'
@@ -822,6 +822,20 @@ async function getResource(resource, arr, patient_id) {
   return arr
 }
 
+async function getTZ(patient_id) {
+  const db = new PouchDB('pins', {skip_setup: true})
+  const info = await db.info()
+  if (objectPath.has(info, 'error')) {
+    return false
+  }
+  try {
+    const result = await db.get(patient_id)
+    return result.tz
+  } catch (e) {
+    return false
+  }
+}
+
 async function introspect(req, jwt, method, location) {
   try {
     const a = await fetch(urlFix(process.env.TRUSTEE_URL) + '/api/as/.well-known/gnap-as-rs')
@@ -1183,6 +1197,7 @@ async function timelineUpdate(opts, patient_id) {
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = patient_id + '_'
   }
+  const timezone = await getTZ(patient_id)
   await sync('timeline', patient_id)
   const timelineDB = new PouchDB(prefix + 'timeline')
   const result = await timelineDB.allDocs({
@@ -1256,7 +1271,7 @@ async function timelineUpdate(opts, patient_id) {
       objectPath.set(timelineItem, 'content', fhirReplace('content', base, doc, schema))
       objectPath.set(timelineItem, 'extended', fhirReplace('extended', base, doc, schema))
       objectPath.set(timelineItem, 'status', fhirReplace('status', base, doc, schema))
-      objectPath.set(timelineItem, 'date', moment(objectPath.get(doc, base.timelineDate)).utc().unix())
+      objectPath.set(timelineItem, 'date', moment(objectPath.get(doc, base.timelineDate)).tz(timezone).unix())
       objectPath.set(timelineItem, 'icon', resource1.icon)
       objectPath.set(timelineItem, 'resource', opts.resource)
       objectPath.set(timelineItem, 'keys', base.fuse)
@@ -1490,4 +1505,4 @@ async function verifyPIN(pin, patient_id) {
   }
 }
 
-export { addSchemaOptions, couchdbConfig, couchdbDatabase, couchdbInstall, couchdbUpdate, createKeyPair, equals, eventAdd, eventUser, fetchJSON, fhirDisplay, fhirModel, fhirReplace, getAllKeys, getKeys, getName, getNPI, getPIN, getResource, introspect, isMarkdown, loadSelect, markdownParse, pollSet, registerResources, removeTags, signRequest, sleep, sync, timelineResources, timelineUpdate, urlFix, userAdd, verify, verifyJWT, verifyPIN }
+export { addSchemaOptions, couchdbConfig, couchdbDatabase, couchdbInstall, couchdbUpdate, createKeyPair, equals, eventAdd, eventUser, fetchJSON, fhirDisplay, fhirModel, fhirReplace, getAllKeys, getKeys, getName, getNPI, getPIN, getResource, getTZ, introspect, isMarkdown, loadSelect, markdownParse, pollSet, registerResources, removeTags, signRequest, sleep, sync, timelineResources, timelineUpdate, urlFix, userAdd, verify, verifyJWT, verifyPIN }

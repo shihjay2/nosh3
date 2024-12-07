@@ -5,7 +5,7 @@ import * as jose from 'jose'
 import jsPDF from 'jspdf'
 import fastDiff from 'fast-diff'
 import * as marked from 'marked'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import { numberToWords } from 'convert-number-to-words'
 import objectPath from 'object-path'
 import * as Papa from 'papaparse'
@@ -17,7 +17,6 @@ PouchDB.plugin(PouchDBFind)
 PouchDB.plugin(comdb)
 import {v4 as uuidv4} from 'uuid'
 import { useAuthStore } from '@/stores'
-import { useWebWorkerFn } from '@vueuse/core'
 
 export function common() {
   const addSchemaOptions = (id, arr, val, label, schema, system='') => {

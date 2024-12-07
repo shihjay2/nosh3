@@ -1,6 +1,6 @@
 import Case from 'case'
 import json2md from 'json2md'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import objectPath from 'object-path'
 import pluralize from 'pluralize'
 import PouchDB from 'pouchdb'

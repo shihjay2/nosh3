@@ -75,6 +75,7 @@ import { useQuasar } from 'quasar'
 import { common } from '@/logic/common'
 import { Form } from 'vee-validate'
 import * as jose from 'jose'
+import moment from 'moment-timezone'
 import PouchDB from 'pouchdb-browser'
 import { useAuthStore } from '@/stores'
 import { useRoute } from 'vue-router'
@@ -246,7 +247,7 @@ export default defineComponent({
     })
     const onSubmitPIN = async(values) => {
       const { pin } = values
-      const result = await axios.post(window.location.origin + '/auth/pinSet', {pin: pin, patient: state.patient})
+      const result = await axios.post(window.location.origin + '/auth/pinSet', {pin: pin, patient: state.patient, tz: moment().tz.guess()})
       if (result.data.response === 'OK') {
         state.showPIN = false
         state.login = true
