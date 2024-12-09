@@ -136,7 +136,7 @@
           </q-item>
         </q-list>
       </q-card-section>
-      <q-expansion-item v-if="row.extended !== '' && row.extended !== undefined && row.extended !== 'undefined'">
+      <q-expansion-item v-if="row.extended !== '' && row.extended !== undefined && row.extended !== 'undefined' && row.extended !== 'Not Defined'">
         <q-card>
           <q-card-section>{{ row.extended }}</q-card-section>
         </q-card>

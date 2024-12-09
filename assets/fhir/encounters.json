@@ -15,9 +15,9 @@
   "uiListContent": {
     "title": "{reasonCode}",
     "subhead": "{periodStart}",
-    "contentFields": ["participant", "class", "serviceType"],
+    "contentFields": ["participant", "class", "serviceType", "priority"],
     "contentStyle": "p",
-    "extended": "{priority}",
+    "extended": "",
     "status": ""
   },
   "uiSchema": [
