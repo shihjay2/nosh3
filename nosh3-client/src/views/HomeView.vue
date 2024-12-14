@@ -19,7 +19,7 @@
             <q-tooltip v-if="state.sync_on">{{ state.sync_tooltip }}</q-tooltip>
           </div>
         </div>
-        <v-offline @detected-condition="checkOnline">
+        <v-offline class="q-pr-md" @detected-condition="checkOnline">
           <template v-if="state.online">
             <q-btn flat dense round icon="cloud_queue">
               <q-tooltip>Online</q-tooltip>
@@ -31,7 +31,7 @@
             </q-btn>
           </template>
         </v-offline>
-        <q-separator class="q-px-md" vertical color="orange" inset />
+        <q-separator vertical color="orange" inset />
         <q-btn v-if="!state.sync_on" flat dense round icon="cloud_sync" @click="startSync">
           <q-tooltip>Sync Database</q-tooltip>
         </q-btn>
