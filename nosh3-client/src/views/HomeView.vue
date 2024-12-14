@@ -13,83 +13,87 @@
         <q-toolbar-title id="logo">
           Nosh
         </q-toolbar-title>
-        <div class="q-pa-md q-gutter-xs" v-if="state.sync_on">
-          <div class="q-gutter-md row justify-center">
-            <q-spinner-radio v-if="state.sync_on" color="white" size="1em"/>
-            <q-tooltip v-if="state.sync_on">{{ state.sync_tooltip }}</q-tooltip>
-          </div>
-        </div>
-        <v-offline class="q-pr-md" @detected-condition="checkOnline">
-          <template v-if="state.online">
-            <q-btn flat dense round icon="cloud_queue">
-              <q-tooltip>Online</q-tooltip>
-            </q-btn>
-          </template>
-          <template v-if="!state.online">
-            <q-btn flat dense round icon="cloud_off">
-              <q-tooltip>Offline</q-tooltip>
-            </q-btn>
-          </template>
-        </v-offline>
-        <q-separator vertical color="orange" inset />
-        <q-btn v-if="!state.sync_on" flat dense round icon="cloud_sync" @click="startSync">
-          <q-tooltip>Sync Database</q-tooltip>
-        </q-btn>
-        <q-btn v-if="state.updateExists" flat dense round icon="update" @click="refreshApp">
-          <q-tooltip>Update available, click to refresh</q-tooltip>
-        </q-btn>
-        <q-btn-dropdown v-if="state.type == 'mdnosh' && state.user.role !== 'patient'" ref="patientSearchBtn" flat dense rounded no-icon-animation="false" dropdown-icon="search" @show="focusInput">
-          <q-tooltip>Patient Search</q-tooltip>
-          <q-list>
-            <q-item>
-              <q-input ref="patientSearch" outlined bottom-slots v-model="state.patientsearch" placeholder="Search Patient" debounce="300">
-                <template v-slot:append>
-                  <q-icon v-if="state.patientsearch !== ''" name="close" @click="state.patientsearch = ''" class="cursor-pointer" />
-                  <q-icon name="search" />
-                </template>
-              </q-input>
-            </q-item>
-            <div v-for="item in state.patientListSearch" :key="item.item.id">
-              <q-item clickable @click="openChart(item.item.id)">
-                {{ item.item.name }}
-              </q-item>
+        <div class="q-pr-md">
+          <div class="q-pa-md q-gutter-xs" v-if="state.sync_on">
+            <div class="q-gutter-md row justify-center">
+              <q-spinner-radio v-if="state.sync_on" color="white" size="1em"/>
+              <q-tooltip v-if="state.sync_on">{{ state.sync_tooltip }}</q-tooltip>
             </div>
-          </q-list>
-        </q-btn-dropdown>
-        <q-btn flat dense round icon="person_add" v-if="state.type == 'mdnosh'" @click="addPatient">
-          <q-tooltip>Add Patient</q-tooltip>
-        </q-btn>
-        <q-btn flat dense round icon="sync" v-if="state.type !== 'mdnosh'" @click="openOIDC('','')">
-          <q-badge color="red" floating>{{ state.oidc_count }}</q-badge>
-          <q-tooltip>Sync from EPIC or CMS Bluebutton</q-tooltip>
-        </q-btn>
-        <q-btn flat dense round icon="chat" @click="openList('communications', 'inbox')">
-          <q-badge color="red" floating>{{ state.messages }}</q-badge>
-          <q-tooltip>Messages</q-tooltip>
-        </q-btn>
-        <q-btn flat dense round icon="task" @click="openList('tasks', 'inbox')">
-          <q-badge color="red" floating>{{ state.tasks }}</q-badge>
-          <q-tooltip>Tasks</q-tooltip>
-        </q-btn>
-        <q-btn flat dense round icon="more_vert">
-          <QMenuTemplate
-            v-if="state.showMenu"
-            @open-activities="openActivities"
-            @open-insurance="openInsurance"
-            @open-list="openList"
-            @open-page="openPage"
-            @open-qr-reader="openQRReader"
-            @open-schedule="openSchedule"
-            @open-share="openShare"
-            @set-maia="setMAIA"
-            @stop-inbox-timer="stopInboxTimer"
-            @rotate-jwt="rotateJWT"
-            :user="state.user"
-            :online="state.online"
-            :patient="state.patient"
-            :type="state.type"
-          />
-        </q-btn>
+          </div>
+          <v-offline @detected-condition="checkOnline">
+            <template v-if="state.online">
+              <q-btn flat dense round icon="cloud_queue">
+                <q-tooltip>Online</q-tooltip>
+              </q-btn>
+            </template>
+            <template v-if="!state.online">
+              <q-btn flat dense round icon="cloud_off">
+                <q-tooltip>Offline</q-tooltip>
+              </q-btn>
+            </template>
+          </v-offline>
+        </div>
+        <q-separator vertical color="orange" inset />
+        <div class="q-pl-md">
+          <q-btn v-if="!state.sync_on" flat dense round icon="cloud_sync" @click="startSync">
+            <q-tooltip>Sync Database</q-tooltip>
+          </q-btn>
+          <q-btn v-if="state.updateExists" flat dense round icon="update" @click="refreshApp">
+            <q-tooltip>Update available, click to refresh</q-tooltip>
+          </q-btn>
+          <q-btn-dropdown v-if="state.type == 'mdnosh' && state.user.role !== 'patient'" ref="patientSearchBtn" flat dense rounded no-icon-animation="false" dropdown-icon="search" @show="focusInput">
+            <q-tooltip>Patient Search</q-tooltip>
+            <q-list>
+              <q-item>
+                <q-input ref="patientSearch" outlined bottom-slots v-model="state.patientsearch" placeholder="Search Patient" debounce="300">
+                  <template v-slot:append>
+                    <q-icon v-if="state.patientsearch !== ''" name="close" @click="state.patientsearch = ''" class="cursor-pointer" />
+                    <q-icon name="search" />
+                  </template>
+                </q-input>
+              </q-item>
+              <div v-for="item in state.patientListSearch" :key="item.item.id">
+                <q-item clickable @click="openChart(item.item.id)">
+                  {{ item.item.name }}
+                </q-item>
+              </div>
+            </q-list>
+          </q-btn-dropdown>
+          <q-btn flat dense round icon="person_add" v-if="state.type == 'mdnosh'" @click="addPatient">
+            <q-tooltip>Add Patient</q-tooltip>
+          </q-btn>
+          <q-btn flat dense round icon="sync" v-if="state.type !== 'mdnosh'" @click="openOIDC('','')">
+            <q-badge color="red" floating>{{ state.oidc_count }}</q-badge>
+            <q-tooltip>Sync from EPIC or CMS Bluebutton</q-tooltip>
+          </q-btn>
+          <q-btn flat dense round icon="chat" @click="openList('communications', 'inbox')">
+            <q-badge color="red" floating>{{ state.messages }}</q-badge>
+            <q-tooltip>Messages</q-tooltip>
+          </q-btn>
+          <q-btn flat dense round icon="task" @click="openList('tasks', 'inbox')">
+            <q-badge color="red" floating>{{ state.tasks }}</q-badge>
+            <q-tooltip>Tasks</q-tooltip>
+          </q-btn>
+          <q-btn flat dense round icon="more_vert">
+            <QMenuTemplate
+              v-if="state.showMenu"
+              @open-activities="openActivities"
+              @open-insurance="openInsurance"
+              @open-list="openList"
+              @open-page="openPage"
+              @open-qr-reader="openQRReader"
+              @open-schedule="openSchedule"
+              @open-share="openShare"
+              @set-maia="setMAIA"
+              @stop-inbox-timer="stopInboxTimer"
+              @rotate-jwt="rotateJWT"
+              :user="state.user"
+              :online="state.online"
+              :patient="state.patient"
+              :type="state.type"
+            />
+          </q-btn>
+        </div>
       </q-toolbar>
       <q-toolbar v-if="state.toolbar" class="bg-grey-2 text-primary" inset>
         <QToolbarTemplate
