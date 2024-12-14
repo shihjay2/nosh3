@@ -19,12 +19,6 @@
             <q-tooltip v-if="state.sync_on">{{ state.sync_tooltip }}</q-tooltip>
           </div>
         </div>
-        <q-btn v-if="!state.sync_on" flat dense round icon="cloud_sync" @click="startSync">
-          <q-tooltip>Sync Database</q-tooltip>
-        </q-btn>
-        <q-btn v-if="state.updateExists" flat dense round icon="update" @click="refreshApp">
-          <q-tooltip>Update available, click to refresh</q-tooltip>
-        </q-btn>
         <v-offline @detected-condition="checkOnline">
           <template v-if="state.online">
             <q-btn flat dense round icon="cloud_queue">
@@ -37,6 +31,13 @@
             </q-btn>
           </template>
         </v-offline>
+        <q-separator vertical inset />
+        <q-btn v-if="!state.sync_on" flat dense round icon="cloud_sync" @click="startSync">
+          <q-tooltip>Sync Database</q-tooltip>
+        </q-btn>
+        <q-btn v-if="state.updateExists" flat dense round icon="update" @click="refreshApp">
+          <q-tooltip>Update available, click to refresh</q-tooltip>
+        </q-btn>
         <q-btn-dropdown v-if="state.type == 'mdnosh' && state.user.role !== 'patient'" ref="patientSearchBtn" flat dense rounded no-icon-animation="false" dropdown-icon="search" @show="focusInput">
           <q-tooltip>Patient Search</q-tooltip>
           <q-list>

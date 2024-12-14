@@ -32,6 +32,7 @@
             </q-btn>
           </template>
         </v-offline>
+        <q-separator vertical inset />
         <q-btn-dropdown v-if="state.type == 'mdnosh'" ref="patientSearchBtn" flat dense rounded no-icon-animation="false" dropdown-icon="search" @show="focusInput">
           <q-tooltip>Patient Search</q-tooltip>
           <q-list>
