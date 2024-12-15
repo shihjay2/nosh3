@@ -1504,7 +1504,7 @@ export function common() {
     }}
     const pin = auth_store.pin
     const prefix = getPrefix()
-    const local = new PouchDB(prefix + resource)
+    const local = new PouchDB(prefix + resource, {auto_compaction: true})
     const sync_db = new PouchDB(couchdb + prefix + 'sync', auth)
     const timestamp = moment().unix()
     if (save) {
