@@ -1549,7 +1549,7 @@ export function common() {
             }
             try {
               await local.loadEncrypted()
-              await local.destroy({ encrypted_only: true })
+              // await local.destroy({ encrypted_only: true })
               // await local.loadEncrypted({batch_size: 20, batches_limit: 2})
               console.log('PouchDB encrypted sync complete for DB: ' + resource )
             } catch (e) {
