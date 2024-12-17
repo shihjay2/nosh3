@@ -198,6 +198,7 @@
               v-if="state.showList"
               @loading="loading"
               @open-form="openForm"
+              @open-graph="openGraph"
               @reload-complete="reloadComplete"
               @reload-drawer="reloadDrawer"
               @remove-oidc="removeOIDC"

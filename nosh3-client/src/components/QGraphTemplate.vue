@@ -110,9 +110,16 @@ export default defineComponent({
       const series = []
       const result = await db.find({selector: {'code.coding.code': {$eq: observation}, _id: {"$gte": null}}})
       const data1 = []
-      result.docs.sort((a1, b1) => moment(a1.effectivePeriod.start) - moment(b1.effectivePeriod.start))
-      for (const d in result.docs) {
-        data1.push([new Date(result.docs[d].effectivePeriod.start).getTime(), parseFloat(result.docs[d].valueQuantity.value)])
+      if (objectPath.has(result, 'docs.0.effectivePeriod.start')) {
+        result.docs.sort((a1, b1) => moment(a1.effectivePeriod.start) - moment(b1.effectivePeriod.start))
+        for (const d in result.docs) {
+          data1.push([new Date(result.docs[d].effectivePeriod.start).getTime(), parseFloat(result.docs[d].valueQuantity.value)])
+        }
+      } else {
+        result.docs.sort((a1, b1) => moment(a1.effectiveDateTime) - moment(b1.effectiveDateTime))
+        for (const d in result.docs) {
+          data1.push([new Date(result.docs[d].effectiveDateTime).getTime(), parseFloat(result.docs[d].valueQuantity.value)])
+        }
       }
       series.push({name: result.docs[0].code.coding.display, type: 'line', data: data1})
       state.options = {

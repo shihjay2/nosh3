@@ -55,6 +55,9 @@
               <q-btn v-if="data.author === 'patients' && state.provider" flat round color="teal" icon="thumb_up_alt" clickable @click="attestRow(data.doc)">
                 <q-tooltip>Attest</q-tooltip>
               </q-btn>
+              <q-btn flat round color="primary" icon="insights" clickable @click="graphRow(data.doc)">
+                <q-tooltip>Graph Trend</q-tooltip>
+              </q-btn>
               <q-btn v-if="data.delete === 'y'" flat round color="red" icon="delete" clickable @click="deleteRow(data.doc)">
                 <q-tooltip>Delete</q-tooltip>
               </q-btn>
@@ -116,7 +119,7 @@ export default defineComponent({
       default: function () { return []}
     }
   },
-  emits: ['loading', 'open-form', 'reload-drawer', 'reload-complete', 'remove-oidc'],
+  emits: ['loading', 'open-form', 'open-graph', 'reload-drawer', 'reload-complete', 'remove-oidc'],
   setup (props, { emit }) {
     const $q = useQuasar()
     const { addSchemaOptions, eventAdd, fetchJSON, fhirModel, fhirReplace, getPrefix, groupItems, importFHIR, inbox, loadSelect, removeTags, sync, timelineResources, timelineUpdate } = common()
@@ -437,6 +440,9 @@ export default defineComponent({
         return ''
       }
     }
+    const graphRow = (doc) => {
+      emit('open-graph', 'dft', objectPath.get(doc, 'code.coding.0.code'))
+    }
     const loading = () => {
       emit('loading')
     }
@@ -490,6 +496,7 @@ export default defineComponent({
       fhirModel,
       fhirReplace,
       getAuthor,
+      graphRow,
       groupItems,
       importRow,
       importRows,
