@@ -27,10 +27,12 @@
               <q-item-label>{{ data.title }}</q-item-label>
               <q-item-label caption :class="data.text_color">{{ data.text }}</q-item-label>
             </q-item-section>
-            <q-item-section side top>
+            <q-item-section side>
               <q-btn flat round color="teal" icon="import_export" clickable @click="importRow(data.doc, data.doc._oidc_index, row.oidc)">
                 <q-tooltip>Import</q-tooltip>
               </q-btn>
+            </q-item-section>
+            <q-item-section side>
               <q-btn flat round color="red" icon="delete" clickable @click="deleteOIDCRow(data.doc.oidc_index, row.oidc)">
                 <q-tooltip>Delete</q-tooltip>
               </q-btn>
@@ -51,14 +53,18 @@
                 <q-chip v-if="data.author === 'patients'" icon="face" color="teal" text-color="white">Patient Submitted</q-chip>
               </q-item-label>
             </q-item-section>
-            <q-item-section side top>
-              <q-btn v-if="data.author === 'patients' && state.provider" flat round color="teal" icon="thumb_up_alt" clickable @click="attestRow(data.doc)">
+            <q-item-section v-if="data.author === 'patients' && state.provider" side>
+              <q-btn flat round color="teal" icon="thumb_up_alt" clickable @click="attestRow(data.doc)">
                 <q-tooltip>Attest</q-tooltip>
               </q-btn>
+            </q-item-section>
+            <q-item-section side>
               <q-btn flat round color="primary" icon="insights" clickable @click="graphRow(data.doc)">
                 <q-tooltip>Graph Trend</q-tooltip>
               </q-btn>
-              <q-btn v-if="data.delete === 'y'" flat round color="red" icon="delete" clickable @click="deleteRow(data.doc)">
+            </q-item-section>
+            <q-item-section v-if="data.delete === 'y'" side>
+              <q-btn flat round color="red" icon="delete" clickable @click="deleteRow(data.doc)">
                 <q-tooltip>Delete</q-tooltip>
               </q-btn>
             </q-item-section>

@@ -108,7 +108,7 @@ export default defineComponent({
     }
     const dft = async(observation) => {
       const series = []
-      const result = await db.find({selector: {'code.coding.code': {$eq: observation}, _id: {"$gte": null}}})
+      const result = await db.find({selector: {'code.coding.0.code': {$eq: observation}, _id: {"$gte": null}}})
       const data1 = []
       if (objectPath.has(result, 'docs.0.effectivePeriod.start')) {
         result.docs.sort((a1, b1) => moment(a1.effectivePeriod.start) - moment(b1.effectivePeriod.start))
