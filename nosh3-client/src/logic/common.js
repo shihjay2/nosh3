@@ -230,7 +230,7 @@ export function common() {
   //   }
   // }
   const fetchJSON = async(file, online) => {
-    const db = new PouchDB('nosh_assets')
+    const db = new PouchDB('nosh_assets', {auto_compaction: true})
     const result = await db.allDocs({
       include_docs: true,
       attachments: true,
@@ -283,7 +283,7 @@ export function common() {
   //   }
   // }
   const fetchTXT = async(file, online) => {
-    const db = new PouchDB('nosh_assets')
+    const db = new PouchDB('nosh_assets', {auto_compaction: true})
     const result = await db.allDocs({
       include_docs: true,
       attachments: true,
