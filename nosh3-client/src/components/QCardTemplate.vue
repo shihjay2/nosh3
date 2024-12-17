@@ -71,7 +71,6 @@ export default defineComponent({
     })
     onMounted(async() => {
       state.data = props.data
-      console.log(state.data)
       state.result = props.result
       state.base = await fetchJSON('fhir/' + state.data.resource, props.online)
       state.schema = props.schema
