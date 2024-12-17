@@ -493,6 +493,7 @@ export default defineComponent({
     var localDB = new PouchDB(prefix + props.resource)
     var conditionsDB = new PouchDB(prefix + 'conditions')
     onMounted(async() => {
+      emit('loading')
       state.auth = props.auth
       state.online = props.online
       state.couchdb = props.couchdb
@@ -512,13 +513,12 @@ export default defineComponent({
         const doc = await localDB.get(props.id)
         objectPath.set(state, 'fhir', doc)
         await fhirMap()
-        console.log(state.data)
         if (typeof props.category !== 'undefined' && props.category == '') {
           state.tab = props.category
         } else {
           state.tab = state.base.tabs[0].category
         }
-        updateTab(state.tab)
+        await updateTab(state.tab)
       } else {
         state.encounter = props.id
         if (typeof props.category !== 'undefined' && props.category !== '') {
@@ -526,8 +526,9 @@ export default defineComponent({
         } else {
           state.tab = state.base.tabs[0].category
         }
-        updateTab(state.tab)
+        await updateTab(state.tab)
       }
+      emit('loading')
     })
     watch(() => props.oidc, async(newVal) => {
       if (newVal !== '') {
