@@ -512,6 +512,7 @@ export default defineComponent({
         const doc = await localDB.get(props.id)
         objectPath.set(state, 'fhir', doc)
         await fhirMap()
+        console.log(state.data)
         if (typeof props.category !== 'undefined' && props.category == '') {
           state.tab = props.category
         } else {
