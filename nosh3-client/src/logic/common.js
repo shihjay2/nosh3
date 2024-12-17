@@ -217,7 +217,6 @@ export function common() {
     doc.events.push(event_item)
     await db1.put(doc)
     auth_store.setSyncResource('activities')
-    // await sync('activities', false, patient_id)
   }
   // const fetchJSON_old = async(type, online) => {
   //   if (localStorage.getItem(type) === null) {
@@ -1534,7 +1533,9 @@ export function common() {
       if (timelineResources.includes(resource)) {
         await timelineUpdate({id: data._id, resource: resource, action: 'update'})
       }
-      await eventAdd('Updated ' + pluralize.singular(resource.replace('_statements', '')), patient_id, opts)
+      if (resource !== 'timeline') {
+        await eventAdd('Updated ' + pluralize.singular(resource.replace('_statements', '')), patient_id, opts)
+      }
     }
     if (online) {
       if (resource !== 'users' && resource !== 'presentations' && resource !== 'binaries') {

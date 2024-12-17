@@ -367,7 +367,8 @@ async function eventAdd(event, opts, patient_id='') {
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = patient_id + '_'
   }
-  const db = new PouchDB('activities')
+  await sync('activities', patient_id)
+  const db = new PouchDB(prefix + 'activities')
   // check if old version and destroy
   const check = await db.allDocs({include_docs: true})
   if (check.rows.length > 0) {
@@ -379,21 +380,19 @@ async function eventAdd(event, opts, patient_id='') {
       }
     }
   }
-  const db1 = new PouchDB('activities')
+  const db1 = new PouchDB(prefix + 'activities', {auto_compaction: true})
   // check if existing day event doc, otherwise create one
   const datetime = moment().startOf('day').unix()
   const datetime_formal = moment().startOf('day').format('YYYY-MM-DDTHH:mm:ss.SSSZ')
   const check1 = await db1.find({selector: {'datetime': {"$eq": datetime}}})
-  let doc = {}
+  let doc = {
+    _id: 'nosh_' + uuidv4(),
+    datetime: datetime,
+    datetime_formal: datetime_formal,
+    events: []
+  }
   if (check1.docs.length > 0) {
     doc = check1.docs[0]
-  } else {
-    doc = {
-      _id: 'nosh_' + uuidv4(),
-      datetime: datetime,
-      datetime_formal: datetime_formal,
-      events: []
-    }
   }
   const event_item = {
     event: event,
