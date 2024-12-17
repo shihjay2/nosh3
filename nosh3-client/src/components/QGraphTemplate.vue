@@ -121,7 +121,7 @@ export default defineComponent({
           data1.push([new Date(result.docs[d].effectiveDateTime).getTime(), parseFloat(result.docs[d].valueQuantity.value)])
         }
       }
-      series.push({name: result.docs[0].code.coding.display, type: 'line', data: data1})
+      series.push({name: result.docs[0].code.coding[0].display, type: 'line', data: data1})
       state.options = {
         chart: {
           renderTo: 'graph',
@@ -130,7 +130,7 @@ export default defineComponent({
           marginBottom: 50
         },
         title: {
-          text: result.docs[0].code.coding.display + ' over time as of ' + moment().format('YYYY-MM-DD HH:mm'),
+          text: result.docs[0].code.coding[0].display + ' over time as of ' + moment().format('YYYY-MM-DD HH:mm'),
           x: -20
         },
         xAxis: {

@@ -192,20 +192,18 @@ export function common() {
         }
       }
     }
-    const db1 = new PouchDB(prefix + 'activities')
+    const db1 = new PouchDB(prefix + 'activities', {auto_compaction: true})
     const datetime = moment().startOf('day').unix()
     const datetime_formal = moment().startOf('day').format('YYYY-MM-DDTHH:mm:ss.SSSZ')
     const check1 = await db1.find({selector: {'datetime': {"$eq": datetime}}})
-    let doc = {}
+    let doc = {
+      _id: 'nosh_' + uuidv4(),
+      datetime: datetime,
+      datetime_formal: datetime_formal,
+      events: []
+    }
     if (check1.docs.length > 0) {
       doc = check1.docs[0]
-    } else {
-      doc = {
-        _id: 'nosh_' + uuidv4(),
-        datetime: datetime,
-        datetime_formal: datetime_formal,
-        events: []
-      }
     }
     const event_item = {
       event: event,
@@ -218,7 +216,8 @@ export function common() {
     }
     doc.events.push(event_item)
     await db1.put(doc)
-    await sync('activities', false, patient_id)
+    auth_store.setSyncResource('activities')
+    // await sync('activities', false, patient_id)
   }
   // const fetchJSON_old = async(type, online) => {
   //   if (localStorage.getItem(type) === null) {
