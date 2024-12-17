@@ -694,7 +694,15 @@
     <q-card>
       <q-card-section>
         <q-list>
-          <q-item clickable @click="openTrustee()">
+          <q-item v-if="!state.sync_on" clickable @click="startSync()">
+            <q-item-section>
+              <q-item-label>Sync All Databases</q-item-label>
+            </q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" style="font-size: 1.5em" name="cloud_sync" />
+            </q-item-section>
+          </q-item>
+          <q-item clickable @click="timelineRebuild()">
             <q-item-section>
               <q-item-label>Rebuild Timeline</q-item-label>
             </q-item-section>
