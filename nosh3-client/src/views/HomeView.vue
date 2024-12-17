@@ -35,9 +35,6 @@
         </div>
         <q-separator vertical color="orange" inset />
         <div class="q-pl-md">
-          <q-btn v-if="!state.sync_on" flat dense round icon="cloud_sync" @click="startSync">
-            <q-tooltip>Sync Database</q-tooltip>
-          </q-btn>
           <q-btn v-if="state.updateExists" flat dense round icon="update" @click="refreshApp">
             <q-tooltip>Update available, click to refresh</q-tooltip>
           </q-btn>
