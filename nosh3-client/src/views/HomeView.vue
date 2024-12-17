@@ -78,13 +78,12 @@
             <QMenuTemplate
               v-if="state.showMenu"
               @open-activities="openActivities"
+              @open-debug="openDebugMenu"
               @open-insurance="openInsurance"
               @open-list="openList"
               @open-page="openPage"
-              @open-qr-reader="openQRReader"
               @open-schedule="openSchedule"
               @open-share="openShare"
-              @set-maia="setMAIA"
               @stop-inbox-timer="stopInboxTimer"
               @rotate-jwt="rotateJWT"
               :user="state.user"
@@ -118,11 +117,9 @@
           @clear-sync="clearSync"
           @dump-sync="dumpSync"
           @open-detail="openDetail"
-          @clear-all="clearAll"
           @import-all="importAll"
           @upload-sync="uploadSync"
           @start-sync="startSync"
-          @timeline-rebuild="loadTimeline"
           :toolbar-object="state.toolbarObject"
           :encounter="state.encounter"
           :id="state.id"
@@ -693,10 +690,82 @@
       accept=".json"
     />
   </q-dialog>
+  <q-dialog v-model="state.showDebug">
+    <q-card>
+      <q-card-section>
+        <q-list>
+          <q-item clickable @click="openTrustee()">
+            <q-item-section>
+              <q-item-label>Rebuild Timeline</q-item-label>
+            </q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" style="font-size: 1.5em" name="build" />
+            </q-item-section>
+          </q-item>
+          <q-item v-if="state.type == 'pnosh'" clickable @click="setMAIA()">
+            <q-item-section>
+              <q-item-label>Set MAIA URL</q-item-label>
+            </q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" style="font-size: 1.5em" name="link" />
+            </q-item-section>
+          </q-item>
+          <q-item clickable @click="openDebug()">
+            <q-item-section>
+              <q-item-label>Download Debugging File</q-item-label>
+            </q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" style="font-size: 1.5em" name="adb" />
+            </q-item-section>
+          </q-item>
+          <q-item clickable @click="dumpSync()">
+            <q-item-section>
+              <q-item-label>Download OIDC Sync File</q-item-label>
+            </q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" style="font-size: 1.5em" name="policy" />
+            </q-item-section>
+          </q-item>
+          <q-item clickable @click="clearAll()">
+            <q-item-section>
+              <q-item-label>Clear Everything (Local and Remote)</q-item-label>
+            </q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" style="font-size: 1.5em" name="delete_sweep" />
+            </q-item-section>
+          </q-item>
+          <q-item clickable @click="openTrustee()">
+            <q-item-section>
+              <q-item-label>Clear Local Only</q-item-label>
+            </q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" style="font-size: 1.5em" name="phonelink_erase" />
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-card-section>
+    </q-card>
+  </q-dialog>
   <q-dialog v-model="state.showShare">
     <q-card>
       <q-card-section>
         <q-list>
+          <q-item clickable @click="openTrustee()">
+            <q-item-section>
+              <q-item-label>Trustee<q-icon name="fas fa-registered" style="font-size: 0.6em; vertical-align: super;"/> Policies</q-item-label>
+            </q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" style="font-size: 1.5em" name="policy" />
+            </q-item-section>
+          </q-item>
+          <q-item clickable @click="openTrustee('user')">
+            <q-item-section>
+              <q-item-label>Trustee<q-icon name="fas fa-registered" style="font-size: 0.6em; vertical-align: super;"/> Users</q-item-label>
+            </q-item-section>
+            <q-item-section avatar>
+              <q-icon color="primary" style="font-size: 1.5em" name="policy" />
+            </q-item-section>
+          </q-item>
           <q-item clickable @click="openQR()">
             <q-item-section>
               <q-item-label>Health Record Access QR Code</q-item-label>
@@ -721,20 +790,12 @@
               <q-icon color="primary" style="font-size: 1.5em" name="medical_services" />
             </q-item-section>
           </q-item>
-          <q-item clickable @click="openTrustee()">
+          <q-item clickable @click="openQRReader()">
             <q-item-section>
-              <q-item-label>Trustee<q-icon name="fas fa-registered" style="font-size: 0.6em; vertical-align: super;"/> Policies</q-item-label>
+              <q-item-label>QR Code Reader for Prescriptions/Orders</q-item-label>
             </q-item-section>
             <q-item-section avatar>
-              <q-icon color="primary" style="font-size: 1.5em" name="policy" />
-            </q-item-section>
-          </q-item>
-          <q-item clickable @click="openTrustee('user')">
-            <q-item-section>
-              <q-item-label>Trustee<q-icon name="fas fa-registered" style="font-size: 0.6em; vertical-align: super;"/> Users</q-item-label>
-            </q-item-section>
-            <q-item-section avatar>
-              <q-icon color="primary" style="font-size: 1.5em" name="policy" />
+              <q-icon color="primary" style="font-size: 1.5em" name="qr_code_scanner" />
             </q-item-section>
           </q-item>
           <q-item clickable @click="openDump()">
@@ -755,7 +816,7 @@
           </q-item>
           <q-item clickable @click="loadMarkdown()">
             <q-item-section>
-              <q-item-label>Markdown</q-item-label>
+              <q-item-label>Markdown Download</q-item-label>
             </q-item-section>
             <q-item-section avatar>
               <q-icon color="primary" style="font-size: 1.5em" name="format_indent_decrease" />
@@ -1078,7 +1139,8 @@ export default defineComponent({
       sig_options: {
         penColor: "rgb(0, 0, 0)",
         backgroundColor: "rgb(255,255,255)"
-      }
+      },
+      showDebug: false
     })
     const route = useRoute()
     const auth = useAuthStore()
@@ -1576,6 +1638,10 @@ export default defineComponent({
           { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
         ]
       })
+    }
+    const destroyDB = async() => {
+      const dbs = await window.indexedDB.databases()
+      dbs.forEach(db => { window.indexedDB.deleteDatabase(db.name) })
     }
     const dumpSync = () => {
       const bundleDoc = {}
@@ -2096,6 +2162,9 @@ export default defineComponent({
     const openDebug = async() => {
       const debug = await getOIDCDebug()
       download(JSON.stringify(debug, null, 2), 'fhir_debug.json', 'application/json')
+    }
+    const openDebugMenu = () => {
+      state.showDebug = true
     }
     const openDetail = () => {
       state.openDetail = true
@@ -2916,6 +2985,10 @@ export default defineComponent({
         }
       }
     }
+    const timelineRebuild = () => {
+      auth.setTimelineBuild()
+      loadTimeline(true)
+    }
     const timelineScroll = async(info) => {
       if (state.showTimeline) {
         const last = state.timeline_scroll_last_pos
@@ -3151,6 +3224,7 @@ export default defineComponent({
       closePulldown,
       closeTrustee,
       completeTask,
+      destroyDB,
       dumpSync,
       fhirModel,
       fhirReplace,
@@ -3179,6 +3253,7 @@ export default defineComponent({
       openChart,
       openChat,
       openDebug,
+      openDebugMenu,
       openDetail,
       openDetailComplete,
       openDump,
@@ -3236,6 +3311,7 @@ export default defineComponent({
       sync,
       syncAll,
       syncProcess,
+      timelineRebuild,
       timelineScroll,
       timelineSort,
       thread,

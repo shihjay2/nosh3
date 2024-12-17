@@ -54,9 +54,6 @@
   <q-btn v-if="state.oidc" push flat round icon="file_upload" clickable @click="uploadSync()">
     <q-tooltip>Upload Sync</q-tooltip>
   </q-btn>
-  <q-btn v-if="state.oidc" push flat round icon="adb" clickable @click="openDebug()">
-    <q-tooltip>Debug Sync</q-tooltip>
-  </q-btn>
   <q-btn v-if="state.oidc" push flat round icon="file_download" clickable @click="dumpSync()">
     <q-tooltip>Sync Dump</q-tooltip>
   </q-btn>
@@ -65,15 +62,6 @@
   </q-btn>
   <q-btn v-if="state.oidc" push flat round icon="import_export" clickable @click="importAll()">
     <q-tooltip>Import Everything</q-tooltip>
-  </q-btn>
-  <q-btn v-if="state.oidc" push flat round icon="delete_sweep" clickable @click="clearAll()">
-    <q-tooltip>Clear Everything</q-tooltip>
-  </q-btn>
-  <q-btn v-if="state.oidc" push flat round icon="build" clickable @click="timelineRebuild()">
-    <q-tooltip>Rebuild Timeline</q-tooltip>
-  </q-btn>
-  <q-btn v-if="state.oidc" push flat round icon="phonelink_erase" clickable @click="destroyDB()">
-    <q-tooltip>Destroy PouchDB</q-tooltip>
   </q-btn>
   <q-btn v-if="!state.timeline" push flat round icon="close" clickable @click="closeContainer()">
     <q-tooltip>Close</q-tooltip>
@@ -174,9 +162,6 @@ export default defineComponent({
     const addendumEncounter = () => {
       emit('addendum-encounter')
     }
-    const clearAll = () => {
-      emit('clear-all')
-    }
     const clearSync = () => {
       emit('clear-sync')
     }
@@ -260,10 +245,6 @@ export default defineComponent({
     }
     const sortTitle = () => {
       emit('sort-alpha')
-    }
-    const timelineRebuild = () => {
-      auth.setTimelineBuild()
-      emit('timeline-rebuild', true)
     }
     const updateToolbar = async(toolbar) => {
       state.base = {}
@@ -396,7 +377,6 @@ export default defineComponent({
     }
     return {
       addendumEncounter,
-      clearAll,
       clearSync,
       closeContainer,
       destroyDB,
@@ -417,7 +397,6 @@ export default defineComponent({
       signEncounter,
       sortDate,
       sortTitle,
-      timelineRebuild,
       updateToolbar,
       uploadSync,
       state

@@ -33,17 +33,9 @@
           <q-icon color="primary" style="font-size: 1.5em" name="calendar_today" />
         </q-item-section>
       </q-item>
-      <q-item clickable @click="openQRReader()">
-        <q-item-section>
-          <q-item-label>QR Code Reader</q-item-label>
-        </q-item-section>
-        <q-item-section avatar>
-          <q-icon color="primary" style="font-size: 1.5em" name="qr_code_scanner" />
-        </q-item-section>
-      </q-item>
       <q-item v-if="state.type == 'pnosh' && state.user.role == 'patient'" clickable @click="openShare()">
         <q-item-section>
-          <q-item-label>Sharing</q-item-label>
+          <q-item-label>Share</q-item-label>
         </q-item-section>
         <q-item-section avatar>
           <q-icon color="primary" style="font-size: 1.5em" name="share" />
@@ -65,20 +57,20 @@
           <q-icon color="primary" style="font-size: 1.5em" name="receipt_long" />
         </q-item-section>
       </q-item>
-      <q-item v-if="state.type == 'pnosh'" clickable @click="setMAIA()">
-        <q-item-section>
-          <q-item-label>Set MAIA URL</q-item-label>
-        </q-item-section>
-        <q-item-section avatar>
-          <q-icon color="primary" style="font-size: 1.5em" name="link" />
-        </q-item-section>
-      </q-item>
       <q-item v-if="state.type == 'pnosh' && state.maia !== ''" clickable @click="openMAIA()">
         <q-item-section>
           <q-item-label>Launch MAIA</q-item-label>
         </q-item-section>
         <q-item-section avatar>
           <q-icon color="primary" style="font-size: 1.5em" name="auto_awesome" />
+        </q-item-section>
+      </q-item>
+      <q-item clickable @click="openDebug()">
+        <q-item-section>
+          <q-item-label>Debug</q-item-label>
+        </q-item-section>
+        <q-item-section avatar>
+          <q-icon color="primary" style="font-size: 1.5em" name="developer_mode" />
         </q-item-section>
       </q-item>
       <q-item v-if="state.type == 'pnosh'">
@@ -119,7 +111,7 @@ export default defineComponent({
     },
     type: String
   },
-  emits: ['open-activities', 'open-insurance', 'open-list', 'open-page', 'open-schedule', 'open-share', 'rotate-jwt', 'set-maia', 'stop-inbox-timer'],
+  emits: ['open-activities', 'open-debug', 'open-insurance', 'open-list', 'open-page', 'open-schedule', 'open-share', 'rotate-jwt', 'set-maia', 'stop-inbox-timer'],
   setup (props, { emit }) {
     const auth = useAuthStore()
     const { eventAdd } = common()
@@ -175,14 +167,14 @@ export default defineComponent({
     const openActivity = () => {
       emit('open-activities')
     }
+    const openDebug = () => {
+      emit('open-debug')
+    }
     const openInsurance = () => {
       emit('open-insurance')
     }
     const openMAIA = () => {
       window.open(state.maia)
-    }
-    const openQRReader = () => {
-      emit('open-qr-reader')
     }
     const openSchedule = () => {
       emit('open-schedule')
@@ -193,20 +185,16 @@ export default defineComponent({
     const rotateJWT = () => {
       emit('rotate-jwt')
     }
-    const setMAIA = () => {
-      emit('set-maia')
-    }
     return {
       logout,
       open,
       openActivity,
+      openDebug,
       openInsurance,
       openMAIA,
-      openQRReader,
       openSchedule,
       openShare,
       rotateJWT,
-      setMAIA,
       state
     }
   }
