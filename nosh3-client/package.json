@@ -48,6 +48,7 @@
     "pluralize": "^8.0.0",
     "pouchdb-browser": "^8.0.1",
     "pouchdb-find": "^8.0.1",
+    "pouchdb-upsert": "^2.2.0",
     "quasar": "^2.0.0",
     "raw-loader": "^4.0.2",
     "register-service-worker": "^1.7.2",
@@ -63,8 +64,7 @@
     "vue-qrcode-reader": "^5.3.4",
     "vue-qrious": "^3.1.0",
     "vue-router": "^4.0.3",
-    "vue3-print-nb": "^0.1.4",
-    "worker-loader": "^3.0.8"
+    "vue3-print-nb": "^0.1.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

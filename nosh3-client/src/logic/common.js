@@ -12,9 +12,11 @@ import * as Papa from 'papaparse'
 import pluralize from 'pluralize'
 import PouchDB from 'pouchdb-browser'
 import PouchDBFind from 'pouchdb-find'
+import PouchDBUpsert from 'pouchdb-upsert'
 import comdb from 'comdb'
 PouchDB.plugin(PouchDBFind)
 PouchDB.plugin(comdb)
+PouchDB.plugin(PouchDBUpsert)
 import {v4 as uuidv4} from 'uuid'
 import { useAuthStore } from '@/stores'
 
@@ -244,9 +246,15 @@ export function common() {
       if (result.rows.length > 0) {
         doc = await db.get(objectPath.get(result, 'rows.0.doc._id'))
       }
-      objectPath.set(doc, file, response.data)
       try {
-        await db.put(doc)
+        await db.upsert(doc._id, (doc) => {
+          if (JSON.stringify(response.data) !== JSON.stringify(objectPath.get(doc, file))) {
+            objectPath.set(doc, file, response.data)
+            return doc
+          } else {
+            return false
+          }
+        })
       } catch (e) {
         console.log(e)
       }
@@ -306,9 +314,15 @@ export function common() {
       if (result.rows.length > 0) {
         doc = await db.get(objectPath.get(result, 'rows.0.doc._id'))
       }
-      objectPath.set(doc, file, response_final)
       try {
-        await db.put(doc)
+        await db.upsert(doc._id, (doc) => {
+          if (JSON.stringify(response.final) !== JSON.stringify(objectPath.get(doc, file))) {
+            objectPath.set(doc, file, response.final)
+            return doc
+          } else {
+            return false
+          }
+        })
       } catch (e) {
         console.log(e)
       }
