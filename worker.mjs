@@ -43,7 +43,7 @@ const mdbuild = async(opts) => {
                   ul_arr_binary1.push('**Display**: ' + data1)
                 }
               }
-              mdjs_binary1.push({ul: ul_arr})
+              mdjs_binary1.push({ul: ul_arr_binary1})
               const binary_id = objectPath.get(row, 'document_reference.content.' + c + '.attachment.url').substring(objectPath.get(row, 'document_reference.content.' + c + '.attachment.url').indexOf('/') + 1)
               const binary_doc1 = await db_binary.get(binary_id)
               const data1 = atob(objectPath.get(binary_doc1, 'data'))
@@ -84,6 +84,7 @@ const mdbuild = async(opts) => {
                 ul_arr_binary.push('**Display**: ' + data1)
               }
             }
+            mdjs_binary.push({ul: ul_arr_binary})
             const binary_doc = await db_binary.get(binary_id)
             const data = atob(objectPath.get(binary_doc, 'data'))
             if (objectPath.get(binary_doc, 'contentType').includes('text/plain')) {
