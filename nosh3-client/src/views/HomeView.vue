@@ -1890,7 +1890,7 @@ export default defineComponent({
                   objectPath.set(timelineItem, 'content', fhirReplace('content', base, result.docs[a], schema))
                   objectPath.set(timelineItem, 'extended', fhirReplace('extended', base, result.docs[a], schema))
                   objectPath.set(timelineItem, 'status', fhirReplace('status', base, result.docs[a], schema))
-                  objectPath.set(timelineItem, 'date', moment(objectPath.get(result, 'docs.' + a + '.' + base.timelineDate)).utc().unix())
+                  objectPath.set(timelineItem, 'date', moment(objectPath.get(result, 'docs.' + a + '.' + base.timelineDate)).unix())
                   objectPath.set(timelineItem, 'icon', resource1.icon)
                   objectPath.set(timelineItem, 'resource', resource)
                   objectPath.set(timelineItem, 'keys', base.fuse)
@@ -2014,7 +2014,7 @@ export default defineComponent({
           }
           if (activitiesResult.docs.length > 0) {
             objectPath.set(timelineIntro, 'subtitle', moment(activitiesResult.docs[0].datetime).format("YYYY-MM-DD"))
-            objectPath.set(timelineIntro, 'date', moment(activitiesResult.docs[0].datetime).utc().unix())
+            objectPath.set(timelineIntro, 'date', moment(activitiesResult.docs[0].datetime).unix())
             timeline.push(timelineIntro)
           }
           const encounter_rows = timeline.filter((row) => row.resource === 'encounters')

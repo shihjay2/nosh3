@@ -29,7 +29,8 @@ const mdbuild = async(opts) => {
       const ul_arr = []
       if (row.id !== 'intro') {
         mdjs.push({h3: Case.title(pluralize.singular(row.resource)) + ' Details'})
-        ul_arr.push('**Date**: ' + moment(row.date).format('MMMM DD, YYYY'))
+        const [ date_text ] = row.subtitle.split(',')
+        ul_arr.push('**Date**: ' + moment(date_text).format('MMMM DD, YYYY'))
         ul_arr.push('**' + Case.title(pluralize.singular(row.resource)) + '**: ' + row.title)
       } else {
         mdjs.push({h3: 'Patient Information'})
