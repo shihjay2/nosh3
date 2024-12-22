@@ -74,6 +74,7 @@ const mdbuild = async(opts) => {
             const mdjs_binary = []
             const ul_arr_binary = []
             mdjs_binary.push({h3: Case.title(pluralize.singular(row.resource)) + ' Details'})
+            const [ date_text ] = row.subtitle.split(',')
             ul_arr_binary.push('**Date**: ' + moment(date_text).format('MMMM DD, YYYY'))
             for (const data1 of row.content) {
               if (row.style === 'p') {
