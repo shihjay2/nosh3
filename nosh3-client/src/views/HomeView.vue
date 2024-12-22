@@ -2017,6 +2017,12 @@ export default defineComponent({
             objectPath.set(timelineIntro, 'date', moment(activitiesResult.docs[0].datetime).utc().unix())
             timeline.push(timelineIntro)
           }
+          const encounter_rows = timeline.filter((row) => row.resource === 'encounters')
+          for (const encounter_row of encounter_rows) {
+            if (objectPath.has(encounter_row, 'document_reference')) {
+              timeline = timeline.filter((row) => row.id !== objectPath.get(encounter_row, 'document_reference.id') || row.resource !== 'document_references')
+            }
+          }
           // timeline.sort((c, d) => d.date - c.date)
           const { workerFn } = useWebWorkerFn(timelineSort)
           timeline = await workerFn(timeline)

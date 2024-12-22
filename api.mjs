@@ -18,12 +18,22 @@ router.get('/:pid/Timeline', verifyJWT, getTimeline)
 router.put('/:pid/md', verifyJWT, putMarkdown)
 
 async function getTimeline(req, res) {
+  let start = true
+  let size = 100  //100 mb
   let prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.pid + '_'
   }
   const process_db_remote = new PouchDB(urlFix(settings.couchdb_uri) + 'timeline_process', settings.couchdb_auth)
-  if (Object.keys(req.query).length === 0) {
+  if (Object.keys(req.query).length > 0) {
+    if (objectPath.has(req, 'query.size')) {
+      size = req.query.size
+    }
+    if (objectPath.has(req, 'query.process')) {
+      start = false
+    }
+  }
+  if (start) {
     await sync('timeline', req.params.pid)
     const db = new PouchDB(prefix + 'timeline')
     const timeline_result = await db.allDocs({
@@ -46,7 +56,8 @@ async function getTimeline(req, res) {
         pid: req.params.pid,
         process_id: id,
         prefix: prefix,
-        timeline: timeline
+        timeline: timeline,
+        size: size
       }
       res.status(200).json({process: id})
       const worker = new Worker('./worker.mjs', { workerData: opts })
@@ -61,23 +72,18 @@ async function getTimeline(req, res) {
       res.sendStatus(404)
     }
   } else {
-    if (objectPath.has(req, 'query.process')) {
-      try {
-        const process_doc = await process_db_remote.get(req.query.process)
-        if (process_doc.status === 'pending') {
-          res.sendStatus(404)
-        } else {
-          res.status(200)
-          res.setHeader('Content-type', "text/markdown")
-          res.setHeader('Content-disposition', 'attachment; filename=nosh_timeline_'  + Date.now() + '.md')
-          res.send(atob(objectPath.get(process_doc, 'data')))
-        }
-      } catch (e) {
-        console.log(e)
-        res.status(401).send('Unauthorized')
+    try {
+      const process_doc = await process_db_remote.get(req.query.process)
+      if (process_doc.status === 'pending') {
+        res.sendStatus(404)
+      } else {
+        res.status(200)
+        res.setHeader('Content-type', "text/markdown")
+        res.setHeader('Content-disposition', 'attachment; filename=nosh_timeline_'  + Date.now() + '.md')
+        res.send(atob(objectPath.get(process_doc, 'data')))
       }
-    } else {
-      console.log('no query item')
+    } catch (e) {
+      console.log(e)
       res.status(401).send('Unauthorized')
     }
   }

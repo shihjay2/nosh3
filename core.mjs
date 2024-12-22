@@ -1136,6 +1136,12 @@ async function signRequest(doc, urlinput, method, req, auth='') {
   }
 }
 
+function size(str) {
+  const bytes = new Blob([str]).size
+  const megabytes = bytes / (1024 * 1024)
+  return megabytes
+}
+
 async function sleep(seconds) {
   return new Promise((resolve) => setTimeout(resolve, seconds * 1000))
 }
@@ -1314,6 +1320,12 @@ async function timelineUpdate(opts, patient_id) {
   }
   if (result.rows.length > 0) {
     if (opts.action === 'update') {
+      const encounter_rows = timeline.filter((row) => row.resource === 'encounters')
+      for (const encounter_row of encounter_rows) {
+        if (objectPath.has(encounter_row, 'document_reference')) {
+          timeline = timeline.filter((row) => row.id !== objectPath.get(encounter_row, 'document_reference.id') || row.resource !== 'document_references')
+        }
+      }
       timeline.sort((c, d) => d.date - c.date)
     }
     objectPath.set(timeline_doc, 'timeline', timeline)
@@ -1504,4 +1516,4 @@ async function verifyPIN(pin, patient_id) {
   }
 }
 
-export { addSchemaOptions, couchdbConfig, couchdbDatabase, couchdbInstall, couchdbUpdate, createKeyPair, equals, eventAdd, eventUser, fetchJSON, fhirDisplay, fhirModel, fhirReplace, getAllKeys, getKeys, getName, getNPI, getPIN, getResource, getTZ, introspect, isMarkdown, loadSelect, markdownParse, pollSet, registerResources, removeTags, signRequest, sleep, sync, timelineResources, timelineUpdate, urlFix, userAdd, verify, verifyJWT, verifyPIN }
+export { addSchemaOptions, couchdbConfig, couchdbDatabase, couchdbInstall, couchdbUpdate, createKeyPair, equals, eventAdd, eventUser, fetchJSON, fhirDisplay, fhirModel, fhirReplace, getAllKeys, getKeys, getName, getNPI, getPIN, getResource, getTZ, introspect, isMarkdown, loadSelect, markdownParse, pollSet, registerResources, removeTags, signRequest, size, sleep, sync, timelineResources, timelineUpdate, urlFix, userAdd, verify, verifyJWT, verifyPIN }

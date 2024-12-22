@@ -8,7 +8,7 @@ import PouchDBFind from 'pouchdb-find'
 PouchDB.plugin(PouchDBFind)
 import settings from './settings.mjs'
 import TurndownService from 'turndown'
-import { isMarkdown, markdownParse, urlFix } from './core.mjs'
+import { isMarkdown, markdownParse, size, urlFix } from './core.mjs'
 import { parentPort, workerData } from 'worker_threads'
 
 const mdbuild = async(opts) => {
@@ -23,6 +23,8 @@ const mdbuild = async(opts) => {
     }
     const db_binary = new PouchDB(urlFix(settings.couchdb_uri) + opts.prefix + 'binaries', settings.couchdb_auth)
     const mdjs = []
+    const md_enc = []
+    const md_doc = []
     for (const row of opts.timeline) {
       const ul_arr = []
       if (row.id !== 'intro') {
@@ -32,37 +34,73 @@ const mdbuild = async(opts) => {
       } else {
         mdjs.push({h3: 'Patient Information'})
       }
-      if (row.resource === 'document_references') {
-        for (const binary_id of objectPath.get(row, 'binaries')) {
-          const binary_doc = await db_binary.get(binary_id)
-          const data = atob(objectPath.get(binary_doc, 'data'))
-          if (objectPath.get(binary_doc, 'contentType').includes('text/plain')) {
-            if (isMarkdown(data)) {
-              const md_arr = markdownParse(data)
-              for (const md_arr_row of md_arr) {
-                mdjs.push(md_arr_row)
+      if (row.resource === 'document_references' || row.resource === 'encounters') {
+        if (row.resource === 'encounters') {
+          if (objectPath.has(row, 'document_reference')) {
+            for (const c in objectPath.get(row, 'document_reference.content')) {
+              const mdjs_binary1 = []
+              const binary_id = objectPath.get(row, 'document_reference.content.' + c + '.attachment.url').substring(objectPath.get(row, 'document_reference.content.' + c + '.attachment.url').indexOf('/') + 1)
+              const binary_doc1 = await db_binary.get(binary_id)
+              const data1 = atob(objectPath.get(binary_doc1, 'data'))
+              if (objectPath.get(binary_doc1, 'contentType').includes('text/plain')) {
+                if (isMarkdown(data1)) {
+                  const md_arr1 = markdownParse(data1)
+                  for (const md_arr_row of md_arr1) {
+                    mdjs_binary1.push(md_arr_row)
+                  }
+                }
+              }
+              if (objectPath.get(binary_doc1, 'contentType').includes('text/html')) {
+                const turndownService = new TurndownService()
+                const md = turndownService.turndown(data1)
+                const md_arr1 = markdownParse(md)
+                for (const md_arr_row1 of md_arr1) {
+                  mdjs_binary1.push(md_arr_row1)
+                }
+              }
+              const md_enc_data = json2md(mdjs_binary1)
+              const md_enc_size = size(md_enc_data)
+              md_enc.push({md: md_enc_data, size: md_enc_size})
+            }
+          }
+        }
+        if (row.resource === 'document_references') {
+          for (const binary_id of objectPath.get(row, 'binaries')) {
+            const mdjs_binary = []
+            const binary_doc = await db_binary.get(binary_id)
+            const data = atob(objectPath.get(binary_doc, 'data'))
+            if (objectPath.get(binary_doc, 'contentType').includes('text/plain')) {
+              if (isMarkdown(data)) {
+                const md_arr = markdownParse(data)
+                for (const md_arr_row of md_arr) {
+                  mdjs_binary.push(md_arr_row)
+                }
               }
             }
-          }
-          if (objectPath.get(binary_doc, 'contentType').includes('text/html')) {
-            const turndownService = new TurndownService()
-            const md = turndownService.turndown(data)
-            const md_arr1 = markdownParse(md)
-            for (const md_arr_row1 of md_arr1) {
-              mdjs.push(md_arr_row1)
+            if (objectPath.get(binary_doc, 'contentType').includes('text/html')) {
+              const turndownService = new TurndownService()
+              const md = turndownService.turndown(data)
+              const md_arr1 = markdownParse(md)
+              for (const md_arr_row1 of md_arr1) {
+                mdjs_binary.push(md_arr_row1)
+              }
             }
+            const md_doc_data = json2md(mdjs_binary)
+            const md_doc_size = size(md_doc_data)
+            md_doc.push({md: md_doc_data, size: md_doc_size})
           }
         }
-      }
-      for (const data1 of row.content) {
-        if (row.style === 'p') {
-          ul_arr.push('**' + data1.key + '**: ' + data1.value)
+      } else {
+        for (const data1 of row.content) {
+          if (row.style === 'p') {
+            ul_arr.push('**' + data1.key + '**: ' + data1.value)
+          }
+          if (row.style === 'list') {
+            ul_arr.push('**Display**: ' + data1)
+          }
         }
-        if (row.style === 'list') {
-          ul_arr.push('**Display**: ' + data1)
-        }
+        mdjs.push({ul: ul_arr})
       }
-      mdjs.push({ul: ul_arr})
     }
     // get observations
     // const observations = objectPath.get(timeline_result, 'rows.0.doc.observations')
@@ -86,7 +124,23 @@ const mdbuild = async(opts) => {
     //     mdjs.push({ul: ul_arr1})
     //   }
     // }
-    objectPath.set(process_doc, 'data', btoa(json2md(mdjs)))
+    let final_md = json2md(mdjs)
+    let total_size = size(final_md)
+    for (const md_enc_row of md_enc) {
+      if (md_enc_row.size + total_size < opts.size) {
+        final_md += "\n" + md_enc_row.md
+        total_size += md_enc_row.size
+      }
+    }
+    for (const md_doc_row of md_doc) {
+      if (md_doc_row.size + total_size < opts.size) {
+        final_md += "\n" + md_doc_row.md
+        total_size += md_doc_row.size
+      }
+    }
+    console.log(total_size)
+    console.log(opts.size)
+    objectPath.set(process_doc, 'data', btoa(final_md))
     objectPath.set(process_doc, 'status', 'complete')
     await process_db.put(process_doc)
     return 'worker complete'

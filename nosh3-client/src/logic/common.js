@@ -1804,6 +1804,12 @@ export function common() {
     }
     if (result.rows.length > 0) {
       if (opts.action === 'update') {
+        const encounter_rows = timeline.filter((row) => row.resource === 'encounters')
+        for (const encounter_row of encounter_rows) {
+          if (objectPath.has(encounter_row, 'document_reference')) {
+            timeline = timeline.filter((row) => row.id !== objectPath.get(encounter_row, 'document_reference.id') || row.resource !== 'document_references')
+          }
+        }
         timeline.sort((c, d) => d.date - c.date)
       }
       objectPath.set(timeline_doc, 'timeline', timeline)
