@@ -26,20 +26,24 @@ const mdbuild = async(opts) => {
     const md_enc = []
     const md_doc = []
     for (const row of opts.timeline) {
-      const ul_arr = []
-      if (row.id !== 'intro') {
-        mdjs.push({h3: Case.title(pluralize.singular(row.resource)) + ' Details'})
-        const [ date_text ] = row.subtitle.split(',')
-        ul_arr.push('**Date**: ' + moment(date_text).format('MMMM DD, YYYY'))
-        ul_arr.push('**' + Case.title(pluralize.singular(row.resource)) + '**: ' + row.title)
-      } else {
-        mdjs.push({h3: 'Patient Information'})
-      }
       if (row.resource === 'document_references' || row.resource === 'encounters') {
         if (row.resource === 'encounters') {
           if (objectPath.has(row, 'document_reference')) {
             for (const c in objectPath.get(row, 'document_reference.content')) {
               const mdjs_binary1 = []
+              const ul_arr_binary1 = []
+              mdjs_binary1.push({h3: Case.title(pluralize.singular(row.resource)) + ' Details'})
+              const [ date_text ] = row.subtitle.split(',')
+              ul_arr_binary1.push('**Date**: ' + moment(date_text).format('MMMM DD, YYYY'))
+              for (const data1 of row.content) {
+                if (row.style === 'p') {
+                  ul_arr_binary1.push('**' + data1.key + '**: ' + data1.value)
+                }
+                if (row.style === 'list') {
+                  ul_arr_binary1.push('**Display**: ' + data1)
+                }
+              }
+              mdjs_binary1.push({ul: ul_arr})
               const binary_id = objectPath.get(row, 'document_reference.content.' + c + '.attachment.url').substring(objectPath.get(row, 'document_reference.content.' + c + '.attachment.url').indexOf('/') + 1)
               const binary_doc1 = await db_binary.get(binary_id)
               const data1 = atob(objectPath.get(binary_doc1, 'data'))
@@ -68,6 +72,17 @@ const mdbuild = async(opts) => {
         if (row.resource === 'document_references') {
           for (const binary_id of objectPath.get(row, 'binaries')) {
             const mdjs_binary = []
+            const ul_arr_binary = []
+            mdjs_binary.push({h3: Case.title(pluralize.singular(row.resource)) + ' Details'})
+            ul_arr_binary.push('**Date**: ' + moment(date_text).format('MMMM DD, YYYY'))
+            for (const data1 of row.content) {
+              if (row.style === 'p') {
+                ul_arr_binary.push('**' + data1.key + '**: ' + data1.value)
+              }
+              if (row.style === 'list') {
+                ul_arr_binary.push('**Display**: ' + data1)
+              }
+            }
             const binary_doc = await db_binary.get(binary_id)
             const data = atob(objectPath.get(binary_doc, 'data'))
             if (objectPath.get(binary_doc, 'contentType').includes('text/plain')) {
@@ -92,6 +107,15 @@ const mdbuild = async(opts) => {
           }
         }
       } else {
+        const ul_arr = []
+        if (row.id !== 'intro') {
+          mdjs.push({h3: Case.title(pluralize.singular(row.resource)) + ' Details'})
+          const [ date_text ] = row.subtitle.split(',')
+          ul_arr.push('**Date**: ' + moment(date_text).format('MMMM DD, YYYY'))
+          ul_arr.push('**' + Case.title(pluralize.singular(row.resource)) + '**: ' + row.title)
+        } else {
+          mdjs.push({h3: 'Patient Information'})
+        }
         for (const data1 of row.content) {
           if (row.style === 'p') {
             ul_arr.push('**' + data1.key + '**: ' + data1.value)

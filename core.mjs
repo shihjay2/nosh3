@@ -1138,8 +1138,8 @@ async function signRequest(doc, urlinput, method, req, auth='') {
 
 function size(str) {
   const bytes = new Blob([str]).size
-  const megabytes = bytes / (1024 * 1024)
-  return megabytes
+  // const megabytes = bytes / (1024 * 1024)
+  return bytes
 }
 
 async function sleep(seconds) {

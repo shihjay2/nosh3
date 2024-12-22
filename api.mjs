@@ -19,7 +19,7 @@ router.put('/:pid/md', verifyJWT, putMarkdown)
 
 async function getTimeline(req, res) {
   let start = true
-  let size = 100  //100 mb
+  let size = 286100  // in bytes, ~ 150000 words
   let prefix = ''
   if (process.env.INSTANCE === 'digitalocean' && process.env.NOSH_ROLE === 'patient') {
     prefix = req.params.pid + '_'
