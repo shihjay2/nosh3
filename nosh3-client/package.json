@@ -30,7 +30,7 @@
     "fuse.js": "^6.6.2",
     "highcharts": "^10.2.0",
     "highcharts-vue": "^1.4.0",
-    "jose": "^4.9.0",
+    "jose": "^5.9.6",
     "json2md": "^2.0.1",
     "jspdf": "^2.5.1",
     "jsqry": "^1.2.4",
