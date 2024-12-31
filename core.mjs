@@ -714,7 +714,7 @@ async function getAllKeys() {
     }
     // Local key
     const db = new PouchDB(urlFix(settings.couchdb_uri) + 'keys', settings.couchdb_auth)
-    const result = await db.find({selector: {_id: {"$gte": null}}, limit: 1000})
+    const result = await db.find({selector: {_id: {"$gte": null}}})
     for (const a in result.docs) {
       keys.push(result.docs[a].publicKey)
       if (objectPath.has(result, 'docs.' + a + '.privateKey')) {
@@ -729,7 +729,7 @@ async function getAllKeys() {
 
 async function getKeys() {
   const db = new PouchDB(urlFix(settings.couchdb_uri) + 'keys', settings.couchdb_auth)
-  const result = await db.find({selector: {_id: {"$gte": null}, privateKey: {"$gte": null}}, limit: 1000})
+  const result = await db.find({selector: {_id: {"$gte": null}, privateKey: {"$gte": null}}})
   return result.docs
 }
 
