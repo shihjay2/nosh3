@@ -942,7 +942,7 @@ async function pollSet(patient_id, resource) {
     prefix = patient_id + '_'
   }
   const db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'sync', settings.couchdb_auth)
-  const sync_result = await db.find({selector: {'resource': {"$eq": resource}}})
+  const sync_result = await db.find({selector: {'resource': {"$eq": resource}}, limit: 1000})
   if (sync_result.docs.length > 0) {
     for (const sync_doc of sync_result.docs) {
       await db.remove(sync_doc)
@@ -1283,7 +1283,7 @@ async function timelineUpdate(opts, patient_id) {
       objectPath.set(timelineItem, 'style', base.uiListContent.contentStyle)
       if (opts.resource === 'encounters') {
         const bundle_db = new PouchDB(prefix + 'bundles')
-        const bundle_result = await bundle_db.find({selector: {'entry': {"$elemMatch": {"resource.encounter.reference": 'Encounter/' + opts.id}}, _id: {"$gte": null}}})
+        const bundle_result = await bundle_db.find({selector: {'entry': {"$elemMatch": {"resource.encounter.reference": 'Encounter/' + opts.id}}, _id: {"$gte": null}}, limit: 1000})
         if (bundle_result.docs.length > 0) {
           bundle_result.docs.sort((a1, b1) => moment(b1.timestamp) - moment(a1.timestamp))
           const history = []
