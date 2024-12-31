@@ -167,6 +167,8 @@ export default defineComponent({
       if (state.login) {
         state.progress = 'Token being processed...'
         const keys = await axios.get(window.location.origin + '/auth/jwks')
+        console.log(keys.data)
+        console.log(jwt)
         const jwk = await jose.importJWK(keys.data.keys[0])
         const jwt = route.query.token
         try {
