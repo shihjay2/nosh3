@@ -975,6 +975,7 @@ async function update(req, res) {
 }
 
 async function test (req, res, next) {
+  await couchdbInstall()
   res.status(200).json({status: 'test'})
 }
 
