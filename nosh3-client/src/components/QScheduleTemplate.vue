@@ -374,7 +374,7 @@ export default defineComponent({
         // create encounter
         const defaults = {}
         const userDB = new PouchDB(prefix + 'users')
-        const result = await userDB.find({selector: {'reference': {$eq: state.fhir.participant[1].actor[0].reference }, _id: {"$gte": null}}, limit: 1000})
+        const result = await userDB.find({selector: {'reference': {$eq: state.fhir.participant[1].actor[0].reference }, _id: {"$gte": null}}, limit: 10000})
         if (result.docs.length > 0) {
           objectPath.set(defaults, 'class', result.docs[0].defaults.class)
           objectPath.set(defaults, 'type', result.docs[0].defaults.type)

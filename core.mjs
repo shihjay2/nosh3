@@ -942,7 +942,7 @@ async function pollSet(patient_id, resource) {
     prefix = patient_id + '_'
   }
   const db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'sync', settings.couchdb_auth)
-  const sync_result = await db.find({selector: {'resource': {"$eq": resource}}, limit: 1000})
+  const sync_result = await db.find({selector: {'resource': {"$eq": resource}}, limit: 10000})
   if (sync_result.docs.length > 0) {
     for (const sync_doc of sync_result.docs) {
       await db.remove(sync_doc)
@@ -1283,7 +1283,7 @@ async function timelineUpdate(opts, patient_id) {
       objectPath.set(timelineItem, 'style', base.uiListContent.contentStyle)
       if (opts.resource === 'encounters') {
         const bundle_db = new PouchDB(prefix + 'bundles')
-        const bundle_result = await bundle_db.find({selector: {'entry': {"$elemMatch": {"resource.encounter.reference": 'Encounter/' + opts.id}}, _id: {"$gte": null}}, limit: 1000})
+        const bundle_result = await bundle_db.find({selector: {'entry': {"$elemMatch": {"resource.encounter.reference": 'Encounter/' + opts.id}}, _id: {"$gte": null}}, limit: 10000})
         if (bundle_result.docs.length > 0) {
           bundle_result.docs.sort((a1, b1) => moment(b1.timestamp) - moment(a1.timestamp))
           const history = []
@@ -1299,7 +1299,7 @@ async function timelineUpdate(opts, patient_id) {
         }
         if (objectPath.has(doc, 'sync_id')) {
           const doc_ref_db = new PouchDB(prefix + 'document_references')
-          const doc_ref_db_res = await doc_ref_db.find({selector: {'context.encounter.0.reference': {'$regex': objectPath.get(doc, 'sync_id')}, _id: {"$gte": null}}, limit: 1000})
+          const doc_ref_db_res = await doc_ref_db.find({selector: {'context.encounter.0.reference': {'$regex': objectPath.get(doc, 'sync_id')}, _id: {"$gte": null}}, limit: 10000})
           if (doc_ref_db_res.docs.length > 0) {
             if (!objectPath.has(timelineItem, 'bundle')) {
               objectPath.set(timelineItem, 'document_reference', objectPath.get(doc_ref_db_res, 'docs.0'))

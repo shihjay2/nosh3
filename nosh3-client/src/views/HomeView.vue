@@ -1197,7 +1197,7 @@ export default defineComponent({
         state.patientList = await patientList(user)
         if (route.params.id !== 'new') {
           try {
-            const result = await patientDB.find({selector: {_id: {$eq: route.params.id}}, limit: 1000})
+            const result = await patientDB.find({selector: {_id: {$eq: route.params.id}}, limit: 10000})
             if (result.docs.length > 0) {
               state.patient = result.docs[0].id
               auth.setPatient(state.patient)
@@ -1880,7 +1880,7 @@ export default defineComponent({
             }
             const db = new PouchDB(prefix + resource)
             try {
-              const result = await db.find({selector: {[base.patientField]: {$eq: 'Patient/' + state.patient }, _id: {"$gte": null}}, limit: 1000})
+              const result = await db.find({selector: {[base.patientField]: {$eq: 'Patient/' + state.patient }, _id: {"$gte": null}}, limit: 10000})
               if (resource !== 'observations') {
                 for (const a in result.docs) {
                   const timelineItem = {}
@@ -1897,7 +1897,7 @@ export default defineComponent({
                   objectPath.set(timelineItem, 'style', base.uiListContent.contentStyle)
                   if (resource === 'encounters') {
                     const bundle_db = new PouchDB(prefix + 'bundles')
-                    const bundle_result = await bundle_db.find({selector: {'entry': {"$elemMatch": {"resource.encounter.reference": 'Encounter/' + objectPath.get(result, 'docs.' + a + '.id')}}, _id: {"$gte": null}}, limit: 1000})
+                    const bundle_result = await bundle_db.find({selector: {'entry': {"$elemMatch": {"resource.encounter.reference": 'Encounter/' + objectPath.get(result, 'docs.' + a + '.id')}}, _id: {"$gte": null}}, limit: 10000})
                     if (bundle_result.docs.length > 0) {
                       bundle_result.docs.sort((a1, b1) => moment(b1.timestamp) - moment(a1.timestamp))
                       const history = []
@@ -1913,7 +1913,7 @@ export default defineComponent({
                     }
                     if (objectPath.has(result, 'docs.' + a + '.sync_id')) {
                       const doc_ref_db = new PouchDB(prefix + 'document_references')
-                      const doc_ref_db_res = await doc_ref_db.find({selector: {'context.encounter.0.reference': {'$regex': objectPath.get(result, 'docs.' + a + '.sync_id')}, _id: {"$gte": null}}, limit: 1000})
+                      const doc_ref_db_res = await doc_ref_db.find({selector: {'context.encounter.0.reference': {'$regex': objectPath.get(result, 'docs.' + a + '.sync_id')}, _id: {"$gte": null}}, limit: 10000})
                       if (doc_ref_db_res.docs.length > 0) {
                         if (!objectPath.has(timelineItem, 'bundle')) {
                           objectPath.set(timelineItem, 'document_reference', objectPath.get(doc_ref_db_res, 'docs.0'))
@@ -1998,7 +1998,7 @@ export default defineComponent({
             }
           }
           const activitiesDb = new PouchDB(prefix + 'activities')
-          const activitiesResult = await activitiesDb.find({selector: {event: {$eq: 'Chart Created' }, _id: {"$gte": null}}, limit: 1000})
+          const activitiesResult = await activitiesDb.find({selector: {event: {$eq: 'Chart Created' }, _id: {"$gte": null}}, limit: 10000})
           const timelineIntro = {
             id: 'intro',
             title: 'New Chart Created',
@@ -2341,7 +2341,7 @@ export default defineComponent({
       state.id = id
       if (state.resource == 'encounters') {
         const a = new PouchDB(prefix + 'bundles')
-        const results = await a.find({selector: {'entry.0.resource.encounter.reference': {$eq: 'Encounter/' + id}, _id: {"$gte": null}}, limit: 1000})
+        const results = await a.find({selector: {'entry.0.resource.encounter.reference': {$eq: 'Encounter/' + id}, _id: {"$gte": null}}, limit: 10000})
         if (results.length > 0) {
           results.docs.sort((b, c) => moment(c.timestamp) - moment(b.timestamp))
           state.bundleDoc = objectPath.get(results, '0.docs.0')
@@ -2697,7 +2697,7 @@ export default defineComponent({
         const sections_arr = []
         const a = new PouchDB(prefix + resource)
         const b = await fetchJSON('fhir/' + resource, state.online)
-        const result = await a.find({selector: {[b.activeField]: {$ne: 'inactive'}, _id: {"$gte": null}}, limit: 1000})
+        const result = await a.find({selector: {[b.activeField]: {$ne: 'inactive'}, _id: {"$gte": null}}, limit: 10000})
         text = '<ul>'
         for (const c in result.docs) {
           text += '<li>' + removeTags(result.docs[c].text.div) + '</li>'
@@ -2866,7 +2866,7 @@ export default defineComponent({
       for (const resource of resources) {
         base = await fetchJSON('fhir/' + resource, state.online)
         const db = new PouchDB(prefix + resource)
-        const results = await db.find({selector: {[base.indexField]: {$eq: [base.indexRoot] + '/' + state.encounter}, _id: {"$gte": null}}, limit: 1000})
+        const results = await db.find({selector: {[base.indexField]: {$eq: [base.indexRoot] + '/' + state.encounter}, _id: {"$gte": null}}, limit: 10000})
         for (const a in results.docs) {
           const resource1 = Case.snake(pluralize(results.docs[a].resourceType))
           const item = {}
