@@ -458,7 +458,7 @@ export default defineComponent({
       state.result = []
       let selector = {'category.0.coding.0.code': {$eq: props.category}, [state.base.patientField]: {$eq: 'Patient/' + props.patient }, _id: {"$gte": null}}
       try {
-        const result = await localDB.find({selector: selector})
+        const result = await localDB.find({selector: selector, limit: -1})
         for (const j in result.docs) {
           objectPath.set(state, 'result.' + j + '.doc', result.docs[j])
         }

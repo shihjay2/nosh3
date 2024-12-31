@@ -579,7 +579,7 @@ export default defineComponent({
           const email = rows[a].doc.telecom.find((a) => a.system === 'email')
           if (email !== undefined) {
             // check if user exists
-            const result_users = await localDB5.find({selector: {'email': {$eq: email.value}, _id: {"$gte": null}}})
+            const result_users = await localDB5.find({selector: {'email': {$eq: email.value}, _id: {"$gte": null}}, limit: -1})
             if (result_users.docs.length > 0) {
               add_user = false
             }
@@ -853,13 +853,13 @@ export default defineComponent({
       const results = []
       const results_document_references = []
       for (const b of rows) {
-        const result = await localDB3.find({selector: {'entry.0.resource.encounter.reference': {$eq: 'Encounter/' + b.id}, _id: {"$gte": null}}})
+        const result = await localDB3.find({selector: {'entry.0.resource.encounter.reference': {$eq: 'Encounter/' + b.id}, _id: {"$gte": null}}, limit: -1})
         if (result.docs.length > 0) {
           result.docs.sort((a1, b1) => moment(b1.timestamp) - moment(a1.timestamp))
         }
         results.push(result)
         if (objectPath.has(b, 'doc.sync_id')) {
-          const result_document_reference = await localDB7.find({selector: {'context.encounter.0.reference': {'$regex': b.doc.sync_id}, _id: {"$gte": null}}})
+          const result_document_reference = await localDB7.find({selector: {'context.encounter.0.reference': {'$regex': b.doc.sync_id}, _id: {"$gte": null}}, limit: -1})
           results_document_references.push(result_document_reference)
         } else {
           results_document_references.push({'docs': []})
@@ -897,7 +897,7 @@ export default defineComponent({
     }
     const getCarePlans = async(rows) => {
       for (const index in rows) {
-        const result = await localDB1.find({selector: {'contained.0.id': {$eq: rows[index].id}, _id: {"$gte": null}}})
+        const result = await localDB1.find({selector: {'contained.0.id': {$eq: rows[index].id}, _id: {"$gte": null}}, limit: -1})
         if (objectPath.has(result, 'docs.0')) {
           result.docs.sort((a1, b1) => moment(b1.created) - moment(a1.created))
           objectPath.set(state, 'rows.' + index + '.careplan.description', objectPath.get(result, 'docs.0.description'))
@@ -919,7 +919,7 @@ export default defineComponent({
     }
     const getMedicationCarePlan = async(rows) => {
       for (const index in rows) {
-        const result = await localDB1.find({selector: {'activity': {"$elemMatch": {"reference": "MedicationStatement/" + rows[index].id}}, _id: {"$gte": null}}})
+        const result = await localDB1.find({selector: {'activity': {"$elemMatch": {"reference": "MedicationStatement/" + rows[index].id}}, _id: {"$gte": null}}, limit: -1})
         if (objectPath.has(result, 'docs.0')) {
           for (const d in objectPath.get(result, 'docs')) {
             const e = objectPath.get(result, 'docs.' + d + '.activity')
@@ -935,7 +935,7 @@ export default defineComponent({
     const getMedicationRequests = async(rows) => {
       for (const index in rows) {
         if (objectPath.has(rows, index + '.doc.medicationCodeableConcept.coding.0.code')) {
-          const result = await localDB4.find({selector: {'medicationCodeableConcept.coding.0.code': {$eq: rows[index].doc.medicationCodeableConcept.coding[0].code}, _id: {"$gte": null}}})
+          const result = await localDB4.find({selector: {'medicationCodeableConcept.coding.0.code': {$eq: rows[index].doc.medicationCodeableConcept.coding[0].code}, _id: {"$gte": null}}, limit: -1})
           if (objectPath.has(result, 'docs.0')) {
             result.docs.sort((a1, b1) => moment(b1.authoredOn) - moment(a1.authoredOn))
             for (const d in objectPath.get(result, 'docs')) {
@@ -1017,7 +1017,7 @@ export default defineComponent({
       }
       if (result === null) {
         try {
-          result = await localDB.find({selector: selector})
+          result = await localDB.find({selector: selector, limit: -1})
         } catch (err) {
           console.log(err)
         }

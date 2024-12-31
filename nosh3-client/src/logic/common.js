@@ -197,7 +197,7 @@ export function common() {
     const db1 = new PouchDB(prefix + 'activities', {auto_compaction: true})
     const datetime = moment().startOf('day').unix()
     const datetime_formal = moment().startOf('day').format('YYYY-MM-DDTHH:mm:ss.SSSZ')
-    const check1 = await db1.find({selector: {'datetime': {"$eq": datetime}}})
+    const check1 = await db1.find({selector: {'datetime': {"$eq": datetime}}, limit: -1})
     let doc = {
       _id: 'nosh_' + uuidv4(),
       datetime: datetime,
@@ -685,11 +685,11 @@ export function common() {
     const ret = []
     const encountersDB = new PouchDB(prefix + 'encounters')
     const period = moment().subtract(yearback, 'year').format('YYYY-MM-DD')
-    const encountersResult = await encountersDB.find({selector: {'subject.reference': {$eq: 'Patient/' + auth_store.patient }, 'period.start': { "$gte": period }, _id: {"$gte": null}}})
+    const encountersResult = await encountersDB.find({selector: {'subject.reference': {$eq: 'Patient/' + auth_store.patient }, 'period.start': { "$gte": period }, _id: {"$gte": null}}, limit: -1})
     if (encountersResult.docs.length > 0) {
       for (const a of encountersResult.docs) {
         const bundlesDB = new PouchDB(prefix + 'bundles')
-        const bundlesResult = await bundlesDB.find({selector: {'entry.0.resource.encounter.reference': {$eq: 'Encounter/' + a.id}, _id: {"$gte": null}}})
+        const bundlesResult = await bundlesDB.find({selector: {'entry.0.resource.encounter.reference': {$eq: 'Encounter/' + a.id}, _id: {"$gte": null}}, limit: -1})
         if (bundlesResult.docs.length > 0) {
           bundlesResult.docs.sort((b, c) => moment(c.timestamp) - moment(b.timestamp))
           ret.push(bundlesResult.docs[0])
@@ -1018,7 +1018,7 @@ export function common() {
       subselectors.push({$or: ors})
       subselectors.push({_id: {"$gte": null}})
       const selector = {$and: subselectors}
-      result = await localDB.find({selector: selector})
+      result = await localDB.find({selector: selector, limit: -1})
     }
     return result
   }
@@ -1273,7 +1273,7 @@ export function common() {
     const result = await observationDB.find({selector: {
       'subject.reference': {$eq: 'Patient/' + patient },
       'code.coding.0.code': {$eq: code},
-      _id: {"$gte": null}}})
+      _id: {"$gte": null}}, limit: -1})
     if (result.docs.length > 0) {
       result.docs.sort((b, c) => moment(c.effectivePeriod.start) - moment(b.effectivePeriod.start))
       if (objectPath.has(result, 'docs.0.valueQuantity.value')) {
@@ -1312,7 +1312,7 @@ export function common() {
     const result = await observationDB.find({selector: {
       'subject.reference': {$eq: 'Patient/' + patient },
       'code.coding.0.code': {$eq: item.search},
-      _id: {"$gte": null}}})
+      _id: {"$gte": null}}, limit: -1})
     if (result.docs.length > 0) {
       result.docs.sort((b, c) => moment(c.effectivePeriod.start) - moment(b.effectivePeriod.start))
       if (objectPath.has(result, 'docs.0.valueCodableConcept.coding.0.code')) {
@@ -1355,7 +1355,7 @@ export function common() {
     const result = await observationDB.find({selector: {
       'subject.reference': {$eq: 'Patient/' + patient },
       'code.coding.0.code': {$eq: item.search},
-      _id: {"$gte": null}}})
+      _id: {"$gte": null}}, limit: -1})
     if (result.docs.length > 0) {
       result.docs.sort((b, c) => moment(c.effectivePeriod.start) - moment(b.effectivePeriod.start))
       if (objectPath.has(result, 'docs.0.valueCodableConcept.coding.0.code')) {
@@ -1367,7 +1367,7 @@ export function common() {
   const patientList = async(user) => {
     const arr = []
     const patientDB = new PouchDB('patients')
-    const patientList = await patientDB.find({selector: {_id: {$regex: '^nosh_*'}}})
+    const patientList = await patientDB.find({selector: {_id: {$regex: '^nosh_*'}}, limit: -1})
     for (const a in patientList.docs) {
       arr.push({
         name: removeTags(patientList.docs[a].text.div),
@@ -1401,7 +1401,7 @@ export function common() {
     const result = await patientDB.find({selector: {
       'id': {$eq: patient },
       [item.field]: {"$gte": null},
-      _id: {"$gte": null}}})
+      _id: {"$gte": null}}, limit: -1})
     if (result.docs.length > 0) {
       for (const b of item.positive) {
         if (Array.isArray(objectPath.get(result, 'docs.0.' + item.field))) {
@@ -1419,7 +1419,7 @@ export function common() {
     const prefix = getPrefix()
     const db = new PouchDB(prefix + resource)
     const results = await db.find({
-      selector: {'sync_id': {$eq: id}, _id: {"$gte": null}}
+      selector: {'sync_id': {$eq: id}, _id: {"$gte": null}}, limit: -1
     })
     if (results.docs.length > 0) {
       return objectPath.get(results, 'docs.0.id')
@@ -1583,7 +1583,7 @@ export function common() {
         })
       }
       auth_store.setLastSync(timestamp)
-      const sync_result = await sync_db.find({selector: {'resource': {"$eq": resource}}})
+      const sync_result = await sync_db.find({selector: {'resource': {"$eq": resource}}, limit: -1})
       if (sync_result.docs.length > 0) {
         for (const sync_doc of sync_result.docs) {
           await sync_db.remove(sync_doc)
@@ -1607,7 +1607,7 @@ export function common() {
       const new_destroy_remote = new PouchDB(couchdb + prefix + resource, auth)
       await new_destroy_remote.info()
       auth_store.setLastSync(timestamp)
-      const sync_result1 = await sync_db.find({selector: {'resource': {"$eq": resource}}})
+      const sync_result1 = await sync_db.find({selector: {'resource': {"$eq": resource}}, limit: -1})
       if (sync_result1.docs.length > 0) {
         for (const sync_doc1 of sync_result1.docs) {
           await sync_db.remove(sync_doc1)
@@ -1640,7 +1640,7 @@ export function common() {
         resource === 'practitioners' ||
         resource === 'related_persons') {
       const db_users = new PouchDB(prefix + 'users')
-      const result_users = await db_users.find({selector: {'reference': {$eq: Case.pascal(pluralize.singular(resource)) + '/' + doc.id}}})
+      const result_users = await db_users.find({selector: {'reference': {$eq: Case.pascal(pluralize.singular(resource)) + '/' + doc.id}}, limit: -1})
       if (result_users.docs.length > 0) {
         if (category === 'telecom') {
           const a = doc[category].find(b => b.system == 'email')
@@ -1767,7 +1767,7 @@ export function common() {
         objectPath.set(timelineItem, 'style', base.uiListContent.contentStyle)
         if (opts.resource === 'encounters') {
           const bundle_db = new PouchDB(prefix + 'bundles')
-          const bundle_result = await bundle_db.find({selector: {'entry': {"$elemMatch": {"resource.encounter.reference": 'Encounter/' + opts.id}}, _id: {"$gte": null}}})
+          const bundle_result = await bundle_db.find({selector: {'entry': {"$elemMatch": {"resource.encounter.reference": 'Encounter/' + opts.id}}, _id: {"$gte": null}}, limit: -1})
           if (bundle_result.docs.length > 0) {
             bundle_result.docs.sort((a1, b1) => moment(b1.timestamp) - moment(a1.timestamp))
             const history = []
@@ -1783,7 +1783,7 @@ export function common() {
           }
           if (objectPath.has(doc, 'sync_id')) {
             const doc_ref_db = new PouchDB(prefix + 'document_references')
-            const doc_ref_db_res = await doc_ref_db.find({selector: {'context.encounter.0.reference': {'$regex': objectPath.get(doc, 'sync_id')}, _id: {"$gte": null}}})
+            const doc_ref_db_res = await doc_ref_db.find({selector: {'context.encounter.0.reference': {'$regex': objectPath.get(doc, 'sync_id')}, _id: {"$gte": null}}, limit: -1})
             if (doc_ref_db_res.docs.length > 0) {
               if (!objectPath.has(timelineItem, 'bundle')) {
                 objectPath.set(timelineItem, 'document_reference', objectPath.get(doc_ref_db_res, 'docs.0'))
@@ -1817,7 +1817,7 @@ export function common() {
     } else {
       // brand new timeline
       const activitiesDb = new PouchDB(prefix + 'activities')
-      const activitiesResult = await activitiesDb.find({selector: {event: {$eq: 'Chart Created' }, _id: {"$gte": null}}})
+      const activitiesResult = await activitiesDb.find({selector: {event: {$eq: 'Chart Created' }, _id: {"$gte": null}}, limit: -1})
       const timelineIntro = {
         id: 'intro',
         title: 'New Chart Created',
@@ -1872,7 +1872,7 @@ export function common() {
       selector = {"inResponseTo.reference": {$eq: 'Communication/' + id }, status: {$eq: 'completed'}, _id: {"$gte": null}}
     } else {
       const pending = {"inResponseTo.reference": {$eq: 'Communication/' + id }, status: {$eq: 'preparation'}, _id: {"$gte": null}}
-      const pending_result = await localDB.find({selector: pending})
+      const pending_result = await localDB.find({selector: pending, limit: -1})
       if (pending_result.docs.length > 0) {
         for (const a in pending_result.docs) {
           if (moment(pending_result.docs[a].sent).isBefore()) {
@@ -1883,7 +1883,7 @@ export function common() {
       }
       selector = {"inResponseTo.reference": {$eq: 'Communication/' + id }, status: {$eq: 'in-progress'}, _id: {"$gte": null}}
     }
-    const result = await localDB.find({selector: selector})
+    const result = await localDB.find({selector: selector, limit: -1})
     if (result.docs.length > 0) {
       for (const b in result.docs) {
         arr.push(result.docs[b])

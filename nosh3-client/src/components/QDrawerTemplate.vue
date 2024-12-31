@@ -313,7 +313,7 @@ export default defineComponent({
     }
     const query = async(resource, index) => {
       const localDB = new PouchDB(prefix + resource)
-      const findobj = {selector: {[state.base[index].activeField]: {$ne: 'inactive'}, [state.base[index].patientField]: {$eq: 'Patient/' + props.patient }, _id: {"$gte": null}}}
+      const findobj = {selector: {[state.base[index].activeField]: {$ne: 'inactive'}, [state.base[index].patientField]: {$eq: 'Patient/' + props.patient }, _id: {"$gte": null}}, limit: -1}
       if (resource === 'communications') {
         findobj.selector = {[state.base[index].activeField]: {$ne: 'inactive'}, [state.base[index].patientField]: {$eq: 'Patient/' + props.patient }, inResponseTo: {$exists: false}, _id: {"$gte": null}}
       }
