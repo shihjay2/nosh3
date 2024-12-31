@@ -448,6 +448,7 @@ async function gnapVerify(req, res) {
             await db.remove(result)
             const result_jwt = await processJWT(doc, prefix, pin, req, result.route)
             if (result_jwt.status === 200 && result_jwt.type === 'redirect') {
+              console.log(result_jwt.jwt)
               res.redirect(result_jwt.response)
             } else {
               if (result_jwt.type === 'json') {
