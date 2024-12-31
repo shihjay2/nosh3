@@ -975,7 +975,20 @@ async function update(req, res) {
 }
 
 async function test (req, res, next) {
-  await couchdbInstall()
+  // await couchdbInstall()
+  const db = new PouchDB(urlFix(settings.couchdb_uri) + 'keys', settings.couchdb_auth)
+  const result = await db.find({selector: {_id: {"$gte": null}, privateKey: {"$gte": null}}})
+  for (const keyrow of result.docs) {
+    const key = await jose.importJWK(keyrow.publicKey)
+    const pem = await jose.exportSPKI(key)
+    const comp = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnuxVvE1XvrFmKd49JYBq\njsS4n315GLaXySB2CHv16lMtAUeyPWpdXStpznl0SM0DVuJN/LgZ3LFlKGyNrbsK\nK+YobG5gdmIKB+RuF+Dq/Go3+NGb/EcnGxMJ/PpcoUEmkZJKm1HsYYifv19NT4D2\nf0Lb0Z+AfWfSIrYj/WST4nRni+KLvCj35J1IOviWIrOsBgx2GnbKCe0YyHgu+Aph\nYPDM4gPPiYym1SErOgVL9RFhFBYT2zZQiEfOR4pvsUqHYQwtxluKHlTTcGGZfZlN\nP3uFQNC3K69MKBcvfe6U7gyUJj5vsuHdvyoWCQdF0idIvsdH1DvYuwqdMEgKQabR\nDQIDAQAB\n-----END PUBLIC KEY-----\n"
+    if (pem !== comp) {
+      await db.remove(keyrow)
+    } else {
+      console.log('found it!')
+      console.log(keyrow)
+    }
+  }
   res.status(200).json({status: 'test'})
 }
 
