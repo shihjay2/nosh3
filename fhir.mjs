@@ -252,7 +252,7 @@ async function querySecuredResource(req, res) {
     selector.push({[key1]: value})
   }
   selector.push({_id: {"$gte": null}})
-  const result = await db.find({selector: {$and: selector}, limit: 0})
+  const result = await db.find({selector: {$and: selector}, limit: 1000})
   let i = 0
   for (const a in result.docs) {
     entries.push({

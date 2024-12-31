@@ -319,7 +319,7 @@ export default defineComponent({
             // {'did': {$eq: state.payload._nosh.did}, _id: {"$gte": null}}
           const result = await users.find({
             // selector: {$or: selector}
-            selector: selector, limit: 0
+            selector: selector, limit: 1000
           })
           if (result.docs.length > 0) {
             auth.login(result.docs[0], state.payload, jwt)

@@ -153,7 +153,7 @@ export default {
     }
     const query = async() => {
       const localDB = new PouchDB(prefix + 'immunizations')
-      const result = await localDB.find({selector: {'patient.reference': {$eq: 'Patient/' + props.patient }, _id: {"$gte": null}}, limit: 0})
+      const result = await localDB.find({selector: {'patient.reference': {$eq: 'Patient/' + props.patient }, _id: {"$gte": null}}, limit: 1000})
       if (result.docs.length > 0) {
         for (const a in result.docs) {
           state.patientImmunizationHistory.push({

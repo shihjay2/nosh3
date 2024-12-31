@@ -884,7 +884,7 @@ async function pinCheck (req, res, next) {
         const sync = {status: 'nothing to sync', resources: []}
         try {
           if (req.body.last_sync > 0) {
-            const result = await sync_db.find({selector: {'timestamp': {"$gt": req.body.last_sync}}, limit: 0})
+            const result = await sync_db.find({selector: {'timestamp': {"$gt": req.body.last_sync}}, limit: 1000})
             if (result.docs.length > 0) {
               const resources = []
               for (const doc of result.docs) {
