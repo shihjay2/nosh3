@@ -191,7 +191,7 @@ export default defineComponent({
           // ]
           const result = await users.find({
             // selector: {$or: selector}
-            selector: selector, limit: -1
+            selector: selector, limit: 0
           })
           if (result.docs.length > 0) {
             auth.login(result.docs[0], state.payload, jwt)

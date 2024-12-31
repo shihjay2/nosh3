@@ -714,7 +714,7 @@ async function getAllKeys() {
     }
     // Local key
     const db = new PouchDB(urlFix(settings.couchdb_uri) + 'keys', settings.couchdb_auth)
-    const result = await db.find({selector: {_id: {"$gte": null}}, limit: -1})
+    const result = await db.find({selector: {_id: {"$gte": null}}, limit: 0})
     for (const a in result.docs) {
       keys.push(result.docs[a].publicKey)
       if (objectPath.has(result, 'docs.' + a + '.privateKey')) {
@@ -729,7 +729,7 @@ async function getAllKeys() {
 
 async function getKeys() {
   const db = new PouchDB(urlFix(settings.couchdb_uri) + 'keys', settings.couchdb_auth)
-  const result = await db.find({selector: {_id: {"$gte": null}, privateKey: {"$gte": null}}, limit: -1})
+  const result = await db.find({selector: {_id: {"$gte": null}, privateKey: {"$gte": null}}, limit: 0})
   return result.docs
 }
 
@@ -942,7 +942,7 @@ async function pollSet(patient_id, resource) {
     prefix = patient_id + '_'
   }
   const db = new PouchDB(urlFix(settings.couchdb_uri) + prefix + 'sync', settings.couchdb_auth)
-  const sync_result = await db.find({selector: {'resource': {"$eq": resource}}, limit: -1})
+  const sync_result = await db.find({selector: {'resource': {"$eq": resource}}, limit: 0})
   if (sync_result.docs.length > 0) {
     for (const sync_doc of sync_result.docs) {
       await db.remove(sync_doc)
@@ -1299,7 +1299,7 @@ async function timelineUpdate(opts, patient_id) {
         }
         if (objectPath.has(doc, 'sync_id')) {
           const doc_ref_db = new PouchDB(prefix + 'document_references')
-          const doc_ref_db_res = await doc_ref_db.find({selector: {'context.encounter.0.reference': {'$regex': objectPath.get(doc, 'sync_id')}, _id: {"$gte": null}}, limit: -1})
+          const doc_ref_db_res = await doc_ref_db.find({selector: {'context.encounter.0.reference': {'$regex': objectPath.get(doc, 'sync_id')}, _id: {"$gte": null}}, limit: 0})
           if (doc_ref_db_res.docs.length > 0) {
             if (!objectPath.has(timelineItem, 'bundle')) {
               objectPath.set(timelineItem, 'document_reference', objectPath.get(doc_ref_db_res, 'docs.0'))

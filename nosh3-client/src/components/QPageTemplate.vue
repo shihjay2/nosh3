@@ -618,7 +618,7 @@ export default defineComponent({
                 } else {
                   weight = parseFloat(doc.valueQuantity.value)
                 }
-                const check = await checkDB.find({selector: {'encounter.reference': {$eq: 'Encounter/' + props.encounter}, 'code.coding.0.code': {$eq: '8302-2'}, _id: {"$gte": null}}, limit: -1})
+                const check = await checkDB.find({selector: {'encounter.reference': {$eq: 'Encounter/' + props.encounter}, 'code.coding.0.code': {$eq: '8302-2'}, _id: {"$gte": null}}, limit: 0})
                 if (check.docs.length > 0) {
                   if (check.docs[0].valueQuantity.unit === 'inch') {
                     height = convert(parseFloat(check.docs[0].valueQuantity.value), 'in').to('cm')
@@ -632,7 +632,7 @@ export default defineComponent({
                 } else {
                   height = parseFloat(doc.valueQuantity.value)
                 }
-                const check = await checkDB.find({selector: {'encounter.reference': {$eq:  'Encounter/' + props.encounter}, 'code.coding.0.code': {$eq: '29463-7'}, _id: {"$gte": null}}, limit: -1})
+                const check = await checkDB.find({selector: {'encounter.reference': {$eq:  'Encounter/' + props.encounter}, 'code.coding.0.code': {$eq: '29463-7'}, _id: {"$gte": null}}, limit: 0})
                 if (check.docs.length > 0) {
                   if (check.docs[0].valueQuantity.unit === 'lbs') {
                     weight = convert(parseFloat(check.docs[0].valueQuantity.value), 'lb').to('kg')
@@ -644,7 +644,7 @@ export default defineComponent({
               if (weight !== 0 && height !== 0) {
                 let bmi_doc = {}
                 const bmi = (weight / Math.pow( (height/100), 2 )).toFixed(1)
-                const check1 = await checkDB.find({selector: {'encounter.reference': {$eq: 'Encounter/' + props.encounter}, 'code.coding.0.code': {$eq: '39156-5'}, _id: {"$gte": null}}, limit: -1})
+                const check1 = await checkDB.find({selector: {'encounter.reference': {$eq: 'Encounter/' + props.encounter}, 'code.coding.0.code': {$eq: '39156-5'}, _id: {"$gte": null}}, limit: 0})
                 if (check1.docs.length > 0) {
                   bmi_doc = check1.docs[0]
                 } else {
@@ -703,7 +703,7 @@ export default defineComponent({
           // create task
           if (id !== '') {
             const taskDB = new PouchDB(prefix + 'tasks')
-            const task = await taskDB.find({selector: {'basedOn.0.reference': {$eq: 'ServiceRequest/' + id}, _id: {"$gte": null}}, limit: -1})
+            const task = await taskDB.find({selector: {'basedOn.0.reference': {$eq: 'ServiceRequest/' + id}, _id: {"$gte": null}}, limit: 0})
             if (task.docs.length === 0) {
               const task_id = 'nosh_' + uuidv4()
               const task_doc = JSON.parse(JSON.stringify(state.formbase.fhir))
