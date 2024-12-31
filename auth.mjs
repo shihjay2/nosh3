@@ -517,6 +517,7 @@ async function exportJWT(req, res) {
     const pair = await createKeyPair()
     keys.push(pair)
   }
+  console.log(keys)
   const key = await jose.importJWK(keys[0].publicKey)
   const pem = await jose.exportSPKI(key)
   res.status(200).json(pem)
@@ -884,7 +885,7 @@ async function pinCheck (req, res, next) {
         const sync = {status: 'nothing to sync', resources: []}
         try {
           if (req.body.last_sync > 0) {
-            const result = await sync_db.find({selector: {'timestamp': {"$gt": req.body.last_sync}}, limit: 1000})
+            const result = await sync_db.find({selector: {'timestamp': {"$gt": req.body.last_sync}}})
             if (result.docs.length > 0) {
               const resources = []
               for (const doc of result.docs) {
