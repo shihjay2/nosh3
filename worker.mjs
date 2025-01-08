@@ -10,7 +10,7 @@ import settings from './settings.mjs'
 import TurndownService from 'turndown'
 import { isMarkdown, markdownParse, size, urlFix } from './core.mjs'
 import { parentPort, workerData } from 'worker_threads'
-import { renderToString } from '@vue/server-test-utils'
+import { renderToString } from './node_modules/@vue/test-utils/dist/renderToString'
 import QBundleTemplate from './QBundleTemplate.vue'
 
 const mdbuild = async(opts) => {

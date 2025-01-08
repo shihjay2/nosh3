@@ -12,6 +12,7 @@
   "author": "Michael Shihjay Chen",
   "license": "AGPL-3.0-or-later",
   "dependencies": {
+    "@vue/test-utils": "^2.4.6",
     "axios": "^1.7.9",
     "case": "^1.6.3",
     "comdb": "^6.0.0-beta",
