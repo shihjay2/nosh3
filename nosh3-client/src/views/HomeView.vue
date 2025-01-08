@@ -2527,9 +2527,6 @@ export default defineComponent({
             await syncProcess('some')
           }
         }
-        if (auth.stay_logged_in) {
-          await rotateJWT()
-        }
         if (check.data.response === 'Forbidden') {
           state.login = false
           $q.notify({
@@ -2541,8 +2538,12 @@ export default defineComponent({
           })
         }
       } catch(e) {
-        auth.setMessage('jwt not valid')
-        state.showLogoff = true
+        if (auth.stay_logged_in) {
+          await rotateJWT()
+        } else {
+          auth.setMessage('jwt not valid')
+          state.showLogoff = true
+        }
       }
     }
     const refreshApp = () => {
