@@ -395,6 +395,7 @@ async function gnapRotate(req, res) {
     res.status(401).send('Unauthorized - No PIN set')
   } else {
     const signedRequest = await signRequest({}, req.body.url, 'POST', req, req.body.jwt)
+    console.log(req.body.jwt)
     console.log(signedRequest)
     try {
       const doc = await fetch(req.body.url, signedRequest)

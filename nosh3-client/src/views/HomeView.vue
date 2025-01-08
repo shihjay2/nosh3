@@ -2589,6 +2589,7 @@ export default defineComponent({
     }
     const rotateJWT = async() => {
       try {
+        console.log(auth.rotate_jwt)
         const body = {url: auth.rotate_jwt_uri, patient: state.patient, jwt: auth.rotate_jwt}
         const a = await axios.post(window.location.origin + '/auth/gnapRotate/' + state.patient, body)
         if (objectPath.has(a, 'data.jwt')) {
