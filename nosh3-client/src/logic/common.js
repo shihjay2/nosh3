@@ -2,6 +2,7 @@ import axios from 'axios'
 import Case from 'case'
 import { reactive } from '@vue/reactivity'
 import * as jose from 'jose'
+import json2md from 'json2md'
 import jsPDF from 'jspdf'
 import fastDiff from 'fast-diff'
 import * as marked from 'marked'
@@ -95,6 +96,83 @@ export function common() {
     objectPath.set(bundleDoc, 'entry', entries)
     await sync('bundles', false, patient_id, true, bundleDoc)
     return bundleDoc
+  }
+  const bundleMD = async(doc) => {
+    const base = await fetchJSON('fhir/bundles')
+    const md = []
+    for (const section of base.tabs) {
+      let title = section.label
+      if (section.resource === 'encounters') {
+        title = 'Encounter ' + section.label
+      }
+      md.push({h3: title})
+      if (section.resource === 'encounters') {
+        const encounter_doc = doc.entry.find(b => b.resource.resourceType == Case.pascal(pluralize.singular(section.resource)))
+        const fhir = encounter_doc.resource
+        const base = await fetchJSON('fhir/' + section.resource)
+        const a = base.tabs.find(b => b.category == 'encounter')
+        const content = fhirReplace('content', base, fhir, a.schema.flat())
+        const ul_arr = []
+        for (const data of content) {
+          if (fhir.uiListContent.contentStyle === 'p') {
+            ul_arr.push('**' + data.key + '**: ' + data.value)
+          }
+          if (fhir.uiListContent.contentStyle === 'list') {
+            ul_arr.push('**Display**: ' + data)
+          }
+        }
+        md.push({ul: ul_arr})
+      } else {
+        const results = doc.entry.filter(a => a.resource.resourceType == Case.pascal(pluralize.singular(props.resource)))
+        const fhir = await fetchJSON('fhir/' + section.resource)
+        if (section.template === 'list') {
+          const schema = fhir.uiSchema
+          await loadResource(a, section.resource, 'all')
+          for (const row of results) {
+            const row_doc = row.resource
+            const ul_arr = []
+            md.push({h4: fhirReplace('title', fhir, row_doc, schema.flat())})
+            md.push({h5: fhirReplace('subhead', fhir, row_doc, schema.flat())})
+            const content = fhirReplace('content', fhir, row_doc, schema.flat())
+            for (const data of content) {
+              if (fhir.uiListContent.contentStyle === 'p') {
+                ul_arr.push('**' + data.key + '**: ' + data.value)
+              }
+              if (fhir.uiListContent.contentStyle === 'list') {
+                ul_arr.push('**Display**: ' + data)
+              }
+            }
+            md.push({ul: ul_arr})
+          }
+        } else {
+          for (const a in fhir.categories) {
+            const headers = []
+            const rows = []
+            const schema = fhir.categories[a].docSchema
+            for (const b in schema) {
+              headers.push(objectPath.get(schema, b + '.label'))
+            }
+            const sub = results.filter(c => {
+              let d = c.doc.category.some(({ coding }) => coding.some(({ code }) => code === fhir.categories[a].value))
+              return d
+            })
+            if (sub.length !== 0) {
+              for (const e in sub) {
+                const row1 = []
+                for (const f in schema) {
+                  row1.push(getItem(schema[f], '0', sub[e].doc))
+                }
+                rows.push(row1)
+              }
+            }
+            md.push({h4: fhir.categories[a].label})
+            md.push({table: {headers: headers, rows: rows}})
+          }
+        }
+      }
+    }
+    const final_md = json2md(md)
+    return btoa(final_md)
   }
   const clearCoverage = async() => {
     const prefix = getPrefix()
@@ -629,6 +707,68 @@ export function common() {
       return JSON.parse(objectPath.get(doc, 'data'))
     } catch (e) {
       return []
+    }
+  }
+  const getItem = (schema, index, fhir) => {
+    let model = ''
+    if (typeof schema.modelParent !== 'undefined') {
+      model = schema.modelParent + '.' + index + '.'
+    }
+    if (typeof schema.modelRoot !== 'undefined') {
+      if (schema.modelArray == false) {
+        model += schema.modelRoot + '.' + schema.model
+      } else {
+        model += schema.modelRoot + '.0.' + schema.model
+      }
+    } else {
+      model += schema.model
+    }
+    if (schema.type == 'tags' || schema.multiple == true) {
+      let a = []
+      if (schema.modelRoot !== undefined) {
+        if (schema.modelParent !== undefined) {
+          for (const b in objectPath.get(fhir, schema.modelParent + '.' + index + '.' + schema.modelRoot)) {
+            a[b] = objectPath.get(fhir, schema.modelParent + '.' + index + '.' + schema.modelRoot + '.' + b  + '.' + schema.model)
+          }
+        } else {
+          for (const b1 in objectPath.get(fhir, schema.modelRoot)) {
+            a[b1] = objectPath.get(fhir, schema.modelRoot + '.' + b1  + '.' + schema.model)
+          }
+        }
+        if (a.length > 0) {
+          return a
+        }
+      } else {
+        return objectPath.get(state, 'fhir.' + model)
+      }
+    } else if (schema.modelOne !== undefined) {
+      let c = ''
+      if (objectPath.has(fhir, model + '.' + schema.modelOne + '.' + schema.modelEnd)) {
+        c = objectPath.get(fhir, model + '.' + schema.modelOne + '.' + schema.modelEnd)
+      } else {
+        if (objectPath.has(fhir, model + '.' + schema.modelRange[0] + '.' + schema.modelEnd)) {
+          c = objectPath.get(fhir, model + '.' + schema.modelRange[0] + '.' + schema.modelEnd)
+          c += ' to '
+          c += objectPath.get(fhir, model + '.' + schema.modelRange[1] + '.' + schema.modelEnd)
+        }
+      }
+      return c
+    } else if (schema.modelChoice !== undefined) {
+      let d = ''
+      for (const e in schema.modelChoice) {
+        if (objectPath.has(fhir, model + '.' + schema.modelChoice[e] + '.' + schema.modelEnd)) {
+          d = objectPath.get(fhir, model + '.' + schema.modelChoice[e] + '.' + schema.modelEnd)
+        }
+      }
+      return d
+    } else if (schema.text !== undefined) {
+      return objectPath.get(state, 'fhir.' + model + '.' + schema.text)
+    } else if (schema.div !== undefined) {
+      if (objectPath.has(fhir, model)) {
+        return removeTags(objectPath.get(fhir, model))
+      }
+    } else {
+      return objectPath.get(fhir, model)
     }
   }
   const getOIDC = async() => {
@@ -1940,6 +2080,7 @@ export function common() {
   return {
     addSchemaOptions,
     bundleBuild,
+    bundleMD,
     clearCoverage,
     clearEOB,
     clearOIDC,
@@ -1952,6 +2093,7 @@ export function common() {
     fhirReplace,
     getCoverage,
     getEOB,
+    getItem,
     getOIDC,
     getOIDCDebug,
     getPrefix,

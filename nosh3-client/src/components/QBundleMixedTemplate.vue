@@ -35,6 +35,7 @@
 
 <script>
 import { defineComponent, reactive, onMounted, watch } from 'vue'
+import { common } from '@/logic/common'
 import Case from 'case'
 import objectPath from 'object-path'
 import pluralize from 'pluralize'
@@ -52,6 +53,7 @@ export default defineComponent({
   },
   emits: ['reload-complete'],
   setup (props, { emit }) {
+    const { getItem } = common()
     const state = reactive({
       base: {},
       schema: {},
@@ -74,68 +76,6 @@ export default defineComponent({
         emit('reload-complete')
       }
     })
-    const getItem = (schema, index, fhir) => {
-      let model = ''
-      if (typeof schema.modelParent !== 'undefined') {
-        model = schema.modelParent + '.' + index + '.'
-      }
-      if (typeof schema.modelRoot !== 'undefined') {
-        if (schema.modelArray == false) {
-          model += schema.modelRoot + '.' + schema.model
-        } else {
-          model += schema.modelRoot + '.0.' + schema.model
-        }
-      } else {
-        model += schema.model
-      }
-      if (schema.type == 'tags' || schema.multiple == true) {
-        let a = []
-        if (schema.modelRoot !== undefined) {
-          if (schema.modelParent !== undefined) {
-            for (const b in objectPath.get(fhir, schema.modelParent + '.' + index + '.' + schema.modelRoot)) {
-              a[b] = objectPath.get(fhir, schema.modelParent + '.' + index + '.' + schema.modelRoot + '.' + b  + '.' + schema.model)
-            }
-          } else {
-            for (const b1 in objectPath.get(fhir, schema.modelRoot)) {
-              a[b1] = objectPath.get(fhir, schema.modelRoot + '.' + b1  + '.' + schema.model)
-            }
-          }
-          if (a.length > 0) {
-            return a
-          }
-        } else {
-          return objectPath.get(state, 'fhir.' + model)
-        }
-      } else if (schema.modelOne !== undefined) {
-        let c = ''
-        if (objectPath.has(fhir, model + '.' + schema.modelOne + '.' + schema.modelEnd)) {
-          c = objectPath.get(fhir, model + '.' + schema.modelOne + '.' + schema.modelEnd)
-        } else {
-          if (objectPath.has(fhir, model + '.' + schema.modelRange[0] + '.' + schema.modelEnd)) {
-            c = objectPath.get(fhir, model + '.' + schema.modelRange[0] + '.' + schema.modelEnd)
-            c += ' to '
-            c += objectPath.get(fhir, model + '.' + schema.modelRange[1] + '.' + schema.modelEnd)
-          }
-        }
-        return c
-      } else if (schema.modelChoice !== undefined) {
-        let d = ''
-        for (const e in schema.modelChoice) {
-          if (objectPath.has(fhir, model + '.' + schema.modelChoice[e] + '.' + schema.modelEnd)) {
-            d = objectPath.get(fhir, model + '.' + schema.modelChoice[e] + '.' + schema.modelEnd)
-          }
-        }
-        return d
-      } else if (schema.text !== undefined) {
-        return objectPath.get(state, 'fhir.' + model + '.' + schema.text)
-      } else if (schema.div !== undefined) {
-        if (objectPath.has(fhir, model)) {
-          return removeTags(objectPath.get(fhir, model))
-        }
-      } else {
-        return objectPath.get(fhir, model)
-      }
-    }
     const query = () => {
       state.cards = []
       const results = props.doc.entry.filter(a => a.resource.resourceType == Case.pascal(pluralize.singular(props.resource)))
@@ -143,14 +83,6 @@ export default defineComponent({
         objectPath.set(state, 'result.' + b + '.doc', results[b].resource)
       }
       tableMap()
-    }
-    const removeTags = (str) => {
-      if ((str===null) || (str==='')) {
-        return false
-      } else {
-        str = str.toString()
-        return str.replace( /(<([^>]+)>)/ig, '')
-      }
     }
     const tableMap = async() => {
       for (const a in state.base.categories) {
@@ -188,7 +120,6 @@ export default defineComponent({
     }
     return {
       getItem,
-      removeTags,
       tableMap,
       state
     }

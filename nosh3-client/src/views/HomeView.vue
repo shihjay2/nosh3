@@ -941,7 +941,7 @@ export default defineComponent({
 },
   setup () {
     const $q = useQuasar()
-    const { addSchemaOptions, clearCoverage, clearEOB, clearOIDC, fetchJSON, fhirModel, fhirReplace, getCoverage, getEOB, getOIDC, getOIDCDebug, importFHIR, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, setOIDC, sleep, sync, syncAll, syncTooltip, syncSome, timelineResources, timelineUpdate, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
+    const { addSchemaOptions, bundleMD, clearCoverage, clearEOB, clearOIDC, fetchJSON, fhirModel, fhirReplace, getCoverage, getEOB, getOIDC, getOIDCDebug, importFHIR, inbox, loadSchema, loadSelect, observationStatusRaw, patientList, removeTags, setOIDC, sleep, sync, syncAll, syncTooltip, syncSome, timelineResources, timelineUpdate, thread, threadEarlier, threadLater, updateUser, verifyJWT } = common()
     const state = reactive({
       menuVisible: false,
       showDrawer: false,
@@ -2940,6 +2940,18 @@ export default defineComponent({
         entries.push({resource: results1})
       }
       objectPath.set(bundleDoc, 'entry', entries)
+      const md = await bundleMD(bundleDoc)
+      const binary_id = 'nosh_' + uuidv4()
+      const binaryDoc = {
+        "resourceType": "Binary",
+        "id": binary_id,
+        "_id": binary_id,
+        "contentType": "text/plain; charset=utf-8",
+        "data": btoa(md)
+      }
+      objectPath.set(bundleDoc, 'link.relation', 'alternate')
+      objectPath.set(bundleDoc, 'link.url', 'Binary/' + binary_id)
+      await sync('binaries', false,state.couchdb, state.auth, state.pin, state.patient, true, binaryDoc)
       await sync('bundles', false, state.couchdb, state.auth, state.pin, state.patient, true, bundleDoc)
       // remove from unsigned
       const h = state.user.unsigned.map(g => g.id).indexOf(state.encounter)

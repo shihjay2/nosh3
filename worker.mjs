@@ -10,9 +10,6 @@ import settings from './settings.mjs'
 import TurndownService from 'turndown'
 import { isMarkdown, markdownParse, size, urlFix } from './core.mjs'
 import { parentPort, workerData } from 'worker_threads'
-// import { renderToString } from '@vue/test-utils'
-
-// import QBundleTemplate from './QBundleTemplate.vue'
 
 const mdbuild = async(opts) => {
   try {
@@ -71,38 +68,17 @@ const mdbuild = async(opts) => {
               md_enc.push({md: md_enc_data, size: md_enc_size})
             }
           } else if (objectPath.has(row, 'bundle')) {
-            // const mdjs_binary2 = []
-            // const ul_arr_binary2 = []
-            // mdjs_binary2.push({h3: Case.title(pluralize.singular(row.resource)) + ' Details'})
-            // const [ date_text ] = row.subtitle.split(',')
-            // ul_arr_binary2.push('**Date**: ' + moment(date_text).format('MMMM DD, YYYY'))
-            // const bundle_options = []
-            // for (const a in row.bundle_history) {
-            //   const b = {
-            //     value: a,
-            //     label: row.bundle_history[a].timestamp
-            //   }
-            //   if (row.bundle.timestamp === row.bundle_history[a].timestamp) {
-            //     b.label += ' - Current'
-            //   }
-            //   bundle_options.push(b)
-            // }
-            // const props = {
-            //   doc: row.bundle,
-            //   resource: 'bundles',
-            //   category: 'all',
-            //   prefix: opts.prefix
-            // }
-            // const renderedString = await renderToString(QBundleTemplate, { props })
-            // const turndownService = new TurndownService()
-            // const md2 = turndownService.turndown(renderedString)
-            // const md_arr2 = markdownParse(md2)
-            // for (const md_arr_row2 of md_arr2) {
-            //   mdjs_binary2.push(md_arr_row2)
-            // }
-            // const md_enc_data2 = json2md(mdjs_binary2)
-            // const md_enc_size2 = size(md_enc_data2)
-            // md_enc.push({md: md_enc_data2, size: md_enc_size2})
+            if (objectPath.has(row, 'bundle.link.relation')) {
+              if (objectPath.get(row, 'bundle.link.relation') === 'alternate') {
+                if (objectPath.has(row, 'bundle.link.url')) {
+                  const bundle_binary_id = objectPath.get(row, 'bundle.link.url').substring(objectPath.get(row, 'bundle.link.url').indexOf('/') + 1)
+                  const bundle_binary_doc = await db_binary.get(bundle_binary_id)
+                  const bundle_data = atob(objectPath.get(bundle_binary_doc, 'data'))
+                  const bundle_data_size = size(bundle_data)
+                  md_enc.push({md: bundle_data, size: bundle_data_size})
+                }
+              }
+            }
           }
         }
         if (row.resource === 'document_references') {
