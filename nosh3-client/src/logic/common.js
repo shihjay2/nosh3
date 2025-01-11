@@ -122,7 +122,7 @@ export function common() {
         }
         md.push({ul: ul_arr})
       } else {
-        const results = doc.entry.filter(a => a.resource.resourceType == Case.pascal(pluralize.singular(props.resource)))
+        const results = doc.entry.filter(a => a.resource.resourceType == Case.pascal(pluralize.singular(section.resource)))
         const fhir = await fetchJSON('fhir/' + section.resource, online)
         if (section.template === 'list') {
           const schema = fhir.uiSchema
