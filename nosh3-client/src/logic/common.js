@@ -150,6 +150,7 @@ export function common() {
             for (const b in schema) {
               headers.push(objectPath.get(schema, b + '.label'))
             }
+            console.log(results)
             const sub = results.filter(c => {
               let d = c.doc.category.some(({ coding }) => coding.some(({ code }) => code === fhir.categories[a].value))
               return d
