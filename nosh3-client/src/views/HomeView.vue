@@ -2947,8 +2947,9 @@ export default defineComponent({
         "id": binary_id,
         "_id": binary_id,
         "contentType": "text/plain; charset=utf-8",
-        "data": btoa(md)
+        "data": md
       }
+      console.log(atob(md))
       objectPath.set(bundleDoc, 'link.relation', 'alternate')
       objectPath.set(bundleDoc, 'link.url', 'Binary/' + binary_id)
       await sync('binaries', false,state.couchdb, state.auth, state.pin, state.patient, true, binaryDoc)
