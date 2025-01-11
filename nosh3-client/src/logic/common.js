@@ -97,9 +97,8 @@ export function common() {
     await sync('bundles', false, patient_id, true, bundleDoc)
     return bundleDoc
   }
-  const bundleMD = async(doc) => {
-    const base = await fetchJSON('fhir/bundles')
-    console.log(base)
+  const bundleMD = async(doc, online) => {
+    const base = await fetchJSON('fhir/bundles', online)
     const md = []
     for (const section of base.tabs) {
       let title = section.label
@@ -110,7 +109,7 @@ export function common() {
       if (section.resource === 'encounters') {
         const encounter_doc = doc.entry.find(b => b.resource.resourceType == Case.pascal(pluralize.singular(section.resource)))
         const fhir = encounter_doc.resource
-        const base = await fetchJSON('fhir/' + section.resource)
+        const base = await fetchJSON('fhir/' + section.resource, online)
         const a = base.tabs.find(b => b.category == 'encounter')
         const content = fhirReplace('content', base, fhir, a.schema.flat())
         const ul_arr = []
@@ -125,7 +124,7 @@ export function common() {
         md.push({ul: ul_arr})
       } else {
         const results = doc.entry.filter(a => a.resource.resourceType == Case.pascal(pluralize.singular(props.resource)))
-        const fhir = await fetchJSON('fhir/' + section.resource)
+        const fhir = await fetchJSON('fhir/' + section.resource, online)
         if (section.template === 'list') {
           const schema = fhir.uiSchema
           await loadResource(a, section.resource, 'all')

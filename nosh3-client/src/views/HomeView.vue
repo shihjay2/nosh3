@@ -2940,7 +2940,7 @@ export default defineComponent({
         entries.push({resource: results1})
       }
       objectPath.set(bundleDoc, 'entry', entries)
-      const md = await bundleMD(bundleDoc)
+      const md = await bundleMD(bundleDoc, state.online)
       const binary_id = 'nosh_' + uuidv4()
       const binaryDoc = {
         "resourceType": "Binary",
