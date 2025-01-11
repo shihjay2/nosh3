@@ -99,6 +99,7 @@ export function common() {
   }
   const bundleMD = async(doc) => {
     const base = await fetchJSON('fhir/bundles')
+    console.log(base)
     const md = []
     for (const section of base.tabs) {
       let title = section.label
