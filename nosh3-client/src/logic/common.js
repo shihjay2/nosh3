@@ -108,10 +108,9 @@ export function common() {
       md.push({h3: title})
       if (section.resource === 'encounters') {
         const encounter_doc = doc.entry.find(b => b.resource.resourceType == Case.pascal(pluralize.singular(section.resource)))
-        const fhir = encounter_doc.resource
-        const base = await fetchJSON('fhir/' + section.resource, online)
-        const a = base.tabs.find(b => b.category == 'encounter')
-        const content = fhirReplace('content', base, fhir, a.schema.flat())
+        const fhir = await fetchJSON('fhir/' + section.resource, online)
+        const schema = fhir.uiSchema
+        const content = fhirReplace('content', base, encounter_doc.resource, schema.flat())
         const ul_arr = []
         for (const data of content) {
           if (fhir.uiListContent.contentStyle === 'p') {
