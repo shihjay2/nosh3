@@ -2870,7 +2870,7 @@ export default defineComponent({
         const results = await db.find({selector: {[base.indexField]: {$eq: [base.indexRoot] + '/' + state.encounter}, _id: {"$gte": null}}, limit: 10000})
         for (const a in results.docs) {
           const resource1 = Case.snake(pluralize(results.docs[a].resourceType))
-          const item = {}
+          let item = {}
           const entry = {}
           if (resource1 !== 'observations') {
             item = base.uiSchema.flat().find((b) => b.id === base.activeField)
