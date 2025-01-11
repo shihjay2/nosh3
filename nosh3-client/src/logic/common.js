@@ -126,7 +126,6 @@ export function common() {
         const fhir = await fetchJSON('fhir/' + section.resource, online)
         if (section.template === 'list') {
           const schema = fhir.uiSchema
-          await loadResource(a, section.resource, 'all')
           for (const row of results) {
             const row_doc = row.resource
             const ul_arr = []
