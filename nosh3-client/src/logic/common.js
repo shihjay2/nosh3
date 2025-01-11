@@ -150,16 +150,15 @@ export function common() {
             for (const b in schema) {
               headers.push(objectPath.get(schema, b + '.label'))
             }
-            console.log(results)
             const sub = results.filter(c => {
-              let d = c.doc.category.some(({ coding }) => coding.some(({ code }) => code === fhir.categories[a].value))
+              let d = c.resource.category.some(({ coding }) => coding.some(({ code }) => code === fhir.categories[a].value))
               return d
             })
             if (sub.length !== 0) {
               for (const e in sub) {
                 const row1 = []
                 for (const f in schema) {
-                  row1.push(getItem(schema[f], '0', sub[e].doc))
+                  row1.push(getItem(schema[f], '0', sub[e].resource))
                 }
                 rows.push(row1)
               }
