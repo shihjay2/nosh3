@@ -140,6 +140,15 @@ export function common() {
                 ul_arr.push('**Display**: ' + data)
               }
             }
+            if (section.resource === 'compositions') {
+              for (const c in results) {
+                if (objectPath.has(results, c + '.resource.section')) {
+                  for (const d in objectPath.get(results, + c + '.resource.section')) {
+                    ul_arr.push('**' + objectPath.get(results, c + '.resource.section.' + d + '.title') + '**: ' + removeTags(objectPath.get(results, c + '.resource.section.' + d + '.text.div')))
+                  }
+                }
+              }
+            }
             md.push({ul: ul_arr})
           }
         } else {
@@ -148,7 +157,9 @@ export function common() {
             const rows = []
             const schema = fhir.categories[a].docSchema
             for (const b in schema) {
-              headers.push(objectPath.get(schema, b + '.label'))
+              if (objectPath.get(schema, b + '.id') !== 'id') {
+                headers.push(objectPath.get(schema, b + '.label'))
+              }
             }
             const sub = results.filter(c => {
               let d = c.resource.category.some(({ coding }) => coding.some(({ code }) => code === fhir.categories[a].value))
@@ -158,13 +169,17 @@ export function common() {
               for (const e in sub) {
                 const row1 = []
                 for (const f in schema) {
-                  row1.push(getItem(schema[f], '0', sub[e].resource))
+                  if (objectPath.get(schema, f + '.id') !== 'id') {
+                    row1.push(getItem(schema[f], '0', sub[e].resource))
+                  }
                 }
                 rows.push(row1)
               }
             }
-            md.push({h4: fhir.categories[a].label})
-            md.push({table: {headers: headers, rows: rows}})
+            if (rows.length > 0) {
+              md.push({h4: fhir.categories[a].label})
+              md.push({table: {headers: headers, rows: rows}})
+            }
           }
         }
       }

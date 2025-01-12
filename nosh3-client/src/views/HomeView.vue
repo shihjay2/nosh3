@@ -2952,8 +2952,8 @@ export default defineComponent({
       console.log(atob(md))
       objectPath.set(bundleDoc, 'link.relation', 'alternate')
       objectPath.set(bundleDoc, 'link.url', 'Binary/' + binary_id)
-      await sync('binaries', false,state.couchdb, state.auth, state.pin, state.patient, true, binaryDoc)
-      await sync('bundles', false, state.couchdb, state.auth, state.pin, state.patient, true, bundleDoc)
+      await sync('binaries', false, state.patient, true, binaryDoc)
+      await sync('bundles', false, state.patient, true, bundleDoc)
       // remove from unsigned
       const h = state.user.unsigned.map(g => g.id).indexOf(state.encounter)
       if (h !== -1) {
