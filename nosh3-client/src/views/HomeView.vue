@@ -2949,16 +2949,17 @@ export default defineComponent({
         "contentType": "text/plain; charset=utf-8",
         "data": md
       }
-      console.log(atob(md))
       objectPath.set(bundleDoc, 'link.relation', 'alternate')
       objectPath.set(bundleDoc, 'link.url', 'Binary/' + binary_id)
       await sync('binaries', false, state.patient, true, binaryDoc)
       await sync('bundles', false, state.patient, true, bundleDoc)
       // remove from unsigned
-      const h = state.user.unsigned.map(g => g.id).indexOf(state.encounter)
-      if (h !== -1) {
-        state.user.unsigned.splice(h, 1)
-        auth.update(state.user)
+      if (objectPath.has(state, 'user.unsigned')) {
+        const h = state.user.unsigned.map(g => g.id).indexOf(state.encounter)
+        if (h !== -1) {
+          state.user.unsigned.splice(h, 1)
+          auth.update(state.user)
+        }
       }
       $q.notify({
         message: 'Encounter signed!',
