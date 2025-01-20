@@ -16,11 +16,17 @@
       <q-item v-if="state.bluebutton" clickable @click="open('https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4/', 'EPIC Sandbox', 'Endpoint')">
         EPIC Sandbox
       </q-item>
+      <q-item v-if="state.bluebutton" clickable @click="open('https://fhir-open.cerner.com/r4/ec2458f2-1e24-41c8-b71b-0e701af7583d/', 'Cerner Sandbox', 'EndpointCerner')">
+        Cerner Sandbox
+      </q-item>
       <div v-for="item in state.data" :key="item.id">
         <q-item clickable @click="open(item.resource.address, item.resource.name, item.resource.resourceType)">
           <q-item-section>{{ item.resource.name }}</q-item-section>
           <q-item-section v-if="item.resource.resourceType === 'Endpoint'" avatar>
             <img src="https://open.epic.com/Content/Images/logo.png?version=R41429" height="25">
+          </q-item-section>
+          <q-item-section v-else-if="item.resource.resourceType === 'EndpointCerner'" avatar>
+            <img src="https://engineering.cerner.com/smart-on-fhir-tutorial/images/logo.png" height="25">
           </q-item-section>
           <q-item-section v-else avatar>
             <img src="https://synthea.mitre.org/logos/logo?v=1562710747000" height="25">
@@ -78,8 +84,19 @@ export default defineComponent({
         state.loading = true
         try {
           emit('loading')
+          // OpenEPIC
           const result = await axios.post(window.location.origin + '/oidc', {url: 'https://open.epic.com/Endpoints/R4'})
           const data_build = result.data.entry
+          // Cerner 
+          const cerner_result = await axios.post(window.location.origin + '/oidc', {url: 'https://raw.githubusercontent.com/oracle-samples/ignite-endpoints/refs/heads/main/oracle_health_fhir_endpoints/millennium_patient_r4_endpoints.json'})
+          for (const cerner_row of cerner_result.data.entry) {
+            if (objectPath.get(cerner_row, 'resource.resourceType' === 'Endpoint')) {
+              const cerner_row_org = cerner_result.data.entry.find(a => a.id === 'O' + cerner_row.id)
+              objectPath.set(cerner_row, 'name', cerner_row_org.name)
+              objectPath.set(cerner_row, 'resource.resourceType', 'EndpointCerner')
+              data_build.push(cerner_row)
+            }
+          }
           // synthetic records
           const result_synth = await axios.get('https://api.github.com/repos/agropper/Challenge/contents/synthetic?ref=main')
           for (const synth_row of result_synth.data) {
@@ -142,7 +159,11 @@ export default defineComponent({
           if (type !== 'cms_bluebutton' && type !== 'cms_bluebutton_sandbox') {
             objectPath.set(body, 'fhir_url', type)
             state.base_url = type
-            objectPath.set(body, 'type', 'epic')
+            if (origin === 'EndpointCerner') {
+              objectPath.set(body, 'type', 'cerner')
+            } else {
+              objectPath.set(body, 'type', 'epic')
+            }
             objectPath.set(body, 'origin_uri', location.protocol + '//' + location.host + location.pathname + '?oidc=epic')
             objectPath.set(body, 'response_uri', location.protocol + '//' + location.host + location.pathname + '?oidc=epic')
           } else {
