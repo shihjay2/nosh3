@@ -61,7 +61,7 @@
           </q-btn>
           <q-btn flat dense round icon="sync" v-if="state.type !== 'mdnosh'" @click="openOIDC('','')">
             <q-badge color="red" floating>{{ state.oidc_count }}</q-badge>
-            <q-tooltip>Sync from EPIC or CMS Bluebutton</q-tooltip>
+            <q-tooltip>Sync from EPIC, Cerner, or CMS Bluebutton</q-tooltip>
           </q-btn>
           <q-btn flat dense round icon="chat" @click="openList('communications', 'inbox')">
             <q-badge color="red" floating>{{ state.messages }}</q-badge>

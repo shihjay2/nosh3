@@ -89,6 +89,7 @@ export default defineComponent({
           const data_build = result.data.entry
           // Cerner 
           const cerner_result = await axios.post(window.location.origin + '/oidc', {url: 'https://raw.githubusercontent.com/oracle-samples/ignite-endpoints/refs/heads/main/oracle_health_fhir_endpoints/millennium_patient_r4_endpoints.json'})
+          console.log(cerner_result)
           for (const cerner_row of cerner_result.data.entry) {
             if (objectPath.get(cerner_row, 'resource.resourceType' === 'Endpoint')) {
               const cerner_row_org = cerner_result.data.entry.find(a => a.id === 'O' + cerner_row.id)
