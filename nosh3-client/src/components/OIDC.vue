@@ -88,7 +88,7 @@ export default defineComponent({
           const result = await axios.post(window.location.origin + '/oidc', {url: 'https://open.epic.com/Endpoints/R4'})
           const data_build = result.data.entry
           // Cerner 
-          const cerner_result = await axios.post(window.location.origin + '/oidc', {url: 'https://raw.githubusercontent.com/oracle-samples/ignite-endpoints/refs/heads/main/oracle_health_fhir_endpoints/millennium_patient_r4_endpoints.json'})
+          const cerner_result = await axios.get('https://raw.githubusercontent.com/oracle-samples/ignite-endpoints/refs/heads/main/oracle_health_fhir_endpoints/millennium_patient_r4_endpoints.json')
           console.log(cerner_result)
           for (const cerner_row of cerner_result.data.entry) {
             if (objectPath.get(cerner_row, 'resource.resourceType' === 'Endpoint')) {
