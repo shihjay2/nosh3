@@ -26,7 +26,7 @@
             <img src="https://open.epic.com/Content/Images/logo.png?version=R41429" height="25">
           </q-item-section>
           <q-item-section v-else-if="item.resource.resourceType === 'EndpointCerner'" avatar>
-            <img src="https://engineering.cerner.com/smart-on-fhir-tutorial/images/logo.png" height="25">
+            <img src="https://avatars.githubusercontent.com/u/1873208?s=200&v=4" height="25">
           </q-item-section>
           <q-item-section v-else avatar>
             <img src="https://synthea.mitre.org/logos/logo?v=1562710747000" height="25">
@@ -92,9 +92,8 @@ export default defineComponent({
           for (const cerner_row of cerner_result.data.entry) {
             if (objectPath.get(cerner_row, 'resource.resourceType') === 'Endpoint') {
               const cerner_row_org = cerner_result.data.entry.find(a => a.resource.id === 'O' + cerner_row.resource.id)
-              console.log(cerner_row_org)
               if (cerner_row_org !== undefined) {
-                objectPath.set(cerner_row, 'name', cerner_row_org.name)
+                objectPath.set(cerner_row, 'name', cerner_row_org.resource.name)
                 objectPath.set(cerner_row, 'resource.resourceType', 'EndpointCerner')
                 data_build.push(cerner_row)
               }
