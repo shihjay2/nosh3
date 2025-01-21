@@ -16,7 +16,7 @@
       <q-item v-if="state.bluebutton" clickable @click="open('https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4/', 'EPIC Sandbox', 'Endpoint')">
         EPIC Sandbox
       </q-item>
-      <q-item v-if="state.bluebutton" clickable @click="open('https://fhir-open.cerner.com/r4/ec2458f2-1e24-41c8-b71b-0e701af7583d/', 'Cerner Sandbox', 'EndpointCerner')">
+      <q-item v-if="state.bluebutton" clickable @click="open('https://fhir-myrecord.cerner.com/r4/ec2458f2-1e24-41c8-b71b-0e701af7583d/', 'Cerner Sandbox', 'EndpointCerner')">
         Cerner Sandbox
       </q-item>
       <div v-for="item in state.data" :key="item.id">
@@ -93,7 +93,7 @@ export default defineComponent({
             if (objectPath.get(cerner_row, 'resource.resourceType') === 'Endpoint') {
               const cerner_row_org = cerner_result.data.entry.find(a => a.resource.id === 'O' + cerner_row.resource.id)
               if (cerner_row_org !== undefined) {
-                objectPath.set(cerner_row, 'name', cerner_row_org.resource.name)
+                objectPath.set(cerner_row, 'resource.name', cerner_row_org.resource.name)
                 objectPath.set(cerner_row, 'resource.resourceType', 'EndpointCerner')
                 data_build.push(cerner_row)
               }
