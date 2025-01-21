@@ -91,8 +91,7 @@ export default defineComponent({
           const cerner_result = await axios.get('https://raw.githubusercontent.com/oracle-samples/ignite-endpoints/refs/heads/main/oracle_health_fhir_endpoints/millennium_patient_r4_endpoints.json')
           for (const cerner_row of cerner_result.data.entry) {
             if (objectPath.get(cerner_row, 'resource.resourceType') === 'Endpoint') {
-              console.log(cerner_row.id)
-              const cerner_row_org = cerner_result.data.entry.find(a => a.id === 'O' + cerner_row.id)
+              const cerner_row_org = cerner_result.data.entry.find(a => a.resource.id === 'O' + cerner_row.resource.id)
               console.log(cerner_row_org)
               if (cerner_row_org !== undefined) {
                 objectPath.set(cerner_row, 'name', cerner_row_org.name)
