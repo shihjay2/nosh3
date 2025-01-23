@@ -3079,11 +3079,13 @@ export default defineComponent({
       if (Array.isArray(state.oidc)) {
         if (state.oidc.length > 0) {
           for (const d of state.oidc) {
-            if (d.docs.length > 0) {
-              for (const e of d.docs) {
-                if (objectPath.has(e, 'rows')) {
-                  if (e.rows.length > 0) {
-                    oidc = oidc + e.rows.length
+            if (objectPath.has(d, 'docs')) {
+              if (d.docs.length > 0) {
+                for (const e of d.docs) {
+                  if (objectPath.has(e, 'rows')) {
+                    if (e.rows.length > 0) {
+                      oidc = oidc + e.rows.length
+                    }
                   }
                 }
               }
