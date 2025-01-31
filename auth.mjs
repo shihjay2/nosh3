@@ -576,7 +576,6 @@ async function processJWT(doc, prefix, pin, req, route) {
           objectPath.set(nosh, 'email', objectPath.get(verify_results, 'payload.sub'))
           const payload = {
             "_gnap": doc,
-            "jwt": jwt,
             "_noshAPI": {
               "uspstf_key": process.env.USPSTF_KEY,
               "umls_key": process.env.UMLS_KEY,
